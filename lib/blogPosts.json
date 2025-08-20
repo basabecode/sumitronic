@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Nuevas Cámaras de Seguridad Imou: Tecnología IA Avanzada",
+    "excerpt": "Descubre las últimas innovaciones en videovigilancia con inteligencia artificial de Imou para proteger tu hogar y negocio.",
+    "image": "/blogs/imou_panel_solar_Z.jpg",
+    "author": "Equipo Técnico",
+    "date": "15 Dic 2024",
+    "category": "Seguridad",
+    "readTime": "4 min"
+  },
+  {
+    "id": 2,
+    "title": "Logitech MX Master 4: Review Completo del Mouse Gaming",
+    "excerpt": "Análisis detallado del nuevo mouse gaming profesional de Logitech con todas sus características y mejoras.",
+    "image": "/blogs/mouse_logitech_led.png",
+    "author": "Gaming Expert",
+    "date": "12 Dic 2024",
+    "category": "Gaming",
+    "readTime": "6 min"
+  },
+  {
+    "id": 3,
+    "title": "TP-Link WiFi 7: La Nueva Era del Internet Doméstico",
+    "excerpt": "Todo lo que necesitas saber sobre los nuevos routers WiFi 7 de TP-Link y cómo mejoran tu conexión.",
+    "image": "/blogs/wifi7_tplink.jpg",
+    "author": "Red Expert",
+    "date": "10 Dic 2024",
+    "category": "Conectividad",
+    "readTime": "5 min"
+  }
+]
