@@ -14,6 +14,10 @@ jobs:
       - name: Instala dependencias backend
         run: npm install
 
+      - name: Revisión automática del issue
+        run: |
+          node scripts/reviewIssue.js "${{ github.event.issue.body }}"
+
       # Crea una rama basada en el número del issue
       - name: Crea nueva rama para la tarea
         run: |
