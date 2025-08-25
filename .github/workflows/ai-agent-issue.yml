@@ -4,12 +4,22 @@ on:
   issues:
     types: [opened, edited]
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   process-issue:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
       - name: Instala dependencias backend
         run: npm install
@@ -18,7 +28,6 @@ jobs:
         run: |
           node scripts/reviewIssue.js "${{ github.event.issue.body }}"
 
-      # Crea una rama basada en el número del issue
       - name: Crea nueva rama para la tarea
         run: |
           git config user.name "github-actions[bot]"
@@ -26,13 +35,13 @@ jobs:
           git checkout -b issue-${{ github.event.issue.number }}
           git push origin issue-${{ github.event.issue.number }}
 
-      # Usa el contenido del issue como prompt para tu agente
       - name: Ejecuta agente IA con prompt del issue
+        env:
+          OPENAI_API_KEY: ${{ secrets.GITACTIONSECRET }}
         run: |
           echo "${{ github.event.issue.body }}" > prompt.txt
           node scripts/handlePrompt.js "$(cat prompt.txt)"
 
-      # Opcional: Haz pruebas y reporta
       - name: Ejecuta pruebas
         run: npm test
 
