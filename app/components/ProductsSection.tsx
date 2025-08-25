@@ -480,11 +480,15 @@ export default function ProductsSection() {
 
             {/* Products */}
             <div
-              className={`grid gap-4 ${
+              className={`grid gap-6 ${
                 viewMode === 'grid'
-                  ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5'
+                  ? 'grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4'
                   : 'grid-cols-1'
               }`}
+              style={{
+                gridAutoRows: '1fr',
+                minHeight: 0,
+              }}
             >
               {visibleProducts.map(product => (
                 <div
@@ -492,6 +496,10 @@ export default function ProductsSection() {
                   className={`bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group overflow-hidden ${
                     viewMode === 'list' ? 'flex' : ''
                   }`}
+                  style={{
+                    maxWidth: '100%',
+                    minWidth: 0,
+                  }}
                 >
                   {/* Product Image */}
                   <div
@@ -561,35 +569,16 @@ export default function ProductsSection() {
 
                   {/* Product Info */}
                   <div className="p-4 flex-1">
-                    <div className="flex items-start justify-between mb-2 min-w-0">
-                      <div className="min-w-0">
-                        <p className="text-xs sm:text-sm text-gray-500 mb-1 truncate">
-                          {product.brand}
-                        </p>
-                        <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2">
-                          {product.name}
-                        </h3>
-                      </div>
+                    <div className="flex flex-col mb-2 min-w-0">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-1 truncate">
+                        {product.brand}
+                      </p>
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2 break-words">
+                        {product.name}
+                      </h3>
                     </div>
 
-                    {/* Rating */}
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(product.rating)
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-gray-600">
-                        {product.rating} ({product.reviews})
-                      </span>
-                    </div>
+                    {/* ...eliminado rating y reviews... */}
 
                     {/* Price */}
                     <div className="flex items-center space-x-2 mb-3">
@@ -618,7 +607,7 @@ export default function ProductsSection() {
                     {/* Actions */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <Button
-                        className="w-full bg-orange-600 hover:bg-orange-700"
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-xs sm:text-sm px-2 py-2 whitespace-nowrap"
                         size="sm"
                         disabled={product.stockCount <= 0}
                         onClick={e => {
@@ -633,7 +622,7 @@ export default function ProductsSection() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="w-full"
+                        className="w-full text-xs sm:text-sm px-2 py-2 whitespace-nowrap"
                         size="sm"
                         onClick={e => {
                           e.stopPropagation()

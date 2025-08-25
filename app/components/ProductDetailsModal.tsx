@@ -226,26 +226,7 @@ export default function ProductDetailsModal({
               <h1 className="text-2xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-
-              {/* Rating */}
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < Math.floor(product.rating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-gray-600">
-                  {product.rating} ({product.reviews} reseñas)
-                </span>
-              </div>
-
+              {/* ...eliminado rating y reviews... */}
               {/* Precio */}
               <div className="flex items-center space-x-3 mb-4">
                 <span className="text-3xl font-bold text-orange-600">
