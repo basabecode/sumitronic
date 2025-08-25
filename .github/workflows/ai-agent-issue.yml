@@ -1,0 +1,41 @@
+name: Copilot AI Agent from Issue
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  process-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Instala dependencias backend
+        run: npm install
+
+      # Crea una rama basada en el número del issue
+      - name: Crea nueva rama para la tarea
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b issue-${{ github.event.issue.number }}
+          git push origin issue-${{ github.event.issue.number }}
+
+      # Usa el contenido del issue como prompt para tu agente
+      - name: Ejecuta agente IA con prompt del issue
+        run: |
+          echo "${{ github.event.issue.body }}" > prompt.txt
+          node scripts/handlePrompt.js "$(cat prompt.txt)"
+
+      # Opcional: Haz pruebas y reporta
+      - name: Ejecuta pruebas
+        run: npm test
+
+      - name: Reporta resultado en el issue
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            🚀 El agente IA procesó el issue y realizó cambios en la rama `issue-${{ github.event.issue.number }}`.
+            Resultado de las pruebas: (ver logs)
