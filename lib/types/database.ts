@@ -4,7 +4,7 @@
 export interface Database {
   public: {
     Tables: {
-      profiles: {
+      users: {
         Row: {
           id: string
           email: string
@@ -271,7 +271,14 @@ export interface Database {
           order_number: string
           user_id: string | null
           email: string
-          status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+          status:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
           payment_status: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
           subtotal: number
           tax_amount: number
@@ -295,8 +302,20 @@ export interface Database {
           order_number?: string
           user_id?: string | null
           email: string
-          status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
-          payment_status?: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
+          status?:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
+          payment_status?:
+            | 'pending'
+            | 'paid'
+            | 'failed'
+            | 'refunded'
+            | 'partial'
           subtotal: number
           tax_amount?: number
           shipping_amount?: number
@@ -319,8 +338,20 @@ export interface Database {
           order_number?: string
           user_id?: string | null
           email?: string
-          status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
-          payment_status?: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
+          status?:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
+          payment_status?:
+            | 'pending'
+            | 'paid'
+            | 'failed'
+            | 'refunded'
+            | 'partial'
           subtotal?: number
           tax_amount?: number
           shipping_amount?: number
@@ -485,12 +516,15 @@ export interface Database {
 }
 
 // Tipos de conveniencia
-export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
-export type TablesInsert<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Insert']
-export type TablesUpdate<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Update']
+export type Tables<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Row']
+export type TablesInsert<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Insert']
+export type TablesUpdate<T extends keyof Database['public']['Tables']> =
+  Database['public']['Tables'][T]['Update']
 
 // Tipos específicos para usar en la aplicación
-export type Profile = Tables<'profiles'>
+export type Profile = Tables<'users'>
 export type Category = Tables<'categories'>
 export type Product = Tables<'products'>
 export type ProductVariant = Tables<'product_variants'>
@@ -524,8 +558,14 @@ export type OrderWithItems = Order & {
 }
 
 // Tipos para formularios
-export type ProductForm = Omit<ProductInsert, 'id' | 'created_at' | 'updated_at'>
-export type CategoryForm = Omit<CategoryInsert, 'id' | 'created_at' | 'updated_at'>
+export type ProductForm = Omit<
+  ProductInsert,
+  'id' | 'created_at' | 'updated_at'
+>
+export type CategoryForm = Omit<
+  CategoryInsert,
+  'id' | 'created_at' | 'updated_at'
+>
 
 // Tipos para direcciones
 export type Address = {
@@ -539,4 +579,10 @@ export type Address = {
 }
 
 // Helper type para JSON
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]

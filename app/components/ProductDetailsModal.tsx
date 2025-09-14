@@ -119,14 +119,12 @@ export default function ProductDetailsModal({
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addItem({
-        id: product.id,
+        id: product.id.toString(),
         name: product.name,
         brand: product.brand,
         price: product.price,
-        originalPrice: product.originalPrice,
-        image: product.image,
-        inStock: product.inStock,
-        stockCount: product.stockCount,
+        image_url: product.image,
+        stock: product.stockCount,
         category: product.category,
       })
     }
