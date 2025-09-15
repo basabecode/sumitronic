@@ -31,18 +31,26 @@ import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/contexts/CartContext'
 
 interface Product {
-  id: number
+  id: string | number
   name: string
   brand: string
   price: number
-  originalPrice: number
-  rating: number
-  reviews: number
+  originalPrice?: number
+  rating?: number
+  reviews?: number
   image: string
+  images?: string[]
   badge?: string
   inStock: boolean
   stockCount: number
   category: string
+  product_images?: Array<{
+    id: string
+    image_url: string
+    alt_text: string
+    is_primary: boolean
+    sort_order: number
+  }>
 }
 
 interface ProductDetailsModalProps {
@@ -62,13 +70,32 @@ export default function ProductDetailsModal({
 
   if (!product) return null
 
-  // Simular imágenes adicionales (en un proyecto real vendrían del producto)
-  const productImages = [
-    product.image,
-    product.image, // En un proyecto real serían diferentes ángulos
-    product.image,
-    product.image,
-  ]
+  // Obtener todas las imágenes del producto
+  const productImages = (() => {
+    const allImages: string[] = []
+
+    // Imagen principal
+    if (product.image) {
+      allImages.push(product.image)
+    }
+
+    // Imágenes adicionales del array images
+    if (product.images && product.images.length > 0) {
+      allImages.push(...product.images.filter(img => img !== product.image))
+    }
+
+    // Imágenes de product_images (si existen)
+    if (product.product_images && product.product_images.length > 0) {
+      const additionalImages = product.product_images
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map(img => img.image_url)
+        .filter(img => !allImages.includes(img))
+      allImages.push(...additionalImages)
+    }
+
+    // Si no hay imágenes, usar placeholder
+    return allImages.length > 0 ? allImages : ['/placeholder.svg']
+  })()
 
   // Generar características basadas en la categoría
   const getProductFeatures = (category: string, brand: string) => {
@@ -136,8 +163,14 @@ export default function ProductDetailsModal({
     return `$${price.toLocaleString('es-CO')}`
   }
 
-  const savings = product.originalPrice - product.price
-  const discountPercentage = Math.round((savings / product.originalPrice) * 100)
+  const savings =
+    product.originalPrice && product.originalPrice > product.price
+      ? product.originalPrice - product.price
+      : 0
+  const discountPercentage =
+    product.originalPrice && savings > 0
+      ? Math.round((savings / product.originalPrice) * 100)
+      : 0
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -149,7 +182,7 @@ export default function ProductDetailsModal({
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Galería de imágenes */}
           <div className="space-y-4">
-            <div className="relative bg-gray-50 rounded-lg overflow-hidden aspect-square">
+            <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden aspect-square">
               <img
                 src={productImages[selectedImageIndex] || '/placeholder.svg'}
                 alt={product.name}
@@ -208,7 +241,7 @@ export default function ProductDetailsModal({
                     <img
                       src={image || '/placeholder.svg'}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-contain bg-gray-50"
+                      className="w-full h-full object-contain bg-white"
                     />
                   </button>
                 ))}
@@ -230,16 +263,17 @@ export default function ProductDetailsModal({
                 <span className="text-3xl font-bold text-orange-600">
                   {formatPrice(product.price)}
                 </span>
-                {product.originalPrice > product.price && (
-                  <>
-                    <span className="text-xl text-gray-500 line-through">
-                      {formatPrice(product.originalPrice)}
-                    </span>
-                    <Badge variant="destructive" className="bg-red-600">
-                      -{discountPercentage}%
-                    </Badge>
-                  </>
-                )}
+                {product.originalPrice &&
+                  product.originalPrice > product.price && (
+                    <>
+                      <span className="text-xl text-gray-500 line-through">
+                        {formatPrice(product.originalPrice)}
+                      </span>
+                      <Badge variant="destructive" className="bg-red-600">
+                        -{discountPercentage}%
+                      </Badge>
+                    </>
+                  )}
               </div>
 
               {savings > 0 && (

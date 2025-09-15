@@ -273,20 +273,20 @@ export function ProductsSection() {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">
             Nuestros Productos
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm">
             Encuentra los mejores productos de tecnología y seguridad
           </p>
         </div>
 
         {/* Barra de búsqueda y controles */}
-        <div className="flex flex-col lg:flex-row gap-4 mb-8">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-3 mb-6">
+          <div className="w-full lg:w-80 xl:w-96">
             <Input
               placeholder="Buscar productos..."
               value={searchQuery}
@@ -336,10 +336,10 @@ export function ProductsSection() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Panel de filtros */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Panel de filtros OPTIMIZADO */}
           {showFilters && (
-            <div className="w-full lg:w-80 space-y-6">
+            <div className="w-full lg:w-72 xl:w-80 space-y-6">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center mb-4">
@@ -442,13 +442,7 @@ export function ProductsSection() {
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="featured"
-                          checked={featuredOnly}
-                          onCheckedChange={checked =>
-                            setFeaturedOnly(checked === true)
-                          }
-                        />
+                        <Checkbox id="featured" checked={featuredOnly} />
                         <Label htmlFor="featured" className="text-sm">
                           Solo productos destacados
                         </Label>
@@ -463,10 +457,18 @@ export function ProductsSection() {
           {/* Grid de productos */}
           <div className="flex-1">
             {/* Información de resultados */}
-            <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-600">
-                Mostrando {products.length} de {totalProducts} productos
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-sm text-gray-600">
+                {totalProducts} productos
+                {products.length < totalProducts
+                  ? ` (mostrando ${products.length})`
+                  : ''}
               </p>
+              {totalPages > 1 && (
+                <p className="text-sm text-gray-500">
+                  Página {currentPage} de {totalPages}
+                </p>
+              )}
             </div>
 
             {/* Loading overlay */}
@@ -477,103 +479,200 @@ export function ProductsSection() {
               </div>
             )}
 
-            {/* Grid de productos */}
+            {/* Grid de productos OPTIMIZADO */}
             <div
-              className={`grid gap-6 ${
+              className={`grid gap-4 ${
                 viewMode === 'grid'
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                  ? showFilters
+                    ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'
+                    : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
                   : 'grid-cols-1'
               }`}
             >
               {products.map(product => (
                 <Card
                   key={product.id}
-                  className="group hover:shadow-lg transition-shadow"
+                  className={`group hover:shadow-md transition-all duration-200 border-gray-200 bg-white ${
+                    viewMode === 'grid'
+                      ? 'w-full max-w-[220px] min-w-[180px] mx-auto'
+                      : 'w-full max-w-none'
+                  }`}
                 >
-                  <CardContent className="p-0">
-                    <div className="relative aspect-square overflow-hidden rounded-t-lg bg-gray-100">
-                      <img
-                        src={product.image || '/placeholder.svg'}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={e => {
-                          e.currentTarget.src = '/placeholder.svg'
-                        }}
-                      />
-                      {product.badge && (
-                        <Badge className="absolute top-2 left-2">
-                          {product.badge}
-                        </Badge>
-                      )}
-                      {product.featured && (
-                        <Badge
-                          variant="secondary"
-                          className="absolute top-2 right-2"
-                        >
-                          Destacado
-                        </Badge>
-                      )}
+                  {viewMode === 'grid' ? (
+                    <>
+                      {/* MODO GRID - Imagen del producto compacta */}
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg bg-white border-b border-gray-100">
+                        <img
+                          src={product.image || '/placeholder.svg'}
+                          alt={product.name}
+                          className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                          onError={e => {
+                            e.currentTarget.src = '/placeholder.svg'
+                          }}
+                        />
 
-                      {/* Overlay con acciones */}
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
+                        {/* Badges optimizados */}
+                        {product.featured && (
+                          <Badge
                             variant="secondary"
-                            onClick={() => handleProductView(product)}
+                            className="absolute top-1 right-1 text-xs px-1 py-0.5"
                           >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => handleAddToCart(product)}
-                            disabled={!product.inStock}
-                          >
-                            <ShoppingCart className="w-4 h-4" />
-                          </Button>
-                        </div>
+                            ★
+                          </Badge>
+                        )}
+
+                        {product.badge && (
+                          <Badge className="absolute top-1 left-1 text-xs px-1 py-0.5">
+                            {product.badge}
+                          </Badge>
+                        )}
+
+                        {/* Botón de vista rápida solo visible en hover */}
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          onClick={() => handleProductView(product)}
+                        >
+                          <Eye className="w-3 h-3" />
+                        </Button>
                       </div>
-                    </div>
-                  </CardContent>
 
-                  <CardFooter className="p-4">
-                    <div className="w-full">
-                      <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {product.brand}
-                      </p>
+                      {/* Información del producto - Reorganizada */}
+                      <CardContent className="p-4 space-y-2">
+                        {/* 1. MARCA */}
+                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                          {product.brand}
+                        </p>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="text-lg font-bold text-gray-900">
-                            {formatCurrency(product.price)}
-                          </span>
-                          {product.originalPrice &&
-                            product.originalPrice > product.price && (
-                              <span className="text-sm text-gray-500 line-through ml-2">
-                                {formatCurrency(product.originalPrice)}
-                              </span>
-                            )}
+                        {/* 2. NOMBRE DEL PRODUCTO */}
+                        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem] leading-tight">
+                          {product.name}
+                        </h3>
+
+                        {/* 3. PRECIO */}
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base font-bold text-gray-900">
+                              {formatCurrency(product.price)}
+                            </span>
+                            {product.originalPrice &&
+                              product.originalPrice > product.price && (
+                                <span className="text-xs text-gray-400 line-through">
+                                  {formatCurrency(product.originalPrice)}
+                                </span>
+                              )}
+                          </div>
                         </div>
 
-                        <div className="text-right">
-                          <div
-                            className={`text-xs ${
+                        {/* 4. CANTIDAD DISPONIBLE */}
+                        <div className="text-xs">
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full ${
                               product.inStock
-                                ? 'text-green-600'
-                                : 'text-red-600'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-red-100 text-red-700'
                             }`}
                           >
                             {product.inStock
                               ? `Stock: ${product.stockCount}`
                               : 'Agotado'}
+                          </span>
+                        </div>
+
+                        {/* 5. BOTÓN AGREGAR AL CARRITO - SIEMPRE VISIBLE */}
+                        <Button
+                          size="sm"
+                          className="w-full text-xs py-2 h-8 mt-2"
+                          onClick={() => handleAddToCart(product)}
+                          disabled={!product.inStock}
+                        >
+                          <ShoppingCart className="w-3 h-3 mr-1" />
+                          {product.inStock ? 'Agregar' : 'Sin Stock'}
+                        </Button>
+                      </CardContent>
+                    </>
+                  ) : (
+                    <>
+                      {/* MODO LISTA - Layout horizontal */}
+                      <div className="flex gap-4 p-4">
+                        {/* Imagen más pequeña */}
+                        <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg bg-white border border-gray-100">
+                          <img
+                            src={product.image || '/placeholder.svg'}
+                            alt={product.name}
+                            className="w-full h-full object-contain p-1"
+                            onError={e => {
+                              e.currentTarget.src = '/placeholder.svg'
+                            }}
+                          />
+
+                          {/* Badges en modo lista */}
+                          {product.featured && (
+                            <Badge
+                              variant="secondary"
+                              className="absolute top-0 right-0 text-xs px-1 py-0.5"
+                            >
+                              ★
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Información en horizontal */}
+                        <div className="flex-1 space-y-2">
+                          {/* 1. MARCA */}
+                          <p className="text-xs text-gray-500 font-medium uppercase">
+                            {product.brand}
+                          </p>
+
+                          {/* 2. NOMBRE */}
+                          <h3 className="text-base font-semibold text-gray-900 line-clamp-2">
+                            {product.name}
+                          </h3>
+
+                          {/* 3. PRECIO */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold text-gray-900">
+                              {formatCurrency(product.price)}
+                            </span>
+                            {product.originalPrice &&
+                              product.originalPrice > product.price && (
+                                <span className="text-sm text-gray-400 line-through">
+                                  {formatCurrency(product.originalPrice)}
+                                </span>
+                              )}
                           </div>
                         </div>
+
+                        {/* Área derecha con stock y botón */}
+                        <div className="flex flex-col items-end justify-between gap-2 min-w-[120px]">
+                          {/* 4. STOCK */}
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              product.inStock
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-red-100 text-red-700'
+                            }`}
+                          >
+                            {product.inStock
+                              ? `Stock: ${product.stockCount}`
+                              : 'Agotado'}
+                          </span>
+
+                          {/* 5. BOTÓN */}
+                          <Button
+                            size="sm"
+                            className="text-xs py-2 h-8"
+                            onClick={() => handleAddToCart(product)}
+                            disabled={!product.inStock}
+                          >
+                            <ShoppingCart className="w-3 h-3 mr-1" />
+                            {product.inStock ? 'Agregar' : 'Sin Stock'}
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </CardFooter>
+                    </>
+                  )}
                 </Card>
               ))}
             </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -101,6 +101,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [products, setProducts] = useState<Product[]>([])
   const [loadingProducts, setLoadingProducts] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
 
   // Estados para categorías y marcas dinámicas
   const [categories, setCategories] = useState([
@@ -148,6 +149,7 @@ export default function AdminDashboard() {
 
   // Estados del inventario
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean
@@ -156,6 +158,12 @@ export default function AdminDashboard() {
     open: false,
     product: null,
   })
+
+  // Estados de paginación
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalProducts, setTotalProducts] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 50
 
   // Función para cargar categorías desde la base de datos
   const fetchCategories = async () => {
@@ -178,6 +186,20 @@ export default function AdminDashboard() {
     }
   }
 
+  // Debouncing para búsqueda - optimización UX
+  useEffect(() => {
+    if (searchQuery !== debouncedSearchQuery) {
+      setIsSearching(true)
+    }
+
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+      setIsSearching(false)
+    }, 300) // 300ms delay
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, debouncedSearchQuery])
+
   useEffect(() => {
     if (activeTab === 'inventory') {
       fetchProducts()
@@ -185,7 +207,14 @@ export default function AdminDashboard() {
     if (activeTab === 'add-product') {
       fetchCategories()
     }
-  }, [activeTab])
+  }, [activeTab, currentPage, debouncedSearchQuery, categoryFilter])
+
+  // Resetear página cuando cambien los filtros
+  useEffect(() => {
+    if (currentPage !== 1) {
+      setCurrentPage(1)
+    }
+  }, [debouncedSearchQuery, categoryFilter])
 
   // Validación de acceso
   if (loading) {
@@ -230,11 +259,53 @@ export default function AdminDashboard() {
   const fetchProducts = async () => {
     setLoadingProducts(true)
     try {
-      const { data, error } = await supabase
+      // OPTIMIZACIÓN CRÍTICA: Usar JOIN + filtros en BD
+      let query = supabase
         .from('products')
-        .select('*')
+        .select(
+          `
+          *,
+          category:categories!category_id (
+            id,
+            name,
+            slug
+          ),
+          product_images (
+            id,
+            image_url,
+            alt_text,
+            is_primary,
+            sort_order
+          ),
+          inventory (
+            id,
+            quantity_available,
+            reserved_quantity,
+            last_updated
+          )
+        `,
+          { count: 'exact' }
+        )
         .eq('active', true)
+
+      // Aplicar filtros en la base de datos
+      if (debouncedSearchQuery.trim()) {
+        query = query.or(
+          `name.ilike.%${debouncedSearchQuery}%,brand.ilike.%${debouncedSearchQuery}%,description.ilike.%${debouncedSearchQuery}%`
+        )
+      }
+
+      if (categoryFilter && categoryFilter !== 'all') {
+        query = query.eq('categories.name', categoryFilter)
+      }
+
+      // Paginación
+      const from = (currentPage - 1) * itemsPerPage
+      const to = from + itemsPerPage - 1
+
+      const { data, error, count } = await query
         .order('created_at', { ascending: false })
+        .range(from, to)
 
       if (error) {
         console.error('Error fetching products:', error)
@@ -243,26 +314,9 @@ export default function AdminDashboard() {
       }
 
       if (data) {
-        // Para cada producto, obtener la categoría por separado
-        const productsWithCategories = await Promise.all(
-          data.map(async product => {
-            if (product.category_id) {
-              const { data: categoryData } = await supabase
-                .from('categories')
-                .select('id, name, slug')
-                .eq('id', product.category_id)
-                .single()
-
-              return {
-                ...product,
-                category: categoryData,
-              }
-            }
-            return product
-          })
-        )
-
-        setProducts(productsWithCategories)
+        setProducts(data)
+        setTotalProducts(count || 0)
+        setTotalPages(Math.ceil((count || 0) / itemsPerPage))
       }
     } catch (error) {
       console.error('Error fetching products:', error)
@@ -508,16 +562,9 @@ export default function AdminDashboard() {
     }
   }
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory =
-      !categoryFilter ||
-      categoryFilter === 'all' ||
-      product.category?.name === categoryFilter
-    return matchesSearch && matchesCategory
-  })
+  // OPTIMIZACIÓN: Ya no necesitamos filtrar en frontend
+  // Los filtros se aplican en la base de datos
+  const filteredProducts = products
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('es-CO', {
@@ -544,6 +591,73 @@ export default function AdminDashboard() {
           </Link>
         </Button>
       </div>
+
+      {/* Stats Quick View */}
+      {activeTab === 'inventory' && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Productos
+                  </p>
+                  <p className="text-2xl font-bold">{totalProducts}</p>
+                </div>
+                <Package className="h-8 w-8 text-blue-500" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">
+                    Página Actual
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {currentPage} / {totalPages}
+                  </p>
+                </div>
+                <Eye className="h-8 w-8 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">
+                    Filtros Activos
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {(debouncedSearchQuery ? 1 : 0) +
+                      (categoryFilter !== 'all' ? 1 : 0)}
+                  </p>
+                </div>
+                <Filter className="h-8 w-8 text-orange-500" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Estado</p>
+                  <p className="text-lg font-bold text-green-600">
+                    {loadingProducts ? 'Cargando...' : 'Optimizado'}
+                  </p>
+                </div>
+                <div
+                  className={`h-3 w-3 rounded-full ${
+                    loadingProducts ? 'bg-yellow-500' : 'bg-green-500'
+                  }`}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Tabs Navigation */}
       <Tabs
@@ -712,7 +826,11 @@ export default function AdminDashboard() {
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    {isSearching ? (
+                      <Loader2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    )}
                     <Input
                       placeholder="Buscar por nombre o marca..."
                       value={searchQuery}
@@ -753,8 +871,35 @@ export default function AdminDashboard() {
 
           {/* Products Table */}
           <Card>
-            <CardHeader>
-              <CardTitle>Productos ({filteredProducts.length})</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle>
+                Productos ({totalProducts} total - Página {currentPage} de{' '}
+                {totalPages})
+              </CardTitle>
+              {/* Controles de Paginación */}
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1 || loadingProducts}
+                >
+                  Anterior
+                </Button>
+                <span className="text-sm text-gray-600">
+                  {currentPage} / {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setCurrentPage(prev => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages || loadingProducts}
+                >
+                  Siguiente
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               {loadingProducts ? (

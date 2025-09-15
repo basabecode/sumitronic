@@ -104,7 +104,7 @@ export default function CartSidebar() {
                   >
                     <div className="flex-shrink-0">
                       <img
-                        src={item.image || '/placeholder.svg'}
+                        src={item.image_url || item.image || '/placeholder.svg'}
                         alt={item.name}
                         className="w-16 h-16 object-contain bg-white rounded-md border"
                       />
@@ -153,7 +153,10 @@ export default function CartSidebar() {
                               updateQuantity(item.id, item.quantity + 1)
                             }
                             className="h-8 w-8 p-0"
-                            disabled={item.quantity >= item.stockCount}
+                            disabled={
+                              item.quantity >=
+                              (item.stock || item.stockCount || 999)
+                            }
                           >
                             <Plus className="w-3 h-3" />
                           </Button>
@@ -163,15 +166,19 @@ export default function CartSidebar() {
                           <div className="text-sm font-bold text-gray-900">
                             {formatPrice(item.price * item.quantity)}
                           </div>
-                          {item.originalPrice > item.price && (
-                            <div className="text-xs text-gray-500 line-through">
-                              {formatPrice(item.originalPrice * item.quantity)}
-                            </div>
-                          )}
+                          {item.originalPrice !== undefined &&
+                            item.originalPrice > item.price && (
+                              <div className="text-xs text-gray-500 line-through">
+                                {formatPrice(
+                                  item.originalPrice * item.quantity
+                                )}
+                              </div>
+                            )}
                         </div>
                       </div>
 
-                      {item.quantity >= item.stockCount && (
+                      {item.quantity >=
+                        (item.stock || item.stockCount || 999) && (
                         <p className="text-xs text-amber-600 mt-1">
                           Stock máximo alcanzado
                         </p>
@@ -219,11 +226,23 @@ export default function CartSidebar() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal</span>
-                <span>{formatPrice(state.total)}</span>
+                <span>{formatPrice(state.subtotal)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span>IVA (19%)</span>
+                <span>{formatPrice(state.tax)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Envío</span>
-                <span className="text-green-600 font-medium">GRATIS</span>
+                <span
+                  className={`font-medium ${
+                    state.shipping === 0 ? 'text-green-600' : 'text-gray-900'
+                  }`}
+                >
+                  {state.shipping === 0
+                    ? 'GRATIS'
+                    : formatPrice(state.shipping)}
+                </span>
               </div>
               <Separator />
               <div className="flex justify-between text-lg font-bold">

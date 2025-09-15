@@ -49,7 +49,9 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       brand: product.brand,
       price: product.price,
       image_url: imageUrl,
+      image: imageUrl, // Para compatibilidad
       stock: stockQuantity,
+      stockCount: stockQuantity, // Para compatibilidad
       category: product.categories?.name || product.category,
     })
   }
@@ -84,7 +86,10 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             <div className="flex justify-between items-start h-full">
               <div className="flex-1">
                 <Link href={`/products/${product.id}`}>
-                  <h3 className="text-lg font-semibold hover:text-blue-600 transition-colors">
+                  <h3
+                    className="text-lg font-medium hover:text-blue-600 transition-colors line-clamp-1"
+                    title={product.name}
+                  >
                     {product.name}
                   </h3>
                 </Link>
@@ -178,7 +183,10 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
       <CardContent className="p-4">
         <Link href={`/products/${product.id}`}>
-          <h3 className="font-semibold text-lg hover:text-blue-600 transition-colors line-clamp-2">
+          <h3
+            className="font-medium text-base leading-tight hover:text-blue-600 transition-colors line-clamp-2 min-h-[2.5rem] mb-2"
+            title={product.name}
+          >
             {product.name}
           </h3>
         </Link>
