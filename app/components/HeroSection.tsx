@@ -129,7 +129,7 @@ export default function HeroSection() {
                     className="bg-orange-600 hover:bg-orange-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                     onClick={() => {
                       addItem({
-                        id: slide.id,
+                        id: slide.id.toString(),
                         name: slide.title,
                         price: parseInt(slide.price),
                         originalPrice: parseInt(slide.originalPrice),

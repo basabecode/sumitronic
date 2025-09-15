@@ -85,10 +85,181 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching products:', error)
-      return NextResponse.json(
-        { error: 'Error al obtener productos' },
-        { status: 500 }
-      )
+      // Usar datos JSON como fallback
+      const jsonProducts = await import('@/lib/products.json')
+      const allProducts = jsonProducts.default
+
+      // Aplicar filtros a los datos JSON
+      let filteredProducts = allProducts
+
+      if (category && category !== 'all') {
+        filteredProducts = filteredProducts.filter((p: any) => p.category === category)
+      }
+
+      if (search) {
+        const searchLower = search.toLowerCase()
+        filteredProducts = filteredProducts.filter((p: any) => 
+          p.name.toLowerCase().includes(searchLower) ||
+          p.brand.toLowerCase().includes(searchLower)
+        )
+      }
+
+      if (minPrice) {
+        filteredProducts = filteredProducts.filter((p: any) => p.price >= parseFloat(minPrice))
+      }
+
+      if (maxPrice) {
+        filteredProducts = filteredProducts.filter((p: any) => p.price <= parseFloat(maxPrice))
+      }
+
+      if (inStockOnly) {
+        filteredProducts = filteredProducts.filter((p: any) => p.stockCount > 0)
+      }
+
+      // Aplicar paginación
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedProducts = filteredProducts.slice(startIndex, endIndex)
+
+      const totalPages = Math.ceil(filteredProducts.length / limit)
+
+      const response: ProductsApiResponse = {
+        products: paginatedProducts.map((p: any) => ({
+          id: p.id.toString(),
+          name: p.name,
+          description: p.description || '',
+          price: p.price,
+          original_price: p.originalPrice || p.price,
+          sku: p.sku || `SKU-${p.id}`,
+          brand: p.brand,
+          category_id: p.category,
+          image_url: p.image,
+          stock_quantity: p.stockCount || 0,
+          active: true,
+          featured: p.badge === 'Destacado',
+          rating: p.rating || 0,
+          review_count: p.reviews || 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          category: {
+            id: p.category,
+            name: p.category,
+            slug: p.category
+          },
+          product_images: [{
+            id: 1,
+            image_url: p.image,
+            alt_text: p.name,
+            is_primary: true,
+            sort_order: 1
+          }],
+          inventory: [{
+            id: 1,
+            quantity_available: p.stockCount || 0,
+            reserved_quantity: 0,
+            last_updated: new Date().toISOString()
+          }]
+        })),
+        pagination: {
+          page,
+          limit,
+          total: filteredProducts.length,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1,
+        },
+      }
+
+      return NextResponse.json(response)
+    }
+
+    // Si Supabase no tiene productos, usar datos JSON como fallback
+    if (!products || products.length === 0) {
+      const jsonProducts = await import('@/lib/products.json')
+      const allProducts = jsonProducts.default
+
+      // Aplicar filtros a los datos JSON
+      let filteredProducts = allProducts
+
+      if (category && category !== 'all') {
+        filteredProducts = filteredProducts.filter((p: any) => p.category === category)
+      }
+
+      if (search) {
+        const searchLower = search.toLowerCase()
+        filteredProducts = filteredProducts.filter((p: any) => 
+          p.name.toLowerCase().includes(searchLower) ||
+          p.brand.toLowerCase().includes(searchLower)
+        )
+      }
+
+      if (minPrice) {
+        filteredProducts = filteredProducts.filter((p: any) => p.price >= parseFloat(minPrice))
+      }
+
+      if (maxPrice) {
+        filteredProducts = filteredProducts.filter((p: any) => p.price <= parseFloat(maxPrice))
+      }
+
+      if (inStockOnly) {
+        filteredProducts = filteredProducts.filter((p: any) => p.stockCount > 0)
+      }
+
+      // Aplicar paginación
+      const startIndex = (page - 1) * limit
+      const endIndex = startIndex + limit
+      const paginatedProducts = filteredProducts.slice(startIndex, endIndex)
+
+      const totalPages = Math.ceil(filteredProducts.length / limit)
+
+      const response: ProductsApiResponse = {
+        products: paginatedProducts.map((p: any) => ({
+          id: p.id.toString(),
+          name: p.name,
+          description: p.description || '',
+          price: p.price,
+          original_price: p.originalPrice || p.price,
+          sku: p.sku || `SKU-${p.id}`,
+          brand: p.brand,
+          category_id: p.category,
+          image_url: p.image,
+          stock_quantity: p.stockCount || 0,
+          active: true,
+          featured: p.badge === 'Destacado',
+          rating: p.rating || 0,
+          review_count: p.reviews || 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          category: {
+            id: p.category,
+            name: p.category,
+            slug: p.category
+          },
+          product_images: [{
+            id: 1,
+            image_url: p.image,
+            alt_text: p.name,
+            is_primary: true,
+            sort_order: 1
+          }],
+          inventory: [{
+            id: 1,
+            quantity_available: p.stockCount || 0,
+            reserved_quantity: 0,
+            last_updated: new Date().toISOString()
+          }]
+        })),
+        pagination: {
+          page,
+          limit,
+          total: filteredProducts.length,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1,
+        },
+      }
+
+      return NextResponse.json(response)
     }
 
     const totalPages = Math.ceil((count || 0) / limit)

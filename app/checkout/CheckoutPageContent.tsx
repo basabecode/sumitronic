@@ -435,7 +435,7 @@ export default function CheckoutPageContent() {
                       >
                         <div className="relative w-12 h-12 flex-shrink-0">
                           <Image
-                            src={item.image_url}
+                            src={item.image_url || '/placeholder.svg'}
                             alt={item.name}
                             fill
                             className="object-cover rounded"

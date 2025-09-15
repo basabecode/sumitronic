@@ -121,7 +121,7 @@ export default function CartPageContent() {
                     {/* Imagen del producto */}
                     <div className="relative w-20 h-20 flex-shrink-0">
                       <Image
-                        src={item.image_url}
+                        src={item.image_url || '/placeholder.svg'}
                         alt={item.name}
                         fill
                         className="object-cover rounded-md"
@@ -176,7 +176,7 @@ export default function CartPageContent() {
                         onClick={() =>
                           handleQuantityChange(item.id, item.quantity + 1)
                         }
-                        disabled={item.quantity >= item.stock}
+                        disabled={item.quantity >= (item.stock || 0)}
                       >
                         <Plus className="w-4 h-4" />
                       </Button>
