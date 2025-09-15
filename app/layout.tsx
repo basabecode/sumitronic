@@ -14,6 +14,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://capishop-web.vercel.app'),
   title: 'CapiShoping - Tu Tienda de Electrónicos de Confianza',
   description:
     'Descubre la mejor selección de productos electrónicos con precios increíbles. iPhone, MacBook, Gaming, Smart Home y más. Envío gratis, garantía extendida y soporte 24/7.',
