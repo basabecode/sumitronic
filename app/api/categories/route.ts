@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       // Usar categorías de los productos JSON como fallback
       const jsonProducts = await import('@/lib/products.json')
       const allProducts = jsonProducts.default
-      
+
       const uniqueCategories = Array.from(
         new Set(allProducts.map((p: any) => p.category))
       ).map((category: any, index: number) => ({
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         slug: category,
         description: `Categoría de ${category}`,
         image_url: null,
-        sort_order: index + 1
+        sort_order: index + 1,
       }))
 
       return NextResponse.json(uniqueCategories)
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     if (!categories || categories.length === 0) {
       const jsonProducts = await import('@/lib/products.json')
       const allProducts = jsonProducts.default
-      
+
       const uniqueCategories = Array.from(
         new Set(allProducts.map((p: any) => p.category))
       ).map((category: any, index: number) => ({
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         slug: category,
         description: `Categoría de ${category}`,
         image_url: null,
-        sort_order: index + 1
+        sort_order: index + 1,
       }))
 
       return NextResponse.json(uniqueCategories)

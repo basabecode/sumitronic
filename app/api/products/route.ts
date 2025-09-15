@@ -93,23 +93,30 @@ export async function GET(request: NextRequest) {
       let filteredProducts = allProducts
 
       if (category && category !== 'all') {
-        filteredProducts = filteredProducts.filter((p: any) => p.category === category)
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.category === category
+        )
       }
 
       if (search) {
         const searchLower = search.toLowerCase()
-        filteredProducts = filteredProducts.filter((p: any) => 
-          p.name.toLowerCase().includes(searchLower) ||
-          p.brand.toLowerCase().includes(searchLower)
+        filteredProducts = filteredProducts.filter(
+          (p: any) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.brand.toLowerCase().includes(searchLower)
         )
       }
 
       if (minPrice) {
-        filteredProducts = filteredProducts.filter((p: any) => p.price >= parseFloat(minPrice))
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.price >= parseFloat(minPrice)
+        )
       }
 
       if (maxPrice) {
-        filteredProducts = filteredProducts.filter((p: any) => p.price <= parseFloat(maxPrice))
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.price <= parseFloat(maxPrice)
+        )
       }
 
       if (inStockOnly) {
@@ -145,21 +152,31 @@ export async function GET(request: NextRequest) {
           category: {
             id: p.category,
             name: p.category,
-            slug: p.category
+            slug: p.category,
+            active: true,
+            sort_order: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
           },
-          product_images: [{
-            id: 1,
-            image_url: p.image,
-            alt_text: p.name,
-            is_primary: true,
-            sort_order: 1
-          }],
-          inventory: [{
-            id: 1,
-            quantity_available: p.stockCount || 0,
-            reserved_quantity: 0,
-            last_updated: new Date().toISOString()
-          }]
+          product_images: [
+            {
+              id: p.id.toString(),
+              product_id: p.id.toString(),
+              image_url: p.image,
+              alt_text: p.name,
+              is_primary: true,
+              sort_order: 1,
+              created_at: new Date().toISOString(),
+            },
+          ],
+          inventory: [
+            {
+              id: 1,
+              quantity_available: p.stockCount || 0,
+              reserved_quantity: 0,
+              last_updated: new Date().toISOString(),
+            },
+          ],
         })),
         pagination: {
           page,
@@ -183,23 +200,30 @@ export async function GET(request: NextRequest) {
       let filteredProducts = allProducts
 
       if (category && category !== 'all') {
-        filteredProducts = filteredProducts.filter((p: any) => p.category === category)
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.category === category
+        )
       }
 
       if (search) {
         const searchLower = search.toLowerCase()
-        filteredProducts = filteredProducts.filter((p: any) => 
-          p.name.toLowerCase().includes(searchLower) ||
-          p.brand.toLowerCase().includes(searchLower)
+        filteredProducts = filteredProducts.filter(
+          (p: any) =>
+            p.name.toLowerCase().includes(searchLower) ||
+            p.brand.toLowerCase().includes(searchLower)
         )
       }
 
       if (minPrice) {
-        filteredProducts = filteredProducts.filter((p: any) => p.price >= parseFloat(minPrice))
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.price >= parseFloat(minPrice)
+        )
       }
 
       if (maxPrice) {
-        filteredProducts = filteredProducts.filter((p: any) => p.price <= parseFloat(maxPrice))
+        filteredProducts = filteredProducts.filter(
+          (p: any) => p.price <= parseFloat(maxPrice)
+        )
       }
 
       if (inStockOnly) {
@@ -235,21 +259,25 @@ export async function GET(request: NextRequest) {
           category: {
             id: p.category,
             name: p.category,
-            slug: p.category
+            slug: p.category,
           },
-          product_images: [{
-            id: 1,
-            image_url: p.image,
-            alt_text: p.name,
-            is_primary: true,
-            sort_order: 1
-          }],
-          inventory: [{
-            id: 1,
-            quantity_available: p.stockCount || 0,
-            reserved_quantity: 0,
-            last_updated: new Date().toISOString()
-          }]
+          product_images: [
+            {
+              id: 1,
+              image_url: p.image,
+              alt_text: p.name,
+              is_primary: true,
+              sort_order: 1,
+            },
+          ],
+          inventory: [
+            {
+              id: 1,
+              quantity_available: p.stockCount || 0,
+              reserved_quantity: 0,
+              last_updated: new Date().toISOString(),
+            },
+          ],
         })),
         pagination: {
           page,
