@@ -153,6 +153,7 @@ export async function GET(request: NextRequest) {
             id: p.category,
             name: p.category,
             slug: p.category,
+            description: `Categoría de ${p.category}`,
             active: true,
             sort_order: 0,
             created_at: new Date().toISOString(),
@@ -169,14 +170,12 @@ export async function GET(request: NextRequest) {
               created_at: new Date().toISOString(),
             },
           ],
-          inventory: [
-            {
-              id: 1,
-              quantity_available: p.stockCount || 0,
-              reserved_quantity: 0,
-              last_updated: new Date().toISOString(),
-            },
-          ],
+          inventory: {
+            id: `inv-${p.id}`,
+            quantity_available: p.stockCount || 0,
+            reserved_quantity: 0,
+            last_updated: new Date().toISOString(),
+          },
         })),
         pagination: {
           page,
@@ -260,24 +259,29 @@ export async function GET(request: NextRequest) {
             id: p.category,
             name: p.category,
             slug: p.category,
+            description: `Categoría de ${p.category}`,
+            active: true,
+            sort_order: 0,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
           },
           product_images: [
             {
-              id: 1,
+              id: `img-${p.id}`,
+              product_id: p.id.toString(),
               image_url: p.image,
               alt_text: p.name,
               is_primary: true,
               sort_order: 1,
+              created_at: new Date().toISOString(),
             },
           ],
-          inventory: [
-            {
-              id: 1,
-              quantity_available: p.stockCount || 0,
-              reserved_quantity: 0,
-              last_updated: new Date().toISOString(),
-            },
-          ],
+          inventory: {
+            id: `inv-${p.id}`,
+            quantity_available: p.stockCount || 0,
+            reserved_quantity: 0,
+            last_updated: new Date().toISOString(),
+          },
         })),
         pagination: {
           page,
