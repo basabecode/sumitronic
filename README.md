@@ -1,35 +1,22 @@
 # CapiShop - Tienda de Tecnología
 
-E-commerce moderno desarrollado con Next.js 14, Supabase y TypeScript para Capishoping ## 📝 Licencia
+E-commerce moderno para Capishoping, desarrollado con Next.js 14, Supabase y TypeScript.
+
+---
+
+## 📝 Licencia
 
 Este proyecto está bajo la Licencia MIT.
 
 ---
 
-## 🔄 Historial de Correcciones
+## � Características
 
-### Schema SQL (v1.1)
-
-- **Corregido**: Header.tsx - Tipos de autenticación restaurados correctamente
-  [// ...existing code...]
-
-- **Impacto**: Build exitoso sin errores de compilación TypeScript
-
----
-
-### Schema SQL (v1.1)
-
-- **Corregido**: Error "functions in index expression must be marked IMMUTABLE"
-- **Solución**: Uso explícito de `regconfig` en índices GIN y casting en funciones de fecha
-- **Impacto**: Permite ejecución correcta del schema en Supabase sin errores de inmutabilidadgía.
-
-## 🚀 Características
-
-- ✅ **Catálogo de productos** con búsqueda y filtros
-- ✅ **Sistema de autenticación** (registro/login)
-- ✅ **Panel administrativo** para gestión de productos y pedidos
-- ✅ **Base de datos** PostgreSQL con Supabase
-- ✅ **Diseño responsive** con Tailwind CSS
+- ✅ Catálogo de productos con búsqueda y filtros
+- ✅ Sistema de autenticación (registro/login)
+- ✅ Panel administrativo para gestión de productos y pedidos
+- ✅ Base de datos PostgreSQL con Supabase
+- ✅ Diseño responsive con Tailwind CSS
 
 ## 🛠️ Tecnologías
 
@@ -38,16 +25,128 @@ Este proyecto está bajo la Licencia MIT.
 - **Backend**: Supabase (PostgreSQL + Auth)
 - **Despliegue**: Vercel
 
-## 📦 Instalación
+---
 
-1. **Clonar el repositorio**
+## 📦 Instalación y Configuración
 
-```
+1. Clonar el repositorio
 
+```bash
+git clone <url>
+cd CapiShop_Web
 pnpm install
 ```
 
-3. **Configurar variables de entorno**
+2. Configurar variables de entorno
+
+- Copiar `.env.local.example` a `.env.local`
+- Completar con tus credenciales de Supabase
+
+3. Configurar base de datos
+
+- Crear proyecto en Supabase
+- Ejecutar `supabase/schema.sql` en el SQL Editor
+
+4. Ejecutar en desarrollo
+
+```bash
+pnpm dev
+```
+
+## 📁 Estructura del Proyecto
+
+```
+CapiShop_Web/
+...existing code...
+```
+
+---
+
+## 🧹 OPTIMIZACIÓN COMPLETADA
+
+**Archivo:** OPTIMIZACION_COMPLETADA.md
+
+### Limpieza Realizada
+
+- Archivos duplicados eliminados: ProtectedRoute.tsx, use-mobile.tsx, use-toast.ts, globals.css, supabase.ts, middleware.ts.bak, middleware-stable.ts, package-lock.json
+
+### Estructura Optimizada
+
+Componentes únicos, hooks centralizados, configuración Supabase organizada.
+
+### Beneficios
+
+1. Eliminación de conflictos de importación
+2. Reducción de tamaño (~30% más liviano)
+3. Mejor performance
+4. Mantenibilidad
+5. Imports limpios y consistentes
+
+---
+
+## 📋 AUDITORÍA DE PRODUCTOS
+
+**Archivo:** AUDITORIA_PRODUCTOS_COMPLETADA.md
+
+### Diagnóstico Inicial
+
+Identificación y eliminación de archivos duplicados y vacíos relacionados con productos.
+
+### Correcciones Realizadas
+
+1. Eliminación de duplicados: ProductsSectionNew.tsx, ProductCardEnhanced.tsx, ProductDetailPage.tsx
+2. Corrección del formulario admin de productos (estructura y campos)
+
+---
+
+## 🧪 SISTEMA DE TESTING DE BASE DE DATOS
+
+**Archivo:** docs/DATABASE_TESTING.md
+
+### Descripción General
+
+Sistema completo de validación y testing de la integración entre Supabase y el frontend de CapiShop.
+
+### Archivos del Sistema
+
+- Scripts: database-health-check.ts, migrate-json-to-supabase.ts, migrate-products.ts
+- Librerías: database-tester.ts
+- Interfaces Web: app/test/database/page.tsx
+
+### Objetivos
+
+- Validar operabilidad entre base de datos, frontend, APIs, tipos TypeScript y performance.
+- Métodos de ejecución, interpretación de resultados y solución de problemas documentados.
+
+---
+
+## 🛡️ GOOGLE OAUTH SETUP
+
+**Archivo:** docs/GOOGLE_OAUTH_SETUP.md
+Actualmente vacío.
+
+---
+
+## � HISTORIAL DE CORRECCIONES
+
+**Archivo:** README.md
+
+### Schema SQL (v1.1)
+
+- Corregido: Header.tsx - Tipos de autenticación restaurados correctamente
+- Impacto: Build exitoso sin errores de compilación TypeScript
+
+### Schema SQL (v1.1)
+
+- Corregido: Error "functions in index expression must be marked IMMUTABLE"
+- Solución: Uso explícito de `regconfig` en índices GIN y casting en funciones de fecha
+- Impacto: Permite ejecución correcta del schema en Supabase sin errores de inmutabilidad
+
+---
+
+## � RESUMEN FINAL
+
+Este README integra toda la documentación relevante del proyecto, incluyendo optimizaciones, auditorías, testing y correcciones históricas. Para detalles específicos, consulta los archivos originales mencionados.
 
 ```bash
 cp .env.local.example .env.local

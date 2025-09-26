@@ -1,5 +1,6 @@
 'use client'
 
+import { formatPrice } from '@/lib/utils'
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
 
 // Tipos de datos
@@ -51,14 +52,14 @@ const initialState: CartState = {
   subtotal: 0,
 }
 
-// Función para calcular totales
+// Funcion para calcular totales
 function calculateTotals(items: CartItem[]) {
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   )
   const tax = subtotal * 0.19 // IVA 19%
-  const shipping = subtotal > 100000 ? 0 : 15000 // Envío gratis por compras mayores a $100,000
+  const shipping = subtotal > 100000 ? 0 : 15000 // Envio gratis por compras mayores a $100,000
   const total = subtotal + tax + shipping
 
   return {
@@ -269,11 +270,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    }).format(amount)
+    return formatPrice(amount)
   }
 
   const value: CartContextType = {
@@ -290,3 +287,4 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
+
