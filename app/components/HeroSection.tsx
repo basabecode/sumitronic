@@ -22,6 +22,7 @@ interface HeroSlide {
   stockCount: number
   category: string
   rating: number
+  description?: string
 }
 
 export default function HeroSection() {
@@ -116,11 +117,12 @@ export default function HeroSection() {
         >
           {slides.map((slide, index) => {
             const isActive = index === currentSlide
-            const positionClass = index === currentSlide
-              ? 'translate-x-0 opacity-100'
-              : index < currentSlide
-              ? '-translate-x-full opacity-0'
-              : 'translate-x-full opacity-0'
+            const positionClass =
+              index === currentSlide
+                ? 'translate-x-0 opacity-100'
+                : index < currentSlide
+                ? '-translate-x-full opacity-0'
+                : 'translate-x-full opacity-0'
 
             return (
               <article
@@ -167,7 +169,11 @@ export default function HeroSection() {
                             {[...Array(5)].map((_, starIndex) => (
                               <Star
                                 key={starIndex}
-                                className={`h-4 w-4 ${starIndex < Math.round(slide.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                                className={`h-4 w-4 ${
+                                  starIndex < Math.round(slide.rating)
+                                    ? 'fill-yellow-400 text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
                                 aria-hidden="true"
                               />
                             ))}
@@ -201,7 +207,10 @@ export default function HeroSection() {
                         onFocus={() => setIsPaused(true)}
                         onBlur={() => setIsPaused(false)}
                       >
-                        <ShoppingBag className="mr-2 h-5 w-5" aria-hidden="true" />
+                        <ShoppingBag
+                          className="mr-2 h-5 w-5"
+                          aria-hidden="true"
+                        />
                         Comprar ahora
                       </Button>
                       <Button
@@ -218,15 +227,24 @@ export default function HeroSection() {
 
                     <dl className="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-3">
                       <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true"></span>
+                        <span
+                          className="h-2 w-2 rounded-full bg-green-500"
+                          aria-hidden="true"
+                        ></span>
                         <span>Envio gratis</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-blue-500" aria-hidden="true"></span>
+                        <span
+                          className="h-2 w-2 rounded-full bg-blue-500"
+                          aria-hidden="true"
+                        ></span>
                         <span>Garantia 24 meses</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-purple-500" aria-hidden="true"></span>
+                        <span
+                          className="h-2 w-2 rounded-full bg-purple-500"
+                          aria-hidden="true"
+                        ></span>
                         <span>Soporte 24/7</span>
                       </div>
                     </dl>
@@ -244,7 +262,10 @@ export default function HeroSection() {
                           sizes="(min-width: 1280px) 600px, (min-width: 768px) 50vw, 90vw"
                         />
                       </div>
-                      <div className="absolute inset-0 -z-10 translate-y-12 rounded-full bg-orange-200/40 blur-3xl" aria-hidden="true"></div>
+                      <div
+                        className="absolute inset-0 -z-10 translate-y-12 rounded-full bg-orange-200/40 blur-3xl"
+                        aria-hidden="true"
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -274,7 +295,11 @@ export default function HeroSection() {
                 <button
                   key={slide.id}
                   type="button"
-                  className={`h-3 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${isActive ? 'w-8 bg-orange-600' : 'w-3 bg-white/70 hover:bg-white'}`}
+                  className={`h-3 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
+                    isActive
+                      ? 'w-8 bg-orange-600'
+                      : 'w-3 bg-white/70 hover:bg-white'
+                  }`}
                   aria-label={`Ir al slide ${index + 1}`}
                   aria-current={isActive}
                   onClick={() => setCurrentSlide(index)}

@@ -27,6 +27,7 @@ import { ProductCard } from '@/app/components/ProductCard'
 import { PaginationComponent } from '@/app/components/PaginationComponent'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 
 interface Product {
   id: string
@@ -95,7 +96,9 @@ export default function ProductsPage() {
         </div>
       }
     >
-      <ProductsPageContent />
+      <ErrorBoundary>
+        <ProductsPageContent />
+      </ErrorBoundary>
     </Suspense>
   )
 }

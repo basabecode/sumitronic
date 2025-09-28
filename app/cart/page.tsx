@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import CartPageContent from './CartPageContent'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'Carrito de Compras - CapiShop',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function CartPage() {
-  return <CartPageContent />
+  return (
+    <ErrorBoundary>
+      <CartPageContent />
+    </ErrorBoundary>
+  )
 }

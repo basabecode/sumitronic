@@ -4,6 +4,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { FavoritesProvider } from '@/contexts/FavoritesContext'
+import { SharedDataProvider } from '@/contexts/SharedDataContext'
+import ErrorBoundary from './components/ErrorBoundary'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -73,9 +76,15 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
-        <AuthProvider>
-          <CartProvider>{children}</CartProvider>
-        </AuthProvider>
+        <ErrorBoundary>
+          <SharedDataProvider>
+            <AuthProvider>
+              <CartProvider>
+                <FavoritesProvider>{children}</FavoritesProvider>
+              </CartProvider>
+            </AuthProvider>
+          </SharedDataProvider>
+        </ErrorBoundary>
         <SpeedInsights />
       </body>
     </html>

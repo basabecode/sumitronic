@@ -44,6 +44,7 @@ interface Product {
   inStock: boolean
   stockCount: number
   category: string
+  description?: string
   product_images?: Array<{
     id: string
     image_url: string

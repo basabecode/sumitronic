@@ -10,6 +10,7 @@ import CTASection from './components/CTASection'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import CartSidebar from './components/CartSidebar'
+import { SectionErrorBoundary } from './components/ErrorBoundary'
 
 export default function Home() {
   return (
@@ -17,7 +18,9 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <ProductsSection />
+        <SectionErrorBoundary title="Error al cargar los productos">
+          <ProductsSection />
+        </SectionErrorBoundary>
         <FeaturesSection />
         <BrandsSection />
         <TestimonialsSection />

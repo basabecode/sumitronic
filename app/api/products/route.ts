@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '12')
-  const category = searchParams.get('category')
+  const categories = searchParams.getAll('category')
+  const brands = searchParams.getAll('brand')
   const search = searchParams.get('search')
   const minPrice = searchParams.get('minPrice')
   const maxPrice = searchParams.get('maxPrice')
@@ -47,8 +48,13 @@ export async function GET(request: NextRequest) {
       .eq('active', true)
 
     // Filtros
-    if (category && category !== 'all') {
-      query = query.eq('categories.slug', category)
+    if (categories.length > 0) {
+      // Optimización: Filtrar directamente por slug de categoría usando JOIN
+      query = query.in('category.slug', categories)
+    }
+
+    if (brands.length > 0) {
+      query = query.in('brand', brands)
     }
 
     if (search) {
@@ -92,9 +98,15 @@ export async function GET(request: NextRequest) {
       // Aplicar filtros a los datos JSON
       let filteredProducts = allProducts
 
-      if (category && category !== 'all') {
-        filteredProducts = filteredProducts.filter(
-          (p: any) => p.category === category
+      if (categories.length > 0) {
+        filteredProducts = filteredProducts.filter((p: any) =>
+          categories.includes(p.category)
+        )
+      }
+
+      if (brands.length > 0) {
+        filteredProducts = filteredProducts.filter((p: any) =>
+          brands.includes(p.brand)
         )
       }
 
@@ -198,9 +210,15 @@ export async function GET(request: NextRequest) {
       // Aplicar filtros a los datos JSON
       let filteredProducts = allProducts
 
-      if (category && category !== 'all') {
-        filteredProducts = filteredProducts.filter(
-          (p: any) => p.category === category
+      if (categories.length > 0) {
+        filteredProducts = filteredProducts.filter((p: any) =>
+          categories.includes(p.category)
+        )
+      }
+
+      if (brands.length > 0) {
+        filteredProducts = filteredProducts.filter((p: any) =>
+          brands.includes(p.brand)
         )
       }
 

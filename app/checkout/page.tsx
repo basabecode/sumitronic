@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import CheckoutPageContent from './CheckoutPageContent'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'Checkout - CapiShop',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function CheckoutPage() {
-  return <CheckoutPageContent />
+  return (
+    <ErrorBoundary>
+      <CheckoutPageContent />
+    </ErrorBoundary>
+  )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -28,6 +28,8 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
 import { Input } from '@/components/ui/input'
 import { useCart } from '@/contexts/CartContext'
+import { useSharedData } from '@/contexts/SharedDataContext'
+import { useFavorites } from '@/contexts/FavoritesContext'
 import ProductDetailsModal from './ProductDetailsModal'
 import {
   Product,
@@ -46,14 +48,19 @@ export function ProductsSection() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
   const { addItem, openCart, formatCurrency } = useCart()
+  const {
+    addItem: addToFavorites,
+    removeItem: removeFromFavorites,
+    isFavorite,
+  } = useFavorites()
+  const { categories, brands, isLoadingCategories, isLoadingBrands } =
+    useSharedData()
   const [sortBy, setSortBy] = useState('featured')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
-  const [brands, setBrands] = useState<{ id: string; name: string }[]>([])
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(1000000)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000])
@@ -68,125 +75,93 @@ export function ProductsSection() {
   const [totalPages, setTotalPages] = useState(1)
   const [totalProducts, setTotalProducts] = useState(0)
   const limit = 20
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true)
-      try {
-        const searchParams = new URLSearchParams({
-          page: currentPage.toString(),
-          limit: limit.toString(),
-          sortBy: sortBy === 'featured' ? 'featured' : sortBy,
-          sortOrder: sortBy === 'price' ? 'asc' : 'desc',
-        })
+  // Memoize search params to prevent unnecessary re-fetches
+  const searchParams = useMemo(() => {
+    const params = new URLSearchParams({
+      page: currentPage.toString(),
+      limit: limit.toString(),
+      sortBy: sortBy === 'featured' ? 'featured' : sortBy,
+      sortOrder: sortBy === 'price' ? 'asc' : 'desc',
+    })
 
-        if (selectedCategories.length > 0) {
-          searchParams.append('category', selectedCategories[0])
-        }
+    // Add multiple categories and brands
+    selectedCategories.forEach(cat => params.append('category', cat))
+    selectedBrands.forEach(brand => params.append('brand', brand))
 
-        if (selectedBrands.length > 0) {
-          searchParams.append('brand', selectedBrands[0])
-        }
-
-        if (searchQuery.trim()) {
-          searchParams.append('search', searchQuery.trim())
-        }
-
-        if (inStockOnly) {
-          searchParams.append('inStockOnly', 'true')
-        }
-
-        if (featuredOnly) {
-          searchParams.append('featured', 'true')
-        }
-
-        if (priceRange[0] > minPrice) {
-          searchParams.append('minPrice', priceRange[0].toString())
-        }
-
-        if (priceRange[1] < maxPrice) {
-          searchParams.append('maxPrice', priceRange[1].toString())
-        }
-
-        const response = await fetch(`/api/products?${searchParams}`)
-        const data: ProductsApiResponse = await response.json()
-
-        if (response.ok) {
-          const convertedProducts = convertDatabaseProductsToProducts(data.products)
-          setProducts(convertedProducts)
-          setTotalPages(data.pagination.totalPages)
-          setTotalProducts(data.pagination.total)
-
-          if (convertedProducts.length > 0 && minPrice === 0 && maxPrice === 1000000) {
-            const prices = convertedProducts.map(item => item.price)
-            const newMin = Math.min(...prices)
-            const newMax = Math.max(...prices)
-            setMinPrice(newMin)
-            setMaxPrice(newMax)
-            setPriceRange([newMin, newMax])
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error)
-      } finally {
-        setLoading(false)
-      }
+    if (searchQuery.trim()) {
+      params.append('search', searchQuery.trim())
     }
 
-    fetchProducts()
+    if (inStockOnly) {
+      params.append('inStockOnly', 'true')
+    }
+
+    if (featuredOnly) {
+      params.append('featured', 'true')
+    }
+
+    if (priceRange[0] > minPrice) {
+      params.append('minPrice', priceRange[0].toString())
+    }
+
+    if (priceRange[1] < maxPrice) {
+      params.append('maxPrice', priceRange[1].toString())
+    }
+
+    return params
   }, [
     currentPage,
-    featuredOnly,
-    inStockOnly,
     limit,
-    maxPrice,
-    minPrice,
-    priceRange,
-    searchQuery,
-    selectedBrands,
-    selectedCategories,
     sortBy,
+    selectedCategories,
+    selectedBrands,
+    searchQuery,
+    inStockOnly,
+    featuredOnly,
+    priceRange,
+    minPrice,
+    maxPrice,
   ])
 
-  useEffect(() => {
-    const fetchCategoriesAndBrands = async () => {
-      try {
-        const categoriesResponse = await fetch('/api/categories')
-        if (categoriesResponse.ok) {
-          const categoriesData = await categoriesResponse.json()
-          setCategories(
-            categoriesData.map((cat: any) => ({
-              id: cat.slug,
-              name: cat.name,
-            }))
-          )
-        }
+  // Memoize fetch function to prevent unnecessary re-executions
+  const fetchProducts = useCallback(async () => {
+    setLoading(true)
+    try {
+      const response = await fetch(`/api/products?${searchParams}`)
+      const data: ProductsApiResponse = await response.json()
 
-        const productsResponse = await fetch('/api/products?limit=1000')
-        if (productsResponse.ok) {
-          const productsData: ProductsApiResponse = await productsResponse.json()
-          const uniqueBrands = Array.from(
-            new Set(productsData.products.map(item => item.brand))
-          )
-            .filter(Boolean)
-            .map(brand => ({ id: brand, name: brand }))
-          setBrands(uniqueBrands)
+      if (response.ok) {
+        const convertedProducts = convertDatabaseProductsToProducts(
+          data.products
+        )
+        setProducts(convertedProducts)
+        setTotalPages(data.pagination.totalPages)
+        setTotalProducts(data.pagination.total)
 
-          if (productsData.products.length > 0) {
-            const prices = productsData.products.map(item => item.price)
-            const newMin = Math.min(...prices)
-            const newMax = Math.max(...prices)
-            setMinPrice(newMin)
-            setMaxPrice(newMax)
-            setPriceRange([newMin, newMax])
-          }
+        if (
+          convertedProducts.length > 0 &&
+          minPrice === 0 &&
+          maxPrice === 1000000
+        ) {
+          const prices = convertedProducts.map(item => item.price)
+          const newMin = Math.min(...prices)
+          const newMax = Math.max(...prices)
+          setMinPrice(newMin)
+          setMaxPrice(newMax)
+          setPriceRange([newMin, newMax])
         }
-      } catch (error) {
-        console.error('Error fetching categories and brands:', error)
       }
+    } catch (error) {
+      console.error('Error fetching products:', error)
+    } finally {
+      setLoading(false)
     }
+  }, [searchParams, minPrice, maxPrice])
 
-    fetchCategoriesAndBrands()
-  }, [])
+  useEffect(() => {
+    fetchProducts()
+  }, [fetchProducts])
+
   useEffect(() => {
     const applyUrlFilter = () => {
       try {
@@ -234,18 +209,40 @@ export function ProductsSection() {
     }
 
     window.addEventListener('globalSearch', handleGlobalSearch as EventListener)
-    window.addEventListener('categoryFilterChanged', handleCategoryEvent as EventListener)
-    window.addEventListener('filterByOffers', handleOffersEvent as EventListener)
+    window.addEventListener(
+      'categoryFilterChanged',
+      handleCategoryEvent as EventListener
+    )
+    window.addEventListener(
+      'filterByOffers',
+      handleOffersEvent as EventListener
+    )
 
     return () => {
-      window.removeEventListener('globalSearch', handleGlobalSearch as EventListener)
-      window.removeEventListener('categoryFilterChanged', handleCategoryEvent as EventListener)
-      window.removeEventListener('filterByOffers', handleOffersEvent as EventListener)
+      window.removeEventListener(
+        'globalSearch',
+        handleGlobalSearch as EventListener
+      )
+      window.removeEventListener(
+        'categoryFilterChanged',
+        handleCategoryEvent as EventListener
+      )
+      window.removeEventListener(
+        'filterByOffers',
+        handleOffersEvent as EventListener
+      )
     }
   }, [])
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
-    setSelectedCategories(checked ? [categoryId] : [])
+    setSelectedCategories(prev => {
+      if (checked) {
+        // Agregar si no existe
+        return Array.from(new Set([...prev, categoryId]))
+      }
+      // Quitar si existe
+      return prev.filter(id => id !== categoryId)
+    })
     setCurrentPage(1)
   }
 
@@ -303,10 +300,16 @@ export function ProductsSection() {
     }
 
     if (stockCount <= 10) {
-      return { label: `Quedan ${stockCount}`, className: 'bg-amber-100 text-amber-700' }
+      return {
+        label: `Quedan ${stockCount}`,
+        className: 'bg-amber-100 text-amber-700',
+      }
     }
 
-    return { label: `Stock ${stockCount}`, className: 'bg-emerald-100 text-emerald-700' }
+    return {
+      label: `Stock ${stockCount}`,
+      className: 'bg-emerald-100 text-emerald-700',
+    }
   }
 
   const handleAddToCart = (product: Product) => {
@@ -334,9 +337,27 @@ export function ProductsSection() {
     setSelectedProduct(product)
     setIsModalOpen(true)
   }
+
+  const handleToggleFavorite = (product: Product) => {
+    const image = getProductImage(product)
+    if (isFavorite(product.id)) {
+      removeFromFavorites(product.id)
+    } else {
+      addToFavorites({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image_url: image,
+        image,
+        brand: product.brand,
+        category: product.category,
+      })
+    }
+  }
   const isInitialLoading = loading && products.length === 0
   const showingFrom = totalProducts === 0 ? 0 : (currentPage - 1) * limit + 1
-  const showingTo = totalProducts === 0 ? 0 : Math.min(currentPage * limit, totalProducts)
+  const showingTo =
+    totalProducts === 0 ? 0 : Math.min(currentPage * limit, totalProducts)
 
   const categoryLabelMap = useMemo(() => {
     const map = new Map<string, string>()
@@ -351,7 +372,8 @@ export function ProductsSection() {
   }, [brands])
 
   const hasCustomPriceRange =
-    minPrice !== maxPrice && (priceRange[0] > minPrice || priceRange[1] < maxPrice)
+    minPrice !== maxPrice &&
+    (priceRange[0] > minPrice || priceRange[1] < maxPrice)
 
   const activeFilterChips = useMemo<FilterChip[]>(() => {
     const chips: FilterChip[] = []
@@ -365,22 +387,23 @@ export function ProductsSection() {
       })
     }
 
-    const categoryId = selectedCategories[0]
-    if (categoryId) {
+    selectedCategories.forEach(categoryId => {
       const label = categoryLabelMap.get(categoryId) ?? categoryId
       chips.push({
         key: `category-${categoryId}`,
         label: `Categoria: ${label}`,
-        onRemove: () => setSelectedCategories([]),
+        onRemove: () =>
+          setSelectedCategories(prev => prev.filter(id => id !== categoryId)),
       })
-    }
+    })
 
     selectedBrands.forEach(brandId => {
       const label = brandLabelMap.get(brandId) ?? brandId
       chips.push({
         key: `brand-${brandId}`,
         label: `Marca: ${label}`,
-        onRemove: () => setSelectedBrands(prev => prev.filter(id => id !== brandId)),
+        onRemove: () =>
+          setSelectedBrands(prev => prev.filter(id => id !== brandId)),
       })
     })
 
@@ -403,7 +426,9 @@ export function ProductsSection() {
     if (hasCustomPriceRange) {
       chips.push({
         key: 'price',
-        label: `Precio: ${formatCurrency(priceRange[0])} - ${formatCurrency(priceRange[1])}`,
+        label: `Precio: ${formatCurrency(priceRange[0])} - ${formatCurrency(
+          priceRange[1]
+        )}`,
         onRemove: () => setPriceRange([minPrice, maxPrice]),
       })
     }
@@ -430,9 +455,7 @@ export function ProductsSection() {
     const image = getProductImage(product)
     const stockBadge = resolveStockBadge(product)
     const originalPrice =
-      (product as any).originalPrice ??
-      (product as any).original_price ??
-      null
+      (product as any).originalPrice ?? (product as any).original_price ?? null
     const originalValue =
       typeof originalPrice === 'number'
         ? originalPrice
@@ -463,12 +486,18 @@ export function ProductsSection() {
           </div>
           <div className="absolute left-4 top-4 flex flex-col gap-2">
             {product.featured && (
-              <Badge variant="secondary" className="w-fit bg-orange-100 text-orange-700">
+              <Badge
+                variant="secondary"
+                className="w-fit bg-orange-100 text-orange-700"
+              >
                 Destacado
               </Badge>
             )}
             {hasDiscount && discountPercent !== null && (
-              <Badge variant="destructive" className="w-fit bg-rose-100 text-rose-700">
+              <Badge
+                variant="destructive"
+                className="w-fit bg-rose-100 text-rose-700"
+              >
                 -{discountPercent}%
               </Badge>
             )}
@@ -477,7 +506,12 @@ export function ProductsSection() {
         <CardContent className="flex flex-1 flex-col gap-3 p-5">
           <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase text-gray-500">
             <span className="text-orange-600">{product.brand || 'Marca'}</span>
-            <span className={cn('rounded-full px-3 py-1 text-[0.75rem]', stockBadge.className)}>
+            <span
+              className={cn(
+                'rounded-full px-3 py-1 text-[0.75rem]',
+                stockBadge.className
+              )}
+            >
               {stockBadge.label}
             </span>
           </div>
@@ -485,10 +519,14 @@ export function ProductsSection() {
             href={`/products/${product.id}`}
             className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
           >
-            <h3 className="line-clamp-2 text-base font-semibold text-gray-900">{product.name}</h3>
+            <h3 className="line-clamp-2 text-base font-semibold text-gray-900">
+              {product.name}
+            </h3>
           </Link>
           {product.description && (
-            <p className="line-clamp-2 text-sm text-gray-600">{product.description}</p>
+            <p className="line-clamp-2 text-sm text-gray-600">
+              {product.description}
+            </p>
           )}
           <div className="mt-auto space-y-3">
             <div className="flex items-baseline gap-2">
@@ -522,10 +560,25 @@ export function ProductsSection() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-11 w-11 rounded-full text-gray-500 hover:text-orange-600"
-                aria-label="Agregar a favoritos"
+                className={cn(
+                  'h-11 w-11 rounded-full',
+                  isFavorite(product.id)
+                    ? 'text-red-600 hover:text-red-700'
+                    : 'text-gray-500 hover:text-red-600'
+                )}
+                onClick={() => handleToggleFavorite(product)}
+                aria-label={
+                  isFavorite(product.id)
+                    ? 'Quitar de favoritos'
+                    : 'Agregar a favoritos'
+                }
               >
-                <Heart className="h-4 w-4" />
+                <Heart
+                  className={cn(
+                    'h-4 w-4',
+                    isFavorite(product.id) && 'fill-current'
+                  )}
+                />
               </Button>
             </div>
           </div>
@@ -538,9 +591,7 @@ export function ProductsSection() {
     const image = getProductImage(product)
     const stockBadge = resolveStockBadge(product)
     const originalPrice =
-      (product as any).originalPrice ??
-      (product as any).original_price ??
-      null
+      (product as any).originalPrice ?? (product as any).original_price ?? null
     const originalValue =
       typeof originalPrice === 'number'
         ? originalPrice
@@ -567,18 +618,29 @@ export function ProductsSection() {
         <div className="flex flex-1 flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase text-gray-500">
             <span className="text-orange-600">{product.brand || 'Marca'}</span>
-            <span className={cn('rounded-full px-3 py-1 text-[0.75rem]', stockBadge.className)}>
+            <span
+              className={cn(
+                'rounded-full px-3 py-1 text-[0.75rem]',
+                stockBadge.className
+              )}
+            >
               {stockBadge.label}
             </span>
-            {product.category && <span className="text-gray-400">/ {product.category}</span>}
+            {product.category && (
+              <span className="text-gray-400">/ {product.category}</span>
+            )}
           </div>
           <Link
             href={`/products/${product.id}`}
             className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
           >
-            <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {product.name}
+            </h3>
           </Link>
-          {product.description && <p className="text-sm text-gray-600">{product.description}</p>}
+          {product.description && (
+            <p className="text-sm text-gray-600">{product.description}</p>
+          )}
           <div className="mt-auto flex flex-wrap items-center gap-4">
             <div className="flex items-baseline gap-2 text-gray-900">
               <span className="text-2xl font-bold">
@@ -606,6 +668,29 @@ export function ProductsSection() {
               >
                 Ver detalles
               </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  'h-11 w-11 rounded-full',
+                  isFavorite(product.id)
+                    ? 'text-red-600 hover:text-red-700'
+                    : 'text-gray-500 hover:text-red-600'
+                )}
+                onClick={() => handleToggleFavorite(product)}
+                aria-label={
+                  isFavorite(product.id)
+                    ? 'Quitar de favoritos'
+                    : 'Agregar a favoritos'
+                }
+              >
+                <Heart
+                  className={cn(
+                    'h-4 w-4',
+                    isFavorite(product.id) && 'fill-current'
+                  )}
+                />
+              </Button>
             </div>
           </div>
         </div>
@@ -623,7 +708,8 @@ export function ProductsSection() {
             Nuestros productos
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-600">
-            Explora tecnologia, energia y soluciones de seguridad seleccionadas para equipos profesionales y hogares conectados.
+            Explora tecnologia, energia y soluciones de seguridad seleccionadas
+            para equipos profesionales y hogares conectados.
           </p>
         </header>
 
@@ -750,7 +836,9 @@ export function ProductsSection() {
             <Card className="border border-gray-100 shadow-sm">
               <CardContent className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-gray-900">Filtrar por</h3>
+                  <h3 className="text-base font-semibold text-gray-900">
+                    Filtrar por
+                  </h3>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -764,15 +852,23 @@ export function ProductsSection() {
 
                 <div className="space-y-5">
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">Categorias</h4>
+                    <h4 className="text-sm font-semibold text-gray-700">
+                      Categorias
+                    </h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {categories.map(category => (
-                        <label key={category.id} className="flex items-center gap-3 text-sm text-gray-700">
+                        <label
+                          key={category.id}
+                          className="flex items-center gap-3 text-sm text-gray-700"
+                        >
                           <Checkbox
                             id={`category-${category.id}`}
                             checked={selectedCategories.includes(category.id)}
                             onCheckedChange={checked =>
-                              handleCategoryChange(category.id, checked === true)
+                              handleCategoryChange(
+                                category.id,
+                                checked === true
+                              )
                             }
                           />
                           <span>{category.name}</span>
@@ -782,10 +878,15 @@ export function ProductsSection() {
                   </div>
 
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">Marcas</h4>
+                    <h4 className="text-sm font-semibold text-gray-700">
+                      Marcas
+                    </h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {brands.map(brand => (
-                        <label key={brand.id} className="flex items-center gap-3 text-sm text-gray-700">
+                        <label
+                          key={brand.id}
+                          className="flex items-center gap-3 text-sm text-gray-700"
+                        >
                           <Checkbox
                             id={`brand-${brand.id}`}
                             checked={selectedBrands.includes(brand.id)}
@@ -823,7 +924,9 @@ export function ProductsSection() {
                       <Checkbox
                         id="in-stock"
                         checked={inStockOnly}
-                        onCheckedChange={checked => setInStockOnly(checked === true)}
+                        onCheckedChange={checked =>
+                          setInStockOnly(checked === true)
+                        }
                       />
                       <span>Solo productos en stock</span>
                     </label>
@@ -831,7 +934,9 @@ export function ProductsSection() {
                       <Checkbox
                         id="featured"
                         checked={featuredOnly}
-                        onCheckedChange={checked => setFeaturedOnly(checked === true)}
+                        onCheckedChange={checked =>
+                          setFeaturedOnly(checked === true)
+                        }
                       />
                       <span>Solo destacados</span>
                     </label>
@@ -858,21 +963,24 @@ export function ProductsSection() {
               )}
             >
               {isInitialLoading
-                ? Array.from({ length: viewMode === 'grid' ? 8 : 4 }, (_, index) => (
-                    <div
-                      key={`skeleton-${index}`}
-                      className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5"
-                    >
-                      <div className="skeleton mb-5 aspect-square w-full rounded-2xl" />
-                      <div className="skeleton h-4 w-24 rounded-full" />
-                      <div className="skeleton mt-3 h-4 w-full rounded-full" />
-                      <div className="skeleton mt-2 h-4 w-3/4 rounded-full" />
-                      <div className="mt-auto space-y-3 pt-6">
-                        <div className="skeleton h-5 w-28 rounded-full" />
-                        <div className="skeleton h-11 w-full rounded-full" />
+                ? Array.from(
+                    { length: viewMode === 'grid' ? 8 : 4 },
+                    (_, index) => (
+                      <div
+                        key={`skeleton-${index}`}
+                        className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5"
+                      >
+                        <div className="skeleton mb-5 aspect-square w-full rounded-2xl" />
+                        <div className="skeleton h-4 w-24 rounded-full" />
+                        <div className="skeleton mt-3 h-4 w-full rounded-full" />
+                        <div className="skeleton mt-2 h-4 w-3/4 rounded-full" />
+                        <div className="mt-auto space-y-3 pt-6">
+                          <div className="skeleton h-5 w-28 rounded-full" />
+                          <div className="skeleton h-11 w-full rounded-full" />
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    )
+                  )
                 : products.map(product =>
                     viewMode === 'grid'
                       ? renderGridCard(product)
@@ -886,7 +994,8 @@ export function ProductsSection() {
                   No encontramos productos con esos filtros
                 </p>
                 <p className="mt-2 text-sm text-gray-600">
-                  Ajusta la busqueda o limpia los filtros para ver mas resultados.
+                  Ajusta la busqueda o limpia los filtros para ver mas
+                  resultados.
                 </p>
                 <Button
                   variant="outline"
@@ -909,7 +1018,9 @@ export function ProductsSection() {
                 <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      setCurrentPage(prev => Math.max(1, prev - 1))
+                    }
                     disabled={currentPage <= 1}
                     className="h-10 rounded-full px-4"
                     aria-label="Pagina anterior"
@@ -918,7 +1029,9 @@ export function ProductsSection() {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    onClick={() =>
+                      setCurrentPage(prev => Math.min(totalPages, prev + 1))
+                    }
                     disabled={currentPage >= totalPages}
                     className="h-10 rounded-full px-4"
                     aria-label="Pagina siguiente"

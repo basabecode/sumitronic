@@ -34,6 +34,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import productsData from '../../lib/products.json'
 import { useCart } from '@/contexts/CartContext'
 import { useAuth } from '@/contexts/AuthContext'
+import { useFavorites } from '@/contexts/FavoritesContext'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -41,12 +42,16 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const { state, toggleCart } = useCart()
   const { user, profile, signOut, isAdmin } = useAuth()
+  const { state: favoritesState } = useFavorites()
 
   // Calcular cantidad total de items en el carrito
   const totalItems = state.items.reduce(
     (total, item) => total + item.quantity,
     0
   )
+
+  // Calcular cantidad de favoritos
+  const totalFavorites = favoritesState.items.length
 
   // Generar categorías dinámicamente desde products.json
   const products = productsData as any[]
@@ -204,6 +209,12 @@ export default function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
+                    <Link href="/favorites">
+                      <Heart className="mr-2 h-4 w-4" />
+                      Mis Favoritos
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href="/profile/orders">
                       <Package className="mr-2 h-4 w-4" />
                       Mis Pedidos
@@ -274,6 +285,29 @@ export default function Header() {
                 </Badge>
               )}
             </Button>
+
+            {/* Favorites - Solo para usuarios autenticados */}
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative p-2 text-gray-700 hover:text-red-600 hover:bg-red-50"
+                onClick={() => {
+                  window.location.href = '/favorites'
+                }}
+                aria-label="Favoritos"
+              >
+                <Heart className="w-5 h-5" />
+                {totalFavorites > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-red-600 hover:bg-red-600 border-2 border-white"
+                  >
+                    {totalFavorites}
+                  </Badge>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -491,6 +525,12 @@ export default function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
+                    <Link href="/favorites">
+                      <Heart className="mr-2 h-4 w-4" />
+                      Mis Favoritos
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href="/orders">
                       <Package className="mr-2 h-4 w-4" />
                       Mis Pedidos
@@ -549,6 +589,28 @@ export default function Header() {
                 </Badge>
               )}
             </Button>
+
+            {/* Favorites Desktop - Solo para usuarios autenticados */}
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative text-gray-700 hover:text-red-600"
+                onClick={() => {
+                  window.location.href = '/favorites'
+                }}
+              >
+                <Heart className="w-5 h-5" />
+                {totalFavorites > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center text-xs bg-red-600 hover:bg-red-600"
+                  >
+                    {totalFavorites}
+                  </Badge>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </div>
