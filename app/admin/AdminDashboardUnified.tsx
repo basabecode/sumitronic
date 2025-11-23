@@ -85,6 +85,7 @@ interface ProductFormData {
   name: string
   description: string
   price: number
+  compare_price: number | null
   category: string
   brand: string
   stock: number
@@ -140,6 +141,7 @@ export default function AdminDashboard() {
     name: '',
     description: '',
     price: 0,
+    compare_price: null,
     category: '',
     brand: '',
     stock: 0,
@@ -436,6 +438,7 @@ export default function AdminDashboard() {
       name: '',
       description: '',
       price: 0,
+      compare_price: null,
       category: '',
       brand: '',
       stock: 0,
@@ -456,6 +459,7 @@ export default function AdminDashboard() {
       name: product.name,
       description: product.description,
       price: product.price,
+      compare_price: (product as any).compare_price || null,
       category: product.category?.name || '',
       brand: product.brand,
       stock: product.stock_quantity,
@@ -492,6 +496,7 @@ export default function AdminDashboard() {
         name: formData.name,
         description: formData.description,
         price: formData.price,
+        compare_price: formData.compare_price,
         category_id: categoryData.id,
         brand: formData.brand,
         image_url: formData.images[0],
@@ -1230,6 +1235,41 @@ export default function AdminDashboard() {
                       />
                     </div>
 
+                    <div className="space-y-2">
+                      <Label htmlFor="compare_price">
+                        Precio Original (Oferta)
+                      </Label>
+                      <Input
+                        id="compare_price"
+                        type="number"
+                        min="0"
+                        step="1000"
+                        value={formData.compare_price || ''}
+                        onChange={e =>
+                          handleInputChange(
+                            'compare_price',
+                            e.target.value ? parseInt(e.target.value) : null
+                          )
+                        }
+                        placeholder="350000"
+                      />
+                      <p className="text-xs text-gray-500">
+                        Deja en blanco si no hay descuento
+                      </p>
+                      {formData.compare_price && formData.compare_price > formData.price && (
+                        <p className="text-xs font-medium text-emerald-600">
+                          Descuento: {Math.round(((formData.compare_price - formData.price) / formData.compare_price) * 100)}%
+                        </p>
+                      )}
+                      {formData.compare_price && formData.compare_price <= formData.price && (
+                        <p className="text-xs font-medium text-rose-600">
+                          El precio original debe ser mayor al precio actual
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="stock">Stock *</Label>
                       <Input

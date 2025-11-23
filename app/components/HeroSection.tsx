@@ -51,7 +51,7 @@ export default function HeroSection() {
       id: 2,
       title: 'Diadema Logitech G335',
       subtitle: 'Comodidad y sonido ligero para sesiones de juego largas',
-      image: '/productos/logitech/diadema/diademaG335_lateral.png',
+      image: '/productos/Logitech/diadema/g335-black-gallery-1 (9).png',
       cta: 'Comprar ahora',
       price: 258000,
       originalPrice: 289000,

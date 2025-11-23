@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
   const sortOrder = searchParams.get('sortOrder') || 'desc'
   const featured = searchParams.get('featured')
   const inStockOnly = searchParams.get('inStockOnly') === 'true'
+  const onOffer = searchParams.get('onOffer') === 'true'
 
   try {
     const supabase = createClient()
@@ -77,6 +78,11 @@ export async function GET(request: NextRequest) {
 
     if (inStockOnly) {
       query = query.gt('stock_quantity', 0)
+    }
+
+    // Filter for products with active offers (compare_price > price)
+    if (onOffer) {
+      query = query.not('compare_price', 'is', null).gt('compare_price', 0)
     }
 
     // Ordenamiento
