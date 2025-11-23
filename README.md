@@ -1,267 +1,164 @@
 # CapiShop - Tienda de Tecnología
 
-E-commerce moderno para Capishoping, desarrollado con Next.js 14, Supabase y TypeScript.
+E-commerce moderno y robusto desarrollado para **Capishoping**, enfocado en la venta de tecnología y servicios técnicos. Construido con las últimas tecnologías web para garantizar rendimiento, escalabilidad y una experiencia de usuario premium.
 
 ---
 
-## 📝 Licencia
+## 🛠️ Tech Stack (Tecnologías)
 
-Este proyecto está bajo la Licencia MIT.
+Este proyecto utiliza una arquitectura moderna basada en **Next.js 14 (App Router)** y **Supabase**.
+
+### Core
+- **Framework:** [Next.js 14](https://nextjs.org/) (App Router)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+- **Base de Datos:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Autenticación:** Supabase Auth
+
+### Frontend & UI
+- **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+- **Componentes:** [shadcn/ui](https://ui.shadcn.com/) (basado en Radix UI)
+- **Iconos:** [Lucide React](https://lucide.dev/)
+- **Animaciones:** Tailwindcss-animate
+- **Gestión de Estado:** React Context API + Hooks personalizados
+- **Formularios:** React Hook Form + Zod (validación)
+
+### Herramientas & DevOps
+- **Despliegue:** [Vercel](https://vercel.com/)
+- **Linting:** ESLint
+- **Gestor de Paquetes:** npm / pnpm
+- **Integración AI:** Soporte para MCP (Model Context Protocol)
 
 ---
 
-## � Características
+## 📁 Estructura del Proyecto
 
-- ✅ Catálogo de productos con búsqueda y filtros
-- ✅ Sistema de autenticación (registro/login)
-- ✅ Panel administrativo para gestión de productos y pedidos
-- ✅ Base de datos PostgreSQL con Supabase
-- ✅ Diseño responsive con Tailwind CSS
+A continuación se detalla la organización de carpetas y archivos principales:
 
-## 🛠️ Tecnologías
-
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Estilos**: Tailwind CSS, shadcn/ui
-- **Backend**: Supabase (PostgreSQL + Auth)
-- **Despliegue**: Vercel
+```
+CapiShop_Web/
+├── app/                        # Next.js App Router (Páginas y Rutas)
+│   ├── admin/                  # Panel de administración (protegido)
+│   ├── api/                    # API Routes (Backend serverless)
+│   ├── auth/                   # Páginas de autenticación (Login, Register)
+│   ├── cart/                   # Página del carrito de compras
+│   ├── checkout/               # Proceso de pago
+│   ├── products/               # Catálogo y detalles de productos
+│   ├── profile/                # Perfil de usuario y pedidos
+│   ├── layout.tsx              # Layout principal (Header, Footer)
+│   └── page.tsx                # Página de inicio (Home)
+│
+├── components/                 # Componentes Reutilizables
+│   ├── ui/                     # Componentes base de shadcn/ui (Button, Input, etc.)
+│   └── ...                     # Componentes específicos (ProductCard, CartDrawer, etc.)
+│
+├── contexts/                   # React Context Providers
+│   ├── auth-context.tsx        # Estado de autenticación global
+│   ├── cart-context.tsx        # Lógica del carrito de compras
+│   └── ...
+│
+├── docs/                       # Documentación del proyecto
+│   ├── SECURITY_AUDIT.md       # Auditoría de seguridad
+│   ├── SUPABASE_INTEGRATION.md # Guía de integración con base de datos
+│   └── ...
+│
+├── hooks/                      # Custom React Hooks
+│   ├── use-toast.ts            # Sistema de notificaciones
+│   └── ...
+│
+├── lib/                        # Utilidades y Configuración
+│   ├── supabase.ts             # Cliente de Supabase
+│   ├── utils.ts                # Funciones auxiliares (cn, formatPrice)
+│   └── ...
+│
+├── mcp/                        # Configuración Model Context Protocol
+│   ├── supabase-config.json    # Configuración para agentes AI (Supabase)
+│   └── README.md               # Instrucciones de MCP
+│
+├── public/                     # Archivos estáticos (imágenes, iconos)
+│
+├── scripts/                    # Scripts de mantenimiento y testing
+│   ├── test-supabase-connection.js # Verificación de conexión DB
+│   └── ...
+│
+├── supabase/                   # SQL y Migraciones
+│   ├── schema.sql              # Esquema base de la base de datos
+│   ├── add_compare_price.sql   # Migraciones de ofertas
+│   └── ...
+│
+└── .env.local                  # Variables de entorno (No commitear)
+```
 
 ---
 
-## 📦 Instalación y Configuración
+## 🚀 Instalación y Configuración
 
-1. Clonar el repositorio
+### 1. Prerrequisitos
+- Node.js 18+ instalado.
+- Cuenta en Supabase.
 
+### 2. Clonar el repositorio
 ```bash
-git clone <url>
+git clone https://github.com/basabecode/CapiShop_Web.git
 cd CapiShop_Web
+npm install
+# o
 pnpm install
 ```
 
-2. Configurar variables de entorno
-
-- Copiar `.env.local.example` a `.env.local`
-- Completar con tus credenciales de Supabase
-
-3. Configurar base de datos
-
-- Crear proyecto en Supabase
-- Ejecutar `supabase/schema.sql` en el SQL Editor
-
-4. Ejecutar en desarrollo
-
-```bash
-pnpm dev
-```
-
-## 📁 Estructura del Proyecto
-
-```
-CapiShop_Web/
-...existing code...
-```
-
----
-
-## 🧹 OPTIMIZACIÓN COMPLETADA
-
-**Archivo:** OPTIMIZACION_COMPLETADA.md
-
-### Limpieza Realizada
-
-- Archivos duplicados eliminados: ProtectedRoute.tsx, use-mobile.tsx, use-toast.ts, globals.css, supabase.ts, middleware.ts.bak, middleware-stable.ts, package-lock.json
-
-### Estructura Optimizada
-
-Componentes únicos, hooks centralizados, configuración Supabase organizada.
-
-### Beneficios
-
-1. Eliminación de conflictos de importación
-2. Reducción de tamaño (~30% más liviano)
-3. Mejor performance
-4. Mantenibilidad
-5. Imports limpios y consistentes
-
----
-
-## 📋 AUDITORÍA DE PRODUCTOS
-
-**Archivo:** AUDITORIA_PRODUCTOS_COMPLETADA.md
-
-### Diagnóstico Inicial
-
-Identificación y eliminación de archivos duplicados y vacíos relacionados con productos.
-
-### Correcciones Realizadas
-
-1. Eliminación de duplicados: ProductsSectionNew.tsx, ProductCardEnhanced.tsx, ProductDetailPage.tsx
-2. Corrección del formulario admin de productos (estructura y campos)
-
----
-
-## 🧪 SISTEMA DE TESTING DE BASE DE DATOS
-
-**Archivo:** docs/DATABASE_TESTING.md
-
-### Descripción General
-
-Sistema completo de validación y testing de la integración entre Supabase y el frontend de CapiShop.
-
-### Archivos del Sistema
-
-- Scripts: database-health-check.ts, migrate-json-to-supabase.ts, migrate-products.ts
-- Librerías: database-tester.ts
-- Interfaces Web: app/test/database/page.tsx
-
-### Objetivos
-
-- Validar operabilidad entre base de datos, frontend, APIs, tipos TypeScript y performance.
-- Métodos de ejecución, interpretación de resultados y solución de problemas documentados.
-
----
-
-## 🛡️ GOOGLE OAUTH SETUP
-
-**Archivo:** docs/GOOGLE_OAUTH_SETUP.md
-Actualmente vacío.
-
----
-
-## � HISTORIAL DE CORRECCIONES
-
-**Archivo:** README.md
-
-### Schema SQL (v1.1)
-
-- Corregido: Header.tsx - Tipos de autenticación restaurados correctamente
-- Impacto: Build exitoso sin errores de compilación TypeScript
-
-### Schema SQL (v1.1)
-
-- Corregido: Error "functions in index expression must be marked IMMUTABLE"
-- Solución: Uso explícito de `regconfig` en índices GIN y casting en funciones de fecha
-- Impacto: Permite ejecución correcta del schema en Supabase sin errores de inmutabilidad
-
----
-
-## � RESUMEN FINAL
-
-Este README integra toda la documentación relevante del proyecto, incluyendo optimizaciones, auditorías, testing y correcciones históricas. Para detalles específicos, consulta los archivos originales mencionados.
-
-```bash
-cp .env.local.example .env.local
-```
-
-Editar `.env.local` con las credenciales de Supabase:
+### 3. Configurar Variables de Entorno
+Crea un archivo `.env.local` en la raíz del proyecto y agrega tus credenciales de Supabase:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=tu_url_de_supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_clave_anonima
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima-publica
 ```
 
-4. **Configurar base de datos**
+### 4. Configurar Base de Datos
+1. Ve a tu proyecto en Supabase > **SQL Editor**.
+2. Ejecuta el contenido de `supabase/schema.sql` para crear las tablas.
+3. (Opcional) Ejecuta `supabase/add_compare_price.sql` para habilitar ofertas.
 
-- Ir a [Supabase Dashboard](https://supabase.com/dashboard)
-- Crear nuevo proyecto
-- Ejecutar el script `supabase/schema.sql` en el SQL Editor
-
-5. **Ejecutar en desarrollo**
-
+### 5. Ejecutar en Desarrollo
 ```bash
-pnpm dev
+npm run dev
 ```
+La aplicación estará disponible en `http://localhost:3003`.
 
-## 🗄️ Base de Datos
+---
 
-La base de datos incluye:
+## 🤖 Integración MCP (Model Context Protocol)
 
-- **users**: Perfiles de usuario con roles
-- **products**: Catálogo de productos
-- **orders**: Pedidos y transacciones
-- **categories**: Categorías de productos
-- **cart_items**: Carrito de compras
+Este proyecto está configurado para trabajar con agentes de IA avanzados mediante MCP.
+- Las configuraciones se encuentran en la carpeta `/mcp`.
+- Permite a los agentes leer y escribir en la base de datos de Supabase de forma segura para tareas de mantenimiento y desarrollo.
 
-Para configurar la base de datos, ejecutar `supabase/schema.sql` en Supabase.
+---
 
-### ⚠️ Notas Importantes del Schema
+## 📜 Scripts Disponibles
 
-- **Índices de texto completo**: Los índices GIN para búsqueda de texto usan `regconfig` explícito para evitar errores de inmutabilidad
-- **Funciones de fecha**: Las funciones `date_trunc` en índices requieren casting explícito para estabilidad
-- **RLS habilitado**: Todas las tablas tienen Row Level Security para seguridad
+- `npm run dev`: Inicia el servidor de desarrollo.
+- `npm run build`: Construye la aplicación para producción.
+- `npm run start`: Inicia el servidor de producción.
+- `npm run lint`: Ejecuta el linter para verificar calidad de código.
+- `node scripts/test-supabase-connection.js`: Prueba la conexión con la base de datos.
 
-### 🔧 Solución de Problemas Comunes
+---
 
-**Error "functions in index expression must be marked IMMUTABLE":**
+## 👤 Administración
 
-- Los índices GIN y funciones en expresiones de índice requieren configuración específica
-- El schema corregido incluye las correcciones necesarias
-
-**Error de permisos RLS:**
-
-- Verificar que el usuario tenga rol 'admin' para acceso administrativo
-- Comprobar que las políticas RLS estén correctamente configuradas
-
-**Errores de TypeScript en componentes:**
-
-- ✅ Corregido: Header.tsx - Tipos de usuario y perfil
-- ✅ Corregido: ProductDetailsModal.tsx - Incompatibilidad de tipos de ID y propiedades del carrito
-- Comprobar que las políticas RLS estén correctamente configuradas
-
-## 👤 Usuario Administrador
-
-Después de registrarse en la aplicación, ejecutar en Supabase:
-
+Para convertir un usuario en administrador:
+1. Regístrate en la aplicación.
+2. Ejecuta el siguiente SQL en Supabase:
 ```sql
-UPDATE public.users SET role = 'admin' WHERE email = 'tu-email@admin.com';
+UPDATE public.users SET role = 'admin' WHERE email = 'tu-email@ejemplo.com';
 ```
 
-## 🚀 Despliegue
+---
 
-1. **Conectar con Vercel**
-
-```bash
-vercel --prod
-```
-
-2. **Configurar variables de entorno en Vercel**
-
-- Agregar las mismas variables de `.env.local`
-
-## 📁 Estructura del Proyecto
-
-```
-CapiShop_Web/
-├── app/                    # App Router de Next.js
-│   ├── components/         # Componentes de la aplicación
-│   ├── api/               # API Routes
-│   ├── admin/             # Panel administrativo
-│   └── auth/              # Páginas de autenticación
-├── components/            # Componentes UI (shadcn/ui)
-├── contexts/              # Context providers
-├── lib/                   # Utilidades y configuración
-├── public/                # Archivos estáticos
-└── supabase/              # Schema de base de datos
-```
-
-## 🔧 Scripts Disponibles
-
-```bash
-pnpm dev          # Desarrollo
-pnpm build        # Construir para producción
-pnpm start        # Ejecutar en producción
-pnpm lint         # Verificar código
-```
-
-## � Licencia
+## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT.
 
-## 👥 Equipo
-
-- **TecniBro** - Desarrollo principal
-- **Arquitectura**: Next.js 14 + Supabase
-- **UI/UX**: Tailwind CSS + shadcn/ui
-
 ---
 
-**¡Construido con ❤️ para la tienda Capishoping!**
+**Desarrollado por [BasabeCode](https://github.com/basabecode)**
