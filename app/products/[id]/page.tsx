@@ -325,11 +325,11 @@ export default function ProductPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t">
                 <div className="flex items-center space-x-2">
                   <Truck className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-600">Envío gratis</span>
+                  <span className="text-sm text-gray-600">Envío nacional</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Shield className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm text-gray-600">Garantía 1 año</span>
+                  <span className="text-sm text-gray-600">Garantía 12 meses</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RotateCcw className="w-5 h-5 text-purple-600" />

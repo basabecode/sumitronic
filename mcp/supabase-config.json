@@ -4,12 +4,10 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-supabase"
-      ],
-      "env": {
-        "SUPABASE_URL": "https://pmvhtxlciekynczjspja.supabase.co",
-        "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtdmh0eGxjaWVreW5jempzcGphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxMzg1MTgsImV4cCI6MjA3MTcxNDUxOH0.ozJTD7sdEcjZo-bkPRoMkLWChzyHfBHQf5Flqz_yHEo"
-      }
+        "mcp-remote",
+        "https://mcp.supabase.com/mcp?project_ref=pmvhtxlciekynczjspja"
+      ]
     }
   }
 }
+

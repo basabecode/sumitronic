@@ -664,29 +664,48 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Tabs Navigation */}
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="space-y-6"
-      >
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="dashboard" className="flex items-center gap-2">
+      {/* Manual Tabs Navigation - Replaced Radix UI for better control */}
+      <div className="space-y-6">
+        {/* Tabs List */}
+        <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground w-full grid grid-cols-3">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 gap-2 ${
+              activeTab === 'dashboard'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'hover:bg-background/50'
+            }`}
+          >
             <Home className="w-4 h-4" />
             Dashboard
-          </TabsTrigger>
-          <TabsTrigger value="inventory" className="flex items-center gap-2">
+          </button>
+          <button
+            onClick={() => setActiveTab('inventory')}
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 gap-2 ${
+              activeTab === 'inventory'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'hover:bg-background/50'
+            }`}
+          >
             <Package className="w-4 h-4" />
             Inventario
-          </TabsTrigger>
-          <TabsTrigger value="add-product" className="flex items-center gap-2">
+          </button>
+          <button
+            onClick={() => setActiveTab('add-product')}
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 gap-2 ${
+              activeTab === 'add-product'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'hover:bg-background/50'
+            }`}
+          >
             <Plus className="w-4 h-4" />
             {editingProduct ? 'Editar' : 'Agregar'} Producto
-          </TabsTrigger>
-        </TabsList>
+          </button>
+        </div>
 
         {/* Dashboard Tab */}
-        <TabsContent value="dashboard" className="space-y-6">
+        {activeTab === 'dashboard' && (
+          <div className="space-y-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card>
@@ -821,10 +840,12 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+          </div>
+        )}
 
         {/* Inventory Tab */}
-        <TabsContent value="inventory" className="space-y-6">
+        {activeTab === 'inventory' && (
+          <div className="space-y-6">
           {/* Filters */}
           <Card>
             <CardContent className="p-6">
@@ -1034,10 +1055,12 @@ export default function AdminDashboard() {
               )}
             </CardContent>
           </Card>
-        </TabsContent>
+          </div>
+        )}
 
         {/* Add/Edit Product Tab */}
-        <TabsContent value="add-product" className="space-y-6">
+        {activeTab === 'add-product' && (
+          <div className="space-y-6">
           <div className="flex items-center gap-4 mb-6">
             <Button
               variant="outline"
@@ -1429,8 +1452,9 @@ export default function AdminDashboard() {
               </div>
             </div>
           </form>
-        </TabsContent>
-      </Tabs>
+          </div>
+        )}
+      </div>
 
       {/* Delete Confirmation Dialog */}
       <Dialog

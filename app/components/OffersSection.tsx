@@ -121,21 +121,21 @@ export default function OffersSection() {
   }
 
   return (
-    <section className="relative bg-gradient-to-br from-orange-50 via-amber-50/30 to-white py-16">
+    <section id="ofertas-especiales" className="relative bg-gradient-to-br from-orange-50 via-amber-50/30 to-white py-16">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-10 text-center">
           <div className="mb-3 flex items-center justify-center gap-2">
             <Flame className="h-6 w-6 text-orange-600" />
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-orange-600">
-              Ofertas Especiales
+              Descuentos Especiales
             </p>
           </div>
           <h2 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-            Descuentos Increíbles
+            Ofertas Increíbles
           </h2>
           <p className="mx-auto max-w-2xl text-base text-gray-600 md:text-lg">
-            Aprovecha nuestras ofertas exclusivas con los mejores descuentos
+            Aprovecha nuestras ofertas y obten los mejores productos a precios increíbles
           </p>
         </div>
 

@@ -114,8 +114,8 @@ export default function BlogSection() {
           ))}
         </div>
 
-        {/* Newsletter Signup */}
-        <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl p-8 text-white text-center">
+        {/* Newsletter Signup - OCULTO POR SOLICITUD DEL USUARIO */}
+        {/* <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Suscríbete a Nuestro Newsletter
           </h3>
@@ -138,14 +138,14 @@ export default function BlogSection() {
           <p className="text-xs text-orange-200 mt-4">
             No spam. Puedes cancelar tu suscripción en cualquier momento.
           </p>
-        </div>
+        </div> */}
 
-        {/* View All Posts */}
-        <div className="text-center mt-12">
+        {/* View All Posts - OCULTO POR SOLICITUD DEL USUARIO */}
+        {/* <div className="text-center mt-12">
           <Button variant="outline" size="lg" className="px-8 bg-transparent">
             Ver Todos los Artículos
           </Button>
-        </div>
+        </div> */}
 
         {/* Blog Post Modal */}
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

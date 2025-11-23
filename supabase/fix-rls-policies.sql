@@ -13,6 +13,7 @@ DROP POLICY IF EXISTS "Users can update own profile" ON public.users;
 DROP POLICY IF EXISTS "Users can insert own profile" ON public.users;
 DROP POLICY IF EXISTS "Admins can view all users" ON public.users;
 DROP POLICY IF EXISTS "Admins can manage all users" ON public.users;
+DROP POLICY IF EXISTS "Admin access" ON public.users;
 
 DROP POLICY IF EXISTS "Anyone can view active categories" ON public.categories;
 DROP POLICY IF EXISTS "Admins can manage categories" ON public.categories;
@@ -42,6 +43,9 @@ FOR ALL USING (
 );
 
 -- Políticas para categorías (acceso público)
+DROP POLICY IF EXISTS "Public read categories" ON public.categories;
+DROP POLICY IF EXISTS "Authenticated users can manage categories" ON public.categories;
+
 CREATE POLICY "Public read categories" ON public.categories
 FOR SELECT USING (active = true);
 
@@ -49,6 +53,9 @@ CREATE POLICY "Authenticated users can manage categories" ON public.categories
 FOR ALL USING (auth.role() = 'authenticated');
 
 -- Políticas para productos (acceso público para lectura)
+DROP POLICY IF EXISTS "Public read products" ON public.products;
+DROP POLICY IF EXISTS "Authenticated users can manage products" ON public.products;
+
 CREATE POLICY "Public read products" ON public.products
 FOR SELECT USING (active = true);
 
@@ -58,6 +65,8 @@ FOR ALL USING (auth.role() = 'authenticated');
 -- Políticas para imágenes de productos
 DROP POLICY IF EXISTS "Anyone can view product images" ON public.product_images;
 DROP POLICY IF EXISTS "Admins can manage product images" ON public.product_images;
+DROP POLICY IF EXISTS "Public read product images" ON public.product_images;
+DROP POLICY IF EXISTS "Authenticated manage product images" ON public.product_images;
 
 CREATE POLICY "Public read product images" ON public.product_images
 FOR SELECT USING (true);
@@ -68,6 +77,8 @@ FOR ALL USING (auth.role() = 'authenticated');
 -- Políticas para inventario
 DROP POLICY IF EXISTS "Anyone can view inventory" ON public.inventory;
 DROP POLICY IF EXISTS "Admins can manage inventory" ON public.inventory;
+DROP POLICY IF EXISTS "Public read inventory" ON public.inventory;
+DROP POLICY IF EXISTS "Authenticated manage inventory" ON public.inventory;
 
 CREATE POLICY "Public read inventory" ON public.inventory
 FOR SELECT USING (true);
@@ -81,12 +92,14 @@ DROP POLICY IF EXISTS "Users can create orders" ON public.orders;
 DROP POLICY IF EXISTS "Admins can view all orders" ON public.orders;
 DROP POLICY IF EXISTS "Admins can manage orders" ON public.orders;
 DROP POLICY IF EXISTS "Admins can delete orders" ON public.orders;
+DROP POLICY IF EXISTS "Users manage own orders" ON public.orders;
 
 CREATE POLICY "Users manage own orders" ON public.orders
 FOR ALL USING (user_id = auth.uid());
 
 -- Políticas para carrito
 DROP POLICY IF EXISTS "Users can manage own cart" ON public.cart_items;
+DROP POLICY IF EXISTS "Users manage own cart" ON public.cart_items;
 
 CREATE POLICY "Users manage own cart" ON public.cart_items
 FOR ALL USING (user_id = auth.uid());
@@ -94,6 +107,8 @@ FOR ALL USING (user_id = auth.uid());
 -- Políticas para configuraciones del sistema
 DROP POLICY IF EXISTS "Anyone can view settings" ON public.system_settings;
 DROP POLICY IF EXISTS "Admins can manage settings" ON public.system_settings;
+DROP POLICY IF EXISTS "Public read settings" ON public.system_settings;
+DROP POLICY IF EXISTS "Authenticated manage settings" ON public.system_settings;
 
 CREATE POLICY "Public read settings" ON public.system_settings
 FOR SELECT USING (true);

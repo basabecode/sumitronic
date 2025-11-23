@@ -146,7 +146,7 @@ export default function CTASection() {
 
               <div className="space-y-6">
                 <a
-                  href="https://wa.me/15551234567"
+                  href="https://wa.me/573003094854"
                   className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
                 >
                   <div className="bg-green-600 p-3 rounded-lg group-hover:scale-110 transition-transform">
@@ -155,32 +155,6 @@ export default function CTASection() {
                   <div>
                     <h4 className="font-semibold text-gray-900">WhatsApp</h4>
                     <p className="text-gray-600">Respuesta inmediata</p>
-                  </div>
-                </a>
-
-                <a
-                  href="tel:+15551234567"
-                  className="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
-                >
-                  <div className="bg-blue-600 p-3 rounded-lg group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Teléfono</h4>
-                    <p className="text-gray-600">+57(300) 3094854</p>
-                  </div>
-                </a>
-
-                <a
-                  href="mailto:info@CapiShoping.com"
-                  className="flex items-center space-x-4 p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors group"
-                >
-                  <div className="bg-orange-600 p-3 rounded-lg group-hover:scale-110 transition-transform">
-                    <Mail className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Email</h4>
-                    <p className="text-gray-600">info@CapiShoping.com</p>
                   </div>
                 </a>
               </div>

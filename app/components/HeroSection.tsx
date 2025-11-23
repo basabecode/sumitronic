@@ -231,21 +231,21 @@ export default function HeroSection() {
                           className="h-2 w-2 rounded-full bg-green-500"
                           aria-hidden="true"
                         ></span>
-                        <span>Envio gratis</span>
+                        <span>Envío nacional</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span
                           className="h-2 w-2 rounded-full bg-blue-500"
                           aria-hidden="true"
                         ></span>
-                        <span>Garantia 24 meses</span>
+                        <span>Garantía 12 meses</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span
                           className="h-2 w-2 rounded-full bg-purple-500"
                           aria-hidden="true"
                         ></span>
-                        <span>Soporte 24/7</span>
+                        <span>Soporte Lun-Vie</span>
                       </div>
                     </dl>
                   </div>

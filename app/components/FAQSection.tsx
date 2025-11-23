@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react'
 
 export default function FAQSection() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -126,16 +126,13 @@ export default function FAQSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:+573001234567"
-                className="inline-flex items-center justify-center px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
-              >
-                📞 Llamar: 300 3094854
-              </a>
-              <a
                 href="https://wa.me/573003094854"
                 className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                💬 WhatsApp
+                <MessageCircle className="w-5 h-5 mr-2" />
+                WhatsApp
               </a>
               <a
                 href="mailto:info@capishop.com"

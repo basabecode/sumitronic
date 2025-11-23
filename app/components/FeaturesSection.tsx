@@ -18,21 +18,7 @@ export default function FeaturesSection() {
     },
     {
       icon: Shield,
-      title: 'Garantía Extendida',
-      description: 'Hasta 1 año de garantía en todos los productos',
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-    },
-    {
-      icon: Headphones,
-      title: 'Soporte 24/7',
-      description: 'Atención al cliente disponible las 24 horas',
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-    },
-    {
-      icon: CreditCard,
-      title: 'Pago Seguro',
+      title: 'Garantía de 12 Meses',
       description: 'Múltiples métodos de pago para mayor facilidad',
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',

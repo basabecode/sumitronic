@@ -465,14 +465,10 @@ export default function CheckoutPageContent() {
                       <span>{formatCurrency(state.subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>IVA (19%):</span>
-                      <span>{formatCurrency(state.tax)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
                       <span>Envío:</span>
                       <span>
                         {state.shipping === 0 ? (
-                          <span className="text-green-600">¡Gratis!</span>
+                          <span className="text-green-600">Calculado en checkout</span>
                         ) : (
                           formatCurrency(state.shipping)
                         )}
@@ -485,6 +481,7 @@ export default function CheckoutPageContent() {
                       <span>Total:</span>
                       <span>{formatCurrency(state.total)}</span>
                     </div>
+                    <p className="text-xs text-gray-500 text-right">Incluye IVA</p>
                   </div>
                 </CardContent>
               </Card>

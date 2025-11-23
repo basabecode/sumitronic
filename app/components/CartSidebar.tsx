@@ -195,7 +195,7 @@ export default function CartSidebar() {
                 <div className="flex items-center space-x-2">
                   <Truck className="w-4 h-4 text-blue-600" />
                   <span className="text-sm font-medium text-blue-800">
-                    Envío GRATIS
+                    Envío a todo el país
                   </span>
                 </div>
                 <p className="text-xs text-blue-700">
@@ -208,7 +208,7 @@ export default function CartSidebar() {
                 <div className="flex items-center space-x-2">
                   <Shield className="w-4 h-4 text-green-600" />
                   <span className="text-sm font-medium text-green-800">
-                    Garantía incluida
+                    Garantía de 12 meses
                   </span>
                 </div>
                 <p className="text-xs text-green-700">
@@ -226,11 +226,8 @@ export default function CartSidebar() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal</span>
-                <span>{formatPrice(state.subtotal)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>IVA (19%)</span>
-                <span>{formatPrice(state.tax)}</span>
+                <span>{formatPrice(state.subtotal)}
+</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Envío</span>
@@ -240,7 +237,7 @@ export default function CartSidebar() {
                   }`}
                 >
                   {state.shipping === 0
-                    ? 'GRATIS'
+                    ? 'Calculado en checkout'
                     : formatPrice(state.shipping)}
                 </span>
               </div>
@@ -251,6 +248,7 @@ export default function CartSidebar() {
                   {formatPrice(state.total)}
                 </span>
               </div>
+              <p className="text-xs text-gray-500 text-right">Incluye IVA</p>
             </div>
 
             {/* Botones de acción */}

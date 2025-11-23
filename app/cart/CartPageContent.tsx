@@ -244,27 +244,6 @@ export default function CartPageContent() {
                 <CardTitle className="text-lg">Resumen del Pedido</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>{formatCurrency(state.subtotal)}</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span>IVA (19%):</span>
-                  <span>{formatCurrency(state.tax)}</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span>Envío:</span>
-                  <span>
-                    {state.shipping === 0 ? (
-                      <span className="text-green-600">¡Gratis!</span>
-                    ) : (
-                      formatCurrency(state.shipping)
-                    )}
-                  </span>
-                </div>
-
                 {isPromoApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>Descuento (10%):</span>
@@ -293,7 +272,7 @@ export default function CartPageContent() {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 text-sm">
                     <Truck className="w-4 h-4 text-green-600" />
-                    <span>Envío gratis en compras superiores a $100,000</span>
+                    <span>Envío a todo el país</span>
                   </div>
                   <div className="flex items-center space-x-3 text-sm">
                     <Shield className="w-4 h-4 text-blue-600" />

@@ -435,7 +435,7 @@ export default function Header() {
               Productos
             </a>
             <a
-              href="#ofertas"
+              href="#ofertas-especiales"
               className="text-gray-700 hover:text-orange-600 transition-colors"
             >
               Ofertas
@@ -726,8 +726,13 @@ export default function Header() {
                 Productos
               </a>
               <a
-                href="#ofertas"
+                href="#ofertas-especiales"
                 className="block p-2 rounded-md hover:bg-gray-100"
+                onClick={() => {
+                  setIsMenuOpen(false)
+                  const el = document.getElementById('ofertas-especiales')
+                  if (el) el.scrollIntoView({ behavior: 'smooth' })
+                }}
               >
                 Ofertas
               </a>
@@ -747,22 +752,18 @@ export default function Header() {
 
             <div className="mt-6 border-t pt-4">
               <a
-                className="flex items-center gap-2 text-sm text-green-600"
-                href="https://wa.me/15551234567"
+                className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700"
+                href="https://wa.me/573003094854"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <MessageCircle className="w-4 h-4" /> WhatsApp
               </a>
               <a
-                className="block mt-2 text-sm text-gray-600"
-                href="tel:+15551234567"
+                className="block mt-2 text-sm text-gray-600 hover:text-gray-800"
+                href="mailto:info@capishop.com"
               >
-                Teléfono
-              </a>
-              <a
-                className="block mt-1 text-sm text-gray-600"
-                href="mailto:info@CapiShoping.com"
-              >
-                Email
+                <Mail className="w-4 h-4 inline mr-2" />Email
               </a>
             </div>
           </aside>

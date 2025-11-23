@@ -1,7 +1,7 @@
 'use client'
 
 import { formatPrice } from '@/lib/utils'
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useReducer, useEffect, useState } from 'react'
 
 // Tipos de datos
 export interface CartItem {
@@ -223,6 +223,8 @@ export function useCart(): CartContextType {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState)
 
+  const [isInitialized, setIsInitialized] = useState(false)
+
   // Cargar carrito desde localStorage al inicializar
   useEffect(() => {
     const savedCart = localStorage.getItem('cart')
@@ -234,12 +236,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         console.error('Error loading cart from localStorage:', error)
       }
     }
+    setIsInitialized(true)
   }, [])
 
   // Guardar carrito en localStorage cuando cambie
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state.items))
-  }, [state.items])
+    if (isInitialized) {
+      localStorage.setItem('cart', JSON.stringify(state.items))
+    }
+  }, [state.items, isInitialized])
 
   const addItem = (item: Omit<CartItem, 'quantity'>) => {
     dispatch({ type: 'ADD_ITEM', payload: item })

@@ -357,7 +357,7 @@ export default function ProductDetailsModal({
               <div className="flex items-center space-x-2">
                 <Truck className="w-4 h-4 text-green-600" />
                 <span className="text-sm font-medium">
-                  Envío GRATIS a nivel nacional
+                  Envío a todo el país
                 </span>
               </div>
               <div className="flex items-center space-x-2">

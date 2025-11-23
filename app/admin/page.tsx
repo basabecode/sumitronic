@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import AdminDashboardUnified from './AdminDashboardUnified'
+import AdminPanel from './AdminPanel'
 
 export const metadata: Metadata = {
   title: 'Panel de Administración - CapiShop',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function AdminPage() {
-  return <AdminDashboardUnified />
+  return <AdminPanel />
 }
