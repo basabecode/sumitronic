@@ -203,7 +203,7 @@ export default function AdminDashboard() {
   }, [searchQuery, debouncedSearchQuery])
 
   useEffect(() => {
-    if (activeTab === 'inventory') {
+    if (activeTab === 'inventory' || activeTab === 'dashboard') {
       fetchProducts()
     }
     if (activeTab === 'add-product') {
@@ -715,7 +715,11 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-gray-600">
                       Total Productos
                     </p>
-                    <p className="text-2xl font-bold">{products.length}</p>
+                    {loadingProducts ? (
+                      <Loader2 className="h-6 w-6 animate-spin text-blue-600 mt-2" />
+                    ) : (
+                      <p className="text-2xl font-bold">{products.length}</p>
+                    )}
                   </div>
                   <Package className="h-8 w-8 text-blue-600" />
                 </div>
@@ -728,9 +732,13 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-gray-600">
                       En Stock
                     </p>
-                    <p className="text-2xl font-bold">
-                      {products.filter(p => p.stock_quantity > 0).length}
-                    </p>
+                    {loadingProducts ? (
+                      <Loader2 className="h-6 w-6 animate-spin text-green-600 mt-2" />
+                    ) : (
+                      <p className="text-2xl font-bold">
+                        {products.filter(p => p.stock_quantity > 0).length}
+                      </p>
+                    )}
                   </div>
                   <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
                     <div className="h-4 w-4 bg-green-600 rounded-full"></div>
@@ -745,9 +753,13 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-gray-600">
                       Sin Stock
                     </p>
-                    <p className="text-2xl font-bold">
-                      {products.filter(p => p.stock_quantity === 0).length}
-                    </p>
+                    {loadingProducts ? (
+                      <Loader2 className="h-6 w-6 animate-spin text-red-600 mt-2" />
+                    ) : (
+                      <p className="text-2xl font-bold">
+                        {products.filter(p => p.stock_quantity === 0).length}
+                      </p>
+                    )}
                   </div>
                   <div className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center">
                     <div className="h-4 w-4 bg-red-600 rounded-full"></div>
@@ -762,9 +774,13 @@ export default function AdminDashboard() {
                     <p className="text-sm font-medium text-gray-600">
                       Destacados
                     </p>
-                    <p className="text-2xl font-bold">
-                      {products.filter(p => p.featured).length}
-                    </p>
+                    {loadingProducts ? (
+                      <Loader2 className="h-6 w-6 animate-spin text-yellow-600 mt-2" />
+                    ) : (
+                      <p className="text-2xl font-bold">
+                        {products.filter(p => p.featured).length}
+                      </p>
+                    )}
                   </div>
                   <div className="h-8 w-8 bg-yellow-100 rounded-full flex items-center justify-center">
                     <div className="h-4 w-4 bg-yellow-600 rounded-full"></div>
