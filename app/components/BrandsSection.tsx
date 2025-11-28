@@ -8,8 +8,6 @@ export default function BrandsSection() {
     { name: 'Forza', logo: '/marcas_originales/forza logo.png' },
     { name: 'Tp-Link', logo: '/marcas_originales/TPLINK_Logo_2.png' },
     { name: 'Mercusys', logo: '/marcas_originales/mercusys-logo.png' },
-    //{ name: "Microsoft", logo: "/placeholder.svg?height=80&width=120" },
-    //{ name: "Nintendo", logo: "/placeholder.svg?height=80&width=120" },
   ]
 
   const stats = [
@@ -19,10 +17,11 @@ export default function BrandsSection() {
     { number: '99%', label: 'Productos Originales' },
   ]
 
-  // Grilla estática: sin autoplay ni carrusel
+  // Duplicar marcas para efecto infinito seamless
+  const duplicatedBrands = [...brands, ...brands, ...brands, ...brands]
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
@@ -35,25 +34,27 @@ export default function BrandsSection() {
           </p>
         </div>
 
-        {/* Brands Grid (sin movimiento) */}
-        <div className="mb-16">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-            {brands.map((brand, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-center p-4 md:p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300 group cursor-pointer h-20 md:h-24"
-                title={brand.name}
-              >
-                <div className="w-full h-full flex items-center justify-center overflow-hidden">
-                  <img
-                    src={brand.logo || '/placeholder.svg'}
-                    alt={brand.name}
-                    className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0"
-                    loading="lazy"
-                  />
+        {/* Infinite Carousel for Brands */}
+        <div className="mb-16 relative">
+          <div className="brands-carousel-container">
+            <div className="brands-carousel-track">
+              {duplicatedBrands.map((brand, index) => (
+                <div
+                  key={`${brand.name}-${index}`}
+                  className="brands-carousel-item flex items-center justify-center p-4 md:p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300 group cursor-pointer"
+                  title={brand.name}
+                >
+                  <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                    <img
+                      src={brand.logo || '/placeholder.svg'}
+                      alt={brand.name}
+                      className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
@@ -121,6 +122,59 @@ export default function BrandsSection() {
           </p>
         </div>
       </div>
+
+      {/* Carousel Animation Styles */}
+      <style jsx>{`
+        .brands-carousel-container {
+          overflow: hidden;
+          position: relative;
+          width: 100%;
+        }
+
+        .brands-carousel-track {
+          display: flex;
+          gap: 1rem;
+          animation: brands-scroll 30s linear infinite;
+          will-change: transform;
+        }
+
+        .brands-carousel-track:hover {
+          animation-play-state: paused;
+        }
+
+        .brands-carousel-item {
+          flex-shrink: 0;
+          width: 150px;
+          height: 100px;
+        }
+
+        @keyframes brands-scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% / 4));
+          }
+        }
+
+        @media (max-width: 768px) {
+          .brands-carousel-item {
+            width: 120px;
+            height: 80px;
+          }
+
+          .brands-carousel-track {
+            animation-duration: 20s;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .brands-carousel-item {
+            width: 100px;
+            height: 70px;
+          }
+        }
+      `}</style>
     </section>
   )
 }

@@ -58,9 +58,10 @@ function calculateTotals(items: CartItem[]) {
     (sum, item) => sum + item.price * item.quantity,
     0
   )
-  const tax = subtotal * 0.19 // IVA 19%
+  // Los precios ya incluyen IVA, no se calcula adicional
+  const tax = 0
   const shipping = subtotal > 100000 ? 0 : 15000 // Envio gratis por compras mayores a $100,000
-  const total = subtotal + tax + shipping
+  const total = subtotal + shipping // Total = subtotal + envío (el IVA ya está incluido en los precios)
 
   return {
     subtotal,

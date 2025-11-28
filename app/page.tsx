@@ -11,6 +11,7 @@ import CTASection from './components/CTASection'
 import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import CartSidebar from './components/CartSidebar'
+import FavoritesSidebar from './components/FavoritesSidebar'
 import { SectionErrorBoundary } from './components/ErrorBoundary'
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
       <Footer />
       <ChatWidget />
       <CartSidebar />
+      <FavoritesSidebar />
     </div>
   )
 }

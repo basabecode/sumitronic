@@ -42,7 +42,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('')
   const { state, toggleCart } = useCart()
   const { user, profile, signOut, isAdmin } = useAuth()
-  const { state: favoritesState } = useFavorites()
+  const { state: favoritesState, openFavorites } = useFavorites()
 
   // Calcular cantidad total de items en el carrito
   const totalItems = state.items.reduce(
@@ -209,10 +209,13 @@ export default function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/favorites">
+                    <button
+                      onClick={openFavorites}
+                      className="w-full flex items-center cursor-pointer"
+                    >
                       <Heart className="mr-2 h-4 w-4" />
                       Mis Favoritos
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/profile/orders">
@@ -292,9 +295,7 @@ export default function Header() {
                 variant="ghost"
                 size="sm"
                 className="relative p-2 text-gray-700 hover:text-red-600 hover:bg-red-50"
-                onClick={() => {
-                  window.location.href = '/favorites'
-                }}
+                onClick={openFavorites}
                 aria-label="Favoritos"
               >
                 <Heart className="w-5 h-5" />
@@ -525,10 +526,13 @@ export default function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/favorites">
+                    <button
+                      onClick={openFavorites}
+                      className="w-full flex items-center cursor-pointer"
+                    >
                       <Heart className="mr-2 h-4 w-4" />
                       Mis Favoritos
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/orders">
@@ -596,9 +600,7 @@ export default function Header() {
                 variant="ghost"
                 size="sm"
                 className="relative text-gray-700 hover:text-red-600"
-                onClick={() => {
-                  window.location.href = '/favorites'
-                }}
+                onClick={openFavorites}
               >
                 <Heart className="w-5 h-5" />
                 {totalFavorites > 0 && (

@@ -20,6 +20,7 @@ export interface FavoriteItem {
 export interface FavoritesState {
   items: FavoriteItem[]
   isLoading: boolean
+  isOpen: boolean
 }
 
 // Tipos de acciones
@@ -29,11 +30,14 @@ type FavoritesAction =
   | { type: 'CLEAR_FAVORITES' }
   | { type: 'SET_ITEMS'; payload: FavoriteItem[] }
   | { type: 'SET_LOADING'; payload: boolean }
+  | { type: 'OPEN_FAVORITES' }
+  | { type: 'CLOSE_FAVORITES' }
 
 // Estado inicial
 const initialState: FavoritesState = {
   items: [],
   isLoading: false,
+  isOpen: false,
 }
 
 // Reducer
@@ -70,6 +74,16 @@ function favoritesReducer(
         ...state,
         isLoading: action.payload,
       }
+    case 'OPEN_FAVORITES':
+      return {
+        ...state,
+        isOpen: true,
+      }
+    case 'CLOSE_FAVORITES':
+      return {
+        ...state,
+        isOpen: false,
+      }
     default:
       return state
   }
@@ -82,6 +96,8 @@ const FavoritesContext = createContext<{
   removeItem: (id: string) => void
   clearFavorites: () => void
   isFavorite: (id: string) => boolean
+  openFavorites: () => void
+  closeFavorites: () => void
 } | null>(null)
 
 // Provider
@@ -203,6 +219,14 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     return state.items.some(item => item.id === id)
   }
 
+  const openFavorites = () => {
+    dispatch({ type: 'OPEN_FAVORITES' })
+  }
+
+  const closeFavorites = () => {
+    dispatch({ type: 'CLOSE_FAVORITES' })
+  }
+
   return (
     <FavoritesContext.Provider
       value={{
@@ -211,6 +235,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         removeItem,
         clearFavorites,
         isFavorite,
+        openFavorites,
+        closeFavorites,
       }}
     >
       {children}
