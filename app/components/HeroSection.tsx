@@ -139,9 +139,9 @@ export default function HeroSection() {
                     </span>
 
                     <div className="space-y-4">
-                      <h1 className="max-w-[22ch] text-4xl font-semibold leading-[1.2] text-gray-900 sm:text-[2.75rem] md:text-[3rem]">
+                      <h2 className="max-w-[22ch] text-4xl font-semibold leading-[1.2] text-gray-900 sm:text-[2.75rem] md:text-[3rem]">
                         {slide.title}
-                      </h1>
+                      </h2>
 
                       <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                         <div className="flex items-baseline gap-2 text-gray-900">

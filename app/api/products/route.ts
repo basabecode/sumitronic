@@ -50,8 +50,16 @@ export async function GET(request: NextRequest) {
 
     // Filtros
     if (categories.length > 0) {
-      // Optimización: Filtrar directamente por slug de categoría usando JOIN
-      query = query.in('category.slug', categories)
+      // First, get the category IDs from the slugs
+      const { data: categoryData } = await supabase
+        .from('categories')
+        .select('id')
+        .in('slug', categories)
+
+      if (categoryData && categoryData.length > 0) {
+        const categoryIds = categoryData.map(cat => cat.id)
+        query = query.in('category_id', categoryIds)
+      }
     }
 
     if (brands.length > 0) {

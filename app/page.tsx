@@ -19,6 +19,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       <main>
+        <h1 className="sr-only">CapiShop Colombia - Tienda de Tecnología, Seguridad y Energía</h1>
         <HeroSection />
         <SectionErrorBoundary title="Error al cargar los productos">
           <ProductsSection />

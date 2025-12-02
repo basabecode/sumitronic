@@ -15,38 +15,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    // Obtener favoritos del usuario con JOIN optimizado
+    // 1. Obtener favoritos del usuario (solo IDs primero para evitar error de relación)
     const { data: favorites, error } = await supabase
       .from('favorites')
-      .select(
-        `
-        id,
-        product_id,
-        created_at,
-        product:products (
-          id,
-          name,
-          price,
-          image_url,
-          brand,
-          category_id,
-          stock_quantity,
-          featured,
-          active
-        )
-      `
-      )
+      .select('id, product_id, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
     if (error) {
       console.error('Error fetching favorites:', error)
       // Si la tabla no existe, devolver array vacío
-      if (
-        error.code === 'PGRST200' ||
-        error.message?.includes('relationship') ||
-        error.message?.includes('favorites')
-      ) {
+      if (error.code === '42P01') { // undefined_table
         return NextResponse.json([])
       }
       return NextResponse.json(
@@ -55,22 +34,58 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Transformar los datos (productos ya incluidos en el JOIN)
-    const transformedFavorites =
-      favorites?.map((fav: any) => {
-        const product = fav.product
+    if (!favorites || favorites.length === 0) {
+      return NextResponse.json([])
+    }
+
+    // 2. Obtener los detalles de los productos manualmente
+    const productIds = favorites.map(f => f.product_id)
+
+    const { data: products, error: productsError } = await supabase
+      .from('products')
+      .select(`
+        id,
+        name,
+        price,
+        image_url,
+        brand,
+        category_id,
+        stock_quantity,
+        is_featured,
+        is_active
+      `)
+      .in('id', productIds)
+
+    if (productsError) {
+      console.error('Error fetching favorite products:', productsError)
+      return NextResponse.json(
+        { error: 'Error al obtener productos favoritos' },
+        { status: 500 }
+      )
+    }
+
+    // 3. Combinar los datos
+    const productsMap = new Map(products?.map(p => [p.id, p]) || [])
+
+    const transformedFavorites = favorites
+      .map((fav: any) => {
+        const product = productsMap.get(fav.product_id)
+        if (!product) return null // El producto podría haber sido eliminado
+
         return {
-          id: product?.id || fav.product_id,
-          name: product?.name || 'Producto no encontrado',
-          price: product?.price || 0,
-          image_url: product?.image_url,
-          brand: product?.brand,
-          category: product?.category_id,
-          stock: product?.stock_quantity || 0,
-          discount_percentage: 0, // Se puede calcular si es necesario
+          id: product.id, // Usamos ID del producto para consistencia frontend
+          favorite_id: fav.id, // Guardamos ID de favorito por si acaso
+          name: product.name,
+          price: product.price,
+          image_url: product.image_url,
+          brand: product.brand,
+          category: product.category_id,
+          stock: product.stock_quantity || 0,
+          discount_percentage: 0,
           added_at: fav.created_at,
         }
-      }) || []
+      })
+      .filter(Boolean) // Eliminar nulos
 
     return NextResponse.json(transformedFavorites)
   } catch (error) {

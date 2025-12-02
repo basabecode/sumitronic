@@ -19,40 +19,48 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://capishop-web.vercel.app'),
-  title: 'CapiShoping - Tu Tienda de Electrónicos de Confianza',
+  title: {
+    default: 'CapiShop Colombia - Tecnología, Seguridad y Energía',
+    template: '%s | CapiShop Colombia',
+  },
   description:
-    'Descubre la mejor selección de productos electrónicos con precios increíbles. iPhone, MacBook, Gaming, Smart Home y más. Envío a todo el país, garantía de 12 meses y soporte Lun-Vie.',
+    'Tienda online líder en Colombia. Encuentra iPhone, MacBook, Cámaras de Seguridad y Soluciones de Energía. Envíos a todo el país, garantía real y soporte local.',
   keywords:
-    'electrónicos, iPhone, MacBook, gaming, smart home, tecnología, tienda online',
-  authors: [{ name: 'CapiShoping Team' }],
-  icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
+    'tecnología colombia, iphone bogota, macbook medellin, cámaras seguridad, paneles solares, capishop, tienda apple colombia',
+  authors: [{ name: 'CapiShop Colombia' }],
+  creator: 'CapiShop Colombia',
+  publisher: 'CapiShop Colombia',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
   },
   openGraph: {
-    title: 'CapiShoping - Tu Tienda de Electrónicos de Confianza',
+    title: 'CapiShop Colombia - Tecnología y Seguridad al Mejor Precio',
     description:
-      'Descubre la mejor selección de productos electrónicos con precios increíbles.',
-    url: 'https://CapiShoping.com',
-    siteName: 'CapiShoping',
+      'Tu tienda de confianza en Colombia para productos Apple, Gaming y Seguridad. Envíos seguros a nivel nacional.',
+    url: 'https://capishop-web.vercel.app',
+    siteName: 'CapiShop Colombia',
+    locale: 'es_CO',
+    type: 'website',
     images: [
       {
-        url: '/placeholder.svg?height=630&width=1200',
+        url: '/og-image.jpg', // Make sure to create this image
         width: 1200,
         height: 630,
-        alt: 'CapiShoping - Productos Electrónicos',
+        alt: 'CapiShop Colombia - Tecnología Premium',
       },
     ],
-    locale: 'es_ES',
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CapiShoping - Tu Tienda de Electrónicos de Confianza',
+    title: 'CapiShop Colombia - Tecnología Premium',
     description:
-      'Descubre la mejor selección de productos electrónicos con precios increíbles.',
-    images: ['/placeholder.svg?height=630&width=1200'],
+      'Envíos a toda Colombia. iPhone, Mac, Seguridad y Energía.',
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
@@ -65,7 +73,28 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  generator: 'v0.dev',
+  verification: {
+    google: 'verification_token', // Placeholder for GSC
+  },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'CapiShop Colombia',
+  url: 'https://capishop-web.vercel.app',
+  logo: 'https://capishop-web.vercel.app/logo.png',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+57-300-309-4854',
+    contactType: 'customer service',
+    areaServed: 'CO',
+    availableLanguage: 'es',
+  },
+  sameAs: [
+    'https://instagram.com/capishop_col',
+    'https://facebook.com/capishop_col',
+  ],
 }
 
 export default function RootLayout({
@@ -75,6 +104,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={inter.className}>
         <ErrorBoundary>
           <SharedDataProvider>

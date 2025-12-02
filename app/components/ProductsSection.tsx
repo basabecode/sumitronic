@@ -713,7 +713,7 @@ export function ProductsSection() {
           </p>
         </header>
 
-        <div className="sticky top-[calc(var(--nav-height)+1rem)] z-20 space-y-3 rounded-2xl border border-gray-100 bg-white/95 px-4 py-4 shadow-sm backdrop-blur">
+        <div className="sticky top-[72px] z-30 space-y-3 rounded-2xl border border-gray-100 bg-white/95 px-4 py-4 shadow-sm backdrop-blur">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <p className="text-sm font-medium text-gray-700">
               {totalProducts === 0
@@ -829,7 +829,7 @@ export function ProductsSection() {
             className={cn(
               'space-y-6',
               showFilters ? 'block' : 'hidden lg:block',
-              'lg:sticky lg:top-[calc(var(--nav-height)+1.5rem)]'
+              'lg:sticky lg:top-[180px] lg:self-start'
             )}
             aria-label="Filtros"
           >

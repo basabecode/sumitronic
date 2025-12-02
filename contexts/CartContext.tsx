@@ -1,7 +1,8 @@
 'use client'
 
 import { formatPrice } from '@/lib/utils'
-import React, { createContext, useContext, useReducer, useEffect, useState } from 'react'
+import React, { createContext, useContext, useReducer, useEffect, useState, useRef } from 'react'
+import { useAuth } from './AuthContext'
 
 // Tipos de datos
 export interface CartItem {
@@ -28,11 +29,12 @@ export interface CartState {
   shipping: number
   tax: number
   subtotal: number
+  isLoading?: boolean
 }
 
 // Tipos de acciones
 type CartAction =
-  | { type: 'ADD_ITEM'; payload: Omit<CartItem, 'quantity'> }
+  | { type: 'ADD_ITEM'; payload: Omit<CartItem, 'quantity'> & { quantity?: number } }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -40,6 +42,7 @@ type CartAction =
   | { type: 'OPEN_CART' }
   | { type: 'CLOSE_CART' }
   | { type: 'LOAD_CART'; payload: CartItem[] }
+  | { type: 'SET_LOADING'; payload: boolean }
 
 // Estado inicial
 const initialState: CartState = {
@@ -50,6 +53,7 @@ const initialState: CartState = {
   shipping: 0,
   tax: 0,
   subtotal: 0,
+  isLoading: false,
 }
 
 // Funcion para calcular totales
@@ -90,7 +94,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
           item.id === action.payload.id
             ? {
                 ...item,
-                quantity: Math.min(item.quantity + 1, maxQuantity),
+                quantity: Math.min(item.quantity + (action.payload.quantity || 1), maxQuantity),
               }
             : item
         )
@@ -100,7 +104,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
           ...state.items,
           {
             ...action.payload,
-            quantity: 1,
+            quantity: action.payload.quantity || 1,
           },
         ]
       }
@@ -191,6 +195,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
     }
 
+    case 'SET_LOADING': {
+      return {
+        ...state,
+        isLoading: action.payload,
+      }
+    }
+
     default:
       return state
   }
@@ -199,7 +210,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 // Contexto
 interface CartContextType {
   state: CartState
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void
@@ -223,10 +234,11 @@ export function useCart(): CartContextType {
 // Provider
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, initialState)
-
+  const { user, loading: isAuthLoading } = useAuth()
   const [isInitialized, setIsInitialized] = useState(false)
+  const isSyncingRef = useRef(false)
 
-  // Cargar carrito desde localStorage al inicializar
+  // 1. Inicialización: Cargar desde localStorage primero
   useEffect(() => {
     const savedCart = localStorage.getItem('cart')
     if (savedCart) {
@@ -240,14 +252,82 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsInitialized(true)
   }, [])
 
-  // Guardar carrito en localStorage cuando cambie
+  // 2. Sincronización con Backend al iniciar sesión
   useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem('cart', JSON.stringify(state.items))
-    }
-  }, [state.items, isInitialized])
+    const syncCartWithBackend = async () => {
+      if (!user || !isInitialized || isAuthLoading) return
 
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
+      dispatch({ type: 'SET_LOADING', payload: true })
+      try {
+        // Obtener carrito del backend
+        const response = await fetch('/api/cart')
+
+        if (response.ok) {
+          const data = await response.json()
+          const backendItems = data.items || []
+
+          // Estrategia de fusión:
+          // Si hay items locales y backend está vacío -> Subir locales
+          // Si hay items backend y local está vacío -> Bajar backend
+          // Si hay ambos -> Fusionar (priorizar backend o sumar cantidades? Por simplicidad: Bajar backend y avisar o fusionar)
+
+          // Implementación actual: Si hay items locales, enviarlos al backend (merge). Luego recargar.
+          if (state.items.length > 0) {
+            // Fusionar lógica simple: Enviar estado actual al backend
+            await fetch('/api/cart', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: state.items }),
+            })
+          } else if (backendItems.length > 0) {
+            // Si local está vacío pero backend tiene items, cargar backend
+            dispatch({ type: 'LOAD_CART', payload: backendItems })
+          }
+        }
+      } catch (error) {
+        console.error('Error syncing cart:', error)
+      } finally {
+        dispatch({ type: 'SET_LOADING', payload: false })
+      }
+    }
+
+    syncCartWithBackend()
+  }, [user, isInitialized, isAuthLoading])
+
+  // 3. Persistencia: Guardar en localStorage y Backend cuando cambia el estado
+  useEffect(() => {
+    if (!isInitialized) return
+
+    // Guardar en localStorage
+    localStorage.setItem('cart', JSON.stringify(state.items))
+
+    // Guardar en Backend si el usuario está autenticado
+    const saveToBackend = async () => {
+      if (!user || isSyncingRef.current) return
+
+      try {
+        isSyncingRef.current = true
+        await fetch('/api/cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: state.items }),
+        })
+      } catch (error) {
+        console.error('Error saving cart to backend:', error)
+      } finally {
+        isSyncingRef.current = false
+      }
+    }
+
+    // Debounce para no saturar la API
+    const timeoutId = setTimeout(() => {
+      if (user) saveToBackend()
+    }, 1000)
+
+    return () => clearTimeout(timeoutId)
+  }, [state.items, isInitialized, user])
+
+  const addItem = (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
     dispatch({ type: 'ADD_ITEM', payload: item })
   }
 
@@ -293,4 +373,5 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
+
 

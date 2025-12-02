@@ -30,6 +30,15 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useCart } from '@/contexts/CartContext'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
+import { PaymentMethodSelector, DigitalWalletPayment } from '@/components/payments'
+import {
+  type PaymentMethod,
+  type PaymentReference,
+  type CheckoutFormData as PaymentCheckoutFormData,
+  validateCheckoutForm,
+  sanitizeCheckoutForm,
+} from '@/lib/payments'
+
 
 interface CheckoutForm {
   // Información personal
@@ -46,10 +55,8 @@ interface CheckoutForm {
   country: string
 
   // Información de pago
-  cardNumber: string
-  expiryDate: string
-  cvv: string
-  cardholderName: string
+  paymentMethod: PaymentMethod
+  paymentReference?: PaymentReference
 
   // Opciones
   saveInfo: boolean
@@ -70,10 +77,8 @@ export default function CheckoutPageContent() {
     state: '',
     zipCode: '',
     country: 'Colombia',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    cardholderName: '',
+    paymentMethod: 'DIGITAL_WALLET',
+    paymentReference: undefined,
     saveInfo: false,
     acceptTerms: false,
     newsletter: false,
@@ -81,7 +86,7 @@ export default function CheckoutPageContent() {
 
   const handleInputChange = (
     field: keyof CheckoutForm,
-    value: string | boolean
+    value: string | boolean | PaymentMethod | PaymentReference | undefined
   ) => {
     setForm(prev => ({ ...prev, [field]: value }))
   }
@@ -287,77 +292,22 @@ export default function CheckoutPageContent() {
                 </CardContent>
               </Card>
 
-              {/* Información de Pago */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    Información de Pago
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <Label htmlFor="cardholderName">
-                      Nombre en la tarjeta *
-                    </Label>
-                    <Input
-                      id="cardholderName"
-                      value={form.cardholderName}
-                      onChange={e =>
-                        handleInputChange('cardholderName', e.target.value)
-                      }
-                      required
-                    />
-                  </div>
+              {/* Método de Pago */}
+              <PaymentMethodSelector
+                selectedMethod={form.paymentMethod}
+                onMethodChange={(method) => handleInputChange('paymentMethod', method)}
+              />
 
-                  <div>
-                    <Label htmlFor="cardNumber">Número de tarjeta *</Label>
-                    <Input
-                      id="cardNumber"
-                      value={form.cardNumber}
-                      onChange={e =>
-                        handleInputChange('cardNumber', e.target.value)
-                      }
-                      placeholder="1234 5678 9012 3456"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="expiryDate">Fecha de vencimiento *</Label>
-                      <Input
-                        id="expiryDate"
-                        value={form.expiryDate}
-                        onChange={e =>
-                          handleInputChange('expiryDate', e.target.value)
-                        }
-                        placeholder="MM/AA"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cvv">CVV *</Label>
-                      <Input
-                        id="cvv"
-                        value={form.cvv}
-                        onChange={e => handleInputChange('cvv', e.target.value)}
-                        placeholder="123"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <div className="flex items-center space-x-2 text-sm text-blue-800">
-                      <Lock className="w-4 h-4" />
-                      <span>
-                        Tus datos están protegidos con encriptación SSL
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Digital Wallet Payment Details */}
+              {form.paymentMethod === 'DIGITAL_WALLET' && (
+                <DigitalWalletPayment
+                  totalAmount={state.total}
+                  orderId="PREVIEW"
+                  onPaymentReferenceChange={(reference) =>
+                    handleInputChange('paymentReference', reference)
+                  }
+                />
+              )}
 
               {/* Opciones adicionales */}
               <Card>
@@ -519,21 +469,49 @@ export default function CheckoutPageContent() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-gray-600 mb-4">
                       Métodos de pago aceptados
                     </p>
-                    <div className="flex justify-center space-x-2">
-                      <div className="bg-gray-100 px-3 py-2 rounded text-xs">
-                        VISA
+                    <div className="flex justify-center flex-wrap gap-3">
+                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                        <Image
+                          src="/bancos/nequi_1.png"
+                          alt="Nequi"
+                          fill
+                          className="object-contain p-1"
+                        />
                       </div>
-                      <div className="bg-gray-100 px-3 py-2 rounded text-xs">
-                        Mastercard
+                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                        <Image
+                          src="/bancos/daviplata_1.png"
+                          alt="Daviplata"
+                          fill
+                          className="object-contain p-1"
+                        />
                       </div>
-                      <div className="bg-gray-100 px-3 py-2 rounded text-xs">
-                        PSE
+                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                        <Image
+                          src="/bancos/bancolombia_3.png"
+                          alt="Bancolombia"
+                          fill
+                          className="object-contain p-1"
+                        />
                       </div>
-                      <div className="bg-gray-100 px-3 py-2 rounded text-xs">
-                        Bancolombia
+                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                        <Image
+                          src="/bancos/davivienda_1.png"
+                          alt="Davivienda"
+                          fill
+                          className="object-contain p-1"
+                        />
+                      </div>
+                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                        <Image
+                          src="/bancos/nubank_1.png"
+                          alt="Nubank"
+                          fill
+                          className="object-contain p-1"
+                        />
                       </div>
                     </div>
                   </div>

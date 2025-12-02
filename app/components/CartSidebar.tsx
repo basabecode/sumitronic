@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   X,
   Plus,
@@ -21,22 +22,26 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/contexts/CartContext'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function CartSidebar() {
   const { state, removeItem, updateQuantity, closeCart, clearCart } = useCart()
+  const { user } = useAuth()
+  const router = useRouter()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
 
   const handleCheckout = () => {
-    setIsCheckingOut(true)
-    // Simular proceso de checkout
-    setTimeout(() => {
-      alert(
-        '¡Gracias por tu compra! Te contactaremos pronto para confirmar tu pedido.'
-      )
-      clearCart()
+    // Verificar si el usuario está autenticado
+    if (!user) {
+      // Redirigir a login si no está autenticado
       closeCart()
-      setIsCheckingOut(false)
-    }, 2000)
+      router.push('/auth/login?redirect=/checkout')
+      return
+    }
+
+    // Si está autenticado, redirigir a checkout
+    closeCart()
+    router.push('/checkout')
   }
 
   const formatPrice = (price: number) => {
@@ -253,6 +258,11 @@ export default function CartSidebar() {
 
             {/* Botones de acción */}
             <div className="space-y-2">
+              {!user && (
+                <p className="text-xs text-center text-gray-600 bg-orange-50 p-2 rounded-md">
+                  Inicia sesión para proceder con tu compra
+                </p>
+              )}
               <Button
                 onClick={handleCheckout}
                 disabled={isCheckingOut || state.items.length === 0}
@@ -266,7 +276,7 @@ export default function CartSidebar() {
                 ) : (
                   <div className="flex items-center space-x-2">
                     <CreditCard className="w-4 h-4" />
-                    <span>Proceder al Pago</span>
+                    <span>{user ? 'Proceder al Pago' : 'Iniciar Sesión para Pagar'}</span>
                   </div>
                 )}
               </Button>
