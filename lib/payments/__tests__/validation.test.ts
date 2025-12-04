@@ -3,6 +3,8 @@
  * Tests for payment validation and sanitization functions
  */
 
+import { describe, test, expect } from 'vitest';
+
 import {
   sanitizeString,
   sanitizePhone,

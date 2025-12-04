@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { LoginForm } from '@/app/components/auth/LoginForm'
@@ -8,7 +8,7 @@ import { ForgotPasswordForm } from '@/app/components/auth/ForgotPasswordForm'
 import { useRedirectIfAuthenticated } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [showForgotPassword, setShowForgotPassword] = useState(false)
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || '/'
@@ -51,5 +51,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50">Cargando...</div>}>
+      <LoginPageContent />
+    </Suspense>
   )
 }

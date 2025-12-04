@@ -7,6 +7,7 @@
     "dev": "next dev --port 3003",
     "start": "next start --port 3003",
     "lint": "next lint",
+    "test": "vitest",
     "test:links": "node scripts/test-links.js",
     "test:links:3003": "node scripts/test-links.js 3003 test",
     "test:database": "tsx scripts/database-health-check.ts",
@@ -84,7 +85,8 @@
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.20.5",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.15"
   },
   "engines": {
     "node": ">=18.0.0",

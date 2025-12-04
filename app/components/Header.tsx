@@ -153,20 +153,7 @@ export default function Header() {
 
           {/* Lado derecho: WhatsApp + Auth + Cart */}
           <div className="flex items-center space-x-2">
-            {/* WhatsApp */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-2 text-green-600 hover:text-green-700 hover:bg-green-50"
-              onClick={() => {
-                const el = document.getElementById('no-encontraste')
-                if (el) el.scrollIntoView({ behavior: 'smooth' })
-              }}
-              aria-label="¿No encontraste lo que buscas?"
-              title="¿No encontraste lo que buscas?"
-            >
-              <MessageCircle className="w-5 h-5" />
-            </Button>
+
 
             {/* User Menu - Responsivo */}
             {user ? (
@@ -271,23 +258,25 @@ export default function Header() {
             )}
 
             {/* Cart */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="relative p-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50"
-              onClick={toggleCart}
-              aria-label="Carrito de compras"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {totalItems > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600 border-2 border-white"
-                >
-                  {totalItems}
-                </Badge>
-              )}
-            </Button>
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative p-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50"
+                onClick={toggleCart}
+                aria-label="Carrito de compras"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600 border-2 border-white"
+                  >
+                    {totalItems}
+                  </Badge>
+                )}
+              </Button>
+            )}
 
             {/* Favorites - Solo para usuarios autenticados */}
             {user && (
@@ -471,19 +460,7 @@ export default function Header() {
 
           {/* Right Actions Desktop */}
           <div className="flex items-center space-x-4">
-            {/* WhatsApp Desktop */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-green-600 hover:text-green-700 hover:bg-green-50"
-              onClick={() => {
-                const el = document.getElementById('no-encontraste')
-                if (el) el.scrollIntoView({ behavior: 'smooth' })
-              }}
-              aria-label="¿No encontraste lo que buscas?"
-            >
-              <MessageCircle className="w-5 h-5" />
-            </Button>
+
 
             {/* User Menu Desktop */}
             {user ? (
@@ -560,9 +537,12 @@ export default function Header() {
               </DropdownMenu>
             ) : (
               <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm" asChild>
+                <Button
+                  size="sm"
+                  asChild
+                  className="bg-orange-600 hover:bg-orange-700"
+                >
                   <Link href="/auth/login">
-                    <LogIn className="w-4 h-4 mr-2" />
                     Iniciar Sesión
                   </Link>
                 </Button>
@@ -577,22 +557,24 @@ export default function Header() {
             )}
 
             {/* Cart Desktop */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="relative text-gray-700 hover:text-orange-600"
-              onClick={toggleCart}
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {totalItems > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600"
-                >
-                  {totalItems}
-                </Badge>
-              )}
-            </Button>
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative text-gray-700 hover:text-orange-600"
+                onClick={toggleCart}
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600"
+                  >
+                    {totalItems}
+                  </Badge>
+                )}
+              </Button>
+            )}
 
             {/* Favorites Desktop - Solo para usuarios autenticados */}
             {user && (
