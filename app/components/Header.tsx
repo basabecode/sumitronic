@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   Search,
   ShoppingCart,
@@ -43,6 +44,9 @@ export default function Header() {
   const { state, toggleCart } = useCart()
   const { user, profile, signOut, isAdmin } = useAuth()
   const { state: favoritesState, openFavorites } = useFavorites()
+  const pathname = usePathname()
+  const router = useRouter()
+  const isHome = pathname === '/'
 
   // Calcular cantidad total de items en el carrito
   const totalItems = state.items.reduce(
@@ -326,122 +330,32 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="flex items-center space-x-8">
-            <div className="relative group">
-              <button className="flex items-center space-x-1 text-gray-700 hover:text-orange-600 transition-colors">
-                <span>Categorías</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
 
-              {/* Submenu de Categorías */}
-              <div
-                className="absolute top-full left-0 w-80 bg-white shadow-xl rounded-lg p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50"
-                role="menu"
-                aria-label="Categorías"
-              >
-                <div className="grid grid-cols-1 gap-2">
-                  {categories.map(category => (
-                    <a
-                      key={category.id}
-                      href="#productos"
-                      role="menuitem"
-                      onClick={e => {
-                        e.preventDefault()
-                        try {
-                          const url = new URL(window.location.href)
-                          url.searchParams.set('cat', category.id)
-                          window.history.pushState({}, '', url.toString())
-                        } catch (err) {
-                          const sep = window.location.href.split('#')[0]
-                          window.history.pushState(
-                            {},
-                            '',
-                            `${sep}?cat=${encodeURIComponent(
-                              category.id
-                            )}#productos`
-                          )
-                        }
 
-                        window.dispatchEvent(
-                          new CustomEvent('categoryFilterChanged', {
-                            detail: { category: category.id },
-                          })
-                        )
-
-                        setIsMenuOpen(false)
-                        const el = document.getElementById('productos')
-                        if (el) el.scrollIntoView({ behavior: 'smooth' })
-                      }}
-                      className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-orange-50 transition-colors cursor-pointer"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className="w-10 h-10 object-cover rounded-md"
-                        />
-                        <span className="text-sm font-medium text-gray-700">
-                          {category.name}
-                        </span>
-                      </div>
-                      <span className="text-xs text-gray-400">Ver</span>
-                    </a>
-                  ))}
-                </div>
-                <div className="mt-3 border-t pt-3">
-                  <a
-                    href="#productos"
-                    className="text-sm text-orange-600 font-medium hover:underline"
-                    onClick={e => {
-                      e.preventDefault()
-                      try {
-                        const url = new URL(window.location.href)
-                        url.searchParams.delete('cat')
-                        window.history.pushState({}, '', url.toString())
-                      } catch (err) {
-                        // noop
-                      }
-
-                      window.dispatchEvent(
-                        new CustomEvent('categoryFilterChanged', {
-                          detail: { category: null },
-                        })
-                      )
-
-                      setIsMenuOpen(false)
-                      const el = document.getElementById('productos')
-                      if (el) el.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                  >
-                    Ver todos los productos
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <a
-              href="#productos"
+            <Link
+              href={isHome ? "#productos" : "/#productos"}
               className="text-gray-700 hover:text-orange-600 transition-colors"
             >
               Productos
-            </a>
-            <a
-              href="#ofertas-especiales"
+            </Link>
+            <Link
+              href={isHome ? "#ofertas-especiales" : "/#ofertas-especiales"}
               className="text-gray-700 hover:text-orange-600 transition-colors"
             >
               Ofertas
-            </a>
-            <a
-              href="#blog"
+            </Link>
+            <Link
+              href={isHome ? "#blog" : "/#blog"}
               className="text-gray-700 hover:text-orange-600 transition-colors"
             >
               Blog
-            </a>
-            <a
-              href="#contacto"
+            </Link>
+            <Link
+              href={isHome ? "#contacto" : "/#contacto"}
               className="text-gray-700 hover:text-orange-600 transition-colors"
             >
               Contacto
-            </a>
+            </Link>
           </nav>
 
           {/* Search Bar Desktop */}
@@ -664,25 +578,31 @@ export default function Header() {
                 </h4>
                 <div className="grid grid-cols-1 gap-2">
                   {categories.map(cat => (
-                    <button
-                      key={cat.id}
-                      className="flex items-center gap-3 p-2 rounded-md hover:bg-orange-50 w-full text-left"
-                      onClick={() => {
-                        try {
-                          const url = new URL(window.location.href)
-                          url.searchParams.set('cat', cat.id)
-                          window.history.pushState({}, '', url.toString())
-                        } catch (err) {}
-                        window.dispatchEvent(
-                          new CustomEvent('categoryFilterChanged', {
-                            detail: { category: cat.id },
-                          })
-                        )
-                        setIsMenuOpen(false)
-                        const el = document.getElementById('productos')
-                        if (el) el.scrollIntoView({ behavior: 'smooth' })
-                      }}
-                    >
+                      <button
+                        key={cat.id}
+                        className="flex items-center gap-3 p-2 rounded-md hover:bg-orange-50 w-full text-left"
+                        onClick={() => {
+                          if (!isHome) {
+                            router.push(`/?cat=${cat.id}#productos`)
+                            setIsMenuOpen(false)
+                            return
+                          }
+
+                          try {
+                            const url = new URL(window.location.href)
+                            url.searchParams.set('cat', cat.id)
+                            window.history.pushState({}, '', url.toString())
+                          } catch (err) {}
+                          window.dispatchEvent(
+                            new CustomEvent('categoryFilterChanged', {
+                              detail: { category: cat.id },
+                            })
+                          )
+                          setIsMenuOpen(false)
+                          const el = document.getElementById('productos')
+                          if (el) el.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                      >
                       <img
                         src={cat.image}
                         alt={cat.name}
@@ -698,40 +618,46 @@ export default function Header() {
                 </div>
               </div>
 
-              <a
-                href="#productos"
+              <Link
+                href={isHome ? "#productos" : "/#productos"}
                 className="block p-2 rounded-md hover:bg-gray-100"
                 onClick={() => {
                   setIsMenuOpen(false)
-                  const el = document.getElementById('productos')
-                  if (el) el.scrollIntoView({ behavior: 'smooth' })
+                  if (isHome) {
+                    const el = document.getElementById('productos')
+                    if (el) el.scrollIntoView({ behavior: 'smooth' })
+                  }
                 }}
               >
                 Productos
-              </a>
-              <a
-                href="#ofertas-especiales"
+              </Link>
+              <Link
+                href={isHome ? "#ofertas-especiales" : "/#ofertas-especiales"}
                 className="block p-2 rounded-md hover:bg-gray-100"
                 onClick={() => {
                   setIsMenuOpen(false)
-                  const el = document.getElementById('ofertas-especiales')
-                  if (el) el.scrollIntoView({ behavior: 'smooth' })
+                  if (isHome) {
+                    const el = document.getElementById('ofertas-especiales')
+                    if (el) el.scrollIntoView({ behavior: 'smooth' })
+                  }
                 }}
               >
                 Ofertas
-              </a>
-              <a
-                href="#blog"
+              </Link>
+              <Link
+                href={isHome ? "#blog" : "/#blog"}
                 className="block p-2 rounded-md hover:bg-gray-100"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Blog
-              </a>
-              <a
-                href="#contacto"
+              </Link>
+              <Link
+                href={isHome ? "#contacto" : "/#contacto"}
                 className="block p-2 rounded-md hover:bg-gray-100"
+                onClick={() => setIsMenuOpen(false)}
               >
                 Contacto
-              </a>
+              </Link>
             </nav>
 
             <div className="mt-6 border-t pt-4">

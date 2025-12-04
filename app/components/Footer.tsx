@@ -126,7 +126,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
+                  href="/help?section=faq"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Centro de Ayuda
@@ -134,7 +134,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/help?section=returns"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Política de Devoluciones
@@ -142,7 +142,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/help?section=terms"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Términos y Condiciones
@@ -150,7 +150,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/help?section=privacy"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Política de Privacidad
@@ -158,7 +158,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/help?section=warranty"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Garantías
@@ -166,7 +166,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/help?section=support"
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Servicio Técnico
@@ -199,27 +199,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Newsletter */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="max-w-md mx-auto text-center">
-            <h3 className="text-xl font-semibold mb-4">
-              Suscríbete a Nuestro Newsletter
-            </h3>
-            <p className="text-gray-300 text-sm mb-6">
-              Recibe ofertas exclusivas y las últimas novedades tecnológicas
-            </p>
-            <div className="flex space-x-2">
-              <Input
-                type="email"
-                placeholder="Tu email aquí..."
-                className="flex-1 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-              />
-              <Button className="bg-orange-600 hover:bg-orange-700">
-                Suscribirse
-              </Button>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Payment & Shipping Info */}

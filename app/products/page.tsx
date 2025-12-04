@@ -112,6 +112,7 @@ function ProductsPageContent() {
 
   // Filtros
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm)
   const [selectedCategory, setSelectedCategory] = useState(
     searchParams.get('category') || 'all'
   )
@@ -140,9 +141,31 @@ function ProductsPageContent() {
     fetchCategories()
   }, [])
 
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
+
+  // Listen for global search event
+  useEffect(() => {
+    const handleGlobalSearch = (e: CustomEvent) => {
+      setSearchTerm(e.detail.query)
+      setCurrentPage(1)
+    }
+
+    window.addEventListener('globalSearch', handleGlobalSearch as EventListener)
+    return () => {
+      window.removeEventListener('globalSearch', handleGlobalSearch as EventListener)
+    }
+  }, [])
+
   useEffect(() => {
     fetchProducts()
-  }, [currentPage, selectedCategory, sortBy, sortOrder])
+  }, [currentPage, selectedCategory, sortBy, sortOrder, debouncedSearchTerm])
 
   const fetchCategories = async () => {
     try {
@@ -179,7 +202,7 @@ function ProductsPageContent() {
 
       if (selectedCategory && selectedCategory !== 'all')
         params.append('category', selectedCategory)
-      if (searchTerm) params.append('search', searchTerm)
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm)
       if (priceRange[0] > 0) params.append('minPrice', priceRange[0].toString())
       if (priceRange[1] < 1000000)
         params.append('maxPrice', priceRange[1].toString())
@@ -199,8 +222,12 @@ function ProductsPageContent() {
   }
 
   const handleSearch = () => {
+    // No longer needed to manually trigger fetch, as debouncedSearchTerm change will trigger it
+    // But we might want to force immediate update if user presses Enter?
+    // For now, let's rely on the effect.
+    // Actually, if user presses Enter, we might want to clear the timeout and fetch immediately.
+    // But simpler is to just let the effect run.
     setCurrentPage(1)
-    fetchProducts()
   }
 
   const handleFilterChange = () => {
