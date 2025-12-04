@@ -12,11 +12,13 @@ import Footer from './components/Footer'
 import ChatWidget from './components/ChatWidget'
 import CartSidebar from './components/CartSidebar'
 import FavoritesSidebar from './components/FavoritesSidebar'
+import BottomNav from './components/BottomNav'
+import WhatsAppFAB from './components/WhatsAppFAB'
 import { SectionErrorBoundary } from './components/ErrorBoundary'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overscroll-bounce touch-pan-y">
       <Header />
       <main>
         <h1 className="sr-only">CapiShop Colombia - Tienda de Tecnología, Seguridad y Energía</h1>
@@ -38,6 +40,8 @@ export default function Home() {
       <ChatWidget />
       <CartSidebar />
       <FavoritesSidebar />
+      <WhatsAppFAB />
+      <BottomNav />
     </div>
   )
 }

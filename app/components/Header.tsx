@@ -136,7 +136,7 @@ export default function Header() {
           <div className="flex items-center space-x-2">
             {/* Mobile menu button */}
             <button
-              className="mobile-menu-button flex items-center justify-center p-2 rounded-lg border border-gray-200 bg-white hover:bg-orange-50 active:bg-orange-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 shadow-sm hover:shadow-md"
+              className="touch-target flex items-center justify-center rounded-lg border border-gray-200 bg-white hover:bg-orange-50 active:bg-orange-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 shadow-sm hover:shadow-md gpu-accelerated"
               aria-label="Abrir menú"
               onClick={() => setIsMenuOpen(true)}
             >
@@ -147,7 +147,7 @@ export default function Header() {
             <Button
               variant="ghost"
               size="sm"
-              className="p-2 hover:bg-orange-50"
+              className="touch-target hover:bg-orange-50 gpu-accelerated"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               aria-label="Buscar"
             >
@@ -239,7 +239,7 @@ export default function Header() {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="p-2 hover:bg-orange-50"
+                  className="touch-target hover:bg-orange-50 gpu-accelerated"
                   title="Iniciar Sesión"
                 >
                   <Link href="/auth/login">
@@ -251,7 +251,7 @@ export default function Header() {
                 <Button
                   size="sm"
                   asChild
-                  className="p-2 bg-orange-600 hover:bg-orange-700 min-w-[40px]"
+                  className="touch-target bg-orange-600 hover:bg-orange-700 gpu-accelerated"
                   title="Registrarse"
                 >
                   <Link href="/auth/register">
@@ -266,7 +266,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative p-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50"
+                className="relative touch-target text-gray-700 hover:text-orange-600 hover:bg-orange-50 gpu-accelerated"
                 onClick={toggleCart}
                 aria-label="Carrito de compras"
               >
@@ -274,7 +274,7 @@ export default function Header() {
                 {totalItems > 0 && (
                   <Badge
                     variant="destructive"
-                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600 border-2 border-white"
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-orange-600 hover:bg-orange-600 border-2 border-white animate-scale-in"
                   >
                     {totalItems}
                   </Badge>
@@ -287,7 +287,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative p-2 text-gray-700 hover:text-red-600 hover:bg-red-50"
+                className="relative touch-target text-gray-700 hover:text-red-600 hover:bg-red-50 gpu-accelerated"
                 onClick={openFavorites}
                 aria-label="Favoritos"
               >
@@ -295,7 +295,7 @@ export default function Header() {
                 {totalFavorites > 0 && (
                   <Badge
                     variant="destructive"
-                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-red-600 hover:bg-red-600 border-2 border-white"
+                    className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-red-600 hover:bg-red-600 border-2 border-white animate-scale-in"
                   >
                     {totalFavorites}
                   </Badge>

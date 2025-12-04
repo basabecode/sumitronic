@@ -25,8 +25,15 @@ Este proyecto utiliza una arquitectura moderna basada en **Next.js 14 (App Route
 ### Herramientas & DevOps
 - **Despliegue:** [Vercel](https://vercel.com/)
 - **Linting:** ESLint
+- **Testing:** [Vitest](https://vitest.dev/)
 - **Gestor de Paquetes:** npm / pnpm
 - **Integración AI:** Soporte para MCP (Model Context Protocol)
+
+### ✨ Características Principales
+- **Búsqueda en Tiempo Real:** Filtrado instantáneo de productos con optimización debounce.
+- **Centro de Ayuda:** Sección dedicada para soporte al cliente, preguntas frecuentes y políticas.
+- **Carrito Persistente:** Sincronización de carrito entre dispositivos para usuarios autenticados.
+- **Panel de Administración:** Gestión de productos y visualización de métricas.
 
 ---
 
@@ -42,6 +49,7 @@ CapiShop_Web/
 │   ├── auth/                   # Páginas de autenticación (Login, Register)
 │   ├── cart/                   # Página del carrito de compras
 │   ├── checkout/               # Proceso de pago
+│   ├── help/                   # Centro de Ayuda y Atención al Cliente
 │   ├── products/               # Catálogo y detalles de productos
 │   ├── profile/                # Perfil de usuario y pedidos
 │   ├── layout.tsx              # Layout principal (Header, Footer)
@@ -140,6 +148,7 @@ Este proyecto está configurado para trabajar con agentes de IA avanzados median
 - `npm run build`: Construye la aplicación para producción.
 - `npm run start`: Inicia el servidor de producción.
 - `npm run lint`: Ejecuta el linter para verificar calidad de código.
+- `npm run test`: Ejecuta las pruebas unitarias con Vitest.
 - `node scripts/test-supabase-connection.js`: Prueba la conexión con la base de datos.
 
 ---

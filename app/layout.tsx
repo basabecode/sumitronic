@@ -14,7 +14,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
+  maximumScale: 5, // Permitir zoom para accesibilidad
+  userScalable: true,
+  themeColor: '#ea580c', // Orange-600 brand color
 }
 
 export const metadata: Metadata = {
@@ -105,6 +107,26 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* PWA Meta Tags */}
+        <link rel="manifest" href="/manifest.json" />
+
+        {/* iOS Meta Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="CapiShop" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/favicon.png" />
+
+        {/* iOS Splash Screens */}
+        <link rel="apple-touch-startup-image" href="/favicon.png" />
+
+        {/* Android Meta Tags */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#ea580c" />
+
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
