@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   HelpCircle,
@@ -25,16 +25,22 @@ import {
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
 
-export default function HelpPage() {
+// Component that handles search params
+function SearchParamsHandler({ setActiveSection }: { setActiveSection: (section: string) => void }) {
   const searchParams = useSearchParams()
-  const [activeSection, setActiveSection] = useState('faq')
 
   useEffect(() => {
     const section = searchParams.get('section')
     if (section) {
       setActiveSection(section)
     }
-  }, [searchParams])
+  }, [searchParams, setActiveSection])
+
+  return null
+}
+
+export default function HelpPage() {
+  const [activeSection, setActiveSection] = useState('faq')
 
   const sections = [
     {
@@ -371,6 +377,11 @@ export default function HelpPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
+
+      {/* Wrap SearchParamsHandler in Suspense */}
+      <Suspense fallback={null}>
+        <SearchParamsHandler setActiveSection={setActiveSection} />
+      </Suspense>
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="mb-8 text-center">
