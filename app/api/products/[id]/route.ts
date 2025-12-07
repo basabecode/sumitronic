@@ -51,16 +51,23 @@ export async function GET(
       .select(
         `
         *,
-        product_images!inner (
+        category:categories!category_id (
+          id,
+          name,
+          slug
+        ),
+        product_images (
+          id,
           image_url,
-          is_primary
+          alt_text,
+          is_primary,
+          sort_order
         )
       `
       )
       .eq('category_id', product.category_id)
       .eq('active', true)
       .neq('id', id)
-      .eq('product_images.is_primary', true)
       .limit(4)
 
     return NextResponse.json({

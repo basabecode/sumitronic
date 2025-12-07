@@ -21,7 +21,6 @@ export default function SettingsPage() {
     email: true,
     orderUpdates: true,
     promotions: false,
-    newsletter: false,
   })
   const [privacy, setPrivacy] = useState({
     profilePublic: false,
@@ -157,23 +156,6 @@ export default function SettingsPage() {
               checked={notifications.promotions}
               onCheckedChange={value =>
                 handleNotificationChange('promotions', value)
-              }
-            />
-          </div>
-
-          <Separator />
-
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Newsletter</Label>
-              <p className="text-sm text-gray-500">
-                Recibe nuestro boletín semanal con novedades
-              </p>
-            </div>
-            <Switch
-              checked={notifications.newsletter}
-              onCheckedChange={value =>
-                handleNotificationChange('newsletter', value)
               }
             />
           </div>

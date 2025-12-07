@@ -59,11 +59,24 @@ interface ProductClientProps {
 }
 
 export default function ProductClient({ product, relatedProducts }: ProductClientProps) {
-  const [selectedImage, setSelectedImage] = useState<string>(
-    product.product_images?.find(img => img.is_primary)?.image_url ||
-    product.product_images?.[0]?.image_url ||
-    ''
-  )
+  // Robust image extraction - check multiple sources
+  const getInitialImage = () => {
+    // Check for direct image properties first
+    if ((product as any).image) return (product as any).image
+    if ((product as any).image_url) return (product as any).image_url
+
+    // Check product_images array
+    const primaryImage = product.product_images?.find(img => img.is_primary)
+    if (primaryImage?.image_url) return primaryImage.image_url
+
+    const firstImage = product.product_images?.[0]
+    if (firstImage?.image_url) return firstImage.image_url
+
+    // Fallback to placeholder
+    return '/placeholder.svg'
+  }
+
+  const [selectedImage, setSelectedImage] = useState<string>(getInitialImage())
   const [quantity, setQuantity] = useState(1)
   const { addItem, openCart } = useCart()
   const { addItem: addToFavorites, isFavorite, removeItem: removeFromFavorites } = useFavorites()
@@ -141,6 +154,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
               alt={product.name}
               fill
               className="object-contain p-4"
+              priority
             />
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">

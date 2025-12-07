@@ -36,11 +36,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Log additional information in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error details:', {
+      console.error('Error details:', JSON.stringify({
         message: error.message,
         stack: error.stack,
         componentStack: errorInfo.componentStack,
-      })
+      }, null, 2))
     }
 
     // In production, you could send this to an error reporting service

@@ -16,7 +16,11 @@ interface Product {
   stock?: number
   stock_quantity?: number
   sku?: string
-  category?: string
+  category?: string | {
+    id: string
+    name: string
+    slug: string
+  }
   brand?: string
   image_url?: string
   featured?: boolean
@@ -41,6 +45,40 @@ interface ProductCardProps {
 export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   const { addItem, formatCurrency } = useCart()
 
+  // Helper function to get category name from different structures
+  const getCategoryName = (): string => {
+    // Check categories object first
+    if (product.categories?.name) {
+      return product.categories.name
+    }
+    // Check if category is an object
+    if (product.category && typeof product.category === 'object') {
+      return product.category.name
+    }
+    // Check if category is a string
+    if (product.category && typeof product.category === 'string') {
+      return product.category
+    }
+    return ''
+  }
+
+  const categoryName = getCategoryName()
+
+  // Robust image extraction - check multiple sources
+  const primaryImage = product.product_images?.find(img => img.is_primary)
+  const firstImage = product.product_images?.[0]
+  const imageUrl =
+    (product as any).image ||
+    (product as any).image_url ||
+    primaryImage?.image_url ||
+    firstImage?.image_url ||
+    product.image_url ||
+    '/placeholder.svg'
+  const imageAlt = primaryImage?.alt_text || firstImage?.alt_text || product.name
+
+  const stockQuantity = product.stock_quantity || product.stock || 0
+  const isOutOfStock = stockQuantity === 0
+
   const handleAddToCart = () => {
     addItem({
       id: product.id,
@@ -52,28 +90,20 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       image: imageUrl, // Para compatibilidad
       stock: stockQuantity,
       stockCount: stockQuantity, // Para compatibilidad
-      category: product.categories?.name || product.category,
+      category: categoryName,
     })
   }
-
-  const primaryImage = product.product_images?.find(img => img.is_primary)
-  const imageUrl =
-    primaryImage?.image_url || product.image_url || '/placeholder.svg'
-  const imageAlt = primaryImage?.alt_text || product.name
-
-  const stockQuantity = product.stock_quantity || product.stock || 0
-  const isOutOfStock = stockQuantity === 0
 
   if (viewMode === 'list') {
     return (
       <Card className="overflow-hidden hover:shadow-lg transition-shadow">
         <div className="flex">
-          <div className="relative w-48 h-32 flex-shrink-0">
+          <div className="relative w-48 h-32 flex-shrink-0 bg-gray-50">
             <Image
               src={imageUrl}
               alt={imageAlt}
               fill
-              className="object-cover"
+              className="object-contain p-2"
             />
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -95,7 +125,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 </Link>
 
                 <p className="text-sm text-gray-600 mt-1">
-                  {product.categories?.name || product.category}
+                  {categoryName}
                 </p>
 
                 <p className="text-gray-700 mt-2 line-clamp-2">
@@ -152,12 +182,12 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300">
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-gray-50">
         <Image
           src={imageUrl}
           alt={imageAlt}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
         />
 
         {isOutOfStock && (
@@ -172,10 +202,10 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </Button>
         </div>
 
-        {(product.categories || product.category) && (
+        {categoryName && (
           <div className="absolute top-2 left-2">
             <Badge variant="secondary" className="bg-white/90">
-              {product.categories?.name || product.category}
+              {categoryName}
             </Badge>
           </div>
         )}
