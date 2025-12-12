@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -27,9 +27,11 @@ import {
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 import { PaymentMethodSelector, DigitalWalletPayment } from '@/components/payments'
 import {
   type PaymentMethod,
@@ -66,7 +68,11 @@ interface CheckoutForm {
 
 export default function CheckoutPageContent() {
   const { state, formatCurrency, clearCart } = useCart()
+  const { user, profile } = useAuth()
   const [isProcessing, setIsProcessing] = useState(false)
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([])
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState<string>('new')
+
   const [form, setForm] = useState<CheckoutForm>({
     firstName: '',
     lastName: '',
@@ -83,6 +89,70 @@ export default function CheckoutPageContent() {
     acceptTerms: false,
     newsletter: false,
   })
+
+  // Helper para actualizar form con dirección seleccionada
+  const handleAddressSelect = (indexStr: string, addressesList: any[] = savedAddresses) => {
+    setSelectedAddressIndex(indexStr)
+    const isNew = indexStr === 'new'
+
+    if (isNew) {
+      setForm(prev => ({
+        ...prev,
+        address: '',
+        city: '',
+        state: '',
+        zipCode: ''
+      }))
+    } else {
+      const idx = parseInt(indexStr)
+      const addr = addressesList[idx]
+      if (addr) {
+        setForm(prev => ({
+          ...prev,
+          address: addr.street,
+          city: addr.city,
+          state: addr.department?.toLowerCase() || '',
+          zipCode: addr.postal_code
+        }))
+      }
+    }
+  }
+
+  // Cargar datos del perfil
+  // Cargar datos del perfil
+  useEffect(() => {
+    if (user && profile) {
+      // Nombre y email
+      const [firstName, ...lastNameParts] = (profile.full_name || '').split(' ')
+      const lastName = lastNameParts.join(' ')
+
+      setForm(prev => ({
+        ...prev,
+        email: user.email || prev.email,
+        phone: profile.phone || prev.phone,
+        firstName: firstName || prev.firstName,
+        lastName: lastName || prev.lastName
+      }))
+
+      // Direcciones guardadas
+      if (profile.address) {
+        try {
+          const addresses = Array.isArray(profile.address)
+            ? profile.address
+            : [profile.address]
+          setSavedAddresses(addresses)
+
+          // Seleccionar la primera por defecto si existe y no hemos seleccionado nada aun
+          if (addresses.length > 0) {
+             // Solo seleccionamos si estaba en 'new' por defecto y queremos autoseleccionar
+             handleAddressSelect('0', addresses)
+          }
+        } catch (e) {
+          console.error('Error parsing addresses', e)
+        }
+      }
+    }
+  }, [user, profile])
 
   const handleInputChange = (
     field: keyof CheckoutForm,
@@ -232,6 +302,40 @@ export default function CheckoutPageContent() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {savedAddresses.length > 0 && (
+                    <div className="mb-6">
+                      <Label className="block mb-3 font-medium">Mis Direcciones</Label>
+                      <RadioGroup
+                         value={selectedAddressIndex}
+                         onValueChange={handleAddressSelect}
+                         className="grid grid-cols-1 gap-3"
+                      >
+                         {savedAddresses.map((addr, idx) => (
+                           <div key={idx} className={`flex items-start space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === idx.toString() ? 'border-primary bg-primary/5' : 'border-gray-200'}`}>
+                              <RadioGroupItem value={idx.toString()} id={`addr-${idx}`} className="mt-1" />
+                              <Label htmlFor={`addr-${idx}`} className="font-normal cursor-pointer flex-1">
+                                 <div className="font-medium text-gray-900">{addr.street}</div>
+                                 <div className="text-sm text-gray-500">
+                                   {addr.neighborhood ? `${addr.neighborhood}, ` : ''}
+                                   {addr.city}, {addr.department}
+                                 </div>
+                                 {addr.additional_info && (
+                                   <div className="text-xs text-gray-400 mt-1">{addr.additional_info}</div>
+                                 )}
+                              </Label>
+                           </div>
+                         ))}
+                         <div className={`flex items-center space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}>
+                              <RadioGroupItem value="new" id="addr-new" />
+                              <Label htmlFor="addr-new" className="font-medium cursor-pointer text-gray-900">
+                                 Usar una nueva dirección
+                              </Label>
+                         </div>
+                      </RadioGroup>
+                      <Separator className="my-6" />
+                    </div>
+                  )}
+
                   <div>
                     <Label htmlFor="address">Dirección *</Label>
                     <Input

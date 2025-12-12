@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import CheckoutPageContent from './CheckoutPageContent'
-import ErrorBoundary from '../components/ErrorBoundary'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'Checkout - CapiShop',

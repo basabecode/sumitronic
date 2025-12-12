@@ -3,8 +3,8 @@
 import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { LoginForm } from '@/app/components/auth/LoginForm'
-import { ForgotPasswordForm } from '@/app/components/auth/ForgotPasswordForm'
+import { LoginForm } from '@/components/auth/LoginForm'
+import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm'
 import { useRedirectIfAuthenticated } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 

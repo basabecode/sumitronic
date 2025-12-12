@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation'
 import { User, ShoppingBag, Lock, Settings } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { ProtectedRoute } from '@/app/components/auth/ProtectedRoute'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 interface ProfileLayoutProps {
   children: ReactNode

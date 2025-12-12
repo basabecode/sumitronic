@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -144,15 +144,44 @@ export default function ProfilePage() {
     }
   }
 
+  // Cargar direcciones del perfil
+  useEffect(() => {
+    if (profile?.address) {
+      try {
+        // Asegurarse de que sea un array
+        const savedAddresses = Array.isArray(profile.address)
+          ? profile.address
+          : [profile.address]
+        setAddresses(savedAddresses as AddressForm[])
+      } catch (err) {
+        console.error('Error al cargar direcciones:', err)
+      }
+    }
+  }, [profile])
+
   const onSubmitAddress = async (data: AddressForm) => {
+    let updatedAddresses: AddressForm[]
+
     if (editingAddress !== null) {
       // Editar dirección existente
-      const updatedAddresses = [...addresses]
+      updatedAddresses = [...addresses]
       updatedAddresses[editingAddress] = data
-      setAddresses(updatedAddresses)
     } else {
       // Agregar nueva dirección
-      setAddresses([...addresses, data])
+      updatedAddresses = [...addresses, data]
+    }
+
+    setAddresses(updatedAddresses)
+
+    // Guardar en base de datos
+    try {
+      await updateProfile({
+        address: updatedAddresses as unknown as any // Casting para satisfacer tipo Json
+      })
+    } catch (err) {
+      console.error('Error al guardar direcciones:', err)
+      // Revertir cambios locales en caso de error si es crítico
+      // Por ahora solo logueamos
     }
 
     setShowAddressDialog(false)
@@ -172,9 +201,18 @@ export default function ProfilePage() {
     setShowAddressDialog(true)
   }
 
-  const handleDeleteAddress = (index: number) => {
+  const handleDeleteAddress = async (index: number) => {
     const updatedAddresses = addresses.filter((_, i) => i !== index)
     setAddresses(updatedAddresses)
+
+    // Guardar en base de datos
+    try {
+      await updateProfile({
+        address: updatedAddresses as unknown as any
+      })
+    } catch (err) {
+      console.error('Error al eliminar dirección:', err)
+    }
   }
 
   const handleAddNewAddress = () => {

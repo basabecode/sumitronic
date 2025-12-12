@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { RegisterForm } from '@/app/components/auth/RegisterForm'
+import { RegisterForm } from '@/components/auth/RegisterForm'
 import { useRedirectIfAuthenticated } from '@/hooks/useAuth'
 
 export default function RegisterPage() {

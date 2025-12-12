@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react'
+import { ChevronDown, ChevronUp, MessageCircle, Mail } from 'lucide-react'
 
 export default function FAQSection() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -10,47 +10,32 @@ export default function FAQSection() {
     {
       question: '¿Los productos son originales con garantía oficial?',
       answer:
-        'Sí, todos nuestros productos son 100% originales con garantía oficial del fabricante. Somos distribuidores autorizados de marcas como Dahua, Imou, Logitech, Forza y TP-Link, lo que garantiza autenticidad y respaldo técnico en Colombia.',
+        'Sí, todos nuestros productos son 100% originales con garantía oficial del fabricante. Somos distribuidores de la marca Dahua, Imou, Logitech, Forza y TP-Link, lo que garantiza autenticidad y respaldo técnico en Colombia.',
     },
     {
-      question: '¿Cuáles son los tiempos de entrega en Colombia?',
+      question: '¿Cuáles son los tiempos de entrega?',
       answer:
-        'En Bogotá y principales ciudades: 1-2 días hábiles. Ciudades intermedias: 2-3 días hábiles. Municipios y zonas rurales: 3-5 días hábiles. Trabajamos con Servientrega, Coordinadora e Interrapidísimo para garantizar entregas seguras a nivel nacional.',
+        'En Cali y principales ciudades de Colombia: 1-2 días hábiles. Ciudades intermedias: 2-5 días hábiles. Municipios y zonas rurales: 5-8 días hábiles. Trabajamos con Servientrega, Envía e Interrapidísimo.',
     },
     {
       question: '¿Qué métodos de pago manejan?',
       answer:
-        'Aceptamos: Efectivo contra entrega, tarjetas débito/crédito (Visa, Mastercard), PSE (Pagos Seguros en Línea), transferencias bancarias, Nequi, Daviplata y consignaciones. También ofrecemos financiación hasta 12 cuotas sin intereses con tarjetas participantes.',
+        'Aceptamos: Efectivo contra entrega en Cali, transferencias bancarias, Nequi, Daviplata y consignaciones a través de Bancolombia y Daviplata. En el momento no manejamos créditos ni sistema PSE o pago electrónico.',
     },
     {
       question: '¿Cuál es la política de cambios y devoluciones?',
       answer:
-        'Tienes 30 días calendario para cambios o devoluciones según la Ley del Consumidor colombiana. Los productos deben estar en perfecto estado con empaques originales. Los gastos de envío de devolución son gratuitos si el producto presenta defectos de fábrica.',
+        'Tienes 8 días calendario para cambios o devoluciones. Los productos deben estar en perfecto estado con empaques originales. Gastos de envío gratuitos si hay defectos de fábrica.',
     },
     {
       question: '¿Ofrecen servicio técnico especializado?',
       answer:
-        'Sí, contamos con técnicos certificados en todas las marcas que vendemos. Ofrecemos soporte técnico gratuito por WhatsApp, instalación a domicilio en principales ciudades, y centro de servicio autorizado con repuestos originales.',
+        'Ofrecemos soporte técnico gratuito por WhatsApp según el tipo de producto que requiera, instalación a domicilio en la ciudad de Cali.',
     },
     {
-      question: '¿Manejan garantía extendida?',
+      question: '¿Cómo puedo contactarlos?',
       answer:
-        'Además de la garantía oficial (12-24 meses según el producto), ofrecemos garantía extendida hasta 3 años adicionales. Incluye protección contra daños accidentales, robo, y soporte técnico prioritario sin costo adicional.',
-    },
-    {
-      question: '¿Realizan instalación y configuración a domicilio?',
-      answer:
-        'Sí, en Bogotá, Medellín, Cali, Barranquilla y Bucaramanga ofrecemos instalación profesional a domicilio. Incluye configuración completa, capacitación de uso, y garantía de instalación. Programamos cita según tu disponibilidad.',
-    },
-    {
-      question: '¿Cómo hago seguimiento a mi pedido?',
-      answer:
-        'Al confirmar tu compra recibes un código de seguimiento por SMS y email. Puedes rastrear tu pedido 24/7 en nuestra página web o llamando al 018000. Te notificaremos cada cambio de estado hasta la entrega exitosa.',
-    },
-    {
-      question: '¿Tienen tienda física para ver los productos?',
-      answer:
-        'Sí, tenemos showroom en Bogotá donde puedes ver y probar los productos antes de comprar. También realizamos demostraciones virtuales por videollamada. Agenda tu cita previa para recibir asesoría personalizada de nuestros expertos.',
+        'Puedes contactarnos por WhatsApp (300 3094854), llamar (300 3094854), o email (info@capishop.com). Horarios: Lunes a Viernes 8AM-6PM, Sábados 9AM-2PM.',
     },
   ]
 
@@ -138,7 +123,8 @@ export default function FAQSection() {
                 href="mailto:info@capishop.com"
                 className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
               >
-                ✉️ Email
+                <Mail className="w-5 h-5 mr-2" />
+                Email
               </a>
             </div>
           </div>

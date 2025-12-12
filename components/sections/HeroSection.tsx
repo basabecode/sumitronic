@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { ChevronLeft, ChevronRight, ShoppingBag, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/contexts/CartContext'
-import ProductDetailsModal from './ProductDetailsModal'
+import ProductDetailsModal from '@/components/products/ProductDetailsModal'
 
 const SLIDE_INTERVAL = 5000
 

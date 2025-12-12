@@ -23,11 +23,11 @@ import {
 import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { ProductCard } from '@/app/components/ProductCard'
-import { PaginationComponent } from '@/app/components/PaginationComponent'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
-import { ErrorBoundary } from '../components/ErrorBoundary'
+import { ProductCard } from '@/components/products/ProductCard'
+import { PaginationComponent } from '@/components/ui/PaginationComponent'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 
 interface Product {
   id: string

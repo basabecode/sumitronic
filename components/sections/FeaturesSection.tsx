@@ -1,21 +1,14 @@
 import {
-  Truck,
   Shield,
   Headphones,
   CreditCard,
   Clock,
   Award,
+  Mail,
 } from 'lucide-react'
 
 export default function FeaturesSection() {
   const features = [
-    {
-      icon: Truck,
-      title: 'Envío Rápido',
-      description: 'Entrega en 24-48 horas en toda la ciudad de Cali',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-    },
     {
       icon: Shield,
       title: 'Garantía de 12 Meses',
@@ -82,21 +75,21 @@ export default function FeaturesSection() {
         <div className="mt-10 bg-gradient-to-r from-orange-600 to-orange-700 rounded-xl p-4 text-white">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
-              <div className="text-lg md:text-xl font-bold mb-1">1000+</div>
+              <div className="text-lg md:text-xl font-bold mb-1">150+</div>
               <div className="text-orange-100 text-xs">Productos Vendidos</div>
             </div>
             <div>
-              <div className="text-lg md:text-xl font-bold mb-1">900+</div>
+              <div className="text-lg md:text-xl font-bold mb-1">120+</div>
               <div className="text-orange-100 text-xs">
                 Clientes Satisfechos
               </div>
             </div>
             <div>
-              <div className="text-lg md:text-xl font-bold mb-1">10+</div>
+              <div className="text-lg md:text-xl font-bold mb-1">5+</div>
               <div className="text-orange-100 text-xs">Marcas Oficiales</div>
             </div>
             <div>
-              <div className="text-lg md:text-xl font-bold mb-1">99%</div>
+              <div className="text-lg md:text-xl font-bold mb-1">98%</div>
               <div className="text-orange-100 text-xs">Satisfacción</div>
             </div>
           </div>

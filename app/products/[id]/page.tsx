@@ -1,11 +1,35 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProductClient from './ProductClient'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
-// This is a Server Component
-export const dynamic = 'force-dynamic'
+// ISR Configuration: Revalidate every hour (3600 seconds)
+export const revalidate = 3600
+
+// Generate static params for popular products
+export async function generateStaticParams() {
+  try {
+    const isLocal = process.env.NODE_ENV === 'development'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (isLocal ? 'http://localhost:3003' : 'http://localhost:3000')
+
+    // Fetch top 50 products to pre-render
+    const res = await fetch(`${baseUrl}/api/products?limit=50&sortBy=created_at&sortOrder=desc`, {
+      next: { revalidate: 3600 }
+    })
+
+    if (!res.ok) return []
+
+    const data = await res.json()
+
+    return data.products?.map((product: any) => ({
+      id: product.id,
+    })) || []
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    return []
+  }
+}
 
 async function getProduct(id: string) {
   // Handle local development port 3003
@@ -14,7 +38,7 @@ async function getProduct(id: string) {
 
   try {
     const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      cache: 'no-store',
+      next: { revalidate: 3600 }, // ISR: Cache for 1 hour
     })
 
     if (!res.ok) return null

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import CartPageContent from './CartPageContent'
-import ErrorBoundary from '../components/ErrorBoundary'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'Carrito de Compras - CapiShop',

@@ -22,8 +22,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 // Component that handles search params
 function SearchParamsHandler({ setActiveSection }: { setActiveSection: (section: string) => void }) {
@@ -106,9 +106,8 @@ export default function HelpPage() {
                   ¿Qué métodos de pago aceptan?
                 </AccordionTrigger>
                 <AccordionContent>
-                  Aceptamos múltiples métodos de pago incluyendo tarjetas de
-                  crédito/débito, PSE, Nequi, Daviplata y transferencias
-                  bancarias directas a Bancolombia.
+                  Aceptamos múltiples métodos de pago incluyendo Nequi, Daviplata y transferencias
+                  bancarias directas a Bancolombia y Davivienda.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
@@ -118,7 +117,7 @@ export default function HelpPage() {
                 <AccordionContent>
                   Una vez tu pedido sea despachado, recibirás un correo
                   electrónico con el número de guía y el enlace de la
-                  transportadora para realizar el seguimiento en tiempo real.
+                  transportadora que escogió  para realizar el seguimiento en tiempo real.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-4">
@@ -151,9 +150,9 @@ export default function HelpPage() {
                 Plazo de Devolución
               </h3>
               <p>
-                Tienes un plazo de <strong>30 días calendario</strong> a partir
+                Tienes un plazo de <strong>8 días calendario</strong> a partir
                 de la fecha de recepción del producto para solicitar una
-                devolución.
+                devolución por insatisfacción.
               </p>
               <h3 className="text-lg font-semibold text-gray-900 mt-4">
                 Condiciones del Producto

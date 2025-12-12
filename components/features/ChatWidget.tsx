@@ -18,13 +18,13 @@ const chatFAQs = [
     ],
     question: '¿Los productos son originales con garantía oficial?',
     answer:
-      'Sí, todos nuestros productos son 100% originales con garantía oficial del fabricante. Somos distribuidores autorizados de marcas como Dahua, Imou, Logitech, Forza y TP-Link, lo que garantiza autenticidad y respaldo técnico en Colombia.',
+      'Sí, todos nuestros productos son 100% originales con garantía oficial del fabricante. Somos distribuidores de la marca Dahua, Imou, Logitech, Forza y TP-Link, lo que garantiza autenticidad y respaldo técnico en Colombia.',
   },
   {
     keywords: ['entrega', 'envío', 'tiempo', 'demora', 'cuando', 'llega'],
     question: '¿Cuáles son los tiempos de entrega?',
     answer:
-      'En Bogotá y principales ciudades: 1-2 días hábiles. Ciudades intermedias: 2-3 días hábiles. Municipios y zonas rurales: 3-5 días hábiles. Trabajamos con Servientrega, Coordinadora e Interrapidísimo.',
+      'En Cali y principales ciudades de Colombia: 1-2 días hábiles. Ciudades intermedias: 2-5 días hábiles. Municipios y zonas rurales: 5-8 días hábiles. Trabajamos con Servientrega, Envía e Interrapidísimo.',
   },
   {
     keywords: [
@@ -39,7 +39,7 @@ const chatFAQs = [
     ],
     question: '¿Qué métodos de pago manejan?',
     answer:
-      'Aceptamos: Efectivo contra entrega, tarjetas débito/crédito (Visa, Mastercard), PSE, transferencias bancarias, Nequi, Daviplata y consignaciones. También financiación hasta 12 cuotas sin intereses.',
+      'Aceptamos: Efectivo contra entrega en Cali, transferencias bancarias, Nequi, Daviplata y consignaciones a traves de Bancolombia y Daviplata. En el momento no manejamos creditos ni sistema PSE o pago electronico.',
   },
   {
     keywords: [
@@ -52,7 +52,7 @@ const chatFAQs = [
     ],
     question: '¿Cuál es la política de cambios y devoluciones?',
     answer:
-      'Tienes 30 días calendario para cambios o devoluciones según la Ley del Consumidor colombiana. Los productos deben estar en perfecto estado con empaques originales. Gastos de envío gratuitos si hay defectos de fábrica.',
+      'Tienes 8 días calendario para cambios o devoluciones. Los productos deben estar en perfecto estado con empaques originales. Gastos de envío gratuitos si hay defectos de fábrica.',
   },
   {
     keywords: [
@@ -65,7 +65,7 @@ const chatFAQs = [
     ],
     question: '¿Ofrecen servicio técnico especializado?',
     answer:
-      'Sí, contamos con técnicos certificados. Ofrecemos soporte técnico gratuito por WhatsApp, instalación a domicilio en principales ciudades, y centro de servicio autorizado con repuestos originales.',
+      'Ofrecemos soporte técnico gratuito por WhatsApp segun el tipo de producto que requiera, instalación a domicilio en la ciudad de Cali.',
   },
   {
     keywords: [

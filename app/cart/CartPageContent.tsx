@@ -20,8 +20,8 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/contexts/CartContext'
-import Header from '@/app/components/Header'
-import Footer from '@/app/components/Footer'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 export default function CartPageContent() {
   const { state, removeItem, updateQuantity, clearCart, formatCurrency } =

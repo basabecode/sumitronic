@@ -1,40 +1,49 @@
 # 📚 Documentación de CapiShop
 
-Bienvenido a la documentación técnica de CapiShop. Aquí encontrarás guías detalladas sobre la arquitectura, implementación y mantenimiento del proyecto.
-
-## 🚀 Guías Maestras (Consolidadas)
-
-### [📱 Guía Mobile-First](./MOBILE_MASTER_GUIDE.md)
-Documentación completa sobre la experiencia móvil, PWA, navegación inferior, notificaciones (toasts) y optimizaciones de UX.
-*   **Incluye:** Setup de PWA, Componentes Mobile, Troubleshooting.
-
-### [💳 Sistema de Pagos](./PAYMENT_SYSTEM_MASTER_GUIDE.md)
-Detalles sobre el sistema de pagos actual (Billeteras Digitales) y el roadmap para futuras integraciones.
-*   **Incluye:** Arquitectura de pagos, Seguridad, Guía de Wompi (Futuro).
-
-### [📧 Estrategia de Email Marketing](./EMAIL_MARKETING_STRATEGY.md)
-Plan de implementación para correos transaccionales y de marketing usando tecnologías modernas y de bajo costo.
-*   **Incluye:** Configuración de Resend, Templates, Estrategia Anti-SPAM.
+Bienvenido a la documentación técnica de CapiShop. Aquí encontrarás guías detalladas sobre la arquitectura, implementación y mantenimiento del proyecto, organizadas para facilitar su consulta.
 
 ---
 
-## 🛡️ Seguridad y Base de Datos
+## ⚡ Estado Actual y Mejoras Recientes
 
-### [🔒 Auditoría de Seguridad](./SECURITY_AUDIT.md)
-Reporte de seguridad y mejores prácticas implementadas en el proyecto.
+### [📋 Checklist de Mejoras Pendientes](./CHECKLIST_MEJORAS.md)
+Lista activa de tareas pendientes y progreso de mejoras críticas.
 
-### [🗄️ Integración Supabase](./SUPABASE_INTEGRATION.md)
-Guía de conexión y manejo de la base de datos con Supabase.
-
-### [🧪 Testing de Base de Datos](./DATABASE_TESTING.md)
-Guía para realizar pruebas y validaciones en la capa de datos.
+### [✅ Implementación de Mejoras (Dic 11, 2025)](./IMPLEMENTACION_MEJORAS.md)
+Detalle técnico de las últimas implementaciones: ISR, Unit Tests, Coverage y CDN.
 
 ---
 
-## 📈 Otros Reportes
+## 🚀 Guías Técnicas (./guides)
 
-### [🔍 Reporte SEO](./SEO_Report_and_Next_Steps.md)
-Estado actual del SEO y pasos a seguir para mejorar el posicionamiento.
+Documentación de referencia para desarrolladores y administradores.
 
-### [✅ Optimizaciones Completadas](./OPTIMIZACIONES_COMPLETADAS_FASES_1-2-3.md)
-Histórico de mejoras de rendimiento y funcionalidad realizadas en las primeras fases.
+- **[📱 Guía Mobile-First](./guides/MOBILE_MASTER_GUIDE.md)**: UX, PWA, navegación y componentes móviles.
+- **[💳 Sistema de Pagos](./guides/PAYMENT_SYSTEM_MASTER_GUIDE.md)**: Arquitectura de pagos manuales y billeteras digitales.
+- **[📧 Estrategia de Email](./guides/ESTRATEGIA_DE_EMAIL.md)**: Plan para correos transaccionales (Resend) y marketing.
+- **[🔑 Integración Supabase](./guides/SUPABASE_INTEGRATION.md)**: Conexión y manejo de BD.
+- **[🌍 Variables de Entorno](./guides/ENVIRONMENT_VARIABLES.md)**: Configuración y seguridad de env vars.
+- **[🔐 Google OAuth](./guides/GOOGLE_OAUTH_SETUP.md)**: Configuración de autenticación con Google.
+- **[🧪 Testing de BD](./guides/DATABASE_TESTING.md)**: Guías para pruebas de datos.
+- **[📊 Índices Supabase](./guides/APLICAR_INDICES_SUPABASE.md)**: Guía de optimización de consultas.
+
+---
+
+## 🛡️ Reportes y Auditorías (./reports)
+
+Análisis técnicos y reportes de estado del proyecto.
+
+- **[🛠️ Análisis Técnico](./reports/ANALISIS_TECNICO.md)**: Evaluación profunda de la arquitectura y recomendaciones.
+- **[🔒 Auditoría de Seguridad](./reports/SECURITY_AUDIT.md)**: Reporte de seguridad, RLS y políticas.
+- **[🔍 Reporte SEO](./reports/SEO_Report_and_Next_Steps.md)**: Estado del SEO y plan de acción.
+- **[📋 Última Auditoría General](./reports/ULTIMA_AUDITORIA_DEL_PROYECTO.md)**: Revisión completa del estado del proyecto.
+
+---
+
+## 🗃️ Archivo Histórico (./archive)
+
+Documentación de versiones anteriores o hitos completados.
+
+- **[✅ Mejoras Dic 8, 2025](./archive/MEJORAS_IMPLEMENTADAS_DIC_2025.md)**: Reporte de mejoras de principios de Diciembre.
+- **[🚀 Optimizaciones Fases 1-3](./archive/OPTIMIZACIONES_COMPLETADAS_FASES_1-2-3.md)**: Hito de optimización de rendimiento.
+- **[🐛 Fix Carrito](./archive/FIX_CARRITO_PRODUCTOS.md)**: Documentación del fix del carrito en productos.

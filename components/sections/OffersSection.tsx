@@ -306,9 +306,9 @@ export default function OffersSection() {
           will-change: transform;
         }
 
-        /* Velocidad normal (por defecto) - 60s */
+        /* Velocidad normal (por defecto) - 7.5s (8x más rápido) */
         .speed-normal {
-          animation: scroll 60s linear infinite;
+          animation: scroll 7.5s linear infinite;
         }
 
         /* Velocidad 8x más rápida hacia adelante (presionar flecha derecha) - 7.5s */

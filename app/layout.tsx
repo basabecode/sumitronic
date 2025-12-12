@@ -6,8 +6,11 @@ import { CartProvider } from '@/contexts/CartContext'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { FavoritesProvider } from '@/contexts/FavoritesContext'
 import { SharedDataProvider } from '@/contexts/SharedDataContext'
-import ErrorBoundary from './components/ErrorBoundary'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import CartSidebar from '@/components/cart/CartSidebar'
+import FavoritesSidebar from '@/components/cart/FavoritesSidebar'
+import ChatWidget from '@/components/features/ChatWidget'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -137,7 +140,13 @@ export default function RootLayout({
           <SharedDataProvider>
             <AuthProvider>
               <CartProvider>
-                <FavoritesProvider>{children}</FavoritesProvider>
+                <FavoritesProvider>
+                  {children}
+                  {/* Global UI Components - Available on all pages */}
+                  <CartSidebar />
+                  <FavoritesSidebar />
+                  <ChatWidget />
+                </FavoritesProvider>
               </CartProvider>
             </AuthProvider>
           </SharedDataProvider>

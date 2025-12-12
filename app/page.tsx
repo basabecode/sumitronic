@@ -1,20 +1,17 @@
-import Header from './components/Header'
-import HeroSection from './components/HeroSection'
-import FeaturesSection from './components/FeaturesSection'
-import ProductsSection from './components/ProductsSection'
-import OffersSection from './components/OffersSection'
-import BrandsSection from './components/BrandsSection'
-import TestimonialsSection from './components/TestimonialsSection'
-import FAQSection from './components/FAQSection'
-import BlogSection from './components/BlogSection'
-import CTASection from './components/CTASection'
-import Footer from './components/Footer'
-import ChatWidget from './components/ChatWidget'
-import CartSidebar from './components/CartSidebar'
-import FavoritesSidebar from './components/FavoritesSidebar'
-import BottomNav from './components/BottomNav'
-import WhatsAppFAB from './components/WhatsAppFAB'
-import { SectionErrorBoundary } from './components/ErrorBoundary'
+import Header from '@/components/layout/Header'
+import HeroSection from '@/components/sections/HeroSection'
+import FeaturesSection from '@/components/sections/FeaturesSection'
+import ProductsSection from '@/components/products/ProductsSection'
+import OffersSection from '@/components/sections/OffersSection'
+import BrandsSection from '@/components/sections/BrandsSection'
+import TestimonialsSection from '@/components/sections/TestimonialsSection'
+import FAQSection from '@/components/sections/FAQSection'
+import BlogSection from '@/components/sections/BlogSection'
+import CTASection from '@/components/sections/CTASection'
+import Footer from '@/components/layout/Footer'
+import BottomNav from '@/components/layout/BottomNav'
+import WhatsAppFAB from '@/components/features/WhatsAppFAB'
+import { SectionErrorBoundary } from '@/components/ui/ErrorBoundary'
 
 export default function Home() {
   return (
@@ -37,9 +34,7 @@ export default function Home() {
         <CTASection />
       </main>
       <Footer />
-      <ChatWidget />
-      <CartSidebar />
-      <FavoritesSidebar />
+      {/* Global components (CartSidebar, FavoritesSidebar, ChatWidget) are now in layout.tsx */}
       <WhatsAppFAB />
       <BottomNav />
     </div>

@@ -1,0 +1,561 @@
+
+> my-v0-project@0.1.0 test
+> vitest
+
+
+[1m[44m DEV [49m[22m [34mv4.0.15 [39m[90mC:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web[39m
+
+ [32mÔ£ô[39m tests/unit/lib/formatting.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [31mÔØ»[39m lib/payments/__tests__/validation.test.ts [2m([22m[2m28 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 68[2mms[22m[39m
+       [32mÔ£ô[39m should remove dangerous characters[32m 2[2mms[22m[39m
+       [32mÔ£ô[39m should limit string length[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should remove non-numeric characters[39m[32m 12[2mms[22m[39m
+       [32mÔ£ô[39m should limit to 10 digits[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should validate correct emails[32m 1[2mms[22m[39m
+       [32mÔ£ô[39m should reject invalid emails[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should validate Colombian phone numbers[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should reject invalid phone numbers[39m[32m 4[2mms[22m[39m
+       [32mÔ£ô[39m should validate correct references[32m 1[2mms[22m[39m
+       [32mÔ£ô[39m should reject invalid references[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should validate correct amounts[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should reject invalid amounts[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should validate a correct form[32m 1[2mms[22m[39m
+       [32mÔ£ô[39m should detect missing required fields[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should detect invalid email[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should detect invalid phone[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should require terms acceptance[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should sanitize all form fields[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should format currency correctly[32m 32[2mms[22m[39m
+       [32mÔ£ô[39m should format phone numbers[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should handle invalid phone numbers[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should generate correct WhatsApp message[32m 1[2mms[22m[39m
+       [32mÔ£ô[39m should generate correct WhatsApp URL[32m 1[2mms[22m[39m
+       [32mÔ£ô[39m should prevent script injection in strings[32m 0[2mms[22m[39m
+[31m       [31m├ù[31m should prevent HTML injection[39m[32m 2[2mms[22m[39m
+       [32mÔ£ô[39m should enforce maximum string length[32m 0[2mms[22m[39m
+       [32mÔ£ô[39m should enforce phone number length[32m 0[2mms[22m[39m
+     [32mÔ£ô[39m complete checkout flow validation[32m 1[2mms[22m[39m
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should initialize with empty cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should add item to cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should increase quantity when adding existing item
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should calculate total correctly
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should remove item from cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should update item quantity
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should remove item when quantity is set to 0
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should clear cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should calculate item count correctly
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should have formatCurrency function
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should toggle cart open/close
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should open cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+ReferenceError: React is not defined
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:58:5)
+    at renderWithHooks (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:20103:13)
+    at beginWork (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\react-dom\cjs\react-dom.development.js:4164:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:360:16)
+    at invokeEventListeners (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:296:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:243:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Users\Usuario\Desktop\tienda_Capi\CapiShop_Web\CapiShop_Web\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:114:17)
+stderr | tests/unit/contexts/CartContext.test.tsx > CartContext > should close cart
+The above error occurred in the <wrapper> component:
+
+    at wrapper (C:/Users/Usuario/Desktop/tienda_Capi/CapiShop_Web/CapiShop_Web/tests/unit/contexts/CartContext.test.tsx:52:22)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+ [31mÔØ»[39m tests/unit/contexts/CartContext.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m13 failed[39m[2m)[22m[32m 103[2mms[22m[39m
+[31m     [31m├ù[31m should initialize with empty cart[39m[32m 40[2mms[22m[39m
+[31m     [31m├ù[31m should add item to cart[39m[32m 8[2mms[22m[39m
+[31m     [31m├ù[31m should increase quantity when adding existing item[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should calculate total correctly[39m[32m 5[2mms[22m[39m
+[31m     [31m├ù[31m should remove item from cart[39m[32m 6[2mms[22m[39m
+[31m     [31m├ù[31m should update item quantity[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m should remove item when quantity is set to 0[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m should clear cart[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m should calculate item count correctly[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should have formatCurrency function[39m[32m 5[2mms[22m[39m
+[31m     [31m├ù[31m should toggle cart open/close[39m[32m 3[2mms[22m[39m
+[31m     [31m├ù[31m should open cart[39m[32m 4[2mms[22m[39m
+[31m     [31m├ù[31m should close cart[39m[32m 4[2mms[22m[39m
+ [31mÔØ»[39m tests/unit/components/ProductCard.test.tsx [2m([22m[2m11 tests[22m[2m | [22m[31m11 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m     [31m├ù[31m should render product information correctly[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should format price correctly in Colombian pesos[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should display product image[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should show category name[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should display stock information[39m[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should display out of stock when stock is 0[39m[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should render in grid mode by default[39m[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should render in list mode when specified[39m[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should handle product without images[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should handle category as string[39m[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should have link to product page[39m[32m 1[2mms[22m[39m
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2msanitizePhone[2m > [22m[2mshould remove non-digits
+[22m[39mSanitizePhone 1: 5730012345
+
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2msanitizePhone[2m > [22m[2mshould limit to 10 digits
+[22m[39mSanitizePhone 2: 3001234567
+
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2mvalidateEmail[2m > [22m[2mshould validate correct emails
+[22m[39mValidateEmail 1: [33mtrue[39m
+
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2mvalidateEmail[2m > [22m[2mshould reject incorrect emails
+[22m[39mValidateEmail 2: [33mfalse[39m [33mfalse[39m
+
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2mvalidatePhone[2m > [22m[2mshould validate correct Colombian phones
+[22m[39mValidatePhone: [33mtrue[39m
+
+[90mstdout[2m | tests/unit/lib/utils.test.ts[2m > [22m[2mlib/utils[2m > [22m[2mformatPrice[2m > [22m[2mshould format price in COP by default
+[22m[39mFormatted COP: $┬á10.000
+
+[90mstdout[2m | tests/unit/lib/utils.test.ts[2m > [22m[2mlib/utils[2m > [22m[2mformatPrice[2m > [22m[2mshould handle zero
+[22m[39mFormatted Zero: $┬á0
+
+[90mstdout[2m | tests/unit/lib/utils.test.ts[2m > [22m[2mlib/utils[2m > [22m[2mformatPrice[2m > [22m[2mshould handle custom options
+[22m[39mFormatted USD: $1,000
+
+ [32mÔ£ô[39m tests/unit/lib/utils.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+[90mstdout[2m | tests/unit/lib/payments/validation.test.ts[2m > [22m[2mPayment Validation Utilities[2m > [22m[2mformatCurrency[2m > [22m[2mshould format correctly
+[22m[39mValidation Format Cur: $┬á50.000
+
+ [32mÔ£ô[39m tests/unit/lib/payments/validation.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 27 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  lib/payments/__tests__/validation.test.ts > Payment Validation Tests > sanitizePhone > should remove non-numeric characters
+AssertionError: expected '5730012345' to be '573001234567' // Object.is equality
+
+Expected: "573001234567"
+Received: "5730012345"
+
+ ÔØ» lib/payments/__tests__/validation.test.ts:42:49
+     40|       expect(sanitizePhone('300-123-4567')).toBe('3001234567');
+     41|       expect(sanitizePhone('(300) 123 4567')).toBe('3001234567');
+     42|       expect(sanitizePhone('+57 300 123 4567')).toBe('573001234567');
+       |                                                 ^
+     43|     });
+     44| 
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/27]ÔÄ»
+
+ FAIL  lib/payments/__tests__/validation.test.ts > Payment Validation Tests > validatePhone > should reject invalid phone numbers
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ÔØ» lib/payments/__tests__/validation.test.ts:74:44
+     72|       expect(validatePhone('2001234567')).toBe(false); // Doesn't starÔÇª
+     73|       expect(validatePhone('300123456')).toBe(false); // Too short
+     74|       expect(validatePhone('30012345678')).toBe(false); // Too long
+       |                                            ^
+     75|       expect(validatePhone('abc1234567')).toBe(false); // Contains letÔÇª
+     76|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/27]ÔÄ»
+
+ FAIL  lib/payments/__tests__/validation.test.ts > Security Tests > XSS Prevention > should prevent HTML injection
+AssertionError: expected 'img src=x onerror=alert(1)' not to contain 'onerror'
+
+Expected: "onerror"
+Received: "img src=x onerror=alert(1)"
+
+ ÔØ» lib/payments/__tests__/validation.test.ts:232:29
+    230|       const sanitized = sanitizeString(malicious);
+    231|       expect(sanitized).not.toContain('<img');
+    232|       expect(sanitized).not.toContain('onerror');
+       |                             ^
+    233|     });
+    234|   });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/27]ÔÄ»
+
+ FAIL  tests/unit/components/ProductCard.test.tsx > ProductCard > should render product information correctly
+ReferenceError: React is not defined
+ ÔØ» tests/unit/components/ProductCard.test.tsx:65:34
+     63| 
+     64|   it('should render product information correctly', () => {
+     65|     const { container } = render(<ProductCard product={mockProduct} />)
+       |                                  ^
+     66| 
+     67|     expect(container.textContent).toContain('Test Product')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/27]ÔÄ»
+
+ FAIL  tests/unit/components/ProductCard.test.tsx > ProductCard > should format price correctly in Colombian pesos
+ReferenceError: React is not defined
+ ÔØ» tests/unit/components/ProductCard.test.tsx:71:34
+     69| 
+     70|   it('should format price correctly in Colombian pesos', () => {
+     71|     const { container } = render(<ProductCard product={mockProduct} />)
+       |                                  ^
+     72| 
+     73|     // El precio deber├¡a estar presente en el contenido
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/27]ÔÄ»
+
+ FAIL  tests/unit/components/ProductCard.test.tsx > ProductCard > should display product image
