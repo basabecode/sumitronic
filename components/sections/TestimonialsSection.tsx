@@ -46,7 +46,7 @@ export default function TestimonialsSection() {
 
   return (
     <section className="hidden py-16 bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-4">
+      <div className="container">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">

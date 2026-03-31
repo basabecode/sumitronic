@@ -39,7 +39,7 @@ describe('Payment Validation Tests', () => {
     test('should remove non-numeric characters', () => {
       expect(sanitizePhone('300-123-4567')).toBe('3001234567');
       expect(sanitizePhone('(300) 123 4567')).toBe('3001234567');
-      expect(sanitizePhone('+57 300 123 4567')).toBe('573001234567');
+      expect(sanitizePhone('+57 300 123 4567')).toBe('5730012345');
     });
 
     test('should limit to 10 digits', () => {

@@ -7,12 +7,14 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { FavoritesProvider } from '@/contexts/FavoritesContext'
 import { SharedDataProvider } from '@/contexts/SharedDataContext'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
+import { Toaster } from 'sonner'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import CartSidebar from '@/components/cart/CartSidebar'
 import FavoritesSidebar from '@/components/cart/FavoritesSidebar'
 import ChatWidget from '@/components/features/ChatWidget'
 
 const inter = Inter({ subsets: ['latin'] })
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -78,9 +80,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'verification_token', // Placeholder for GSC
-  },
+  verification: googleSiteVerification
+    ? {
+        google: googleSiteVerification,
+      }
+    : undefined,
 }
 
 const jsonLd = {
@@ -151,6 +155,7 @@ export default function RootLayout({
             </AuthProvider>
           </SharedDataProvider>
         </ErrorBoundary>
+        <Toaster richColors position="top-right" />
         <SpeedInsights />
       </body>
     </html>

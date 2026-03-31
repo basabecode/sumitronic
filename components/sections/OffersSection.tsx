@@ -96,7 +96,7 @@ export default function OffersSection() {
 
   return (
     <section id="ofertas-especiales" className="relative bg-gradient-to-br from-orange-50 via-amber-50/30 to-white py-16 overflow-hidden">
-      <div className="container mx-auto px-4">
+      <div className="container">
         {/* Header */}
         <div className="mb-10 text-center">
           <div className="mb-3 flex items-center justify-center gap-2">

@@ -756,7 +756,7 @@ export function ProductsSection() {
               </Button>
 
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="h-11 w-[200px] rounded-full border-gray-200 bg-white text-sm font-semibold focus:border-orange-400 focus:ring-orange-400">
+                <SelectTrigger className="h-11 w-full sm:w-[180px] rounded-full border-gray-200 bg-white text-sm font-semibold focus:border-orange-400 focus:ring-orange-400">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent align="end">

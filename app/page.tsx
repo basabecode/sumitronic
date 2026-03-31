@@ -9,13 +9,12 @@ import FAQSection from '@/components/sections/FAQSection'
 import BlogSection from '@/components/sections/BlogSection'
 import CTASection from '@/components/sections/CTASection'
 import Footer from '@/components/layout/Footer'
-import BottomNav from '@/components/layout/BottomNav'
 import WhatsAppFAB from '@/components/features/WhatsAppFAB'
 import { SectionErrorBoundary } from '@/components/ui/ErrorBoundary'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white overscroll-bounce touch-pan-y">
+    <div className="min-h-screen bg-white overflow-x-hidden w-full">
       <Header />
       <main>
         <h1 className="sr-only">CapiShop Colombia - Tienda de Tecnología, Seguridad y Energía</h1>
@@ -36,7 +35,6 @@ export default function Home() {
       <Footer />
       {/* Global components (CartSidebar, FavoritesSidebar, ChatWidget) are now in layout.tsx */}
       <WhatsAppFAB />
-      <BottomNav />
     </div>
   )
 }

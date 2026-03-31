@@ -20,6 +20,8 @@ import {
 export function sanitizeString(input: string): string {
   return input
     .trim()
+    .replace(/on\w+\s*=\s*/gi, '')
+    .replace(/javascript:/gi, '')
     .replace(/[<>\"']/g, '') // Remove potentially dangerous characters
     .substring(0, 500); // Limit length
 }
@@ -42,6 +44,11 @@ export function validateEmail(email: string): boolean {
  * Validate Colombian phone number
  */
 export function validatePhone(phone: string): boolean {
+  const digitsOnly = phone.replace(/\D/g, '');
+  if (digitsOnly.length !== 10) {
+    return false;
+  }
+
   const cleaned = sanitizePhone(phone);
   return VALIDATION_RULES.PHONE.PATTERN.test(cleaned);
 }

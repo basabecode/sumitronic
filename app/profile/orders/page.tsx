@@ -19,15 +19,20 @@ import { createClient } from '@/lib/supabase/client'
 
 interface Order {
   id: string
-  order_number: string
+  order_number?: string
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
-  total_amount: number
+  total: number
   created_at: string
-  shipping_address: any
+  shipping_address?: {
+    street?: string
+    city?: string
+    state?: string
+    postal_code?: string
+  } | null
   order_items: Array<{
     id: string
     quantity: number
-    price: number
+    unit_price: number
     products: {
       id: string
       name: string
@@ -88,7 +93,7 @@ export default function OrdersPage() {
           order_items (
             id,
             quantity,
-            price,
+            unit_price,
             products (
               id,
               name,
@@ -178,7 +183,7 @@ export default function OrdersPage() {
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="text-lg">
-                        Pedido #{order.order_number}
+                        Pedido #{order.order_number || order.id.slice(0, 8)}
                       </CardTitle>
                       <CardDescription>
                         {format(
@@ -224,7 +229,7 @@ export default function OrdersPage() {
                               </p>
                               <p className="text-sm text-gray-500">
                                 Cantidad: {item.quantity} ×{' '}
-                                {formatCurrency(item.price)}
+                                {formatCurrency(item.unit_price)}
                               </p>
                             </div>
                           </div>
@@ -241,7 +246,7 @@ export default function OrdersPage() {
                             Subtotal
                           </span>
                           <span className="text-sm">
-                            {formatCurrency(order.total_amount)}
+                            {formatCurrency(order.total)}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -251,7 +256,7 @@ export default function OrdersPage() {
                         <div className="border-t pt-2">
                           <div className="flex justify-between font-semibold">
                             <span>Total</span>
-                            <span>{formatCurrency(order.total_amount)}</span>
+                            <span>{formatCurrency(order.total)}</span>
                           </div>
                         </div>
                       </div>

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import ProductClient from './ProductClient'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -7,24 +8,35 @@ import Footer from '@/components/layout/Footer'
 // ISR Configuration: Revalidate every hour (3600 seconds)
 export const revalidate = 3600
 
+function createStaticSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null
+  }
+
+  return createSupabaseClient(supabaseUrl, supabaseAnonKey)
+}
+
 // Generate static params for popular products
 export async function generateStaticParams() {
   try {
-    const isLocal = process.env.NODE_ENV === 'development'
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (isLocal ? 'http://localhost:3003' : 'http://localhost:3000')
+    const supabase = createStaticSupabaseClient()
+    if (!supabase) return []
 
-    // Fetch top 50 products to pre-render
-    const res = await fetch(`${baseUrl}/api/products?limit=50&sortBy=created_at&sortOrder=desc`, {
-      next: { revalidate: 3600 }
-    })
+    const { data, error } = await supabase
+      .from('products')
+      .select('id')
+      .eq('active', true)
+      .order('created_at', { ascending: false })
+      .limit(50)
 
-    if (!res.ok) return []
+    if (error || !data) return []
 
-    const data = await res.json()
-
-    return data.products?.map((product: any) => ({
+    return data.map((product: { id: string }) => ({
       id: product.id,
-    })) || []
+    }))
   } catch (error) {
     console.error('Error generating static params:', error)
     return []
@@ -32,18 +44,71 @@ export async function generateStaticParams() {
 }
 
 async function getProduct(id: string) {
-  // Handle local development port 3003
-  const isLocal = process.env.NODE_ENV === 'development'
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (isLocal ? 'http://localhost:3003' : 'http://localhost:3000')
-
   try {
-    const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      next: { revalidate: 3600 }, // ISR: Cache for 1 hour
-    })
+    const supabase = createStaticSupabaseClient()
+    if (!supabase) return null
 
-    if (!res.ok) return null
+    const { data: product, error } = await supabase
+      .from('products')
+      .select(
+        `
+        *,
+        category:categories!category_id (
+          id,
+          name,
+          slug
+        ),
+        product_images (
+          id,
+          image_url,
+          alt_text,
+          is_primary,
+          sort_order
+        ),
+        inventory (
+          id,
+          quantity_available,
+          reserved_quantity,
+          last_updated
+        )
+      `
+      )
+      .eq('id', id)
+      .eq('active', true)
+      .single()
 
-    return res.json()
+    if (error || !product) {
+      return null
+    }
+
+    const { data: relatedProducts } = await supabase
+      .from('products')
+      .select(
+        `
+        *,
+        category:categories!category_id (
+          id,
+          name,
+          slug
+        ),
+        product_images (
+          id,
+          image_url,
+          alt_text,
+          is_primary,
+          sort_order
+        )
+      `
+      )
+      .eq('category_id', product.category_id)
+      .eq('active', true)
+      .neq('id', id)
+      .limit(4)
+
+    return {
+      product,
+      relatedProducts: relatedProducts || [],
+    }
   } catch (error) {
     console.error('Error fetching product:', error)
     return null
@@ -119,13 +184,13 @@ export default async function ProductPage({ params }: { params: { id: string } }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-transparent">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main className="py-8">
+      <main className="py-8 md:py-10">
         <ProductClient product={product} relatedProducts={relatedProducts} />
       </main>
       <Footer />

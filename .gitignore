@@ -25,3 +25,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# supabase local db/storage
+supabase/*.storage/
+supabase/.temp/
+
+# IDE & AI
+.claude/
+.gemini/

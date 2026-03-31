@@ -25,19 +25,16 @@ describe('lib/utils', () => {
   describe('formatPrice', () => {
     it('should format price in COP by default', () => {
       const formatted = formatPrice(10000)
-      console.log('Formatted COP:', formatted)
       expect(formatted).toContain('10.000')
     })
 
     it('should handle zero', () => {
       const formatted = formatPrice(0)
-      console.log('Formatted Zero:', formatted)
       expect(formatted).toContain('0')
     })
 
     it('should handle custom options', () => {
         const formatted = formatPrice(1000, { currency: 'USD', locale: 'en-US' })
-        console.log('Formatted USD:', formatted)
         expect(formatted).toContain('1,000')
     })
   })

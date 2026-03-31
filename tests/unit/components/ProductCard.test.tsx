@@ -1,11 +1,13 @@
+import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { ProductCard } from '@/components/products/ProductCard'
 
 // Mock del CartContext
 vi.mock('@/contexts/CartContext', () => ({
   useCart: () => ({
     addItem: vi.fn(),
+    formatCurrency: (value: number) => `$${value}`,
     items: [],
     removeItem: vi.fn(),
     updateQuantity: vi.fn(),

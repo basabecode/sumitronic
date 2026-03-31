@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Heart, ShoppingCart, Star } from 'lucide-react'
@@ -97,13 +98,13 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   if (viewMode === 'list') {
     return (
       <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-        <div className="flex">
-          <div className="relative w-48 h-32 flex-shrink-0 bg-gray-50">
+        <div className="flex flex-col sm:flex-row">
+          <div className="relative w-full sm:w-44 sm:flex-shrink-0 aspect-video sm:aspect-square bg-gray-50">
             <Image
               src={imageUrl}
               alt={imageAlt}
               fill
-              className="object-contain p-2"
+              className="object-contain p-3"
             />
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -112,23 +113,21 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             )}
           </div>
 
-          <CardContent className="flex-1 p-6">
-            <div className="flex justify-between items-start h-full">
-              <div className="flex-1">
+          <CardContent className="flex-1 p-4 sm:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start h-full">
+              <div className="flex-1 min-w-0">
                 <Link href={`/products/${product.id}`}>
                   <h3
-                    className="text-lg font-medium hover:text-blue-600 transition-colors line-clamp-1"
+                    className="text-base sm:text-lg font-medium hover:text-orange-600 transition-colors line-clamp-2"
                     title={product.name}
                   >
                     {product.name}
                   </h3>
                 </Link>
 
-                <p className="text-sm text-gray-600 mt-1">
-                  {categoryName}
-                </p>
+                <p className="text-sm text-gray-500 mt-1">{categoryName}</p>
 
-                <p className="text-gray-700 mt-2 line-clamp-2">
+                <p className="text-gray-600 text-sm mt-2 line-clamp-2">
                   {product.description}
                 </p>
 
@@ -138,38 +137,34 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < 4
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
+                          i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600 ml-2">(4.0)</span>
+                  <span className="text-sm text-gray-500 ml-2">(4.0)</span>
                 </div>
               </div>
 
-              <div className="text-right ml-6">
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 sm:ml-4 sm:min-w-[140px]">
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">
                   {formatCurrency(product.price)}
                 </p>
 
-                <p className="text-sm text-gray-600 mb-4">
-                  Stock: {stockQuantity}
-                </p>
-
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm">
+                <div className="flex items-center gap-2 flex-wrap justify-end">
+                  <Button variant="outline" size="sm" className="h-9 w-9 p-0">
                     <Heart className="w-4 h-4" />
                   </Button>
                   <Button
                     size="sm"
                     disabled={isOutOfStock}
                     onClick={handleAddToCart}
-                    className="flex items-center"
+                    className="h-9 flex items-center"
                   >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    {isOutOfStock ? 'Agotado' : 'Agregar'}
+                    <ShoppingCart className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">
+                      {isOutOfStock ? 'Agotado' : 'Agregar'}
+                    </span>
                   </Button>
                 </div>
               </div>

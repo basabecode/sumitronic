@@ -22,41 +22,10 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching categories:', error)
-      // Usar categorías de los productos JSON como fallback
-      const jsonProducts = await import('@/lib/products.json')
-      const allProducts = jsonProducts.default
-
-      const uniqueCategories = Array.from(
-        new Set(allProducts.map((p: any) => p.category))
-      ).map((category: any, index: number) => ({
-        id: category,
-        name: category.charAt(0).toUpperCase() + category.slice(1),
-        slug: category,
-        description: `Categoría de ${category}`,
-        image_url: null,
-        sort_order: index + 1,
-      }))
-
-      return NextResponse.json(uniqueCategories)
-    }
-
-    // Si no hay categorías en Supabase, usar fallback
-    if (!categories || categories.length === 0) {
-      const jsonProducts = await import('@/lib/products.json')
-      const allProducts = jsonProducts.default
-
-      const uniqueCategories = Array.from(
-        new Set(allProducts.map((p: any) => p.category))
-      ).map((category: any, index: number) => ({
-        id: category,
-        name: category.charAt(0).toUpperCase() + category.slice(1),
-        slug: category,
-        description: `Categoría de ${category}`,
-        image_url: null,
-        sort_order: index + 1,
-      }))
-
-      return NextResponse.json(uniqueCategories)
+      return NextResponse.json(
+        { error: 'Error al obtener categorías' },
+        { status: 503 }
+      )
     }
 
     // Retornar categorías como array plano (sin jerarquía por ahora)

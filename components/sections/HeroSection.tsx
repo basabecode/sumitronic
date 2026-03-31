@@ -109,7 +109,7 @@ export default function HeroSection() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container min-h-[560px] md:min-h-[640px] xl:min-h-[680px]">
+      <div className="container min-h-[780px] sm:min-h-[700px] md:min-h-[640px] xl:min-h-[680px]">
         <div
           className="relative flex h-full"
           aria-live="polite"
@@ -132,20 +132,20 @@ export default function HeroSection() {
                 aria-roledescription="slide"
                 aria-label={`${index + 1} de ${slides.length}`}
               >
-                <div className="grid h-full grid-cols-12 gap-y-10 gap-x-8 py-12 md:py-16">
-                  <div className="order-2 col-span-12 flex flex-col justify-center space-y-6 md:order-1 md:col-span-6">
+                <div className="grid h-full grid-cols-12 gap-y-6 md:gap-y-10 gap-x-8 pt-6 pb-20 md:py-16">
+                  <div className="order-2 col-span-12 flex flex-col justify-start md:justify-center space-y-4 md:space-y-6 md:order-1 md:col-span-6">
                     <span className="inline-flex w-fit items-center rounded-full bg-orange-100 px-4 py-1 text-[0.8125rem] font-semibold uppercase tracking-[0.04em] text-orange-800">
                       {slide.badge}
                     </span>
 
                     <div className="space-y-4">
-                      <h2 className="max-w-[22ch] text-4xl font-semibold leading-[1.2] text-gray-900 sm:text-[2.75rem] md:text-[3rem]">
+                      <h2 className="max-w-[22ch] text-3xl font-semibold leading-[1.2] text-gray-900 sm:text-4xl md:text-[3rem]">
                         {slide.title}
                       </h2>
 
                       <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                         <div className="flex items-baseline gap-2 text-gray-900">
-                          <span className="text-[2rem] font-bold sm:text-[2.25rem]">
+                          <span className="text-[1.75rem] font-bold sm:text-[2.25rem]">
                             {formatCurrency(slide.price)}
                           </span>
                           <span className="text-base text-gray-400 line-through">
@@ -251,7 +251,7 @@ export default function HeroSection() {
                   </div>
 
                   <div className="order-1 col-span-12 md:order-2 md:col-span-6">
-                    <div className="relative mx-auto w-full max-w-[600px]">
+                    <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[400px] md:max-w-[600px] mt-4 md:mt-0">
                       <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-white shadow-lg">
                         <Image
                           src={slide.image || '/placeholder.svg'}
@@ -275,7 +275,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-10 flex items-center justify-center gap-4">
+      <div className="pointer-events-none absolute inset-x-0 bottom-4 md:bottom-10 flex items-center justify-center gap-4">
         <div className="pointer-events-auto flex items-center gap-3">
           <button
             type="button"

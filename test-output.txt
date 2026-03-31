@@ -707,3 +707,4 @@ ReferenceError: React is not defined
 
 [1m[41m FAIL [49m[22m [31mTests failed. Watching for file changes...[39m
        [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+^C

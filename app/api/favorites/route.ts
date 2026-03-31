@@ -67,9 +67,7 @@ export async function GET(request: NextRequest) {
         image_url,
         brand,
         category_id,
-        stock_quantity,
-        is_featured,
-        is_active
+        stock_quantity
       `)
       .in('id', productIds)
 
