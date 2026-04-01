@@ -31,6 +31,9 @@ interface Product {
   weight?: number
   dimensions?: unknown
   brand?: string
+  image_url?: string
+  images?: string[]
+  compare_price?: number | null
   category?: {
     id: string
     name: string
@@ -74,7 +77,24 @@ const trustPoints = [
 
 function getPrimaryImage(product: Product) {
   const primaryImage = product.product_images?.find(image => image.is_primary)
-  return primaryImage?.image_url || product.product_images?.[0]?.image_url || '/placeholder.svg'
+  return (
+    primaryImage?.image_url ||
+    product.product_images?.[0]?.image_url ||
+    product.images?.[0] ||
+    product.image_url ||
+    '/placeholder.svg'
+  )
+}
+
+// Devuelve todas las URLs de imágenes disponibles para miniaturas
+function getAllImageUrls(product: Product): { url: string; alt: string }[] {
+  if (product.product_images?.length > 0) {
+    return product.product_images.map(img => ({ url: img.image_url, alt: img.alt_text || product.name }))
+  }
+  if (product.images && product.images.length > 0) {
+    return product.images.map(url => ({ url, alt: product.name }))
+  }
+  return []
 }
 
 function buildHighlights(product: Product, categoryName?: string) {
@@ -120,6 +140,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
   const { addItem: addFavorite, isFavorite, removeItem: removeFavorite } = useFavorites()
 
   const categoryName = product.category?.name || product.categories?.name
+  const allImages = getAllImageUrls(product)
   const isOutOfStock = product.stock_quantity === 0
   const maxQuantity = Math.min(product.stock_quantity || 0, 10)
   const favorite = isFavorite(product.id)
@@ -182,7 +203,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
         <ChevronRight className="h-4 w-4" />
         <a href="/products">Productos</a>
         <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-[hsl(var(--foreground))]">{product.name}</span>
+        <span className="font-medium text-[hsl(var(--foreground))] capitalize">{product.name}</span>
       </nav>
 
       <section className="section-shell overflow-hidden">
@@ -205,22 +226,22 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
               )}
             </div>
 
-            {product.product_images?.length > 1 && (
+            {allImages.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-2">
-                {product.product_images.map(image => (
+                {allImages.map((image, index) => (
                   <button
-                    key={image.id}
+                    key={index}
                     type="button"
-                    onClick={() => setSelectedImage(image.image_url)}
+                    onClick={() => setSelectedImage(image.url)}
                     className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border-2 bg-white ${
-                      selectedImage === image.image_url
+                      selectedImage === image.url
                         ? 'border-[hsl(var(--brand))]'
                         : 'border-[hsl(var(--border-subtle))]'
                     }`}
                   >
                     <Image
-                      src={image.image_url}
-                      alt={image.alt_text || product.name}
+                      src={image.url}
+                      alt={image.alt}
                       fill
                       className="object-contain p-2"
                     />
@@ -248,7 +269,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
 
               <div>
                 <p className="eyebrow-label">Producto recomendado</p>
-                <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight text-[hsl(var(--foreground))] md:text-5xl">
+                <h1 className="font-display mt-2 text-3xl font-semibold tracking-tight text-[hsl(var(--foreground))] md:text-5xl capitalize">
                   {product.name}
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
@@ -279,8 +300,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
               ))}
             </div>
 
-            <div className="grid gap-4 xl:grid-cols-[1fr,22rem]">
-              <div className="space-y-4">
+            <div className="space-y-4">
                 <div className="section-shell p-5">
                   <p className="eyebrow-label">Por qué ayuda a decidir</p>
                   <div className="mt-4 grid gap-4 md:grid-cols-3">
@@ -324,15 +344,16 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       <div className="rounded-[1.25rem] bg-[hsl(var(--surface-muted))] p-4">
                         <p className="text-sm font-medium text-[hsl(var(--foreground))]">Dimensiones</p>
                         <p className="mt-2 text-sm text-[hsl(var(--text-muted))]">
-                          {JSON.stringify(product.dimensions)}
+                          {typeof product.dimensions === 'object' && product.dimensions !== null
+                            ? Object.entries(product.dimensions as Record<string, unknown>).map(([k, v]) => `${k}: ${v}`).join(' × ')
+                            : String(product.dimensions)}
                         </p>
                       </div>
                     )}
                   </div>
                 </div>
-              </div>
 
-              <aside className="section-shell h-fit p-5 xl:sticky xl:top-28">
+              <aside className="section-shell h-fit p-5 lg:sticky lg:top-28">
                 <p className="eyebrow-label">Listo para comprar</p>
                 <div className="mt-3">
                   <p className="font-display text-4xl font-semibold text-[hsl(var(--foreground))]">

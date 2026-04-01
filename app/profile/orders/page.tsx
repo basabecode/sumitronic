@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Package, Clock, CheckCircle, XCircle, Eye } from 'lucide-react'
@@ -17,28 +18,32 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
 import { createClient } from '@/lib/supabase/client'
 
+// Los items se almacenan como JSONB en la columna `items` de la tabla orders
+interface OrderItem {
+  id?: string
+  product_id?: string
+  name: string
+  quantity: number
+  unit_price: number
+  price?: number
+  image_url?: string
+}
+
 interface Order {
   id: string
-  order_number?: string
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
   total: number
+  subtotal: number
+  tax: number
+  shipping: number
   created_at: string
+  items: OrderItem[]
   shipping_address?: {
     street?: string
     city?: string
     state?: string
     postal_code?: string
   } | null
-  order_items: Array<{
-    id: string
-    quantity: number
-    unit_price: number
-    products: {
-      id: string
-      name: string
-      image_url: string
-    }
-  }>
 }
 
 const statusConfig = {
@@ -85,21 +90,20 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     try {
+      // Los items de la orden están en la columna JSONB `items`, no en una tabla separada
       const { data, error } = await supabase
         .from('orders')
         .select(
           `
-          *,
-          order_items (
-            id,
-            quantity,
-            unit_price,
-            products (
-              id,
-              name,
-              image_url
-            )
-          )
+          id,
+          status,
+          total,
+          subtotal,
+          tax,
+          shipping,
+          items,
+          shipping_address,
+          created_at
         `
         )
         .eq('user_id', user?.id)
@@ -108,7 +112,7 @@ export default function OrdersPage() {
       if (error) {
         setError('Error al cargar los pedidos')
       } else {
-        setOrders(data || [])
+        setOrders((data || []) as Order[])
       }
     } catch (err) {
       setError('Error inesperado al cargar los pedidos')
@@ -163,10 +167,10 @@ export default function OrdersPage() {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Package className="h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No tienes pedidos aún
+              No tienes pedidos aun
             </h3>
             <p className="text-gray-500 text-center mb-6">
-              Cuando realices tu primer pedido, aparecerá aquí
+              Cuando realices tu primer pedido, aparecera aqui
             </p>
             <Button>Explorar productos</Button>
           </CardContent>
@@ -174,8 +178,14 @@ export default function OrdersPage() {
       ) : (
         <div className="space-y-6">
           {orders.map(order => {
-            const statusInfo = statusConfig[order.status]
+            const statusInfo =
+              statusConfig[order.status] ?? statusConfig['pending']
             const StatusIcon = statusInfo.icon
+            // Usar los primeros 8 caracteres del UUID como referencia visible
+            const orderRef = order.id.slice(0, 8).toUpperCase()
+            const orderItems: OrderItem[] = Array.isArray(order.items)
+              ? order.items
+              : []
 
             return (
               <Card key={order.id}>
@@ -183,7 +193,7 @@ export default function OrdersPage() {
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="text-lg">
-                        Pedido #{order.order_number || order.id.slice(0, 8)}
+                        Pedido #{orderRef}
                       </CardTitle>
                       <CardDescription>
                         {format(
@@ -210,31 +220,41 @@ export default function OrdersPage() {
                     {/* Productos */}
                     <div>
                       <h4 className="font-semibold mb-3">Productos</h4>
-                      <div className="space-y-3">
-                        {order.order_items.map(item => (
-                          <div
-                            key={item.id}
-                            className="flex items-center space-x-3"
-                          >
-                            <img
-                              src={
-                                item.products.image_url || '/placeholder.svg'
-                              }
-                              alt={item.products.name}
-                              className="w-12 h-12 object-cover rounded-md"
-                            />
-                            <div className="flex-1">
-                              <p className="font-medium text-sm">
-                                {item.products.name}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                Cantidad: {item.quantity} ×{' '}
-                                {formatCurrency(item.unit_price)}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      {orderItems.length === 0 ? (
+                        <p className="text-sm text-gray-500">
+                          Sin detalle de productos
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {orderItems.map((item, index) => {
+                            const itemPrice =
+                              item.unit_price ?? item.price ?? 0
+                            return (
+                              <div
+                                key={item.id ?? index}
+                                className="flex items-center space-x-3"
+                              >
+                                <Image
+                                  src={item.image_url || '/placeholder.svg'}
+                                  alt={item.name}
+                                  width={48}
+                                  height={48}
+                                  className="object-cover rounded-md"
+                                />
+                                <div className="flex-1">
+                                  <p className="font-medium text-sm">
+                                    {item.name}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    Cantidad: {item.quantity} x{' '}
+                                    {formatCurrency(itemPrice)}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
                     </div>
 
                     {/* Resumen */}
@@ -246,13 +266,27 @@ export default function OrdersPage() {
                             Subtotal
                           </span>
                           <span className="text-sm">
-                            {formatCurrency(order.total)}
+                            {formatCurrency(order.subtotal ?? order.total)}
                           </span>
                         </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Envío</span>
-                          <span className="text-sm">Gratis</span>
-                        </div>
+                        {order.shipping > 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">
+                              Envio
+                            </span>
+                            <span className="text-sm">
+                              {formatCurrency(order.shipping)}
+                            </span>
+                          </div>
+                        )}
+                        {order.shipping === 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">
+                              Envio
+                            </span>
+                            <span className="text-sm">Gratis</span>
+                          </div>
+                        )}
                         <div className="border-t pt-2">
                           <div className="flex justify-between font-semibold">
                             <span>Total</span>
@@ -264,7 +298,7 @@ export default function OrdersPage() {
                       {order.shipping_address && (
                         <div className="mt-4">
                           <h5 className="font-medium text-sm mb-2">
-                            Dirección de envío
+                            Direccion de envio
                           </h5>
                           <p className="text-sm text-gray-600">
                             {order.shipping_address.street}

@@ -14,6 +14,7 @@ import { MobileDrawer } from './header/MobileDrawer'
 import { SearchBar } from './header/SearchBar'
 import { primaryNavLinks } from './header/headerData'
 import { NavCategory } from './header/types'
+import { DynamicBreadcrumbs } from './DynamicBreadcrumbs'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -98,8 +99,9 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-overlay))]/90 backdrop-blur-xl">
-      <div className="mx-auto w-full max-w-[1720px] px-4 py-3 md:px-6 xl:px-8">
+    <>
+      <header className="sticky top-0 z-50 border-b border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-overlay))]/90 backdrop-blur-xl">
+        <div className="mx-auto w-full max-w-[1720px] px-4 py-3 md:px-6 xl:px-8">
         {/* Desktop header — single row */}
         <div className="hidden md:flex items-center gap-4 lg:gap-6">
           {/* Logo */}
@@ -232,5 +234,7 @@ export default function Header() {
         onSectionNavigate={navigateToSection}
       />
     </header>
+    <DynamicBreadcrumbs />
+    </>
   )
 }

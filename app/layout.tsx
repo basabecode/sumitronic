@@ -11,7 +11,6 @@ import { Toaster } from 'sonner'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import CartSidebar from '@/components/cart/CartSidebar'
 import FavoritesSidebar from '@/components/cart/FavoritesSidebar'
-import ChatWidget from '@/components/features/ChatWidget'
 
 const inter = Inter({ subsets: ['latin'] })
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
@@ -112,7 +111,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         {/* PWA Meta Tags */}
         <link rel="manifest" href="/manifest.json" />
@@ -149,7 +148,6 @@ export default function RootLayout({
                   {/* Global UI Components - Available on all pages */}
                   <CartSidebar />
                   <FavoritesSidebar />
-                  <ChatWidget />
                 </FavoritesProvider>
               </CartProvider>
             </AuthProvider>

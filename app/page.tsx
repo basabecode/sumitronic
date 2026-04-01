@@ -33,7 +33,6 @@ export default function Home() {
         <CTASection />
       </main>
       <Footer />
-      {/* Global components (CartSidebar, FavoritesSidebar, ChatWidget) are now in layout.tsx */}
       <WhatsAppFAB />
     </div>
   )

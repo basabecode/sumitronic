@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 function LoginPageContent() {
   const [showForgotPassword, setShowForgotPassword] = useState(false)
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') || '/'
+  const redirectTo = searchParams.get('redirectTo') || searchParams.get('redirect') || '/'
   useRedirectIfAuthenticated(redirectTo)
 
   if (showForgotPassword) {

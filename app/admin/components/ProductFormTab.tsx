@@ -241,8 +241,8 @@ export default function ProductFormTab({
                     required
                     min="0"
                     step="1000"
-                    value={formData.price}
-                    onChange={e => onInputChange('price', parseInt(e.target.value) || 0)}
+                    value={formData.price === 0 ? '' : formData.price}
+                    onChange={e => onInputChange('price', e.target.value === '' ? 0 : parseInt(e.target.value) || 0)}
                     placeholder="250000"
                   />
                 </div>
@@ -277,8 +277,8 @@ export default function ProductFormTab({
                     type="number"
                     required
                     min="0"
-                    value={formData.stock}
-                    onChange={e => onInputChange('stock', parseInt(e.target.value) || 0)}
+                    value={formData.stock === 0 ? '' : formData.stock}
+                    onChange={e => onInputChange('stock', e.target.value === '' ? 0 : parseInt(e.target.value) || 0)}
                     placeholder="10"
                     className="h-11"
                   />

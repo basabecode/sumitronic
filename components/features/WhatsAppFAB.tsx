@@ -32,7 +32,7 @@ export default function WhatsAppFAB() {
         className={cn(
           'fixed z-40 transition-all duration-300',
           // Posición con safe area
-          'bottom-24 left-4 md:bottom-6 md:left-6',
+          'bottom-24 right-4 md:bottom-6 md:right-6',
           // Animación de entrada
           'animate-slide-in-up'
         )}
@@ -41,7 +41,7 @@ export default function WhatsAppFAB() {
         {isExpanded && (
           <div
             className={cn(
-              'absolute bottom-full left-0 mb-3',
+              'absolute bottom-full right-0 mb-3',
               'bg-white rounded-2xl shadow-lg border border-gray-200',
               'px-4 py-3 max-w-[200px]',
               'animate-scale-in'

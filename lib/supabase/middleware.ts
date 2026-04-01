@@ -1,6 +1,9 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 
+const PROTECTED_ROUTES = ['/profile', '/checkout', '/favorites', '/orders']
+const ADMIN_ROUTES = ['/admin']
+
 export const updateSession = async (request: NextRequest) => {
   let supabaseResponse = NextResponse.next({
     request,
@@ -44,16 +47,34 @@ export const updateSession = async (request: NextRequest) => {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    !user &&
-    (request.nextUrl.pathname.startsWith('/profile') ||
-      request.nextUrl.pathname.startsWith('/admin'))
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const { pathname } = request.nextUrl
+
+  // Rutas que requieren autenticación básica
+  const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
+  // Rutas que requieren rol admin
+  const isAdmin = ADMIN_ROUTES.some(route => pathname.startsWith(route))
+
+  if (!user && (isProtected || isAdmin)) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
-    url.searchParams.set('redirect_to', request.nextUrl.pathname)
+    url.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(url)
+  }
+
+  // Verificar rol admin para rutas /admin
+  if (user && isAdmin) {
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (!profile || profile.role !== 'admin') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+      url.searchParams.set('error', 'unauthorized')
+      return NextResponse.redirect(url)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

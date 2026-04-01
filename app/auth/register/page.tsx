@@ -1,11 +1,15 @@
 'use client'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { RegisterForm } from '@/components/auth/RegisterForm'
 import { useRedirectIfAuthenticated } from '@/hooks/useAuth'
 
-export default function RegisterPage() {
-  useRedirectIfAuthenticated('/')
+function RegisterPageContent() {
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') || searchParams.get('redirect') || '/'
+  useRedirectIfAuthenticated(redirectTo)
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -25,5 +29,13 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50">Cargando...</div>}>
+      <RegisterPageContent />
+    </Suspense>
   )
 }

@@ -140,9 +140,17 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { product_id } = body
 
-    if (!product_id) {
+    if (!product_id || typeof product_id !== 'string') {
       return NextResponse.json(
         { error: 'ID de producto requerido' },
+        { status: 400 }
+      )
+    }
+
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!UUID_REGEX.test(product_id)) {
+      return NextResponse.json(
+        { error: 'Formato de ID inválido' },
         { status: 400 }
       )
     }
@@ -220,10 +228,16 @@ export async function DELETE(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { product_id } = body
+    const { product_id, clear_all } = body
 
-    if (!product_id) {
-      // Si no hay product_id, eliminar todos los favoritos del usuario
+    if (!product_id && !clear_all) {
+      return NextResponse.json(
+        { error: 'Se requiere product_id o clear_all: true' },
+        { status: 400 }
+      )
+    }
+
+    if (clear_all === true) {
       const { error } = await supabase
         .from('favorites')
         .delete()

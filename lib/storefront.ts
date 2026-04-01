@@ -32,7 +32,7 @@ export async function getProductsByCategorySlug(slug: string) {
     .from('categories')
     .select('id, name, slug, image_url')
     .eq('slug', slug)
-    .single()
+    .maybeSingle()
 
   if (!category) return null
 

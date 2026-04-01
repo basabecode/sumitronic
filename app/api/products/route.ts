@@ -2,16 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { ProductFilters, ProductsApiResponse } from '@/lib/types/products'
 
+// Whitelist de campos permitidos para ordenamiento (previene inyeccion de columnas)
+const ALLOWED_SORT_FIELDS = ['created_at', 'price', 'name', 'updated_at']
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page') || '1')
-  const limit = parseInt(searchParams.get('limit') || '12')
+  const limit = Math.min(parseInt(searchParams.get('limit') || '12'), 100)
   const categories = searchParams.getAll('category')
   const brands = searchParams.getAll('brand')
   const search = searchParams.get('search')
   const minPrice = searchParams.get('minPrice')
   const maxPrice = searchParams.get('maxPrice')
   const sortBy = searchParams.get('sortBy') || 'created_at'
+  const safeSortBy = ALLOWED_SORT_FIELDS.includes(sortBy) ? sortBy : 'created_at'
   const sortOrder = searchParams.get('sortOrder') || 'desc'
   const featured = searchParams.get('featured')
   const inStockOnly = searchParams.get('inStockOnly') === 'true'
@@ -67,9 +71,9 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(
-        `name.ilike.%${search}%,description.ilike.%${search}%,brand.ilike.%${search}%`
-      )
+      // Escapar caracteres especiales de LIKE para prevenir filter injection
+      const term = search.replace(/[%_\\]/g, '\\$&')
+      query = query.or(`name.ilike.%${term}%,description.ilike.%${term}%,brand.ilike.%${term}%`)
     }
 
     if (minPrice) {
@@ -94,7 +98,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Ordenamiento
-    query = query.order(sortBy, { ascending: sortOrder === 'asc' })
+    query = query.order(safeSortBy, { ascending: sortOrder === 'asc' })
 
     // Paginación
     const from = (page - 1) * limit

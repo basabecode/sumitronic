@@ -56,11 +56,12 @@ export function useProductForm(callbacks: {
       const { data, error } = await supabase
         .from('categories')
         .select('name')
+        .eq('active', true)
         .order('name')
 
-      if (!error && data) {
-        const names = data.map(c => c.name)
-        setCategories(prev => [...new Set([...prev, ...names])].sort())
+      if (!error && data && data.length > 0) {
+        // Reemplazar con las categorías reales de DB (no mezclar con hardcoded)
+        setCategories(data.map(c => c.name))
       }
     } catch (error) {
       console.error('Error fetching categories:', error)
@@ -215,7 +216,8 @@ export function useProductForm(callbacks: {
         .from('categories')
         .select('id')
         .eq('name', formData.category)
-        .single()
+        .limit(1)
+        .maybeSingle()
 
       if (categoryError || !categoryData) {
         toast.error('Error: Categoría no encontrada')

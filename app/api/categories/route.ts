@@ -67,6 +67,20 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, description, image_url, sort_order } = body
 
+    if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      return NextResponse.json(
+        { error: 'El nombre de la categoría es obligatorio' },
+        { status: 400 }
+      )
+    }
+
+    if (name.length > 100) {
+      return NextResponse.json(
+        { error: 'El nombre no puede exceder 100 caracteres' },
+        { status: 400 }
+      )
+    }
+
     // Generar slug
     const slug = name
       .toLowerCase()

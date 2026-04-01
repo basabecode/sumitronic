@@ -372,13 +372,38 @@ export default function CheckoutPageContent() {
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="cundinamarca">
-                            Cundinamarca
-                          </SelectItem>
+                          <SelectItem value="amazonas">Amazonas</SelectItem>
                           <SelectItem value="antioquia">Antioquia</SelectItem>
-                          <SelectItem value="valle">Valle del Cauca</SelectItem>
+                          <SelectItem value="arauca">Arauca</SelectItem>
                           <SelectItem value="atlantico">Atlántico</SelectItem>
+                          <SelectItem value="bolivar">Bolívar</SelectItem>
+                          <SelectItem value="boyaca">Boyacá</SelectItem>
+                          <SelectItem value="caldas">Caldas</SelectItem>
+                          <SelectItem value="caqueta">Caquetá</SelectItem>
+                          <SelectItem value="casanare">Casanare</SelectItem>
+                          <SelectItem value="cauca">Cauca</SelectItem>
+                          <SelectItem value="cesar">Cesar</SelectItem>
+                          <SelectItem value="choco">Chocó</SelectItem>
+                          <SelectItem value="cordoba">Córdoba</SelectItem>
+                          <SelectItem value="cundinamarca">Cundinamarca</SelectItem>
+                          <SelectItem value="guainia">Guainía</SelectItem>
+                          <SelectItem value="guaviare">Guaviare</SelectItem>
+                          <SelectItem value="huila">Huila</SelectItem>
+                          <SelectItem value="laguajira">La Guajira</SelectItem>
+                          <SelectItem value="magdalena">Magdalena</SelectItem>
+                          <SelectItem value="meta">Meta</SelectItem>
+                          <SelectItem value="narino">Nariño</SelectItem>
+                          <SelectItem value="nortesantander">Norte de Santander</SelectItem>
+                          <SelectItem value="putumayo">Putumayo</SelectItem>
+                          <SelectItem value="quindio">Quindío</SelectItem>
+                          <SelectItem value="risaralda">Risaralda</SelectItem>
+                          <SelectItem value="sanandres">San Andrés y Providencia</SelectItem>
                           <SelectItem value="santander">Santander</SelectItem>
+                          <SelectItem value="sucre">Sucre</SelectItem>
+                          <SelectItem value="tolima">Tolima</SelectItem>
+                          <SelectItem value="valle">Valle del Cauca</SelectItem>
+                          <SelectItem value="vaupes">Vaupés</SelectItem>
+                          <SelectItem value="vichada">Vichada</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -454,14 +479,14 @@ export default function CheckoutPageContent() {
                     <Label htmlFor="acceptTerms" className="text-sm">
                       Acepto los{' '}
                       <Link
-                        href="/terms"
+                        href="/help/terminos-y-condiciones"
                         className="text-blue-600 hover:underline"
                       >
                         términos y condiciones
                       </Link>{' '}
                       y la{' '}
                       <Link
-                        href="/privacy"
+                        href="/help/politica-de-privacidad"
                         className="text-blue-600 hover:underline"
                       >
                         política de privacidad
@@ -528,6 +553,9 @@ export default function CheckoutPageContent() {
                         )}
                       </span>
                     </div>
+                    {state.shipping === 0 && (
+                      <p className="text-xs text-amber-600 mt-1">Envío calculado por el equipo tras confirmar el pedido</p>
+                    )}
 
                     <Separator />
 
@@ -545,7 +573,7 @@ export default function CheckoutPageContent() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-orange-600 hover:bg-orange-700"
                   disabled={isProcessing || !form.acceptTerms}
                 >
                   {isProcessing ? (

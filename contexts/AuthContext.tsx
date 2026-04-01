@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { User, Session, AuthError } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { Profile } from '@/lib/types/database'
@@ -35,16 +35,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const supabase = createClient()
+  const supabaseRef = useRef(createClient())
+  const supabase = supabaseRef.current
 
-  // Cargar perfil del usuario por email (asociado al rol)
-  const loadProfile = async (userEmail: string) => {
+  // Cargar perfil del usuario por id (identificador canónico del JWT)
+  const loadProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('email', userEmail)
-        .single()
+        .eq('id', userId)
+        .maybeSingle()
 
       if (error) {
         console.error('Error loading profile:', error)
@@ -69,8 +70,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(initialSession)
         setUser(initialSession?.user ?? null)
 
-        if (initialSession?.user && initialSession.user.email) {
-          const profileData = await loadProfile(initialSession.user.email)
+        if (initialSession?.user) {
+          const profileData = await loadProfile(initialSession.user.id)
           setProfile(profileData)
         }
       } catch (error) {
@@ -89,8 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session)
       setUser(session?.user ?? null)
 
-      if (session?.user && session.user.email) {
-        const profileData = await loadProfile(session.user.email)
+      if (session?.user) {
+        const profileData = await loadProfile(session.user.id)
         setProfile(profileData)
       } else {
         setProfile(null)

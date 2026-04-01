@@ -179,7 +179,20 @@ export async function POST(request: NextRequest) {
     await supabase.from('cart_items').delete().eq('cart_id', cart.id)
 
     if (items.length > 0) {
-      const itemsToInsert = items.map((item: any) => ({
+      // Mapear los IDs de los productos desde el cliente
+      const productIds = items.map((i: any) => i.id)
+      
+      // Validar qué productos todavía existen en la base de datos
+      const { data: validProducts } = await supabase
+        .from('products')
+        .select('id')
+        .in('id', productIds)
+        
+      const validProductIds = new Set(validProducts?.map(p => p.id) || [])
+
+      const itemsToInsert = items
+        .filter((item: any) => validProductIds.has(item.id))
+        .map((item: any) => ({
         cart_id: cart.id,
         product_id: item.id,
         quantity: item.quantity,
@@ -187,16 +200,21 @@ export async function POST(request: NextRequest) {
         // variant_id: item.variantId // Si se implementa variantes
       }))
 
-      const { error: insertError } = await supabase
-        .from('cart_items')
-        .insert(itemsToInsert)
+      if (itemsToInsert.length > 0) {
+        const { error: insertError } = await supabase
+          .from('cart_items')
+          .insert(itemsToInsert)
 
-      if (insertError) throw insertError
+        if (insertError) throw insertError
+      }
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Sync cart error:', error)
-    return NextResponse.json({ error: 'Error al sincronizar carrito' }, { status: 500 })
+  } catch (error: any) {
+    console.error('Sync cart error:', error.message || error)
+    return NextResponse.json({ 
+      error: 'Error al sincronizar carrito', 
+      details: 'Error procesando el carrito. Intenta de nuevo.'
+    }, { status: 500 })
   }
 }
