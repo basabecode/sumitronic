@@ -11,6 +11,7 @@
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui",
+    "test:google-sheets": "tsx scripts/test-google-sheets.ts",
     "test:database": "tsx scripts/validate-db.ts",
     "db:validate": "tsx scripts/validate-db.ts",
     "fix:database": "tsx scripts/quick-database-fix.ts",

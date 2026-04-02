@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Mail, MessageCircle, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -29,10 +31,17 @@ export function MobileDrawer({
   onCategorySelect,
   onSectionNavigate,
 }: MobileDrawerProps) {
-  if (!isOpen) return null
+  const [mounted, setMounted] = useState(false)
 
-  return (
-    <div className="fixed inset-0 z-[60] flex md:hidden">
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!isOpen || !mounted) return null
+
+  // Renderizar en document.body para salir de la stacking context del <header>
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex md:hidden">
       <button
         type="button"
         className="absolute inset-0 bg-slate-950/45 backdrop-blur-sm"
@@ -135,6 +144,7 @@ export function MobileDrawer({
           </div>
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body
   )
 }

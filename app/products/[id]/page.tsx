@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   }).format(product.price)
 
   return {
-    title: `${product.name} - Precio Colombia | CapiShop`,
+    title: `${product.name} - Precio Colombia`,
     description: `Compra ${product.name} en Colombia por ${price}. ${product.description.substring(0, 150)}... Envíos a todo el país y garantía local.`,
     openGraph: {
       title: `${product.name} - ${price} | CapiShop Colombia`,

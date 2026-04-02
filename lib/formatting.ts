@@ -61,6 +61,22 @@ export function isValidEmail(email: string): boolean {
 }
 
 /**
+ * Capitaliza el nombre de un producto correctamente:
+ * - Primera letra de cada palabra en mayúscula
+ * - Siglas técnicas (2K, 4K, HD, IP, etc.) en mayúscula completa
+ */
+export function formatProductName(name: string): string {
+  return name
+    .split(' ')
+    .map(word =>
+      /^\d+[a-zA-Z]+$/.test(word)
+        ? word.toUpperCase()
+        : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(' ')
+}
+
+/**
  * Valida si un número de teléfono colombiano es válido
  */
 export function isValidColombianPhone(phone: string): boolean {

@@ -1,6 +1,12 @@
 # Integracion actual con Supabase
 
-Esta guia describe el estado real del proyecto y el flujo recomendado para recuperar la base de datos.
+Esta guia describe el flujo recomendado para recuperar y validar la capa de datos del proyecto.
+
+Antes de usarla, revisa tambien:
+
+- `README.md`
+- `docs/README.md`
+- `docs/ESTADO_ACTUAL_2026-04.md`
 
 ## Que usa hoy la app
 
@@ -26,8 +32,12 @@ El cliente se construye desde:
 ## Activos reales disponibles
 
 - `supabase/schema.sql`
+- `supabase/migrations/20250101_initial_schema.sql`
 - `supabase/migrations/20251201_user_persistence.sql`
 - `supabase/migrations/20251208_create_indexes.sql`
+- `supabase/migrations/20260329_restore_backup_compatibility.sql`
+- `supabase/migrations/20260401_sanear_schema_contrato.sql`
+- `supabase/migrations/20261101_storage_products.sql`
 - `supabase/db_cluster-04-09-2025@04-34-20.backup.gz`
 - `supabase/pmvhtxlciekynczjspja.storage/`
 
@@ -67,6 +77,7 @@ Consulta:
 - El repo no trae configuracion lista para `supabase start`.
 - Restaurar el backup en Docker te da Postgres local, no un stack Supabase completo.
 - Para que la app funcione completamente en local con Auth y Storage, haria falta preparar un entorno Supabase local o una nueva instancia remota.
+- La instancia remota actual no debe tomarse como fuente de verdad sin contrastarla antes con backup, schema y migrations.
 
 ## Administracion
 

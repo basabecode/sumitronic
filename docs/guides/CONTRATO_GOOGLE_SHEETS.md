@@ -24,29 +24,41 @@ o integración ETL debe respetar este contrato.
 
 ## Columnas del Google Sheet
 
-### Orden recomendado de columnas en el Sheet
+### Hoja y rango que consume el sincronizador actual
 
-| Columna | Nombre en Sheet        | Campo en DB          | Obligatorio |
-|---------|------------------------|----------------------|-------------|
-| A       | nombre                 | `name`               | SI          |
-| B       | descripcion            | `description`        | SI          |
-| C       | precio                 | `price`              | SI          |
-| D       | precio_comparativo     | `compare_price`      | NO          |
-| E       | precio_costo           | `cost_price`         | NO          |
-| F       | categoria_id           | `category_id`        | SI          |
-| G       | marca                  | `brand`              | SI          |
-| H       | imagen_url             | `image_url`          | SI          |
-| I       | imagenes_adicionales   | `images`             | NO          |
-| J       | stock                  | `stock_quantity`     | SI          |
-| K       | sku                    | `sku`                | NO*         |
-| L       | codigo_barras          | `barcode`            | NO          |
-| M       | peso_kg                | `weight`             | NO          |
-| N       | dimensiones            | `dimensions`         | NO          |
-| O       | destacado              | `featured`           | NO          |
-| P       | activo                 | `active`             | NO          |
-| Q       | etiquetas              | `tags`               | NO          |
+El codigo actual en `lib/sync-products.ts` lee:
 
-*`sku` debe ser unico si se provee. Dejar en blanco si no se tiene.
+```text
+${GOOGLE_SHEET_NAME}!A2:O
+```
+
+Por lo tanto:
+
+- La fila 1 es de encabezados.
+- Los datos empiezan en la fila 2.
+- El orden de columnas es posicional y no debe cambiar.
+
+### Orden real de columnas en el Sheet
+
+| Columna | Nombre recomendado en Sheet | Campo en DB          | Obligatorio |
+|---------|-----------------------------|----------------------|-------------|
+| A       | `sku`                       | `sku`                | SI recomendado |
+| B       | `name`                      | `name`               | SI          |
+| C       | `description`               | `description`        | SI          |
+| D       | `price`                     | `price`              | SI          |
+| E       | `compare_price`             | `compare_price`      | NO          |
+| F       | `cost_price`                | `cost_price`         | NO          |
+| G       | `brand`                     | `brand`              | SI          |
+| H       | `category_slug`             | `category_id` por lookup de slug | SI |
+| I       | `stock_quantity`            | `stock_quantity`     | SI          |
+| J       | `weight`                    | `weight`             | NO          |
+| K       | `featured`                  | `featured`           | NO          |
+| L       | `active`                    | `active`             | NO          |
+| M       | `tags`                      | `tags`               | NO          |
+| N       | `image_url`                 | `image_url`          | NO          |
+| O       | `images`                    | `images`             | NO          |
+
+`sku` deberia tratarse como obligatorio operativo aunque tecnicamente el codigo lo acepta vacio.
 
 ---
 
@@ -84,12 +96,12 @@ o integración ETL debe respetar este contrato.
 - Obligatorio: NO
 - Ejemplo: `195000`
 
-### `category_id` — ID de la categoria
-- Tipo: UUID (texto de 36 caracteres)
+### `category_slug` — Slug de la categoria
+- Tipo: texto
 - Obligatorio: SI
-- Debe ser un UUID existente en la tabla `categories`
-- Consultar tabla de categorias disponibles al final de este documento
-- Ejemplo: `3f2e9a1b-4c8d-4e7f-a321-123456789abc`
+- Debe coincidir con `categories.slug`
+- El sincronizador transforma ese slug a `category_id` consultando Supabase
+- Ejemplo: `camaras-ip`
 
 ### `brand` — Marca del producto
 - Tipo: texto
@@ -100,7 +112,7 @@ o integración ETL debe respetar este contrato.
 
 ### `image_url` — URL de la imagen principal
 - Tipo: URL completa (texto)
-- Obligatorio: SI
+- Obligatorio: NO
 - Debe ser una URL publica accesible
 - Formatos validos: jpg, jpeg, png, webp
 - Ejemplo: `https://storage.googleapis.com/capishop/productos/hikvision-ds-2cd2143.jpg`
@@ -119,27 +131,15 @@ o integración ETL debe respetar este contrato.
 
 ### `sku` — Codigo unico del producto
 - Tipo: texto
-- Obligatorio: NO (pero muy recomendado)
+- Obligatorio: NO a nivel de parser, pero SI recomendado a nivel operativo
 - Debe ser unico en toda la tabla si se provee
-- Dejar celda vacia si no se tiene (el script debe enviar NULL, no string vacio)
+- El parser actual envia string vacio si la celda viene vacia; por eso conviene no dejarlo en blanco
 - Ejemplo: `HVN-DS2CD2143G2-I`
 
-### `barcode` — Codigo de barras EAN/UPC
-- Tipo: texto
-- Obligatorio: NO
-- Ejemplo: `6941264078516`
-
-### `weight_kg` — Peso en kilogramos
+### `weight` — Peso en kilogramos
 - Tipo: decimal
 - Obligatorio: NO
 - Ejemplo: `0.85`
-
-### `dimensions` — Dimensiones (largo x ancho x alto en cm)
-- Tipo: JSON serializado como texto en el Sheet
-- Obligatorio: NO
-- El script debe parsear esto como objeto JSON antes de insertar
-- Formato en Sheet: `{"length":12.5,"width":12.5,"height":9.4}`
-- Si se deja vacio, el script debe enviar NULL
 
 ### `featured` — Producto destacado en home
 - Tipo: booleano
@@ -161,17 +161,19 @@ o integración ETL debe respetar este contrato.
 
 ---
 
-## Columnas que NO deben incluirse en el Sheet
+## Columnas que NO deben incluirse dentro del rango sincronizado
 
 Estas columnas son auto-generadas por la DB o por el sistema. El script de
 sincronizacion nunca debe intentar escribirlas:
 
 | Columna         | Razon                                        |
 |-----------------|----------------------------------------------|
-| `id`            | UUID auto-generado por la DB (gen_random_uuid) |
-| `search_vector` | Mantenido por trigger de PostgreSQL          |
-| `created_at`    | Auto-generado (now())                        |
-| `updated_at`    | Auto-actualizado por trigger                 |
+| `id`            | UUID auto-generado por la DB |
+| `search_vector` | Mantenido por trigger de PostgreSQL |
+| `created_at`    | Auto-generado |
+| `updated_at`    | Auto-actualizado por trigger |
+| `barcode`       | El parser actual no lo lee |
+| `dimensions`    | El parser actual no lo lee |
 
 ---
 
@@ -179,44 +181,21 @@ sincronizacion nunca debe intentar escribirlas:
 
 Para el script de sincronizacion, el comportamiento esperado es:
 
-1. Si el producto ya existe (identificado por `sku` o por `name`):
+1. Si el producto ya existe:
    - Actualizar los campos del Sheet, sin tocar `id`, `created_at`
 2. Si el producto no existe:
    - Insertar fila nueva
-   - Crear fila en `inventory` sincronizando `stock_quantity`
    - Crear fila en `product_images` con `image_url` como imagen primaria
 
-Columna de deduplicacion preferida: `sku` (si no esta vacio)
-Columna de deduplicacion secundaria: `name`
-
----
-
-## Mantenimiento de sincronizacion de inventario
-
-Cuando el script actualiza `products.stock_quantity`, debe tambien actualizar
-`inventory.quantity_available` para mantener consistencia:
-
-```sql
-UPDATE public.inventory
-SET quantity_available = $stock_quantity,
-    last_updated = now()
-WHERE product_id = $product_id;
-```
-
-Si no existe fila en `inventory` para ese producto:
-
-```sql
-INSERT INTO public.inventory (product_id, quantity_available, reserved_quantity, low_stock_threshold)
-VALUES ($product_id, $stock_quantity, 0, 5);
-```
+Clave real de upsert hoy: `sku`
 
 ---
 
 ## Ejemplo de fila en Google Sheets
 
-| nombre | descripcion | precio | precio_comparativo | precio_costo | categoria_id | marca | imagen_url | imagenes_adicionales | stock | sku | codigo_barras | peso_kg | dimensiones | destacado | activo | etiquetas |
-|--------|-------------|--------|-------------------|--------------|--------------|-------|------------|----------------------|-------|-----|---------------|---------|-------------|-----------|--------|-----------|
-| Camara IP Hikvision DS-2CD2143G2-I 4MP | Camara domo IP de 4 megapixeles con vision nocturna AcuSense, para exterior, lente 2.8mm | 285000 | 320000 | 195000 | 3f2e9a1b-4c8d-4e7f-a321-123456789abc | Hikvision | https://storage.ejemplo.com/hikvision-ds2cd2143.jpg | https://storage.ejemplo.com/hikvision-ds2cd2143-back.jpg | 15 | HVN-DS2CD2143G2-I | 6941264078516 | 0.85 | {"length":12.5,"width":12.5,"height":9.4} | FALSE | TRUE | camara,exterior,4mp,acusense |
+| sku | name | description | price | compare_price | cost_price | brand | category_slug | stock_quantity | weight | featured | active | tags | image_url | images |
+|-----|------|-------------|-------|---------------|------------|-------|---------------|----------------|--------|----------|--------|------|-----------|--------|
+| HVN-DS2CD2143G2-I | Camara IP Hikvision DS-2CD2143G2-I 4MP | Camara domo IP de 4 megapixeles con vision nocturna AcuSense, para exterior | 285000 | 320000 | 195000 | Hikvision | camaras-ip | 15 | 0.85 | FALSE | TRUE | camara,exterior,4mp,acusense | https://storage.ejemplo.com/hikvision-ds2cd2143.jpg | https://storage.ejemplo.com/hikvision-ds2cd2143-back.jpg |
 
 ---
 
@@ -225,20 +204,19 @@ VALUES ($product_id, $stock_quantity, 0, 5);
 1. `name` no esta vacio
 2. `price` es un numero mayor que 0
 3. `compare_price`, si se provee, es mayor que `price`
-4. `category_id` es un UUID valido y existe en `categories`
+4. `category_slug` existe en `categories.slug`
 5. `image_url` empieza con `http://` o `https://`
 6. `stock_quantity` es un entero mayor o igual a 0
 7. `sku`, si se provee, no existe ya en la tabla para otro producto
-8. `dimensions`, si se provee, es JSON valido con keys `length`, `width`, `height`
 
 ---
 
 ## Categorias disponibles
 
-Para obtener la lista actualizada de categorias y sus IDs, ejecutar:
+Para obtener la lista actualizada de categorias y sus slugs, ejecutar:
 
 ```sql
-SELECT id, name, slug, active
+SELECT name, slug, active
 FROM public.categories
 WHERE active = true
 ORDER BY sort_order, name;
@@ -257,6 +235,9 @@ GET /api/categories
 | Campo             | Estado      | Reemplazar por       |
 |-------------------|-------------|----------------------|
 | `compare_at_price`| ELIMINADO   | `compare_price`      |
+| `category_id` en Sheet | INVALIDO para el parser actual | `category_slug` |
+| `barcode` en Sheet | IGNORADO por el parser actual | no usar |
+| `dimensions` en Sheet | IGNORADO por el parser actual | no usar |
 
 ---
 

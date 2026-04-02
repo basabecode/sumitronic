@@ -1,93 +1,362 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guía de referencia para Claude Code y el equipo de agentes autónomos.
+**Idioma de trabajo: español siempre.**
 
-## Project Overview
+---
 
-**CapiShop** is a Next.js 14 (App Router) e-commerce platform for technology products and services, built with TypeScript, PostgreSQL (via Supabase client libraries), and deployed to Vercel.
+## Visión del proyecto
 
-**Database environment (current):** Local Docker PostgreSQL — not Supabase cloud. The Supabase JS client is used as the query layer, but the database runs locally in a Docker container. Supabase Auth and Storage are NOT active in this environment.
+**CapiShop** es un ecommerce B2C/B2B especializado en productos de seguridad electrónica para el mercado colombiano.
+Marcas: Hikvision, Dahua, Hanwha, Bosch, Paradox. Precios en COP (pesos colombianos).
 
-## Commands
+---
+
+## Stack técnico actual
+
+| Capa           | Tecnología                                              |
+| -------------- | ------------------------------------------------------- |
+| Framework      | Next.js 14 App Router + TypeScript                      |
+| Estilos        | Tailwind CSS + shadcn/ui + Radix UI                     |
+| Base de datos  | PostgreSQL en Docker local — cliente Supabase JS        |
+| Auth           | Supabase Auth helpers (sesiones via middleware)         |
+| Storage        | Supabase Storage (no activo en Docker local)            |
+| Rate limiting  | Upstash Redis (opcional, degrada sin errores si no hay) |
+| Testing        | Vitest + jsdom + @testing-library/react                 |
+| Deploy         | Vercel                                                  |
+| Path alias     | `@/` → raíz del proyecto                               |
+
+> **Nota DB:** El cliente Supabase JS apunta al Docker local (`localhost:54329`). Supabase Auth y Storage en la nube **no están activos** en este entorno. En producción apunta a Supabase cloud.
+
+---
+
+## Estructura de rutas (app/)
+
+```
+app/
+├── layout.tsx                 → Layout raíz + 4 Context Providers
+├── page.tsx                   → Home (hero, ofertas, marcas, etc.)
+├── robots.ts                  → SEO robots
+├── sitemap.ts                 → Sitemap XML
+│
+├── admin/                     → Panel administrador (rol admin)
+│   ├── page.tsx
+│   ├── AdminPanel.tsx
+│   ├── components/
+│   │   ├── DashboardTab.tsx   → Analytics y métricas
+│   │   ├── InventoryTab.tsx   → Gestión de inventario
+│   │   ├── ProductFormTab.tsx → CRUD de productos
+│   │   └── SalesTab.tsx       → Ventas y reportes
+│   ├── hooks/
+│   │   ├── useAdminProducts.ts
+│   │   └── useProductForm.ts
+│   └── types.ts
+│
+├── api/                       → Serverless API Routes
+│   ├── cart/route.ts          → GET / POST / DELETE carrito
+│   ├── categories/route.ts    → GET categorías
+│   ├── favorites/route.ts     → GET / POST / DELETE favoritos
+│   ├── products/route.ts      → GET productos (con filtros)
+│   ├── products/[id]/route.ts → GET producto por ID
+│   └── setup-favorites/route.ts
+│
+├── auth/
+│   ├── login/page.tsx
+│   └── register/page.tsx
+│
+├── products/
+│   ├── page.tsx               → Catálogo
+│   └── [id]/page.tsx          → Detalle de producto
+│
+├── cart/page.tsx
+├── checkout/
+│   ├── page.tsx
+│   └── success/page.tsx
+│
+├── categorias/[slug]/page.tsx
+├── marcas/[slug]/page.tsx
+├── blog/
+│   ├── page.tsx
+│   └── [slug]/page.tsx
+├── help/
+│   ├── page.tsx
+│   └── [slug]/page.tsx
+├── favorites/page.tsx
+├── orders/page.tsx
+└── profile/
+    ├── layout.tsx
+    ├── page.tsx
+    ├── orders/page.tsx
+    ├── password/page.tsx
+    └── settings/page.tsx
+```
+
+---
+
+## Componentes (components/)
+
+```
+components/
+├── ui/                        → shadcn/ui base. NO editar directamente.
+├── auth/
+│   ├── LoginForm.tsx
+│   ├── RegisterForm.tsx
+│   ├── ForgotPasswordForm.tsx
+│   └── ProtectedRoute.tsx
+├── cart/
+│   ├── CartSidebar.tsx
+│   └── FavoritesSidebar.tsx
+├── products/
+│   ├── ProductCard.tsx
+│   ├── ProductDetailsModal.tsx
+│   └── ProductsSection.tsx
+├── layout/
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   ├── BottomNav.tsx
+│   ├── DynamicBreadcrumbs.tsx
+│   └── header/
+│       ├── Brand.tsx
+│       ├── HeaderActions.tsx
+│       ├── SearchBar.tsx
+│       ├── MobileDrawer.tsx
+│       ├── headerData.ts      → Datos de navegación
+│       └── types.ts
+├── payments/
+│   ├── DigitalWalletPayment.tsx
+│   ├── PaymentMethodSelector.tsx
+│   └── index.ts
+├── sections/                  → Secciones de la home
+│   ├── HeroSection.tsx
+│   ├── OffersSection.tsx
+│   ├── BrandsSection.tsx
+│   ├── FeaturesSection.tsx
+│   ├── CTASection.tsx
+│   ├── FAQSection.tsx
+│   ├── BlogSection.tsx
+│   └── TestimonialsSection.tsx
+└── features/
+    └── WhatsAppFAB.tsx        → Botón flotante WhatsApp
+```
+
+---
+
+## Contextos y estado global (contexts/)
+
+```
+contexts/
+├── AuthContext.tsx             → Sesión del usuario, login/logout
+├── CartContext.tsx             → Carrito (guest: localStorage / auth: DB)
+├── FavoritesContext.tsx        → Favoritos
+└── SharedDataContext.tsx       → Datos compartidos entre componentes
+```
+
+Los 4 providers envuelven la app en `app/layout.tsx`.
+`CartContext` fusiona el carrito local con el de la DB al hacer login.
+
+---
+
+## Librerías utilitarias (lib/)
+
+```
+lib/
+├── supabase/
+│   ├── client.ts              → Cliente browser
+│   ├── server.ts              → Cliente RSC/SSR
+│   ├── middleware.ts          → Helpers de auth en middleware
+│   └── utils.ts
+├── payments/
+│   ├── constants.ts
+│   ├── types.ts
+│   ├── validation.ts
+│   ├── index.ts
+│   └── __tests__/
+├── content.ts                 → Contenido estático (FAQ, features, etc.)
+├── formatting.ts              → Formateo de precios, fechas
+├── storefront.ts              → Lógica de productos y categorías
+├── ratelimit.ts               → Rate limiting con Upstash Redis
+├── utils.ts                   → Utilidades generales
+├── mock-data.ts               → Datos mock de desarrollo
+├── blogPosts.json
+└── products.json
+```
+
+---
+
+## Base de datos (PostgreSQL / Supabase)
+
+**Docker local:** contenedor `capishop-postgres` | Puerto `54329` | DB `postgres` | Usuario `capishop_admin`
+
+### Tablas principales
+
+| Tabla              | Descripción                                          |
+| ------------------ | ---------------------------------------------------- |
+| `users`            | Perfiles de usuario (id, email, name, role, address) |
+| `products`         | Productos (precio, stock, imágenes, SEO, variantes)  |
+| `categories`       | Categorías con slug                                  |
+| `product_images`   | Imágenes adicionales por producto                    |
+| `product_variants` | Variantes de producto (talla, color, etc.)           |
+| `inventory`        | Stock disponible y reservado por producto            |
+| `carts`            | Carritos (user_id o session_id para guests)          |
+| `cart_items`       | Ítems del carrito                                    |
+| `orders`           | Órdenes con items JSONB y estados de pago            |
+| `favorites`        | Favoritos por usuario                                |
+| `system_settings`  | Configuración del sistema (key/value JSONB)          |
+
+### Esquema y migraciones
+
+```
+supabase/
+├── schema.sql                 → Schema completo
+├── config.toml
+├── migrations/                → Migraciones históricas
+└── db_cluster-04-09-2025@04-34-20.backup.gz
+```
+
+---
+
+## Autenticación y middleware
+
+- `middleware.ts` (raíz) intercepta todas las requests y delega a `lib/supabase/middleware.ts`
+- Rutas protegidas redirigen a `/auth/login`
+- Roles: `admin` y `customer` (campo en tabla `users`)
+- Supabase Auth **no está activo** en Docker local
+
+---
+
+## Hooks globales (hooks/)
+
+```
+hooks/
+├── useAuth.ts
+├── use-mobile.tsx
+├── useProtectedRoute.ts
+└── use-toast.ts
+```
+
+---
+
+## Tests (tests/unit/)
+
+```
+tests/unit/
+├── components/ProductCard.test.tsx
+├── contexts/CartContext.test.tsx
+└── lib/
+    ├── content.test.ts
+    ├── formatting.test.ts
+    ├── payments/validation.test.ts
+    └── utils.test.ts
+```
+
+Cobertura mínima: 80%. No mockear la DB en tests de integración.
+
+---
+
+## Scripts de base de datos (scripts/)
+
+```
+scripts/
+├── restore-local-postgres.ps1  → Restaurar backup en Docker
+├── validate-db.ts              → Validar conexión
+├── quick-database-fix.ts       → Fixes rápidos
+├── migrate-products.ts         → Migrar productos
+└── setup-favorites.js          → Setup de favoritos
+```
+
+---
+
+## Comandos
 
 ```bash
-# Development
-npm run dev          # Start dev server on port 3003
-npm run build        # Production build
-npm run lint         # ESLint
+# Desarrollo
+npm run dev              # Dev server en puerto 3003
+npm run build            # Build de producción
+npm run lint             # ESLint
 
 # Testing
-npm run test                              # Run all tests once
-npm run test:watch                        # Watch mode
-npm run test:coverage                     # Coverage report (80% threshold)
-npx vitest tests/unit/lib/formatting.test.ts   # Run a single test file
-npx vitest --grep "formatPrice"           # Run tests matching a pattern
+npm run test             # Vitest una vez
+npm run test:watch       # Modo watch
+npm run test:coverage    # Reporte de cobertura (umbral 80%)
+npx vitest tests/unit/lib/formatting.test.ts   # Un solo archivo
+npx vitest --grep "formatPrice"                # Por patrón
 
-# Database (local Docker)
-npm run db:restore:local  # Restore backup into local Docker container
-npm run test:database     # Health-check database connection
-npm run fix:database      # Run quick database fixes
-npm run migrate:json      # Migrate JSON data to database
+# Base de datos
+npm run db:restore:local  # Restaurar backup en Docker
+npm run test:database     # Health-check de conexión
+npm run fix:database      # Fixes rápidos
+npm run migrate:json      # Migrar datos JSON a DB
+
+# Docker DB — conectar directo
+docker exec -it capishop-postgres psql -U capishop_admin -d postgres
 ```
 
-## Architecture
+---
 
-### Data Flow
-API Routes → Context Providers → Components. Authenticated users get real-time cart sync via the database; guests use local state.
+## Variables de entorno
 
-### Key Directories
-
-- **`app/`** — Next.js App Router. Each subdirectory is a route (`admin/`, `api/`, `auth/`, `cart/`, `checkout/`, `products/`, `profile/`, `orders/`, `favorites/`).
-- **`app/api/`** — Serverless API routes for cart, products, and favorites operations.
-- **`components/ui/`** — shadcn/ui base components. Do not edit these directly.
-- **`components/`** — Feature components organized by domain (`auth/`, `cart/`, `products/`, `layout/`, `payments/`, `sections/`).
-- **`contexts/`** — Global state via React Context: `AuthContext`, `CartContext`, `FavoritesContext`, `SharedDataContext`.
-- **`lib/supabase/`** — Database client initialization split by environment: `client.ts` (browser), `server.ts` (RSC/SSR), `middleware.ts` (auth middleware helpers), `types.ts` (DB types). Uses Supabase JS client pointed at local Docker.
-- **`supabase/`** — Schema (`schema.sql`), migrations, and DB backup (`db_cluster-04-09-2025@04-34-20.backup.gz`).
-- **`tests/unit/`** — Vitest tests mirroring `lib/`, `components/`, and `contexts/` structure.
-
-### Authentication
-`middleware.ts` at the root intercepts all requests (except static assets) and delegates to `lib/supabase/middleware.ts` for session validation. Protected routes redirect to `/auth/login`. Note: Supabase Auth is not active in the local Docker environment.
-
-### State Management
-Four Context providers wrap the app in `app/layout.tsx`. `CartContext` handles both guest (localStorage) and authenticated (DB) cart states, merging them on login.
-
-### Rate Limiting
-`lib/ratelimit.ts` uses Upstash Redis. It gracefully degrades — the app functions normally if Upstash env vars are not set.
-
-## Environment Variables
-
-Required in `.env.local`:
+**Requeridas** (`.env.local`):
 ```
-NEXT_PUBLIC_SUPABASE_URL=      # Points to local Docker: http://localhost:54329 (or Supabase cloud when deploying)
-NEXT_PUBLIC_SUPABASE_ANON_KEY= # Supabase anon key (still required by the client library)
+NEXT_PUBLIC_SUPABASE_URL=       # Docker local: http://localhost:54329
+NEXT_PUBLIC_SUPABASE_ANON_KEY=  # Requerida por el cliente JS
 ```
 
-Optional:
+**Opcionales:**
 ```
 UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
 NEXT_PUBLIC_SITE_URL=
 ```
 
-## Local Docker Database
+---
 
-Container: `capishop-postgres` | Port: `54329` | DB: `postgres` | User: `capishop_admin`
+## Convenciones del proyecto
 
-```powershell
-# Connect directly
-docker exec -it capishop-postgres psql -U capishop_admin -d postgres
+- **Idioma:** español en todo — comentarios, commits, respuestas, UI
+- **Precios:** siempre en COP → `Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' })`
+- **Componentes:** PascalCase | **Hooks:** camelCase con prefijo `use`
+- **API routes:** siempre con `try/catch` y verificación de auth
+- **Validación:** Zod en API routes y formularios
+- **Imágenes:** siempre `<Image>` de `next/image`, nunca `<img>` nativa
+- **shadcn/ui:** no editar `components/ui/` directamente
+- **Tests:** no mockear la DB en tests de integración
 
-# Restore from backup
-npm run db:restore:local
+---
+
+## Equipo de agentes autónomos
+
+Los agentes están definidos en `.claude/agents/`. Úsalos antes de trabajar en cada área.
+
+| Agente               | Responsabilidad                                                  | Cuándo invocarlo                                              |
+| -------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- |
+| `@project-lead`      | Coordinación general, sprint planning, diagnóstico completo      | "estado del proyecto", "qué sigue", "planifica el sprint"     |
+| `@db-architect`      | Schema SQL, API routes, queries, migraciones, Supabase           | "problema con DB", "diseña tabla", "API route falla"          |
+| `@portal-guardian`   | Rutas Next.js, 404s, navegación, middleware, layouts             | "ruta no existe", "error 404", "revisa la navegación"         |
+| `@security-auditor`  | OWASP Top 10, headers, XSS/CSRF/SQLi, Ley 1581 Colombia         | "audita seguridad", "vulnerabilidades", "datos expuestos"     |
+| `@auth-specialist`   | Supabase Auth, sesiones, roles, rutas protegidas                 | "problema de login", "proteger ruta", "sesión expira"         |
+| `@design-reviewer`   | UI/UX, responsive, breakpoints, Tailwind, componentes            | "revisa el diseño", "cómo se ve en móvil", "layout roto"      |
+| `@content-strategist`| SEO, metadata, blog, keywords, descripciones de producto        | "optimiza SEO", "crea contenido", "estrategia de marketing"   |
+
+### Flujo recomendado para los agentes
+
+1. **Leer CLAUDE.md** antes de cualquier tarea (ya lo tienen aquí)
+2. **Localizar los archivos relevantes** usando la estructura de directorios de arriba
+3. **Usar `@project-lead`** si no sabes a qué agente acudir o necesitas coordinación
+4. **No editar `components/ui/`** bajo ninguna circunstancia
+5. **No mockear la DB** en tests de integración
+6. **Verificar con `npm run build`** antes de dar una tarea por completada
+
+---
+
+## Archivos de configuración raíz
+
 ```
-
-## Tech Stack
-
-- **Framework:** Next.js 14, App Router, TypeScript
-- **Database:** PostgreSQL via Docker (local) — Supabase JS client as query layer
-- **UI:** Tailwind CSS, shadcn/ui, Radix UI
-- **Testing:** Vitest + jsdom + @testing-library/react
-- **Rate Limiting:** Upstash Redis (optional, graceful degradation)
-- **Deployment:** Vercel
-- **Path alias:** `@/` maps to project root
+next.config.mjs        → Configuración Next.js
+middleware.ts          → Auth middleware (intercepta todas las requests)
+tailwind.config.js     → Tailwind CSS
+tsconfig.json          → TypeScript (strict: false, noEmit: true)
+components.json        → shadcn/ui config
+vercel.json            → Deploy config
+.env.local             → Variables de entorno (no en git)
+.env.example           → Plantilla de variables
+```

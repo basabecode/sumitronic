@@ -1,26 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { syncProductsFromSheet } from '@/lib/sync-products'
 
-function getSyncSecret() {
-  const syncSecret = process.env.SYNC_SECRET
+function getExpectedSecrets() {
+  const secrets = [
+    process.env.CRON_SECRET,
+    process.env.SYNC_SECRET,
+  ].filter((value): value is string => Boolean(value))
 
-  if (!syncSecret) {
-    throw new Error('Missing required environment variable: SYNC_SECRET')
+  if (secrets.length === 0) {
+    throw new Error(
+      'Missing required environment variable: CRON_SECRET or SYNC_SECRET'
+    )
   }
 
-  return syncSecret
+  return secrets
 }
 
-function isAuthorized(secret: string | null, expectedSecret: string) {
-  return Boolean(secret && secret === expectedSecret)
+function extractBearerToken(value: string | null) {
+  if (!value?.startsWith('Bearer ')) {
+    return null
+  }
+
+  return value.slice('Bearer '.length).trim() || null
+}
+
+function isAuthorized(providedSecret: string | null, expectedSecrets: string[]) {
+  return Boolean(
+    providedSecret && expectedSecrets.some(secret => secret === providedSecret)
+  )
+}
+
+function getRequestSecret(request: NextRequest) {
+  return (
+    request.headers.get('x-sync-secret') ??
+    extractBearerToken(request.headers.get('authorization')) ??
+    request.nextUrl.searchParams.get('secret')
+  )
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const syncSecret = getSyncSecret()
-    const providedSecret = request.headers.get('x-sync-secret')
+    const expectedSecrets = getExpectedSecrets()
+    const providedSecret = getRequestSecret(request)
 
-    if (!isAuthorized(providedSecret, syncSecret)) {
+    if (!isAuthorized(providedSecret, expectedSecrets)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -36,10 +59,10 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const syncSecret = getSyncSecret()
-    const providedSecret = request.nextUrl.searchParams.get('secret')
+    const expectedSecrets = getExpectedSecrets()
+    const providedSecret = getRequestSecret(request)
 
-    if (!isAuthorized(providedSecret, syncSecret)) {
+    if (!isAuthorized(providedSecret, expectedSecrets)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

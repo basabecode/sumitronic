@@ -88,13 +88,13 @@ export function HeaderActions({
           </>
         ) : (
           <>
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild className="rounded-full text-white hover:bg-white/20 hover:text-white">
               <Link href="/auth/login">Iniciar sesión</Link>
             </Button>
             <Button
               size="sm"
               asChild
-              className="rounded-full bg-[hsl(var(--brand))] px-4 text-white hover:bg-[hsl(var(--brand-strong))]"
+              className="rounded-full bg-white px-4 text-[hsl(var(--brand-strong))] hover:bg-white/90"
             >
               <Link href="/auth/register">Crear cuenta</Link>
             </Button>

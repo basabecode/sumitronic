@@ -24,13 +24,19 @@ export default function BlogSection() {
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {blogPosts.map(post => (
-            <article key={post.slug} className="section-shell overflow-hidden">
-              <Link href={`/blog/${post.slug}`} className="block">
-                <div className="relative h-52 overflow-hidden bg-[hsl(var(--surface-muted))]">
+            <article
+              key={post.slug}
+              className="section-shell flex h-full flex-col overflow-hidden"
+            >
+              <Link
+                href={`/blog/${post.slug}`}
+                className="block shrink-0"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-[hsl(var(--surface-muted))]">
                   <img
                     src={post.image}
                     alt={post.title}
-                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="block h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                   <div className="absolute left-4 top-4">
                     <span className="rounded-full bg-[hsl(var(--brand))] px-3 py-1 text-xs font-semibold text-white">
@@ -40,7 +46,7 @@ export default function BlogSection() {
                 </div>
               </Link>
 
-              <div className="space-y-4 p-5">
+              <div className="flex flex-1 flex-col space-y-4 p-5">
                 <div className="flex items-center gap-4 text-xs text-[hsl(var(--text-muted))]">
                   <span className="flex items-center gap-1">
                     <User className="h-3.5 w-3.5" />
@@ -57,10 +63,12 @@ export default function BlogSection() {
                     {post.title}
                   </h3>
                 </Link>
-                <p className="text-sm leading-6 text-[hsl(var(--text-muted))]">{post.excerpt}</p>
+                <p className="line-clamp-3 text-sm leading-6 text-[hsl(var(--text-muted))]">
+                  {post.excerpt}
+                </p>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))]"
+                  className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))]"
                 >
                   Leer artículo
                   <ArrowRight className="h-4 w-4" />

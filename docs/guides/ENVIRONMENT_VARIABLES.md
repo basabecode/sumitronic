@@ -1,108 +1,134 @@
 # Variables de Entorno - CapiShop
 
-Este archivo documenta todas las variables de entorno necesarias para el proyecto.
+Esta guia refleja las variables realmente usadas por el codigo del repositorio al 1 de abril de 2026.
 
-## 📋 Variables Requeridas
+## Resumen rapido
 
-### Supabase (Base de Datos y Autenticación)
+### Minimas para levantar la app
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima-publica
 ```
 
-### Upstash Redis (Rate Limiting) - OPCIONAL
+### Opcionales para rate limiting
+
 ```env
 UPSTASH_REDIS_REST_URL=https://tu-redis.upstash.io
 UPSTASH_REDIS_REST_TOKEN=tu-token-de-redis
 ```
 
-**Nota**: Si no configuras Upstash Redis, el rate limiting no funcionará pero la aplicación seguirá operando normalmente.
+Si faltan estas variables, el rate limiting hace fallback a modo no-op y la app sigue funcionando.
 
-## 🔧 Configuración
-
-### 1. Crear archivo `.env.local`
-
-Crea un archivo `.env.local` en la raíz del proyecto con las variables necesarias:
-
-```bash
-# .env.local
-NEXT_PUBLIC_SUPABASE_URL=https://pmvhtxlciekynczjspja.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-aqui
-
-# Opcional: Rate Limiting con Upstash
-UPSTASH_REDIS_REST_URL=
-UPSTASH_REDIS_REST_TOKEN=
-```
-
-### 2. Obtener Credenciales de Supabase
-
-1. Ve a [supabase.com](https://supabase.com)
-2. Selecciona tu proyecto
-3. Ve a **Settings** > **API**
-4. Copia:
-   - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-### 3. Configurar Upstash Redis (Opcional)
-
-Para habilitar rate limiting y proteger las APIs:
-
-1. Ve a [upstash.com](https://upstash.com)
-2. Crea una cuenta gratuita
-3. Crea una nueva base de datos Redis
-4. Copia las credenciales:
-   - **UPSTASH_REDIS_REST_URL**
-   - **UPSTASH_REDIS_REST_TOKEN**
-
-**Plan Gratuito**: 10,000 comandos/día (suficiente para desarrollo y sitios pequeños)
-
-## ⚠️ Seguridad
-
-### Variables Públicas vs Privadas
-
-- **`NEXT_PUBLIC_*`**: Estas variables son **públicas** y se exponen al navegador. Solo usa estas para datos que pueden ser públicos (como URLs de API).
-- **Sin prefijo**: Estas variables son **privadas** y solo están disponibles en el servidor.
-
-### Buenas Prácticas
-
-1. ✅ **NUNCA** subas `.env.local` a Git
-2. ✅ Usa `.env.example` para documentar las variables necesarias
-3. ✅ Rota las claves regularmente en producción
-4. ✅ Usa diferentes credenciales para desarrollo y producción
-
-## 🚀 Despliegue en Vercel
-
-Al desplegar en Vercel, configura las variables de entorno en:
-
-1. Ve a tu proyecto en Vercel
-2. **Settings** > **Environment Variables**
-3. Agrega cada variable con su valor correspondiente
-4. Selecciona los entornos: **Production**, **Preview**, **Development**
-
-## 📝 Ejemplo Completo
+### Necesarias para sincronizacion con Google Sheets
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://pmvhtxlciekynczjspja.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-# Upstash Redis (Opcional - para rate limiting)
-UPSTASH_REDIS_REST_URL=https://us1-caring-firefly-12345.upstash.io
-UPSTASH_REDIS_REST_TOKEN=AXXXAAIncDE1...
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
+GOOGLE_SERVICE_ACCOUNT_EMAIL=tu-service-account@proyecto.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY=\"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n\"
+GOOGLE_SHEET_ID=tu-sheet-id
+GOOGLE_SHEET_NAME=Catalogo
+SYNC_SECRET=tu-secreto-de-sync
 ```
 
-## 🔍 Verificación
+### Opcionales para restauracion local del backup
 
-Para verificar que las variables están configuradas correctamente:
+```env
+CAPISHOP_DB_CONTAINER=capishop-postgres
+CAPISHOP_DB_NAME=postgres
+CAPISHOP_DB_USER=capishop_admin
+CAPISHOP_DB_PASSWORD=cambia-esta-clave
+CAPISHOP_DB_PORT=54329
+CAPISHOP_DB_BACKUP_PATH=supabase/db_cluster-04-09-2025@04-34-20.backup.gz
+```
+
+## Donde se usan
+
+### Supabase publico
+
+Usadas por la app cliente y servidor:
+
+- `lib/supabase/client.ts`
+- `lib/supabase/server.ts`
+- `lib/supabase/middleware.ts`
+
+### Upstash Redis
+
+Usadas en:
+
+- `lib/ratelimit.ts`
+
+Si no existen, se crea un rate limiter permisivo para no bloquear desarrollo.
+
+### Google Sheets + sync de catalogo
+
+Usadas en:
+
+- `lib/sync-products.ts`
+- `app/api/sync-products/route.ts`
+
+Sin estas variables, la ruta de sincronizacion falla porque exige credenciales completas y secreto de autorizacion.
+
+### Restauracion local del backup
+
+Usadas por:
+
+- `scripts/restore-local-postgres.ps1`
+
+## Ejemplo de `.env.local`
+
+```env
+# Supabase minimo
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima-publica
+
+# Opcional: server-side / sync
+SUPABASE_SERVICE_ROLE_KEY=
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_PRIVATE_KEY=
+GOOGLE_SHEET_ID=
+GOOGLE_SHEET_NAME=
+SYNC_SECRET=
+
+# Opcional: rate limiting
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+# Opcional: restore local
+CAPISHOP_DB_CONTAINER=capishop-postgres
+CAPISHOP_DB_NAME=postgres
+CAPISHOP_DB_USER=capishop_admin
+CAPISHOP_DB_PASSWORD=
+CAPISHOP_DB_PORT=54329
+CAPISHOP_DB_BACKUP_PATH=supabase/db_cluster-04-09-2025@04-34-20.backup.gz
+```
+
+## Notas de seguridad
+
+- `NEXT_PUBLIC_*` se expone al navegador.
+- `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_PRIVATE_KEY` y `SYNC_SECRET` son secretos server-side.
+- No subas `.env.local` al repositorio.
+- Usa `.env.example` como plantilla minima, no como garantia de que todas las integraciones opcionales estan activas.
+
+## Verificacion basica
+
+Para verificar configuracion base:
 
 ```bash
 npm run dev
 ```
 
-Si hay variables faltantes, la aplicación lanzará un error claro indicando cuál falta.
+Para validar conectividad o DB:
 
-## 📚 Referencias
+```bash
+npm run db:quick-check
+npm run db:test:connection
+npm run test:database
+```
 
-- [Supabase Docs](https://supabase.com/docs)
-- [Upstash Redis Docs](https://docs.upstash.com/redis)
-- [Next.js Environment Variables](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables)
+## Referencias relacionadas
+
+- `README.md`
+- `docs/ESTADO_ACTUAL_2026-04.md`
+- `docs/guides/SUPABASE_INTEGRATION.md`
+- `.env.example`

@@ -14,7 +14,7 @@ import { SectionErrorBoundary } from '@/components/ui/ErrorBoundary'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden w-full">
+    <div className="min-h-screen bg-white w-full">
       <Header />
       <main>
         <h1 className="sr-only">CapiShop Colombia - Tienda de Tecnología, Seguridad y Energía</h1>

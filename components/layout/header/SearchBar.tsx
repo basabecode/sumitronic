@@ -28,7 +28,7 @@ export function SearchBar({
         autoFocus={autoFocus}
         onChange={event => onChange(event.target.value)}
         placeholder="Busca por marca, categoría o referencia"
-        className="h-12 rounded-full border-[hsl(var(--border-strong))] bg-[hsl(var(--surface-0))] pl-11 pr-11 text-sm shadow-sm transition-all focus-visible:ring-[hsl(var(--ring))]"
+        className="h-12 appearance-none rounded-full border-[hsl(var(--border-strong))] bg-[hsl(var(--surface-0))] pl-11 pr-11 text-sm shadow-sm transition-all [::-webkit-search-cancel-button]:appearance-none [::-webkit-search-decoration]:appearance-none focus-visible:ring-[hsl(var(--ring))]"
       />
       {onClear && value.length > 0 && (
         <button
