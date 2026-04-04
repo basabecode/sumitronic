@@ -4,11 +4,12 @@ import { ArrowRight } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { helpArticles } from '@/lib/content'
+import { brand } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: 'Centro de ayuda y soporte',
   description:
-    'Documentación de soporte, garantías, devoluciones, envíos y pagos de CapiShop en rutas indexables.',
+    `Documentacion de soporte, garantias, devoluciones, envios y pagos de ${brand.name} en rutas indexables.`,
 }
 
 export default function HelpIndexPage() {
@@ -19,7 +20,7 @@ export default function HelpIndexPage() {
         <header className="mb-10 max-w-3xl">
           <p className="eyebrow-label">Soporte indexable</p>
           <h1 className="font-display mt-2 text-4xl font-semibold text-[hsl(var(--foreground))]">
-            Centro de ayuda de CapiShop
+            Centro de ayuda de {brand.name}
           </h1>
           <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
             Documentación separada por tema para resolver objeciones comerciales y dudas operativas con URLs reales.

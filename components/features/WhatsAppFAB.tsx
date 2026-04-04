@@ -2,6 +2,7 @@
 
 import { MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
+import { brand } from '@/lib/brand'
 import { cn } from '@/lib/utils'
 
 /**
@@ -17,8 +18,8 @@ import { cn } from '@/lib/utils'
 
 export default function WhatsAppFAB() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const whatsappNumber = '573003094854'
-  const defaultMessage = '¡Hola! Estoy interesado en los productos de CapiShop'
+  const whatsappNumber = brand.whatsappNumber
+  const defaultMessage = `Hola, estoy interesado en los productos de ${brand.name}`
 
   const handleClick = () => {
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`

@@ -2,21 +2,22 @@ import type { Metadata } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { blogPosts } from '@/lib/content'
+import { brand } from '@/lib/brand'
 import Link from 'next/link'
 import { ArrowRight, Calendar, User } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Blog de tecnología, seguridad y conectividad',
   description:
-    'Guías de compra, comparativas y contenido técnico de CapiShop para seguridad, conectividad y energía en Colombia.',
+    `Guias de compra, comparativas y contenido tecnico de ${brand.name} para seguridad, conectividad y repuestos en Colombia.`,
 }
 
 const blogJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: 'Blog CapiShop',
+  name: `Blog ${brand.name}`,
   description:
-    'Contenido editorial para tecnología, seguridad, conectividad y compra asistida en Colombia.',
+    'Contenido editorial para seguridad electronica, conectividad, repuestos y compra asistida en Colombia.',
 }
 
 export default function BlogIndexPage() {
@@ -28,7 +29,7 @@ export default function BlogIndexPage() {
         <header className="mb-10 max-w-3xl">
           <p className="eyebrow-label">Fase 3 SEO y contenido</p>
           <h1 className="font-display mt-2 text-4xl font-semibold text-[hsl(var(--foreground))]">
-            Blog y centro editorial de CapiShop
+            Blog y centro editorial de {brand.name}
           </h1>
           <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
             Artículos orientados a intención de compra, soporte preventivo y decisión técnica con contexto local.

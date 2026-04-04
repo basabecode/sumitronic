@@ -138,10 +138,10 @@ export default function BottomNav() {
                 className={cn(
                   'relative flex flex-col items-center justify-center',
                   'touch-target-lg rounded-xl transition-all duration-200',
-                  'active:scale-95 active:bg-orange-50',
+                  'active:scale-95 active:bg-[hsl(var(--surface-highlight))]',
                   active
-                    ? 'text-orange-600'
-                    : 'text-gray-600 hover:text-orange-500'
+                    ? 'text-[hsl(var(--brand-strong))]'
+                    : 'text-gray-600 hover:text-[hsl(var(--brand))]'
                 )}
                 aria-label={item.label}
                 aria-current={active ? 'page' : undefined}
@@ -165,7 +165,7 @@ export default function BottomNav() {
                         'border-2 border-white animate-scale-in',
                         item.id === 'favorites'
                           ? 'bg-red-600 hover:bg-red-600'
-                          : 'bg-orange-600 hover:bg-orange-600'
+                          : 'bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand))]'
                       )}
                     >
                       {item.badge > 99 ? '99+' : item.badge}
@@ -186,7 +186,7 @@ export default function BottomNav() {
                 {/* Active Indicator */}
                 {active && (
                   <div
-                    className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-orange-600 rounded-full animate-scale-in"
+                    className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 transform rounded-full bg-[hsl(var(--brand))] animate-scale-in"
                     aria-hidden="true"
                   />
                 )}

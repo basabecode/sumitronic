@@ -4,9 +4,9 @@ Fecha de referencia: 1 de abril de 2026.
 
 Este documento existe para evitar confusiones entre el codigo vigente, las auditorias historicas y las guias que describen planes futuros.
 
-## Que es CapiShop hoy
+## Que es SUMITRONIC hoy
 
-CapiShop es un ecommerce en Next.js 14 con App Router, Supabase y Tailwind. El proyecto ya tiene base funcional de tienda, autenticacion, carrito, favoritos, checkout, perfil de usuario, panel administrativo y contenido SEO basico.
+SUMITRONIC es un ecommerce en Next.js 14 con App Router, Supabase y Tailwind. El proyecto ya tiene base funcional de tienda, autenticacion, carrito, favoritos, checkout, perfil de usuario, panel administrativo y contenido SEO basico.
 
 No debe tratarse todavia como plataforma cerrada o completamente estabilizada. Hay funcionalidad real en produccion/desarrollo, pero tambien deuda tecnica, documentacion historica y una capa de base de datos que requiere tratamiento cuidadoso.
 
@@ -129,6 +129,8 @@ CAPISHOP_DB_PORT=
 CAPISHOP_DB_BACKUP_PATH=
 ```
 
+Estos nombres `CAPISHOP_*` se mantienen como identificadores tecnicos legados por compatibilidad con scripts y restore local.
+
 ## Comportamientos importantes que suelen confundir
 
 - `npm run dev` levanta la app en puerto `3003`, no en `3000`.
@@ -142,11 +144,10 @@ CAPISHOP_DB_BACKUP_PATH=
 
 - `README.md`
 - `docs/README.md`
-- `docs/guides/SUPABASE_INTEGRATION.md`
+- `docs/guides/REBRANDING_SUMITRONIC.md`
 - `docs/guides/ENVIRONMENT_VARIABLES.md`
-- `docs/guides/DATABASE_TESTING.md`
-- `docs/guides/LOCAL_DATABASE_RECOVERY.md`
-- `docs/guides/CONTRATO_GOOGLE_SHEETS.md`
+- `docs/guides/DATABASE_OPERATIONS.md`
+- `docs/guides/GOOGLE_SHEETS_OPERATIONS.md`
 
 ## Documentos que deben leerse como contexto, no como verdad actual
 

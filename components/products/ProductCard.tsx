@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Heart, ShoppingCart, Star } from 'lucide-react'
+import { ShoppingCart, Star } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -97,14 +97,15 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   if (viewMode === 'list') {
     return (
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/30 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(14,165,233,0.32)]">
         <div className="flex flex-col sm:flex-row">
-          <div className="relative w-full sm:w-44 sm:flex-shrink-0 aspect-video sm:aspect-square bg-gray-50">
+          <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-slate-100/80 bg-transparent sm:w-48 sm:flex-shrink-0 sm:aspect-square sm:border-b-0 sm:border-r">
             <Image
               src={imageUrl}
               alt={imageAlt}
               fill
-              className="object-contain p-3"
+              className="object-contain object-center px-0 py-0 drop-shadow-[0_18px_28px_rgba(15,23,42,0.14)] scale-[1.14]"
+              sizes="(min-width: 640px) 192px, 100vw"
             />
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -113,25 +114,27 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             )}
           </div>
 
-          <CardContent className="flex-1 p-4 sm:p-6">
+          <CardContent className="flex-1 p-5 sm:p-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start h-full">
               <div className="flex-1 min-w-0">
                 <Link href={`/products/${product.id}`}>
                   <h3
-                    className="text-base sm:text-lg font-medium hover:text-orange-600 transition-colors line-clamp-2"
+                    className="line-clamp-2 text-[1.16rem] font-semibold leading-[1.35] tracking-[-0.015em] transition-colors hover:text-[hsl(var(--brand-strong))] sm:text-[1.25rem]"
                     title={product.name}
                   >
                     {product.name}
                   </h3>
                 </Link>
 
-                <p className="text-sm text-gray-500 mt-1">{categoryName}</p>
+                <p className="mt-1 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--brand-strong))]">
+                  {categoryName}
+                </p>
 
-                <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                <p className="mt-3 line-clamp-2 text-[0.98rem] leading-6 text-slate-500">
                   {product.description}
                 </p>
 
-                <div className="flex items-center mt-2">
+                <div className="mt-3 flex items-center">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -147,19 +150,16 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               </div>
 
               <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 sm:ml-4 sm:min-w-[140px]">
-                <p className="text-xl sm:text-2xl font-bold text-gray-900">
+                <p className="font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em] text-slate-950 sm:text-[2rem]">
                   {formatCurrency(product.price)}
                 </p>
 
                 <div className="flex items-center gap-2 flex-wrap justify-end">
-                  <Button variant="outline" size="sm" className="h-9 w-9 p-0">
-                    <Heart className="w-4 h-4" />
-                  </Button>
                   <Button
                     size="sm"
                     disabled={isOutOfStock}
                     onClick={handleAddToCart}
-                    className="h-9 flex items-center"
+                    className="h-10 rounded-full bg-[hsl(var(--brand))] px-5 text-sm font-semibold text-white shadow-[0_16px_26px_-16px_rgba(14,165,233,0.85)] transition-all hover:bg-[hsl(var(--brand-strong))] hover:shadow-[0_20px_30px_-16px_rgba(3,105,161,0.7)]"
                   >
                     <ShoppingCart className="w-4 h-4 sm:mr-2" />
                     <span className="hidden sm:inline">
@@ -176,13 +176,14 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   }
 
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300">
-      <div className="relative aspect-square overflow-hidden bg-gray-50">
+    <Card className="group overflow-hidden rounded-[30px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/40 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-32px_rgba(14,165,233,0.35)]">
+      <div className="relative min-h-[250px] overflow-hidden border-b border-slate-100/80 bg-transparent sm:min-h-[270px]">
         <Image
           src={imageUrl}
           alt={imageAlt}
           fill
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+          className="object-contain object-center px-0 py-0 drop-shadow-[0_20px_30px_rgba(15,23,42,0.14)] transition-transform duration-500 scale-[1.18] group-hover:scale-[1.24] group-hover:-translate-y-1"
+          sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
         />
 
         {isOutOfStock && (
@@ -191,36 +192,38 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </div>
         )}
 
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button variant="outline" size="sm" className="bg-white/90">
-            <Heart className="w-4 h-4" />
-          </Button>
-        </div>
-
         {categoryName && (
-          <div className="absolute top-2 left-2">
-            <Badge variant="secondary" className="bg-white/90">
+          <div className="absolute left-4 top-4">
+            <Badge variant="secondary" className="bg-white/90 text-slate-700">
               {categoryName}
             </Badge>
           </div>
         )}
       </div>
 
-      <CardContent className="p-4">
+      <CardContent className="space-y-4 px-5 pb-5 pt-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[hsl(var(--brand-strong))]">
+            {categoryName || product.brand || 'Producto'}
+          </span>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-slate-500">
+            {isOutOfStock ? 'Agotado' : `Stock ${stockQuantity}`}
+          </span>
+        </div>
         <Link href={`/products/${product.id}`}>
           <h3
-            className="font-medium text-base leading-tight hover:text-blue-600 transition-colors line-clamp-2 min-h-[2.5rem] mb-2"
+            className="min-h-[3.2rem] text-[1.12rem] font-semibold leading-[1.38] tracking-[-0.015em] text-slate-900 transition-colors hover:text-[hsl(var(--brand-strong))]"
             title={product.name}
           >
             {product.name}
           </h3>
         </Link>
 
-        <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+        <p className="min-h-[3rem] line-clamp-2 text-[0.98rem] leading-6 text-slate-500">
           {product.description}
         </p>
 
-        <div className="flex items-center mt-2 mb-3">
+        <div className="flex items-center">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -234,19 +237,21 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           <span className="text-sm text-gray-600 ml-2">(4.0)</span>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-end justify-between gap-3 pt-1">
           <div>
-            <p className="text-xl font-bold text-gray-900">
+            <p className="font-display text-[2rem] font-semibold leading-none tracking-[-0.03em] text-slate-950">
               {formatCurrency(product.price)}
             </p>
-            <p className="text-sm text-gray-600">Stock: {stockQuantity}</p>
+            <p className="mt-1 text-sm text-slate-500">
+              {isOutOfStock ? 'Sin disponibilidad' : `${stockQuantity} unidades`}
+            </p>
           </div>
 
           <Button
             size="sm"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="flex items-center"
+            className="h-12 rounded-full bg-[hsl(var(--brand))] px-5 text-sm font-semibold text-white shadow-[0_16px_26px_-16px_rgba(14,165,233,0.85)] transition-all hover:bg-[hsl(var(--brand-strong))] hover:shadow-[0_20px_30px_-16px_rgba(3,105,161,0.7)]"
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             {isOutOfStock ? 'Agotado' : 'Agregar'}

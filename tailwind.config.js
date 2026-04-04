@@ -23,6 +23,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-body)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -56,6 +60,15 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        brand: {
+          DEFAULT: "#00ABE4",
+          dark: "#0077A8",
+          ink: "#003F5C",
+        },
+        tv: {
+          DEFAULT: "#F97316",
+          foreground: "#FFFFFF",
         },
         orange: {
           50: "#fff7ed",

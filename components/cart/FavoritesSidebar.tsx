@@ -167,7 +167,7 @@ export default function FavoritesSidebar() {
               </div>
               <Button
                 onClick={closeFavorites}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
               >
                 Explorar Productos
               </Button>
@@ -207,12 +207,12 @@ export default function FavoritesSidebar() {
                             href={`/products/${favorite.id}`}
                             onClick={closeFavorites}
                           >
-                            <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 hover:text-orange-600 transition-colors">
+                            <h4 className="line-clamp-2 text-sm font-semibold text-gray-900 transition-colors hover:text-[hsl(var(--brand-strong))]">
                               {favorite.name}
                             </h4>
                           </Link>
                           {favorite.brand && (
-                            <p className="text-xs text-orange-600 font-medium mt-0.5">
+                            <p className="mt-0.5 text-xs font-medium text-[hsl(var(--brand-strong))]">
                               {favorite.brand}
                             </p>
                           )}
@@ -244,7 +244,7 @@ export default function FavoritesSidebar() {
                         <Button
                           size="sm"
                           onClick={() => handleAddToCart(favorite)}
-                          className="h-7 px-2 text-xs bg-orange-600 hover:bg-orange-700"
+                          className="h-7 bg-[hsl(var(--brand))] px-2 text-xs hover:bg-[hsl(var(--brand-strong))]"
                         >
                           <ShoppingCart className="w-3 h-3 mr-1" />
                           Agregar
@@ -288,8 +288,8 @@ export default function FavoritesSidebar() {
         {/* Footer con acciones */}
         {state.items.length > 0 && (
           <div className="border-t pt-4 space-y-3 mt-4">
-            <div className="bg-blue-50 rounded-lg p-3">
-              <p className="text-xs text-blue-800 font-medium">
+            <div className="rounded-lg bg-[hsl(var(--surface-highlight))] p-3">
+              <p className="text-xs font-medium text-[hsl(var(--brand-strong))]">
                 💡 Tip: Agrega tus favoritos al carrito para no perderlos
               </p>
             </div>

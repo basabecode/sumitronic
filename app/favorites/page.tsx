@@ -40,7 +40,7 @@ export default function FavoritesPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
-        <Loader2 className="h-12 w-12 mx-auto mb-4 text-orange-600 animate-spin" />
+        <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-[hsl(var(--brand))]" />
         <p className="text-gray-600">
           {loading ? 'Cargando...' : user ? 'Abriendo favoritos...' : 'Redirigiendo...'}
         </p>

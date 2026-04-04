@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, MessageCircle, Mail } from 'lucide-react'
+import { brand } from '@/lib/brand'
 
 export default function FAQSection() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -35,7 +36,7 @@ export default function FAQSection() {
     {
       question: '¿Cómo puedo contactarlos?',
       answer:
-        'Puedes contactarnos por WhatsApp (300 3094854), llamar (300 3094854), o email (info@capishop.com). Horarios: Lunes a Viernes 8AM-6PM, Sábados 9AM-2PM.',
+        `Puedes contactarnos por WhatsApp (${brand.whatsappDisplay}), llamar (${brand.whatsappDisplay}) o escribirnos por email. Horarios: Lunes a Viernes 8AM-6PM, Sábados 9AM-2PM.`,
     },
   ]
 
@@ -48,10 +49,10 @@ export default function FAQSection() {
       <div className="container">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl mb-4">
             Preguntas Frecuentes
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
             Encuentra respuestas a las preguntas más comunes sobre nuestros
             productos y servicios
           </p>
@@ -63,18 +64,18 @@ export default function FAQSection() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 transition-colors duration-300"
+                className="rounded-lg border border-gray-200 bg-gray-50 transition-colors duration-300 hover:border-[hsl(var(--brand))]"
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset rounded-lg"
+                  className="flex w-full items-center justify-between rounded-lg px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand))] focus:ring-inset"
                 >
                   <h3 className="text-lg font-semibold text-gray-900 pr-4">
                     {faq.question}
                   </h3>
                   <div className="flex-shrink-0">
                     {openFAQ === index ? (
-                      <ChevronUp className="w-5 h-5 text-orange-600" />
+                      <ChevronUp className="w-5 h-5 text-[hsl(var(--brand-strong))]" />
                     ) : (
                       <ChevronDown className="w-5 h-5 text-gray-500" />
                     )}
@@ -101,7 +102,7 @@ export default function FAQSection() {
 
         {/* Contact Support */}
         <div id="no-encontraste" className="mt-12 text-center">
-          <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-2xl p-8">
+          <div className="rounded-2xl bg-gradient-to-r from-[hsl(var(--surface-highlight))] to-[hsl(var(--background))] p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
               ¿No encontraste lo que buscabas?
             </h3>
@@ -111,7 +112,7 @@ export default function FAQSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="https://wa.me/573003094854"
+                href={`https://wa.me/${brand.whatsappNumber}`}
                 className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -120,11 +121,11 @@ export default function FAQSection() {
                 WhatsApp
               </a>
               <a
-                href="mailto:info@capishop.com"
-                className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                href={`mailto:${brand.supportEmail}`}
+                className="inline-flex items-center justify-center rounded-lg bg-[hsl(var(--brand))] px-6 py-3 font-semibold text-white transition-colors hover:bg-[hsl(var(--brand-strong))]"
               >
                 <Mail className="w-5 h-5 mr-2" />
-                Email
+                Email de soporte
               </a>
             </div>
           </div>

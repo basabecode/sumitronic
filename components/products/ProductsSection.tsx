@@ -472,115 +472,103 @@ export function ProductsSection() {
     return (
       <Card
         key={product.id}
-        className="group flex h-full flex-col overflow-hidden border border-gray-100 bg-white transition-shadow hover:shadow-lg"
+        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.25)]"
       >
-        <div className="relative">
-          <div className="relative aspect-square overflow-hidden bg-gray-50">
-            <Image
-              src={image}
-              alt={product.name}
-              fill
-              className="object-contain p-6 transition-transform duration-300 group-hover:scale-105"
-              sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
-            />
-          </div>
-          <div className="absolute left-4 top-4 flex flex-col gap-2">
+        {/* Imagen cuadrada */}
+        <div className="relative aspect-square overflow-hidden">
+          <Image
+            src={image}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+            sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
+          />
+          {/* Badges sobre imagen */}
+          <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             {product.featured && (
               <Badge
                 variant="secondary"
-                className="w-fit bg-orange-100 text-orange-700"
+                className="w-fit bg-[hsl(var(--surface-highlight))] text-[0.62rem] text-[hsl(var(--brand-strong))]"
               >
                 Destacado
               </Badge>
             )}
             {hasDiscount && discountPercent !== null && (
-              <Badge
-                variant="destructive"
-                className="w-fit bg-rose-100 text-rose-700"
-              >
+              <Badge className="w-fit bg-rose-500 text-[0.62rem] text-white">
                 -{discountPercent}%
               </Badge>
             )}
           </div>
-        </div>
-        <CardContent className="flex flex-1 flex-col gap-3 p-5">
-          <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase text-gray-500">
-            <span className="text-orange-600">{product.brand || 'Marca'}</span>
-            <span
+          {/* Stock badge top-right */}
+          <span
+            className={cn(
+              'absolute right-3 top-3 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
+              stockBadge.className
+            )}
+          >
+            {stockBadge.label}
+          </span>
+          {/* Acciones rápidas hover */}
+          <div className="absolute bottom-3 right-3 flex flex-col gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <Button
+              variant="ghost"
+              size="icon"
               className={cn(
-                'rounded-full px-3 py-1 text-[0.75rem]',
-                stockBadge.className
+                'h-8 w-8 rounded-full border border-white/80 bg-white/90 shadow-sm backdrop-blur-sm transition-colors',
+                isFavorite(product.id)
+                  ? 'text-rose-500'
+                  : 'text-slate-500 hover:text-rose-500'
               )}
+              onClick={() => handleToggleFavorite(product)}
+              aria-label={isFavorite(product.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
             >
-              {stockBadge.label}
-            </span>
+              <Heart className={cn('h-3.5 w-3.5', isFavorite(product.id) && 'fill-current')} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full border border-white/80 bg-white/90 text-slate-500 shadow-sm backdrop-blur-sm hover:text-[hsl(var(--brand-strong))]"
+              onClick={() => handleProductView(product)}
+              aria-label={`Ver detalles de ${product.name}`}
+            >
+              <Eye className="h-3.5 w-3.5" />
+            </Button>
           </div>
+        </div>
+
+        {/* Info */}
+        <CardContent className="flex flex-1 flex-col gap-2.5 p-4">
+          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--brand-strong))]">
+            {product.brand || 'Marca'}
+          </span>
           <Link
             href={`/products/${product.id}`}
-            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))]"
           >
-            <h3 className="line-clamp-2 text-base font-semibold text-gray-900">
+            <h3 className="text-sm font-semibold leading-snug tracking-tight text-slate-900 line-clamp-2">
               {product.name}
             </h3>
           </Link>
-          {product.description && (
-            <p className="line-clamp-2 text-sm text-gray-600">
-              {product.description}
-            </p>
-          )}
-          <div className="mt-auto space-y-3">
+
+          <div className="mt-auto space-y-2.5 pt-1">
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold text-gray-900">
+              <span className="font-display text-[1.4rem] font-bold leading-none tracking-tight text-slate-950">
                 {formatCurrency(product.price)}
               </span>
               {hasDiscount && originalValue && (
-                <span className="text-sm text-gray-400 line-through">
+                <span className="text-xs text-slate-400 line-through">
                   {formatCurrency(originalValue)}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                className="h-11 flex-1 rounded-full text-sm font-semibold"
-                onClick={() => handleAddToCart(product)}
-                disabled={stockBadge.label === 'Sin stock'}
-              >
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                {stockBadge.label === 'Sin stock' ? 'Sin stock' : 'Agregar'}
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-11 w-11 rounded-full border-gray-200"
-                onClick={() => handleProductView(product)}
-                aria-label={`Ver detalles de ${product.name}`}
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  'h-11 w-11 rounded-full',
-                  isFavorite(product.id)
-                    ? 'text-red-600 hover:text-red-700'
-                    : 'text-gray-500 hover:text-red-600'
-                )}
-                onClick={() => handleToggleFavorite(product)}
-                aria-label={
-                  isFavorite(product.id)
-                    ? 'Quitar de favoritos'
-                    : 'Agregar a favoritos'
-                }
-              >
-                <Heart
-                  className={cn(
-                    'h-4 w-4',
-                    isFavorite(product.id) && 'fill-current'
-                  )}
-                />
-              </Button>
-            </div>
+            <Button
+              className="h-9 w-full rounded-xl bg-[hsl(var(--brand))] text-[0.82rem] font-semibold text-white transition-colors hover:bg-[hsl(var(--brand-strong))] disabled:opacity-60"
+              onClick={() => handleAddToCart(product)}
+              disabled={stockBadge.label === 'Sin stock'}
+            >
+              <ShoppingCart className="mr-1.5 h-3.5 w-3.5" />
+              {stockBadge.label === 'Sin stock' ? 'Sin stock' : 'Agregar al carrito'}
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -600,96 +588,107 @@ export function ProductsSection() {
         : null
     const hasDiscount =
       typeof originalValue === 'number' && originalValue > product.price
+    const discountPercent =
+      hasDiscount && originalValue
+        ? Math.round(((originalValue - product.price) / originalValue) * 100)
+        : null
 
     return (
       <Card
         key={`list-${product.id}`}
-        className="flex flex-col gap-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md sm:flex-row sm:items-stretch"
+        className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.22)] sm:flex-row"
       >
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-50 sm:max-w-[220px]">
+        {/* Imagen cuadrada */}
+        <div className="relative aspect-square w-full shrink-0 overflow-hidden sm:w-48">
           <Image
             src={image}
             alt={product.name}
             fill
-            className="object-contain p-6"
-            sizes="(min-width: 1024px) 220px, 50vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+            sizes="(min-width: 1024px) 192px, 50vw"
           />
+          {hasDiscount && discountPercent !== null && (
+            <Badge className="absolute left-3 top-3 bg-rose-500 text-[0.62rem] text-white">
+              -{discountPercent}%
+            </Badge>
+          )}
         </div>
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase text-gray-500">
-            <span className="text-orange-600">{product.brand || 'Marca'}</span>
+
+        {/* Info */}
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--brand-strong))]">
+              {product.brand || 'Marca'}
+            </span>
             <span
               className={cn(
-                'rounded-full px-3 py-1 text-[0.75rem]',
+                'rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
                 stockBadge.className
               )}
             >
               {stockBadge.label}
             </span>
             {product.category && (
-              <span className="text-gray-400">/ {product.category}</span>
+              <span className="text-[0.7rem] text-slate-400">{product.category}</span>
             )}
           </div>
+
           <Link
             href={`/products/${product.id}`}
-            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))]"
           >
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-base font-semibold leading-snug tracking-tight text-slate-900">
               {product.name}
             </h3>
           </Link>
+
           {product.description && (
-            <p className="text-sm text-gray-600">{product.description}</p>
+            <p className="text-[0.82rem] leading-relaxed text-slate-500 line-clamp-2">
+              {product.description}
+            </p>
           )}
-          <div className="mt-auto flex flex-wrap items-center gap-4">
-            <div className="flex items-baseline gap-2 text-gray-900">
-              <span className="text-2xl font-bold">
+
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div className="flex items-baseline gap-2">
+              <span className="font-display text-[1.5rem] font-bold leading-none tracking-tight text-slate-950">
                 {formatCurrency(product.price)}
               </span>
               {hasDiscount && originalValue && (
-                <span className="text-sm text-gray-400 line-through">
+                <span className="text-xs text-slate-400 line-through">
                   {formatCurrency(originalValue)}
                 </span>
               )}
             </div>
-            <div className="ml-auto flex items-center gap-2">
-              <Button
-                className="h-11 rounded-full px-6 text-sm font-semibold"
-                onClick={() => handleAddToCart(product)}
-                disabled={stockBadge.label === 'Sin stock'}
-              >
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                {stockBadge.label === 'Sin stock' ? 'Sin stock' : 'Agregar'}
-              </Button>
-              <Button
-                variant="outline"
-                className="h-11 rounded-full px-6 text-sm font-semibold"
-                onClick={() => handleProductView(product)}
-              >
-                Ver detalles
-              </Button>
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  'h-11 w-11 rounded-full',
+                  'h-9 w-9 rounded-xl border border-slate-200 bg-white shadow-sm transition-colors',
                   isFavorite(product.id)
-                    ? 'text-red-600 hover:text-red-700'
-                    : 'text-gray-500 hover:text-red-600'
+                    ? 'text-rose-500'
+                    : 'text-slate-400 hover:text-rose-500'
                 )}
                 onClick={() => handleToggleFavorite(product)}
-                aria-label={
-                  isFavorite(product.id)
-                    ? 'Quitar de favoritos'
-                    : 'Agregar a favoritos'
-                }
+                aria-label={isFavorite(product.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
               >
-                <Heart
-                  className={cn(
-                    'h-4 w-4',
-                    isFavorite(product.id) && 'fill-current'
-                  )}
-                />
+                <Heart className={cn('h-4 w-4', isFavorite(product.id) && 'fill-current')} />
+              </Button>
+              <Button
+                variant="outline"
+                className="h-9 rounded-xl border-slate-200 px-4 text-sm font-medium text-slate-700 hover:border-[hsl(var(--brand))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))]"
+                onClick={() => handleProductView(product)}
+              >
+                <Eye className="mr-1.5 h-3.5 w-3.5" />
+                Ver detalles
+              </Button>
+              <Button
+                className="h-9 rounded-xl bg-[hsl(var(--brand))] px-4 text-sm font-semibold text-white hover:bg-[hsl(var(--brand-strong))] disabled:opacity-60"
+                onClick={() => handleAddToCart(product)}
+                disabled={stockBadge.label === 'Sin stock'}
+              >
+                <ShoppingCart className="mr-1.5 h-3.5 w-3.5" />
+                {stockBadge.label === 'Sin stock' ? 'Sin stock' : 'Agregar'}
               </Button>
             </div>
           </div>
@@ -698,16 +697,16 @@ export function ProductsSection() {
     )
   }
   return (
-    <section id="productos" className="bg-gray-50 py-12">
+    <section id="productos" className="bg-[hsl(var(--background))] py-12">
       <div className="container space-y-8">
         <header className="space-y-3 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-orange-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--brand-strong))]">
             Catalogo
           </p>
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl">
             Nuestros productos
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-gray-600">
+          <p className="mx-auto max-w-2xl text-base text-[hsl(var(--text-muted))]">
             Explora tecnologia, energia y soluciones de seguridad seleccionadas
             para equipos profesionales y hogares conectados.
           </p>
@@ -727,7 +726,7 @@ export function ProductsSection() {
                   value={searchQuery}
                   onChange={event => handleSearchInput(event.target.value)}
                   placeholder="Buscar productos..."
-                  className="h-11 rounded-full border-gray-200 pl-11 text-sm focus:border-orange-400 focus:ring-orange-400"
+                  className="h-11 rounded-full border-gray-200 pl-11 text-sm focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
                 />
                 <Search
                   className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
@@ -741,22 +740,22 @@ export function ProductsSection() {
                 className={cn(
                   'flex items-center gap-2 rounded-full border-gray-200 px-4 py-2 text-sm font-semibold transition',
                   showFilters
-                    ? 'border-orange-300 bg-orange-50 text-orange-600'
-                    : 'text-gray-700 hover:border-orange-200 hover:text-orange-600'
+                    ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))] text-[hsl(var(--brand-strong))]'
+                    : 'text-gray-700 hover:border-[hsl(var(--border-strong))] hover:text-[hsl(var(--brand-strong))]'
                 )}
                 aria-pressed={showFilters}
               >
                 <Filter className="h-4 w-4" />
                 Filtros
                 {filtersCount > 0 && (
-                  <span className="flex h-5 min-w-[1.5rem] items-center justify-center rounded-full bg-orange-100 px-2 text-xs text-orange-700">
+                  <span className="flex h-5 min-w-[1.5rem] items-center justify-center rounded-full bg-[hsl(var(--surface-highlight))] px-2 text-xs text-[hsl(var(--brand-strong))]">
                     {filtersCount}
                   </span>
                 )}
               </Button>
 
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="h-11 w-full sm:w-[180px] rounded-full border-gray-200 bg-white text-sm font-semibold focus:border-orange-400 focus:ring-orange-400">
+                <SelectTrigger className="h-11 w-full rounded-full border-gray-200 bg-white text-sm font-semibold focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))] sm:w-[180px]">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent align="end">
@@ -776,8 +775,8 @@ export function ProductsSection() {
                   className={cn(
                     'h-9 w-9 rounded-full',
                     viewMode === 'grid'
-                      ? 'bg-orange-600 text-white hover:bg-orange-700'
-                      : 'text-gray-600 hover:text-orange-600'
+                      ? 'bg-[hsl(var(--brand))] text-white hover:bg-[hsl(var(--brand-strong))]'
+                      : 'text-gray-600 hover:text-[hsl(var(--brand-strong))]'
                   )}
                 >
                   <Grid className="h-4 w-4" />
@@ -790,8 +789,8 @@ export function ProductsSection() {
                   className={cn(
                     'h-9 w-9 rounded-full',
                     viewMode === 'list'
-                      ? 'bg-orange-600 text-white hover:bg-orange-700'
-                      : 'text-gray-600 hover:text-orange-600'
+                      ? 'bg-[hsl(var(--brand))] text-white hover:bg-[hsl(var(--brand-strong))]'
+                      : 'text-gray-600 hover:text-[hsl(var(--brand-strong))]'
                   )}
                 >
                   <List className="h-4 w-4" />
@@ -807,7 +806,7 @@ export function ProductsSection() {
                   key={chip.key}
                   type="button"
                   onClick={chip.onRemove}
-                  className="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                  className="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600 transition hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
                 >
                   <span>{chip.label}</span>
                   <XCircle className="h-3.5 w-3.5" />
@@ -816,7 +815,7 @@ export function ProductsSection() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="text-xs font-semibold text-orange-600 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                className="text-xs font-semibold text-[hsl(var(--brand-strong))] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
               >
                 Limpiar todo
               </button>
@@ -843,7 +842,7 @@ export function ProductsSection() {
                     variant="ghost"
                     size="sm"
                     onClick={clearFilters}
-                    className="text-sm text-gray-600 hover:text-orange-600"
+                    className="text-sm text-gray-600 hover:text-[hsl(var(--brand-strong))]"
                   >
                     <XCircle className="mr-2 h-4 w-4" />
                     Limpiar
@@ -948,7 +947,7 @@ export function ProductsSection() {
 
           <div className="space-y-8">
             {loading && !isInitialLoading && (
-              <div className="flex items-center justify-center gap-3 rounded-xl border border-orange-100 bg-orange-50 px-4 py-2 text-sm text-orange-700">
+              <div className="flex items-center justify-center gap-3 rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-highlight))] px-4 py-2 text-sm text-[hsl(var(--brand-strong))]">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Actualizando resultados...
               </div>

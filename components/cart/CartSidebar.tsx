@@ -66,7 +66,7 @@ export default function CartSidebar() {
           <div className="flex items-center justify-between">
             <SheetTitle className="text-xl font-bold">
               <div className="flex items-center space-x-2">
-                <ShoppingBag className="w-5 h-5 text-orange-600" />
+                <ShoppingBag className="h-5 w-5 text-[hsl(var(--brand-strong))]" />
                 <span>Mi Carrito</span>
               </div>
             </SheetTitle>
@@ -93,7 +93,7 @@ export default function CartSidebar() {
               </div>
               <Button
                 onClick={closeCart}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
               >
                 Continuar Comprando
               </Button>
@@ -196,14 +196,14 @@ export default function CartSidebar() {
               <Separator />
 
               {/* Información de envío */}
-              <div className="space-y-3 p-4 bg-blue-50 rounded-lg">
+              <div className="space-y-3 rounded-lg bg-[hsl(var(--surface-highlight))] p-4">
                 <div className="flex items-center space-x-2">
-                  <Truck className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-800">
+                  <Truck className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
+                  <span className="text-sm font-medium text-[hsl(var(--brand-strong))]">
                     Envío a todo el país
                   </span>
                 </div>
-                <p className="text-xs text-blue-700">
+                <p className="text-xs text-[hsl(var(--brand-strong))]">
                   Entrega estimada: {estimatedDelivery()}
                 </p>
               </div>
@@ -249,7 +249,7 @@ export default function CartSidebar() {
               <Separator />
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span className="text-orange-600">
+                <span className="text-[hsl(var(--brand-strong))]">
                   {formatPrice(state.total)}
                 </span>
               </div>
@@ -259,14 +259,14 @@ export default function CartSidebar() {
             {/* Botones de acción */}
             <div className="space-y-2">
               {!user && (
-                <p className="text-xs text-center text-gray-600 bg-orange-50 p-2 rounded-md">
+                <p className="rounded-md bg-[hsl(var(--surface-highlight))] p-2 text-center text-xs text-[hsl(var(--text-muted))]">
                   Inicia sesión para proceder con tu compra
                 </p>
               )}
               <Button
                 onClick={handleCheckout}
                 disabled={isCheckingOut || state.items.length === 0}
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                className="w-full bg-[hsl(var(--brand))] text-white hover:bg-[hsl(var(--brand-strong))]"
               >
                 {isCheckingOut ? (
                   <div className="flex items-center space-x-2">

@@ -1,3 +1,5 @@
+import { brand } from '@/lib/brand'
+
 export type BlogPost = {
   slug: string
   title: string
@@ -40,7 +42,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Guía práctica para elegir cámaras Imou con detección inteligente, cobertura adecuada y compra local confiable en Colombia.',
     image: '/blogs/imou_panel_solar_Z.jpg',
-    author: 'Equipo CapiShop',
+    author: `Equipo ${brand.name}`,
     date: '30 Mar 2026',
     publishedAt: '2026-03-30',
     category: 'Seguridad',
@@ -92,7 +94,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Una guía simple para calcular respaldo, proteger equipos sensibles y comprar la capacidad correcta para oficina o hogar.',
     image: '/placeholder.svg',
-    author: 'Equipo CapiShop',
+    author: `Equipo ${brand.name}`,
     date: '30 Mar 2026',
     publishedAt: '2026-03-30',
     category: 'Energía',
@@ -113,9 +115,9 @@ export const helpArticles: HelpArticle[] = [
     slug: 'envios-y-seguimiento',
     title: 'Envíos y seguimiento de pedidos',
     description:
-      'Tiempos estimados, seguimiento y qué esperar después de comprar en CapiShop.',
+      `Tiempos estimados, seguimiento y que esperar despues de comprar en ${brand.name}.`,
     category: 'Soporte',
-    keywords: ['envios capishop', 'seguimiento pedido', 'tiempos de entrega colombia'],
+    keywords: ['envios sumitronic', 'seguimiento pedido', 'tiempos de entrega colombia'],
     sections: [
       {
         heading: 'Tiempos de entrega',
@@ -145,7 +147,7 @@ export const helpArticles: HelpArticle[] = [
     description:
       'Coberturas, exclusiones y pasos básicos para solicitar una revisión o devolución.',
     category: 'Políticas',
-    keywords: ['garantia capishop', 'devoluciones tienda tecnologia', 'reclamo de garantia'],
+    keywords: ['garantia sumitronic', 'devoluciones tienda tecnologia', 'reclamo de garantia'],
     sections: [
       {
         heading: 'Garantía',
@@ -176,12 +178,12 @@ export const helpArticles: HelpArticle[] = [
     description:
       'Métodos de pago disponibles, verificación y recomendaciones para compras sin fricción.',
     category: 'Pagos',
-    keywords: ['metodos de pago capishop', 'nequi daviplata tienda', 'confirmacion de compra'],
+    keywords: ['metodos de pago sumitronic', 'nequi daviplata tienda', 'confirmacion de compra'],
     sections: [
       {
         heading: 'Métodos disponibles',
         body: [
-          'CapiShop trabaja con opciones como Nequi, Daviplata y transferencias bancarias directas según disponibilidad operativa.',
+          `${brand.name} trabaja con opciones como Nequi, Daviplata y transferencias bancarias directas segun disponibilidad operativa.`,
           'En algunos casos, la confirmación puede requerir validación manual antes de liberar el despacho.',
         ],
       },

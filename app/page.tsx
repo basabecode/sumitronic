@@ -11,13 +11,14 @@ import CTASection from '@/components/sections/CTASection'
 import Footer from '@/components/layout/Footer'
 import WhatsAppFAB from '@/components/features/WhatsAppFAB'
 import { SectionErrorBoundary } from '@/components/ui/ErrorBoundary'
+import { brand } from '@/lib/brand'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white w-full">
       <Header />
       <main>
-        <h1 className="sr-only">CapiShop Colombia - Tienda de Tecnología, Seguridad y Energía</h1>
+        <h1 className="sr-only">{brand.organizationName} - Seguridad electronica, conectividad y repuestos</h1>
         <HeroSection />
         <SectionErrorBoundary title="Error al cargar los productos">
           <ProductsSection />

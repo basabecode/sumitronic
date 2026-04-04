@@ -59,7 +59,7 @@ export default function CartPageContent() {
               Agrega algunos productos increíbles a tu carrito
             </p>
             <Link href="/products">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button size="lg" className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]">
                 Explorar Productos
               </Button>
             </Link>
@@ -78,7 +78,7 @@ export default function CartPageContent() {
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-blue-600">
+          <Link href="/" className="hover:text-[hsl(var(--brand-strong))]">
             Inicio
           </Link>
           <span>/</span>
@@ -275,7 +275,7 @@ export default function CartPageContent() {
                     <span>Envío a todo el país</span>
                   </div>
                   <div className="flex items-center space-x-3 text-sm">
-                    <Shield className="w-4 h-4 text-blue-600" />
+                    <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
                     <span>Compra 100% segura</span>
                   </div>
                   <div className="flex items-center space-x-3 text-sm">
@@ -291,7 +291,7 @@ export default function CartPageContent() {
               <Link href="/checkout">
                 <Button
                   size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Proceder al Checkout

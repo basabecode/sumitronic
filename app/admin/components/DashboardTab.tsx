@@ -22,8 +22,8 @@ export default function DashboardTab({
     {
       label: 'Total Productos',
       value: dashboardStats.totalProducts,
-      color: 'text-blue-600',
-      icon: <Package className="h-8 w-8 text-blue-600" />,
+      color: 'text-[hsl(var(--brand))]',
+      icon: <Package className="h-8 w-8 text-[hsl(var(--brand))]" />,
     },
     {
       label: 'En Stock',
@@ -85,7 +85,7 @@ export default function DashboardTab({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Package className="h-5 w-5 text-blue-600" />
+              <Package className="h-5 w-5 text-[hsl(var(--brand))]" />
               Gestión de Productos
             </CardTitle>
           </CardHeader>

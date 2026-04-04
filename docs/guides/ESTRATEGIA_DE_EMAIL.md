@@ -1,7 +1,7 @@
 # 📧 Plan de Implementación de Correos y Marketing
-## CapiShop - Estrategia Low-Cost & High-Efficiency
+## SUMITRONIC - Estrategia Low-Cost & High-Efficiency
 
-Este documento detalla la estrategia técnica y operativa para implementar un sistema de correos electrónicos eficiente, escalable y de bajo costo para CapiShop.
+Este documento detalla la estrategia técnica y operativa para implementar un sistema de correos electrónicos eficiente, escalable y de bajo costo para SUMITRONIC.
 
 ---
 
@@ -28,7 +28,7 @@ Para una tienda que inicia, el objetivo es **costo cero fijo** y **alta entregab
 Estos son automáticos y críticos para la operación.
 1.  **Confirmación de Pedido:** "Gracias por tu compra #123".
 2.  **Actualización de Estado:** "Tu pedido ha sido enviado".
-3.  **Bienvenida:** "Bienvenido a CapiShop" (al registrarse).
+3.  **Bienvenida:** "Bienvenido a SUMITRONIC" (al registrarse).
 4.  **Recuperación de Contraseña:** (Ya manejado por Supabase, pero personalizable).
 
 ### B. Correos de Marketing (Prioridad Media)
@@ -43,7 +43,7 @@ Estos son los que el administrador enviará manualmente.
 
 ### Fase 1: Configuración Base (Día 1)
 1.  Crear cuenta en **Resend**.
-2.  Verificar dominio (`capishop.com` o similar) configurando registros DNS (DKIM, SPF, DMARC) para evitar caer en SPAM.
+2.  Verificar dominio de la marca (`sumitronic.com` o el dominio definitivo) configurando registros DNS (DKIM, SPF, DMARC) para evitar caer en SPAM.
 3.  Instalar dependencias: `npm install resend @react-email/components`.
 4.  Configurar API Key en `.env.local`.
 
@@ -90,4 +90,4 @@ Es **CRÍTICO** respetar la ley y al usuario.
 
 ## Recomendación Final
 
-Para CapiShop, **no contrates servicios de email marketing externos** (como Mailchimp o Klaviyo) todavía. Construye un sistema simple "in-house" usando **Resend**. Te dará control total, costará $0 al inicio y se integrará perfectamente con tu base de datos de usuarios en Supabase.
+Para SUMITRONIC, **no contrates servicios de email marketing externos** (como Mailchimp o Klaviyo) todavía. Construye un sistema simple "in-house" usando **Resend**. Te dará control total, costará $0 al inicio y se integrará perfectamente con tu base de datos de usuarios en Supabase.

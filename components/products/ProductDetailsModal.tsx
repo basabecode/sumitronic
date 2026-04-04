@@ -190,7 +190,7 @@ export default function ProductDetailsModal({
                 className="w-full h-full object-contain"
               />
               {product.badge && (
-                <Badge className="absolute top-4 left-4 bg-orange-600">
+                <Badge className="absolute top-4 left-4 bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand))]">
                   {product.badge}
                 </Badge>
               )}
@@ -235,7 +235,7 @@ export default function ProductDetailsModal({
                     onClick={() => setSelectedImageIndex(index)}
                     className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
                       selectedImageIndex === index
-                        ? 'border-orange-500'
+                        ? 'border-[hsl(var(--brand))]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -261,7 +261,7 @@ export default function ProductDetailsModal({
               {/* ...eliminado rating y reviews... */}
               {/* Precio */}
               <div className="flex items-center space-x-3 mb-4">
-                <span className="text-3xl font-bold text-orange-600">
+                <span className="text-3xl font-bold text-[hsl(var(--brand-strong))]">
                   {formatPrice(product.price)}
                 </span>
                 {product.originalPrice &&
@@ -338,7 +338,7 @@ export default function ProductDetailsModal({
                 <Button
                   onClick={handleAddToCart}
                   disabled={!product.inStock}
-                  className="flex-1 bg-orange-600 hover:bg-orange-700"
+                  className="flex-1 bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   Agregar al Carrito
@@ -361,7 +361,7 @@ export default function ProductDetailsModal({
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <Shield className="w-4 h-4 text-blue-600" />
+                <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
                 <span className="text-sm font-medium">
                   Garantía oficial de 12 meses
                 </span>
@@ -373,7 +373,7 @@ export default function ProductDetailsModal({
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <CreditCard className="w-4 h-4 text-orange-600" />
+                <CreditCard className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
                 <span className="text-sm font-medium">
                   Múltiples métodos de pago
                 </span>

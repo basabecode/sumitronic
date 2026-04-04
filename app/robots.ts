@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { brand } from '@/lib/brand'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/', '/private/'],
     },
-    sitemap: 'https://capishop-web.vercel.app/sitemap.xml',
+    sitemap: `${brand.siteUrl}/sitemap.xml`,
   }
 }

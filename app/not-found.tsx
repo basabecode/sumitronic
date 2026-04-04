@@ -1,16 +1,17 @@
 import Link from 'next/link'
 import { SearchX } from 'lucide-react'
+import { brand } from '@/lib/brand'
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-8 px-4 bg-gray-50">
       {/* Header simple con branding */}
-      <div className="text-2xl font-bold text-orange-500">CapiShop</div>
+      <div className="font-display text-2xl font-bold text-[hsl(var(--brand))]">{brand.name}</div>
 
       {/* Contenido principal */}
       <div className="text-center max-w-md">
         <div className="flex justify-center mb-4">
-          <SearchX className="w-16 h-16 text-orange-300" />
+          <SearchX className="h-16 w-16 text-[hsla(var(--brand),0.45)]" />
         </div>
         <p className="text-8xl font-bold text-gray-200 leading-none">404</p>
         <h1 className="text-2xl font-semibold text-gray-800 mt-4">
@@ -26,7 +27,7 @@ export default function NotFound() {
       <div className="flex flex-col sm:flex-row gap-3">
         <Link
           href="/"
-          className="px-6 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors text-center"
+          className="rounded-lg bg-[hsl(var(--brand))] px-6 py-3 text-center font-medium text-white transition-colors hover:bg-[hsl(var(--brand-strong))]"
         >
           Volver a la tienda
         </Link>
@@ -41,7 +42,7 @@ export default function NotFound() {
       {/* Ayuda adicional */}
       <p className="text-sm text-gray-400">
         ¿Necesitas ayuda?{' '}
-        <Link href="/help" className="text-orange-600 hover:underline">
+        <Link href="/help" className="text-[hsl(var(--brand-strong))] hover:underline">
           Visita nuestro centro de ayuda
         </Link>
       </p>

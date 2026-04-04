@@ -59,11 +59,11 @@ export default function BrandsSection() {
         </div>
 
         {/* Stats: Marca del Mes y Novedad de Marca */}
-        <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-xl px-4 py-3 text-white">
+        <div className="rounded-xl bg-gradient-to-r from-[hsl(var(--brand-strong))] to-[hsl(var(--brand))] px-4 py-3 text-white">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
             {/* Marca del Mes */}
             <div className="flex items-center bg-white/10 rounded-lg px-4 py-3 shadow-sm min-h-[80px] w-full">
-              <span className="inline-block bg-amber-400 text-orange-900 text-xs font-bold px-2 py-1 rounded mr-3 flex-shrink-0">
+              <span className="mr-3 inline-block flex-shrink-0 rounded bg-white/90 px-2 py-1 text-xs font-bold text-[hsl(var(--brand-strong))]">
                 Marca del Mes
               </span>
               <img
@@ -75,7 +75,7 @@ export default function BrandsSection() {
                 <span className="font-semibold text-white text-sm leading-tight">
                   Imou
                 </span>
-                <span className="text-orange-100 text-xs leading-tight">
+                <span className="text-sky-100 text-xs leading-tight">
                   Innovación en videovigilancia y seguridad inteligente, esta
                   linea hace de tu casa un espacio seguro para ti y tus hijos,
                   ademas si tienes mascotas que se quedan solas.
@@ -85,7 +85,7 @@ export default function BrandsSection() {
 
             {/* Novedad de Marca */}
             <div className="flex items-center bg-white/10 rounded-lg px-4 py-3 shadow-sm min-h-[80px] w-full">
-              <span className="inline-block bg-blue-400 text-blue-900 text-xs font-bold px-2 py-1 rounded mr-3 flex-shrink-0">
+              <span className="mr-3 inline-block flex-shrink-0 rounded bg-[hsl(var(--surface-highlight))] px-2 py-1 text-xs font-bold text-[hsl(var(--brand-strong))]">
                 Novedad
               </span>
               <img
@@ -97,7 +97,7 @@ export default function BrandsSection() {
                 <span className="font-semibold text-white text-sm leading-tight">
                   Imou Ranger 2C
                 </span>
-                <span className="text-orange-100 text-xs leading-tight">
+                <span className="text-sky-100 text-xs leading-tight">
                   Nueva cámara WiFi con giro 360°, visión nocturna y app móvil,
                   tiene la habilidad de enviar alertas a tu telefono celular ,
                   puedes observar todo desde su propia aplicacion.

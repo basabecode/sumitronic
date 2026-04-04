@@ -43,7 +43,7 @@ function LoginPageContent() {
             ¿No tienes cuenta?{' '}
             <Link
               href="/auth/register"
-              className="font-medium text-orange-600 hover:text-orange-500"
+              className="font-medium text-[hsl(var(--brand-strong))] hover:text-[hsl(var(--brand))]"
             >
               Regístrate aquí
             </Link>

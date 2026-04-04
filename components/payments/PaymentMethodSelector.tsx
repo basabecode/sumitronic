@@ -72,13 +72,13 @@ export default function PaymentMethodSelector({
                   flex items-start space-x-3 p-4 rounded-lg border-2 transition-all
                   ${
                     selectedMethod === method.id
-                      ? 'border-orange-500 bg-orange-50'
+                      ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))]'
                       : 'border-gray-200 bg-white'
                   }
                   ${
                     !method.enabled || method.comingSoon
                       ? 'opacity-60 cursor-not-allowed'
-                      : 'cursor-pointer hover:border-orange-300 hover:shadow-sm'
+                      : 'cursor-pointer hover:border-[hsl(var(--brand))] hover:shadow-sm'
                   }
                 `}
                 onClick={() => {
@@ -91,12 +91,12 @@ export default function PaymentMethodSelector({
                   value={method.id}
                   id={method.id}
                   disabled={!method.enabled || method.comingSoon}
-                  className="mt-1 text-orange-600 border-orange-600 focus:ring-orange-600"
+                  className="mt-1 border-[hsl(var(--brand))] text-[hsl(var(--brand-strong))] focus:ring-[hsl(var(--brand))]"
                 />
 
                 <div className="flex-1">
                   <div className="flex items-center space-x-2">
-                    <method.icon className={`w-5 h-5 ${selectedMethod === method.id ? 'text-orange-600' : 'text-gray-600'}`} />
+                    <method.icon className={`w-5 h-5 ${selectedMethod === method.id ? 'text-[hsl(var(--brand-strong))]' : 'text-gray-600'}`} />
                     <Label
                       htmlFor={method.id}
                       className={`font-semibold ${

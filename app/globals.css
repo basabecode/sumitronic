@@ -4,64 +4,65 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 211.8 63% 94.7%;
+    --foreground: 198.9 100% 18%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 198.9 100% 18%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 198.9 100% 18%;
+    --primary: 195 100% 44.7%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 211.8 63% 98%;
+    --secondary-foreground: 198.9 100% 18%;
+    --muted: 210 48% 96.5%;
+    --muted-foreground: 199 38% 32%;
+    --accent: 195 100% 96%;
+    --accent-foreground: 198.9 100% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 24.6 95% 53.1%;
+    --border: 204 42% 85%;
+    --input: 204 42% 85%;
+    --ring: 195 100% 44.7%;
     --radius: 0.5rem;
     --nav-height: 4.5rem;
     --surface-0: 0 0% 100%;
-    --surface-muted: 32 60% 97%;
-    --surface-highlight: 27 100% 95%;
+    --surface-muted: 211.8 63% 97.5%;
+    --surface-highlight: 195 100% 96%;
     --surface-overlay: 0 0% 100%;
-    --border-subtle: 32 32% 88%;
-    --border-strong: 27 58% 78%;
-    --text-muted: 215 16% 40%;
-    --text-soft: 215 12% 55%;
-    --brand: 24.6 95% 53.1%;
-    --brand-strong: 20 91% 45%;
-    --brand-contrast: 210 40% 98%;
+    --border-subtle: 204 42% 85%;
+    --border-strong: 197.5 65% 42%;
+    --text-muted: 199 38% 32%;
+    --text-soft: 200 24% 44%;
+    --brand: 195 100% 44.7%;
+    --brand-strong: 197.5 100% 32.9%;
+    --brand-contrast: 0 0% 100%;
+    --accent-tv: 24.6 95% 53.1%;
     --success: 142 71% 34%;
-    --warning: 39 96% 46%;
+    --warning: 24.6 95% 53.1%;
     --danger: 0 72% 51%;
-    --shadow-soft: 24 30% 85%;
+    --shadow-soft: 201 45% 72%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 202 57% 10%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 201 54% 12%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 201 54% 12%;
     --popover-foreground: 210 40% 98%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 195 100% 44.7%;
+    --primary-foreground: 202 57% 10%;
+    --secondary: 201 44% 18%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 201 44% 18%;
+    --muted-foreground: 206 22% 72%;
+    --accent: 201 44% 18%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 24.6 95% 53.1%;
+    --border: 201 34% 24%;
+    --input: 201 34% 24%;
+    --ring: 195 100% 44.7%;
   }
 }
 
@@ -71,9 +72,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), "Inter", ui-sans-serif, system-ui, sans-serif;
     background:
-      radial-gradient(circle at top, rgba(251, 146, 60, 0.12), transparent 28%),
-      linear-gradient(180deg, rgba(255, 247, 237, 0.55) 0%, rgba(255, 255, 255, 0) 26%),
+      radial-gradient(circle at top, rgba(0, 171, 228, 0.14), transparent 30%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(233, 241, 250, 0) 24%),
       hsl(var(--background));
     font-feature-settings: "ss01" 1, "cv02" 1, "cv03" 1;
   }
@@ -85,7 +87,7 @@
 }
 
 .font-display {
-  font-family: "Aptos Display", "Segoe UI Variable Display", "Trebuchet MS", sans-serif;
+  font-family: var(--font-display), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Custom animations */
@@ -120,16 +122,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #dce8f4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #f97316;
+  background: #00abe4;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ea580c;
+  background: #0077a8;
 }
 
 /* line-clamp is built-in in Tailwind v3.3+ — no custom definition needed */
@@ -175,7 +177,7 @@ body {
   }
 
   .skeleton {
-    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+    background: linear-gradient(90deg, #eef4fb 25%, #dde8f4 37%, #eef4fb 63%);
     background-size: 400% 100%;
     animation: skeleton-loading 1.4s ease infinite;
   }
@@ -245,8 +247,8 @@ body {
 
 /* Tap Highlight personalizado */
 * {
-  -webkit-tap-highlight-color: rgba(234, 88, 12, 0.1);
-  tap-highlight-color: rgba(234, 88, 12, 0.1);
+  -webkit-tap-highlight-color: rgba(0, 119, 168, 0.12);
+  tap-highlight-color: rgba(0, 119, 168, 0.12);
 }
 
 /* Prevenir zoom en inputs (iOS) */
@@ -423,10 +425,10 @@ select {
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(243, 244, 246, 0) 0%,
-    rgba(243, 244, 246, 0.2) 20%,
-    rgba(243, 244, 246, 0.5) 60%,
-    rgba(243, 244, 246, 0)
+    rgba(233, 241, 250, 0) 0%,
+    rgba(220, 232, 244, 0.45) 20%,
+    rgba(255, 255, 255, 0.75) 60%,
+    rgba(233, 241, 250, 0)
   );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;

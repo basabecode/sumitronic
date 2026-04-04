@@ -1,8 +1,8 @@
-# 📱 Guía Maestra de Optimización Mobile - CapiShop
+# 📱 Guía Maestra de Optimización Mobile - SUMITRONIC
 
 ## 🎯 Resumen Ejecutivo
 
-Esta guía unifica toda la documentación relacionada con la transformación de CapiShop en una experiencia **Mobile-First Premium**. El objetivo es ofrecer una UX que rivalice con aplicaciones nativas de iOS y Android sin necesidad de descargas.
+Esta guía unifica toda la documentación relacionada con la transformación de SUMITRONIC en una experiencia **Mobile-First Premium**. El objetivo es ofrecer una UX que rivalice con aplicaciones nativas de iOS y Android sin necesidad de descargas.
 
 ---
 

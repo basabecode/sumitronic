@@ -38,40 +38,34 @@ function getRequestSecret(request: NextRequest) {
   )
 }
 
+async function handleSync(request: NextRequest) {
+  const expectedSecrets = getExpectedSecrets()
+  const providedSecret = getRequestSecret(request)
+
+  if (!isAuthorized(providedSecret, expectedSecrets)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const result = await syncProductsFromSheet()
+  return NextResponse.json(result)
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const expectedSecrets = getExpectedSecrets()
-    const providedSecret = getRequestSecret(request)
-
-    if (!isAuthorized(providedSecret, expectedSecrets)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const result = await syncProductsFromSheet()
-    return NextResponse.json(result)
+    return await handleSync(request)
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Error interno del servidor'
-
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const expectedSecrets = getExpectedSecrets()
-    const providedSecret = getRequestSecret(request)
-
-    if (!isAuthorized(providedSecret, expectedSecrets)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const result = await syncProductsFromSheet()
-    return NextResponse.json(result)
+    return await handleSync(request)
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Error interno del servidor'
-
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

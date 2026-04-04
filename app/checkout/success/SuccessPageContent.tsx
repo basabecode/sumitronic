@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, Package, Truck, Calendar } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
+import { brand } from '@/lib/brand'
 
 interface OrderDetails {
   orderNumber: string
@@ -51,7 +52,7 @@ const SuccessPageContent: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-[hsl(var(--brand))]"></div>
         </div>
       </div>
     )
@@ -130,8 +131,8 @@ const SuccessPageContent: React.FC = () => {
           <CardContent>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
-                  <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
+                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
+                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"></div>
                 </div>
                 <div>
                   <p className="font-medium">Confirmación por email</p>
@@ -142,8 +143,8 @@ const SuccessPageContent: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
-                  <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
+                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
+                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"></div>
                 </div>
                 <div>
                   <p className="font-medium">Preparación del pedido</p>
@@ -154,8 +155,8 @@ const SuccessPageContent: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
-                  <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
+                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
+                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"></div>
                 </div>
                 <div>
                   <p className="font-medium">Información de seguimiento</p>
@@ -194,7 +195,7 @@ const SuccessPageContent: React.FC = () => {
                   WhatsApp: +57 123 456 7890
                 </Button>
                 <Button variant="outline" size="sm">
-                  Email: soporte@capishop.com
+                  Email de soporte
                 </Button>
               </div>
             </div>
@@ -214,7 +215,7 @@ const SuccessPageContent: React.FC = () => {
         {/* Mensaje de agradecimiento */}
         <div className="text-center mt-8 p-6 bg-gray-50 rounded-lg">
           <p className="text-lg font-medium text-gray-900 mb-2">
-            ¡Gracias por confiar en CapiShop!
+            ¡Gracias por confiar en {brand.name}!
           </p>
           <p className="text-gray-600">
             Tu satisfacción es nuestra prioridad. Esperamos que disfrutes tu

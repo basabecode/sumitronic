@@ -71,20 +71,20 @@ export default function DigitalWalletPayment({
   const whatsappURL = generateWhatsAppURL(orderId, totalAmount, WHATSAPP_NUMBER_DISPLAY.replace(/\s/g, ''))
 
   return (
-    <Card className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100">
+    <Card className="border-2 border-[hsl(var(--border-subtle))] bg-gradient-to-br from-[hsl(var(--surface-highlight))] to-[hsl(var(--background))]">
       <CardHeader>
-        <CardTitle className="flex items-center text-orange-900">
+        <CardTitle className="flex items-center text-[hsl(var(--foreground))]">
           <Smartphone className="w-5 h-5 mr-2" />
           Billeteras Digitales / Transferencia
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Instructions */}
-        <Alert className="bg-white border-orange-300">
+        <Alert className="border-[hsl(var(--border-strong))] bg-white">
           <AlertDescription className="text-sm">
-            <strong className="text-orange-900">Instrucciones:</strong>
+            <strong className="text-[hsl(var(--foreground))]">Instrucciones:</strong>
             <ol className="list-decimal pl-5 mt-2 space-y-1 text-gray-700">
-              <li>Transfiere <strong className="text-orange-900">{formatCurrency(totalAmount)}</strong> a una de las cuentas</li>
+              <li>Transfiere <strong className="text-[hsl(var(--foreground))]">{formatCurrency(totalAmount)}</strong> a una de las cuentas</li>
               <li>Copia el número de cuenta haciendo clic en el botón</li>
               <li>Completa el pago desde tu app bancaria</li>
               <li>Envía el comprobante por WhatsApp o ingresa la referencia</li>
@@ -107,8 +107,8 @@ export default function DigitalWalletPayment({
                   hover:shadow-md hover:scale-[1.02]
                   ${
                     selectedProvider === account.provider
-                      ? 'border-orange-500 bg-orange-50 shadow-md'
-                      : 'border-gray-200 bg-white hover:border-orange-300'
+                      ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))] shadow-md'
+                      : 'border-gray-200 bg-white hover:border-[hsl(var(--brand))]'
                   }
                 `}
                 onClick={() => setSelectedProvider(account.provider)}
@@ -146,7 +146,7 @@ export default function DigitalWalletPayment({
                       e.stopPropagation()
                       handleCopyAccount(account.accountNumber)
                     }}
-                    className="flex items-center space-x-1 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
+                    className="flex items-center space-x-1 hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))]"
                   >
                     {copiedAccount === account.accountNumber ? (
                       <>
@@ -167,7 +167,7 @@ export default function DigitalWalletPayment({
         </div>
 
         {/* Payment Reference Section */}
-        <div className="space-y-4 p-4 bg-white rounded-lg border-2 border-dashed border-orange-300">
+        <div className="space-y-4 rounded-lg border-2 border-dashed border-[hsl(var(--border-strong))] bg-white p-4">
           <Label className="text-base font-semibold text-gray-900">
             Información del Pago (Opcional)
           </Label>
@@ -183,7 +183,7 @@ export default function DigitalWalletPayment({
                 placeholder="Ej: 123456789"
                 value={referenceNumber}
                 onChange={(e) => handleReferenceChange('reference', e.target.value)}
-                className="mt-1 focus:border-orange-500 focus:ring-orange-500"
+                className="mt-1 focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Ingresa el código que aparece en tu comprobante
@@ -200,7 +200,7 @@ export default function DigitalWalletPayment({
                 placeholder="300 123 4567"
                 value={senderPhone}
                 onChange={(e) => handleReferenceChange('phone', e.target.value)}
-                className="mt-1 focus:border-orange-500 focus:ring-orange-500"
+                className="mt-1 focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Nos ayuda a verificar tu pago más rápido
@@ -247,8 +247,8 @@ export default function DigitalWalletPayment({
         </div>
 
         {/* Security Note */}
-        <Alert className="bg-orange-50 border-orange-200">
-          <AlertDescription className="text-xs text-orange-900">
+        <Alert className="border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-highlight))]">
+          <AlertDescription className="text-xs text-[hsl(var(--foreground))]">
             🔒 <strong>Seguridad:</strong> Nunca compartas tu contraseña o PIN. Solo necesitamos el comprobante de pago.
             Verificaremos tu pago manualmente antes de procesar tu pedido.
           </AlertDescription>

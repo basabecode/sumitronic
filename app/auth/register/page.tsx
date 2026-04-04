@@ -21,7 +21,7 @@ function RegisterPageContent() {
             ¿Ya tienes cuenta?{' '}
             <Link
               href="/auth/login"
-              className="font-medium text-orange-600 hover:text-orange-500"
+              className="font-medium text-[hsl(var(--brand-strong))] hover:text-[hsl(var(--brand))]"
             >
               Inicia sesión aquí
             </Link>

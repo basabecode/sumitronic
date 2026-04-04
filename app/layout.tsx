@@ -1,6 +1,6 @@
 import type React from 'react'
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -11,8 +11,19 @@ import { Toaster } from 'sonner'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import CartSidebar from '@/components/cart/CartSidebar'
 import FavoritesSidebar from '@/components/cart/FavoritesSidebar'
+import { brand } from '@/lib/brand'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 
 export const viewport: Viewport = {
@@ -20,22 +31,22 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5, // Permitir zoom para accesibilidad
   userScalable: true,
-  themeColor: '#ea580c', // Orange-600 brand color
+  themeColor: '#00ABE4', // Primary brand color
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://capishop-web.vercel.app'),
+  metadataBase: new URL(brand.siteUrl),
   title: {
-    default: 'CapiShop Colombia - Tecnología, Seguridad y Energía',
-    template: '%s | CapiShop Colombia',
+    default: `${brand.organizationName} - Seguridad electronica, conectividad y repuestos`,
+    template: `%s | ${brand.organizationName}`,
   },
   description:
-    'Tienda online líder en Colombia. Encuentra iPhone, MacBook, Cámaras de Seguridad y Soluciones de Energía. Envíos a todo el país, garantía real y soporte local.',
+    'Tienda online en Colombia para seguridad electronica, redes, energia y tarjetas para televisores. Envio nacional, soporte local y compra asistida.',
   keywords:
-    'tecnología colombia, iphone bogota, macbook medellin, cámaras seguridad, paneles solares, capishop, tienda apple colombia',
-  authors: [{ name: 'CapiShop Colombia' }],
-  creator: 'CapiShop Colombia',
-  publisher: 'CapiShop Colombia',
+    'seguridad electronica colombia, tarjetas para televisores, repuestos tv, camaras de seguridad, redes, sumitronic',
+  authors: [{ name: brand.organizationName }],
+  creator: brand.organizationName,
+  publisher: brand.organizationName,
   formatDetection: {
     email: false,
     address: false,
@@ -45,11 +56,11 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'CapiShop Colombia - Tecnología y Seguridad al Mejor Precio',
+    title: `${brand.organizationName} - Seguridad electronica y repuestos tecnicos`,
     description:
-      'Tu tienda de confianza en Colombia para productos Apple, Gaming y Seguridad. Envíos seguros a nivel nacional.',
-    url: 'https://capishop-web.vercel.app',
-    siteName: 'CapiShop Colombia',
+      'Camaras, DVR, redes, energia y tarjetas para televisores con soporte local y envio nacional.',
+    url: brand.siteUrl,
+    siteName: brand.organizationName,
     locale: 'es_CO',
     type: 'website',
     images: [
@@ -57,15 +68,15 @@ export const metadata: Metadata = {
         url: '/og-image.jpg', // Make sure to create this image
         width: 1200,
         height: 630,
-        alt: 'CapiShop Colombia - Tecnología Premium',
+        alt: `${brand.organizationName} - Seguridad electronica y repuestos`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CapiShop Colombia - Tecnología Premium',
+    title: `${brand.organizationName} - Seguridad electronica y repuestos`,
     description:
-      'Envíos a toda Colombia. iPhone, Mac, Seguridad y Energía.',
+      'Envios a toda Colombia. Seguridad electronica, redes, energia y repuestos TV.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -89,20 +100,17 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'CapiShop Colombia',
-  url: 'https://capishop-web.vercel.app',
-  logo: 'https://capishop-web.vercel.app/logo.png',
+  name: brand.organizationName,
+  url: brand.siteUrl,
+  logo: brand.logoUrl,
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+57-300-309-4854',
+    telephone: `+57-${brand.whatsappDisplay}`,
     contactType: 'customer service',
     areaServed: 'CO',
     availableLanguage: 'es',
   },
-  sameAs: [
-    'https://instagram.com/capishop_col',
-    'https://facebook.com/capishop_col',
-  ],
+  sameAs: brand.socialLinks,
 }
 
 export default function RootLayout({
@@ -119,7 +127,7 @@ export default function RootLayout({
         {/* iOS Meta Tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="CapiShop" />
+        <meta name="apple-mobile-web-app-title" content={brand.shortName} />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/favicon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
@@ -130,7 +138,7 @@ export default function RootLayout({
 
         {/* Android Meta Tags */}
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#ea580c" />
+        <meta name="theme-color" content="#00ABE4" />
 
         {/* Structured Data */}
         <script
@@ -138,7 +146,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
         <ErrorBoundary>
           <SharedDataProvider>
             <AuthProvider>

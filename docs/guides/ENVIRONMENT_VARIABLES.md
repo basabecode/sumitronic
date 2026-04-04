@@ -1,6 +1,8 @@
-# Variables de Entorno - CapiShop
+# Variables de Entorno - SUMITRONIC
 
 Esta guia refleja las variables realmente usadas por el codigo del repositorio al 1 de abril de 2026.
+
+Importante: los identificadores `CAPISHOP_*` y nombres como `capishop-postgres` siguen siendo los validos a nivel tecnico mientras no se haga la migracion de infraestructura.
 
 ## Resumen rapido
 
@@ -130,5 +132,6 @@ npm run test:database
 
 - `README.md`
 - `docs/ESTADO_ACTUAL_2026-04.md`
-- `docs/guides/SUPABASE_INTEGRATION.md`
+- `docs/guides/DATABASE_OPERATIONS.md`
+- `docs/guides/GOOGLE_SHEETS_OPERATIONS.md`
 - `.env.example`

@@ -1,4 +1,4 @@
-# ✅ Checklist de Mejoras - CapiShop
+# ✅ Checklist de Mejoras - SUMITRONIC
 **Fecha**: 8 de Diciembre de 2025
 **Sesión**: Mejoras Críticas Post-Auditoría
 

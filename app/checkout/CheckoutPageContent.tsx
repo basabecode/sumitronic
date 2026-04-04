@@ -187,7 +187,7 @@ export default function CheckoutPageContent() {
               Agrega algunos productos antes de proceder al checkout
             </p>
             <Link href="/products">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button size="lg" className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]">
                 Explorar Productos
               </Button>
             </Link>
@@ -206,11 +206,11 @@ export default function CheckoutPageContent() {
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-blue-600">
+          <Link href="/" className="hover:text-[hsl(var(--brand-strong))]">
             Inicio
           </Link>
           <span>/</span>
-          <Link href="/cart" className="hover:text-blue-600">
+          <Link href="/cart" className="hover:text-[hsl(var(--brand-strong))]">
             Carrito
           </Link>
           <span>/</span>
@@ -480,14 +480,14 @@ export default function CheckoutPageContent() {
                       Acepto los{' '}
                       <Link
                         href="/help/terminos-y-condiciones"
-                        className="text-blue-600 hover:underline"
+                        className="text-[hsl(var(--brand-strong))] hover:underline"
                       >
                         términos y condiciones
                       </Link>{' '}
                       y la{' '}
                       <Link
                         href="/help/politica-de-privacidad"
-                        className="text-blue-600 hover:underline"
+                        className="text-[hsl(var(--brand-strong))] hover:underline"
                       >
                         política de privacidad
                       </Link>
@@ -573,7 +573,7 @@ export default function CheckoutPageContent() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-orange-600 hover:bg-orange-700"
+                  className="w-full bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
                   disabled={isProcessing || !form.acceptTerms}
                 >
                   {isProcessing ? (
@@ -605,7 +605,7 @@ export default function CheckoutPageContent() {
                       Métodos de pago aceptados
                     </p>
                     <div className="flex justify-center flex-wrap gap-3">
-                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
                         <Image
                           src="/bancos/nequi_1.png"
                           alt="Nequi"
@@ -613,7 +613,7 @@ export default function CheckoutPageContent() {
                           className="object-contain p-1"
                         />
                       </div>
-                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
                         <Image
                           src="/bancos/daviplata_1.png"
                           alt="Daviplata"
@@ -621,7 +621,7 @@ export default function CheckoutPageContent() {
                           className="object-contain p-1"
                         />
                       </div>
-                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
                         <Image
                           src="/bancos/bancolombia_3.png"
                           alt="Bancolombia"
@@ -629,7 +629,7 @@ export default function CheckoutPageContent() {
                           className="object-contain p-1"
                         />
                       </div>
-                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
                         <Image
                           src="/bancos/davivienda_1.png"
                           alt="Davivienda"
@@ -637,7 +637,7 @@ export default function CheckoutPageContent() {
                           className="object-contain p-1"
                         />
                       </div>
-                      <div className="relative w-24 h-16 bg-white rounded-lg border-2 border-gray-200 p-2 transition-all duration-300 hover:scale-110 hover:border-orange-400 hover:shadow-md cursor-pointer">
+                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
                         <Image
                           src="/bancos/nubank_1.png"
                           alt="Nubank"

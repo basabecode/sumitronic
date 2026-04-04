@@ -170,7 +170,7 @@ export default function SalesTab() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--brand))]" />
       </div>
     )
   }
@@ -222,7 +222,7 @@ export default function SalesTab() {
             <CardTitle className="text-sm font-medium text-gray-500">
               Ventas Hoy
             </CardTitle>
-            <Calendar className="h-4 w-4 text-blue-600" />
+            <Calendar className="h-4 w-4 text-[hsl(var(--brand))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.dailySales)}</div>
@@ -313,7 +313,7 @@ export default function SalesTab() {
                       </TableCell>
                       <TableCell>
                         {order.payment_proof_url ? (
-                          <Button size="sm" variant="ghost" asChild className="h-8 gap-2 text-blue-600">
+                          <Button size="sm" variant="ghost" asChild className="h-8 gap-2 text-[hsl(var(--brand-strong))]">
                             <a href={order.payment_proof_url} target="_blank" rel="noreferrer">
                               <FileText className="h-4 w-4" />
                               Ver

@@ -4,6 +4,7 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import ProductClient from './ProductClient'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { brand } from '@/lib/brand'
 
 // ISR Configuration: Revalidate every hour (3600 seconds)
 export const revalidate = 3600
@@ -120,7 +121,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   if (!data || !data.product) {
     return {
-      title: 'Producto no encontrado | CapiShop Colombia',
+      title: `Producto no encontrado | ${brand.organizationName}`,
     }
   }
 
@@ -135,7 +136,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     title: `${product.name} - Precio Colombia`,
     description: `Compra ${product.name} en Colombia por ${price}. ${product.description.substring(0, 150)}... Envíos a todo el país y garantía local.`,
     openGraph: {
-      title: `${product.name} - ${price} | CapiShop Colombia`,
+      title: `${product.name} - ${price} | ${brand.organizationName}`,
       description: product.description.substring(0, 200),
       images: product.product_images?.map((img: any) => ({
         url: img.image_url,
@@ -173,7 +174,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
     },
     offers: {
       '@type': 'Offer',
-      url: `https://capishop-web.vercel.app/products/${product.id}`,
+      url: `${brand.siteUrl}/products/${product.id}`,
       priceCurrency: 'COP',
       price: product.price,
       availability: product.stock_quantity > 0

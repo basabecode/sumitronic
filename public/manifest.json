@@ -1,7 +1,7 @@
 {
-  "name": "CapiShop Colombia - Tecnología Premium",
-  "short_name": "CapiShop",
-  "description": "Tu tienda de confianza para productos Apple, Gaming y Seguridad en Colombia",
+  "name": "SUMITRONIC Colombia - Seguridad electronica y repuestos",
+  "short_name": "SUMITRONIC",
+  "description": "Seguridad electronica, conectividad y repuestos tecnicos con soporte local en Colombia",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

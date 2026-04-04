@@ -95,7 +95,7 @@ export default function InventoryTab({
                   <p className="text-sm font-medium text-gray-600">Filtros Activos</p>
                   <p className="text-2xl font-bold">{activeFilters}</p>
                 </div>
-                <Filter className="h-8 w-8 text-orange-500" />
+                <Filter className="h-8 w-8 text-[hsl(var(--brand))]" />
               </div>
             </CardContent>
           </Card>
@@ -183,7 +183,7 @@ export default function InventoryTab({
           <CardContent>
             {loadingProducts ? (
               <div className="text-center py-12">
-                <Loader2 className="h-8 w-8 mx-auto mb-4 text-blue-600 animate-spin" />
+                <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin text-[hsl(var(--brand))]" />
                 <p className="text-gray-600">Cargando productos...</p>
               </div>
             ) : products.length === 0 ? (

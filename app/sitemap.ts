@@ -2,9 +2,10 @@ import { MetadataRoute } from 'next'
 import { blogPosts, helpArticles } from '@/lib/content'
 import { getActiveBrands, getActiveCategories } from '@/lib/storefront'
 import { createClient } from '@/lib/supabase/server'
+import { brand } from '@/lib/brand'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://capishop-web.vercel.app'
+  const baseUrl = brand.siteUrl
   const supabase = createClient()
 
   // Get all products

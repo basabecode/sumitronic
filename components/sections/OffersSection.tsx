@@ -95,20 +95,20 @@ export default function OffersSection() {
   const duplicatedProducts = [...products, ...products, ...products]
 
   return (
-    <section id="ofertas-especiales" className="relative bg-gradient-to-br from-orange-50 via-amber-50/30 to-white py-16 overflow-hidden">
+    <section id="ofertas-especiales" className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--surface-highlight))] via-white to-[hsl(var(--background))] py-16">
       <div className="container">
         {/* Header */}
         <div className="mb-10 text-center">
           <div className="mb-3 flex items-center justify-center gap-2">
-            <Flame className="h-6 w-6 text-orange-600" />
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-orange-600">
+            <Flame className="h-6 w-6 text-[hsl(var(--brand))]" />
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--brand-strong))]">
               Descuentos Especiales
             </p>
           </div>
-          <h2 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+          <h2 className="font-display mb-3 text-3xl font-bold tracking-tight text-[hsl(var(--foreground))] md:text-4xl">
             Ofertas Increíbles
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-gray-600 md:text-lg">
+          <p className="mx-auto max-w-2xl text-base text-[hsl(var(--text-muted))] md:text-lg">
             Aprovecha nuestras ofertas y obten los mejores productos a precios increíbles
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function OffersSection() {
         {/* Loading State */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-12 w-12 animate-spin text-orange-600" />
+            <Loader2 className="h-12 w-12 animate-spin text-[hsl(var(--brand))]" />
           </div>
         ) : (
           <>
@@ -133,13 +133,13 @@ export default function OffersSection() {
                 >
                   <div className={`bg-white rounded-full p-3 shadow-lg ring-2 transition-all duration-200 cursor-pointer group select-none ${
                     carouselSpeed === 'fast-reverse'
-                      ? 'ring-orange-500 bg-orange-50 scale-95'
-                      : 'ring-gray-200 hover:ring-orange-400 hover:bg-orange-50'
+                      ? 'ring-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))] scale-95'
+                      : 'ring-gray-200 hover:ring-[hsl(var(--brand))] hover:bg-[hsl(var(--surface-highlight))]'
                   }`}>
                     <ChevronLeft className={`h-6 w-6 transition-colors ${
                       carouselSpeed === 'fast-reverse'
-                        ? 'text-orange-600'
-                        : 'text-gray-700 group-hover:text-orange-600'
+                        ? 'text-[hsl(var(--brand-strong))]'
+                        : 'text-gray-700 group-hover:text-[hsl(var(--brand-strong))]'
                     }`} />
                   </div>
                 </div>
@@ -153,13 +153,13 @@ export default function OffersSection() {
                 >
                   <div className={`bg-white rounded-full p-3 shadow-lg ring-2 transition-all duration-200 cursor-pointer group select-none ${
                     carouselSpeed === 'fast-forward'
-                      ? 'ring-orange-500 bg-orange-50 scale-95'
-                      : 'ring-gray-200 hover:ring-orange-400 hover:bg-orange-50'
+                      ? 'ring-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))] scale-95'
+                      : 'ring-gray-200 hover:ring-[hsl(var(--brand))] hover:bg-[hsl(var(--surface-highlight))]'
                   }`}>
                     <ChevronRight className={`h-6 w-6 transition-colors ${
                       carouselSpeed === 'fast-forward'
-                        ? 'text-orange-600'
-                        : 'text-gray-700 group-hover:text-orange-600'
+                        ? 'text-[hsl(var(--brand-strong))]'
+                        : 'text-gray-700 group-hover:text-[hsl(var(--brand-strong))]'
                     }`} />
                   </div>
                 </div>
@@ -184,80 +184,76 @@ export default function OffersSection() {
                     return (
                       <div
                         key={`${product.id}-${index}`}
-                        className="carousel-item group relative flex min-w-[280px] flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:min-w-[300px]"
+                        className="carousel-item group relative flex min-w-[240px] flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-6px_rgba(14,165,233,0.22)] sm:min-w-[260px]"
                       >
-                        {/* Discount Badge */}
-                        {hasDiscount && discountPercent > 0 && (
-                          <div className="absolute left-4 top-4 z-10">
-                            <Badge className="bg-gradient-to-r from-rose-500 to-orange-500 px-3 py-1.5 text-sm font-bold text-white shadow-md">
-                              -{discountPercent}%
-                            </Badge>
-                          </div>
-                        )}
-
-                        {/* Product Image */}
+                        {/* Imagen cuadrada */}
                         <Link
                           href={`/products/${product.id}`}
-                          className="relative aspect-square overflow-hidden bg-gray-50"
+                          className="relative aspect-square overflow-hidden"
                         >
                           <Image
                             src={image}
                             alt={product.name}
                             fill
-                            className="object-contain p-6 transition-transform duration-300 group-hover:scale-105"
-                            sizes="300px"
+                            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                            sizes="260px"
                           />
+                          {/* Discount Badge */}
+                          {hasDiscount && discountPercent > 0 && (
+                            <div className="absolute left-3 top-3 z-10">
+                              <Badge className="bg-rose-500 px-2 py-0.5 text-[0.62rem] font-bold text-white">
+                                -{discountPercent}%
+                              </Badge>
+                            </div>
+                          )}
+                          {/* Stock */}
+                          <span className={`absolute right-3 top-3 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide ${
+                            stockCount > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
+                          }`}>
+                            {stockCount > 0 ? `Stock: ${stockCount}` : 'Sin stock'}
+                          </span>
                         </Link>
 
-                        {/* Product Info */}
-                        <div className="flex flex-1 flex-col gap-3 p-5">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-xs font-semibold uppercase tracking-wide text-orange-600">
-                              {product.brand || 'Marca'}
-                            </span>
-                            <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                              stockCount > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
-                            }`}>
-                              {stockCount > 0 ? `Stock: ${stockCount}` : 'Sin stock'}
-                            </span>
-                          </div>
+                        {/* Info */}
+                        <div className="flex flex-1 flex-col gap-2 p-3.5">
+                          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--brand-strong))]">
+                            {product.brand || 'Marca'}
+                          </span>
 
                           <Link
                             href={`/products/${product.id}`}
-                            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))]"
                           >
-                            <h3 className="line-clamp-2 text-base font-semibold text-gray-900">
+                            <h3 className="text-sm font-semibold leading-snug tracking-tight text-slate-900 line-clamp-2">
                               {product.name}
                             </h3>
                           </Link>
 
-                          {/* Pricing */}
-                          <div className="mt-auto space-y-2">
+                          <div className="mt-auto space-y-2 pt-1">
                             <div className="flex items-baseline gap-2">
-                              <span className="text-2xl font-bold text-gray-900">
+                              <span className="font-display text-[1.35rem] font-bold leading-none tracking-tight text-slate-950">
                                 {formatCurrency(product.price)}
                               </span>
                               {hasDiscount && originalValue && (
-                                <span className="text-sm text-gray-400 line-through">
+                                <span className="text-xs text-slate-400 line-through">
                                   {formatCurrency(originalValue)}
                                 </span>
                               )}
                             </div>
 
                             {hasDiscount && originalValue && (
-                              <div className="text-xs font-medium text-emerald-600">
+                              <div className="text-[0.7rem] font-semibold text-emerald-600">
                                 Ahorras {formatCurrency(originalValue - product.price)}
                               </div>
                             )}
 
-                            {/* Add to Cart Button */}
                             <Button
-                              className="h-11 w-full rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-sm font-semibold shadow-md transition-all hover:from-orange-700 hover:to-orange-600 hover:shadow-lg"
+                              className="h-8 w-full rounded-xl bg-[hsl(var(--brand))] text-[0.78rem] font-semibold text-white transition-colors hover:bg-[hsl(var(--brand-strong))] disabled:opacity-60"
                               onClick={() => handleAddToCart(product)}
                               disabled={stockCount <= 0}
                             >
-                              <ShoppingCart className="mr-2 h-4 w-4" />
-                              {stockCount > 0 ? 'Agregar al Carrito' : 'Sin stock'}
+                              <ShoppingCart className="mr-1.5 h-3 w-3" />
+                              {stockCount > 0 ? 'Agregar al carrito' : 'Sin stock'}
                             </Button>
                           </div>
                         </div>
@@ -272,7 +268,7 @@ export default function OffersSection() {
                 {products.slice(0, Math.min(6, products.length)).map((_, index) => (
                   <div
                     key={index}
-                    className="h-2 w-2 rounded-full bg-orange-300 animate-pulse"
+                    className="h-2 w-2 rounded-full bg-[hsl(var(--brand))] animate-pulse"
                   />
                 ))}
               </div>
@@ -282,7 +278,7 @@ export default function OffersSection() {
             <div className="mt-8 text-center">
               <Link
                 href="/products?featured=true"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-orange-600 px-6 py-3 text-sm font-semibold text-orange-600 transition-all hover:bg-orange-600 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[hsl(var(--brand))] px-6 py-3 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-all hover:bg-[hsl(var(--brand))] hover:text-white"
               >
                 Ver Todas las Ofertas
                 <ChevronRight className="h-4 w-4" />

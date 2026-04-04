@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { ProductCard } from '@/components/products/ProductCard'
 import { getActiveCategories, getProductsByCategorySlug } from '@/lib/storefront'
+import { brand } from '@/lib/brand'
 
 export async function generateStaticParams() {
   const categories = await getActiveCategories()
@@ -22,7 +23,7 @@ export async function generateMetadata({
 
   return {
     title: `${data.category.name} en Colombia`,
-    description: `Explora ${data.category.name} con inventario, soporte y compra asistida en CapiShop Colombia.`,
+    description: `Explora ${data.category.name} con inventario, soporte y compra asistida en ${brand.organizationName}.`,
     alternates: { canonical: `/categorias/${data.category.slug}` },
   }
 }

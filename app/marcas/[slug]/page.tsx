@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { ProductCard } from '@/components/products/ProductCard'
 import { getActiveBrands, getProductsByBrandSlug } from '@/lib/storefront'
+import { brand } from '@/lib/brand'
 
 export async function generateStaticParams() {
   const brands = await getActiveBrands()
@@ -21,7 +22,7 @@ export async function generateMetadata({
   if (!data) return { title: 'Marca no encontrada' }
 
   return {
-    title: `${data.brand.name} en CapiShop`,
+    title: `${data.brand.name} en ${brand.name}`,
     description: `Productos ${data.brand.name} con inventario activo y soporte local en Colombia.`,
     alternates: { canonical: `/marcas/${data.brand.slug}` },
   }

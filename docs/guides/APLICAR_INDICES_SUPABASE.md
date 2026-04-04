@@ -18,7 +18,7 @@ Se han creado **20+ índices optimizados** para mejorar el rendimiento de las co
 ### Paso 1: Acceder al SQL Editor
 
 1. Ve a [supabase.com](https://supabase.com)
-2. Selecciona tu proyecto **CapiShop**
+2. Selecciona tu proyecto **SUMITRONIC**
 3. En el menú lateral, haz clic en **SQL Editor**
 
 ### Paso 2: Ejecutar el Script

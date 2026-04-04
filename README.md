@@ -1,6 +1,9 @@
-# CapiShop
+# SUMITRONIC
 
 Aplicacion e-commerce construida con Next.js 14, TypeScript y Supabase. Este README resume el estado operativo real del repositorio al 1 de abril de 2026.
+
+Marca visible actual: `SUMITRONIC`.
+Identificadores tecnicos legados como `CAPISHOP_*`, `capishop-postgres` y similares se conservan temporalmente por compatibilidad operativa.
 
 ## Leer primero
 
@@ -9,8 +12,10 @@ Si vas a retomar el proyecto, usa este orden:
 1. `README.md`
 2. `docs/README.md`
 3. `docs/ESTADO_ACTUAL_2026-04.md`
-4. `docs/guides/SUPABASE_INTEGRATION.md`
+4. `docs/guides/REBRANDING_SUMITRONIC.md`
 5. `docs/guides/ENVIRONMENT_VARIABLES.md`
+6. `docs/guides/DATABASE_OPERATIONS.md`
+7. `docs/guides/GOOGLE_SHEETS_OPERATIONS.md`
 
 ## Estado actual
 
@@ -96,9 +101,8 @@ El flujo recomendado hoy es:
 
 Guias vigentes:
 
-- `docs/guides/SUPABASE_INTEGRATION.md`
-- `docs/guides/DATABASE_TESTING.md`
-- `docs/guides/LOCAL_DATABASE_RECOVERY.md`
+- `docs/guides/DATABASE_OPERATIONS.md`
+- `docs/guides/GOOGLE_SHEETS_OPERATIONS.md`
 
 Activos relevantes:
 

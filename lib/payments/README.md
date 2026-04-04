@@ -1,6 +1,6 @@
 # 💳 Sistema de Pagos con Billeteras Digitales
 
-Sistema seguro de pagos manuales mediante billeteras digitales para CapiShop. Implementa el método "Pago Contra-Verificación" donde el cliente realiza la transacción y el comercio verifica manualmente.
+Sistema seguro de pagos manuales mediante billeteras digitales para SUMITRONIC. Implementa el método "Pago Contra-Verificación" donde el cliente realiza la transacción y el comercio verifica manualmente.
 
 ## 📋 Características
 
@@ -242,8 +242,8 @@ Para preguntas o problemas:
 
 ## 📄 Licencia
 
-Uso interno de CapiShop. Todos los derechos reservados.
+Uso interno de SUMITRONIC. Todos los derechos reservados.
 
 ---
 
-**Desarrollado con ❤️ para CapiShop**
+**Desarrollado con ❤️ para SUMITRONIC**

@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Mail, MessageCircle, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
+import { brand } from '@/lib/brand'
 import { Brand } from './Brand'
 import { NavCategory, NavLinkItem } from './types'
 
@@ -135,11 +136,11 @@ export function MobileDrawer({
               WhatsApp de asesoría
             </a>
             <a
-              href="mailto:info@capishop.com"
+              href={`mailto:${brand.supportEmail}`}
               className="flex items-center gap-3 text-sm text-[hsl(var(--foreground))]"
             >
               <Mail className="h-4 w-4 text-[hsl(var(--brand))]" />
-              info@capishop.com
+              Email de soporte
             </a>
           </div>
         </div>

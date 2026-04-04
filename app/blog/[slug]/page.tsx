@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { blogPosts, getBlogPostBySlug } from '@/lib/content'
+import { brand } from '@/lib/brand'
 
 export async function generateStaticParams() {
   return blogPosts.map(post => ({ slug: post.slug }))
@@ -51,13 +52,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     image: [post.image],
     publisher: {
       '@type': 'Organization',
-      name: 'CapiShop Colombia',
+      name: brand.organizationName,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://capishop-web.vercel.app/favicon.png',
+        url: brand.faviconUrl,
       },
     },
-    mainEntityOfPage: `https://capishop-web.vercel.app/blog/${post.slug}`,
+    mainEntityOfPage: `${brand.siteUrl}/blog/${post.slug}`,
   }
 
   return (

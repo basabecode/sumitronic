@@ -104,7 +104,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-br from-orange-50 to-white"
+      className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--surface-highlight))] via-white to-[hsl(var(--background))]"
       aria-label="Productos destacados"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -134,17 +134,17 @@ export default function HeroSection() {
               >
                 <div className="grid h-full grid-cols-12 gap-y-6 md:gap-y-10 gap-x-8 pt-6 pb-20 md:py-16">
                   <div className="order-2 col-span-12 flex flex-col justify-start md:justify-center space-y-4 md:space-y-6 md:order-1 md:col-span-6">
-                    <span className="inline-flex w-fit items-center rounded-full bg-orange-100 px-4 py-1 text-[0.8125rem] font-semibold uppercase tracking-[0.04em] text-orange-800">
+                    <span className="inline-flex w-fit items-center rounded-full bg-[hsl(var(--surface-highlight))] px-4 py-1 text-[0.8125rem] font-semibold uppercase tracking-[0.04em] text-[hsl(var(--brand-strong))]">
                       {slide.badge}
                     </span>
 
                     <div className="space-y-4">
-                      <h2 className="max-w-[22ch] text-3xl font-semibold leading-[1.2] text-gray-900 sm:text-4xl md:text-[3rem]">
+                      <h2 className="max-w-[22ch] font-display text-3xl font-semibold leading-[1.2] text-[hsl(var(--foreground))] sm:text-4xl md:text-[3rem]">
                         {slide.title}
                       </h2>
 
                       <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-baseline gap-2 text-gray-900">
+                        <div className="flex items-baseline gap-2 text-[hsl(var(--foreground))]">
                           <span className="text-[1.75rem] font-bold sm:text-[2.25rem]">
                             {formatCurrency(slide.price)}
                           </span>
@@ -160,7 +160,7 @@ export default function HeroSection() {
                               reviews.scrollIntoView({ behavior: 'smooth' })
                             }
                           }}
-                          className="flex items-center gap-1 rounded-full border border-orange-100 px-3 py-1 text-xs font-medium text-gray-700 transition-colors hover:border-orange-200 hover:text-orange-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                          className="flex items-center gap-1 rounded-full border border-[hsl(var(--border-subtle))] bg-white/75 px-3 py-1 text-xs font-medium text-[hsl(var(--text-muted))] transition-colors hover:border-[hsl(var(--brand))] hover:text-[hsl(var(--brand-strong))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
                           onFocus={() => setIsPaused(true)}
                           onBlur={() => setIsPaused(false)}
                           aria-label={`Ver resenas del producto ${slide.title}`}
@@ -182,7 +182,7 @@ export default function HeroSection() {
                         </button>
                       </div>
 
-                      <p className="max-w-[38ch] text-base text-gray-600 sm:text-lg">
+                      <p className="max-w-[38ch] text-base text-[hsl(var(--text-muted))] sm:text-lg">
                         {slide.subtitle}
                       </p>
                     </div>
@@ -216,7 +216,7 @@ export default function HeroSection() {
                       <Button
                         variant="outline"
                         size="lg"
-                        className="h-12 rounded-lg border-orange-600 px-8 text-base font-semibold text-orange-600 transition-colors hover:bg-orange-50"
+                        className="h-12 rounded-lg border-[hsl(var(--brand))] px-8 text-base font-semibold text-[hsl(var(--brand-strong))] transition-colors hover:bg-[hsl(var(--surface-highlight))]"
                         onClick={() => openDetails(slide)}
                         onFocus={() => setIsPaused(true)}
                         onBlur={() => setIsPaused(false)}
@@ -235,7 +235,7 @@ export default function HeroSection() {
                       </div>
                       <div className="flex items-center gap-2">
                         <span
-                          className="h-2 w-2 rounded-full bg-blue-500"
+                          className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"
                           aria-hidden="true"
                         ></span>
                         <span>Garantía 12 meses</span>
@@ -263,7 +263,7 @@ export default function HeroSection() {
                         />
                       </div>
                       <div
-                        className="absolute inset-0 -z-10 translate-y-12 rounded-full bg-orange-200/40 blur-3xl"
+                        className="absolute inset-0 -z-10 translate-y-12 rounded-full bg-[hsla(var(--brand),0.22)] blur-3xl"
                         aria-hidden="true"
                       ></div>
                     </div>
@@ -282,7 +282,7 @@ export default function HeroSection() {
             onClick={prevSlide}
             onFocus={() => setIsPaused(true)}
             onBlur={() => setIsPaused(false)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-200 bg-white text-gray-800 transition-transform hover:scale-105 hover:border-orange-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-transform hover:scale-105 hover:border-[hsl(var(--brand))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
             aria-label="Slide anterior"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -295,9 +295,9 @@ export default function HeroSection() {
                 <button
                   key={slide.id}
                   type="button"
-                  className={`h-3 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
+                  className={`h-3 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2 ${
                     isActive
-                      ? 'w-8 bg-orange-600'
+                      ? 'w-8 bg-[hsl(var(--brand))]'
                       : 'w-3 bg-white/70 hover:bg-white'
                   }`}
                   aria-label={`Ir al slide ${index + 1}`}
@@ -315,7 +315,7 @@ export default function HeroSection() {
             onClick={nextSlide}
             onFocus={() => setIsPaused(true)}
             onBlur={() => setIsPaused(false)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-orange-200 bg-white text-gray-800 transition-transform hover:scale-105 hover:border-orange-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-transform hover:scale-105 hover:border-[hsl(var(--brand))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
             aria-label="Slide siguiente"
           >
             <ChevronRight className="h-5 w-5" aria-hidden="true" />

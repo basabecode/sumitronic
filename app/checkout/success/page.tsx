@@ -1,9 +1,10 @@
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import SuccessPageContent from './SuccessPageContent'
+import { brand } from '@/lib/brand'
 
 export const metadata: Metadata = {
-  title: 'Compra Exitosa - CapiShop',
+  title: `Compra Exitosa - ${brand.name}`,
   description: 'Tu pedido ha sido procesado exitosamente',
 }
 

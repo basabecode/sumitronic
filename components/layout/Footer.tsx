@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { brand } from '@/lib/brand'
 
 export default function Footer() {
   const paymentMethods = ['PSE', 'Bancolombia', 'Daviplata', 'Nequi']
@@ -27,38 +28,37 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="text-2xl font-bold text-orange-500">
-              CapiShoping
+            <div className="font-display text-2xl font-bold text-[hsl(var(--brand))]">
+              {brand.name}
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Tu tienda de confianza para productos electrónicos de última
-              generación. Más de 10 años ofreciendo calidad y servicio
-              excepcional.
+              Soluciones confiables en seguridad electronica, conectividad y
+              repuestos tecnicos con acompanamiento comercial y soporte local.
             </p>
 
             {/* Social Media */}
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="bg-gray-800 p-2 rounded-lg hover:bg-orange-600 transition-colors"
+                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="bg-gray-800 p-2 rounded-lg hover:bg-orange-600 transition-colors"
+                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Twitter className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="bg-gray-800 p-2 rounded-lg hover:bg-orange-600 transition-colors"
+                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
                 href="#"
-                className="bg-gray-800 p-2 rounded-lg hover:bg-orange-600 transition-colors"
+                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Youtube className="w-5 h-5" />
               </a>
@@ -72,7 +72,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Inicio
                 </a>
@@ -80,7 +80,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#productos"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Productos
                 </a>
@@ -88,7 +88,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#ofertas"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Ofertas
                 </a>
@@ -96,7 +96,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#blog"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Blog
                 </a>
@@ -104,7 +104,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#contacto"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Contacto
                 </a>
@@ -112,7 +112,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Sobre Nosotros
                 </a>
@@ -127,7 +127,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=faq"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Centro de Ayuda
                 </a>
@@ -135,7 +135,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=returns"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Política de Devoluciones
                 </a>
@@ -143,7 +143,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=terms"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Términos y Condiciones
                 </a>
@@ -151,7 +151,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=privacy"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Política de Privacidad
                 </a>
@@ -159,7 +159,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=warranty"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Garantías
                 </a>
@@ -167,7 +167,7 @@ export default function Footer() {
               <li>
                 <a
                   href="/help?section=support"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Servicio Técnico
                 </a>
@@ -180,15 +180,17 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Contacto</h3>
             <div className="space-y-3 text-sm">
               <div className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 text-orange-500" />
-                <span className="text-gray-300">+57 (300) 3094854</span>
+                <Phone className="h-4 w-4 text-[hsl(var(--brand))]" />
+                <span className="text-gray-300">+57 ({brand.whatsappDisplay})</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-orange-500" />
-                <span className="text-gray-300">info@CapiShoping.com</span>
+                <Mail className="h-4 w-4 text-[hsl(var(--brand))]" />
+                <a href={`mailto:${brand.supportEmail}`} className="text-gray-300 transition-colors hover:text-white">
+                  Email de soporte
+                </a>
               </div>
               <div className="flex items-start space-x-2">
-                <MapPin className="w-4 h-4 text-orange-500 mt-0.5" />
+                <MapPin className="mt-0.5 h-4 w-4 text-[hsl(var(--brand))]" />
                 <span className="text-gray-300">
                   Cra 3 # 72A - 70
                   <br />
@@ -208,21 +210,21 @@ export default function Footer() {
           <div className="grid md:grid-cols-3 gap-4 text-left items-center">
             {/* Payment Methods */}
             <div className="flex items-center gap-2 text-xs text-gray-300">
-              <CreditCard className="w-4 h-4 text-orange-500" />
+              <CreditCard className="h-4 w-4 text-[hsl(var(--brand))]" />
               <span className="font-semibold text-white">Métodos de Pago:</span>
               <span className="flex-1">{paymentMethods.join(' • ')}</span>
             </div>
 
             {/* Security */}
             <div className="flex items-center gap-2 text-xs text-gray-300">
-              <Shield className="w-4 h-4 text-orange-500" />
+              <Shield className="h-4 w-4 text-[hsl(var(--brand))]" />
               <span className="font-semibold text-white">Compra Segura:</span>
               <span className="flex-1">{securityItems.join(' • ')}</span>
             </div>
 
             {/* Shipping */}
             <div className="flex items-center gap-2 text-xs text-gray-300">
-              <Truck className="w-4 h-4 text-orange-500" />
+              <Truck className="h-4 w-4 text-[hsl(var(--brand))]" />
               <span className="font-semibold text-white">Envíos con:</span>
               <span className="flex-1">{shippingPartners.join(' • ')}</span>
             </div>
@@ -234,15 +236,15 @@ export default function Footer() {
       <div className="bg-gray-900 border-t border-gray-800 py-4">
         <div className="container">
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-            <p>© 2025 CapiShoping. Todos los derechos reservados.</p>
+            <p>© 2025 {brand.name}. Todos los derechos reservados.</p>
             <div className="flex space-x-6 mt-2 md:mt-0">
-              <a href="#" className="hover:text-orange-500 transition-colors">
+              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
                 Política de Privacidad
               </a>
-              <a href="#" className="hover:text-orange-500 transition-colors">
+              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
                 Términos de Uso
               </a>
-              <a href="#" className="hover:text-orange-500 transition-colors">
+              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
                 Cookies
               </a>
             </div>

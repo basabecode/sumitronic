@@ -63,7 +63,7 @@ export default function AdminDashboard() {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 mx-auto mb-4 text-blue-600 animate-spin" />
+          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-[hsl(var(--brand))]" />
           <p className="text-gray-600">Verificando autenticación...</p>
         </div>
       </div>

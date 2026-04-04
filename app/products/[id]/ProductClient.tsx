@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { formatProductName } from '@/lib/formatting'
+import { calculateDiscount, formatProductName } from '@/lib/formatting'
 import Image from 'next/image'
 import {
   BadgePercent,
@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/products/ProductCard'
 import { useCart } from '@/contexts/CartContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
+import { brand } from '@/lib/brand'
 
 interface Product {
   id: string
@@ -152,10 +153,6 @@ function formatDimensions(dimensions: unknown) {
   return String(dimensions)
 }
 
-function getDiscountPercent(price: number, comparePrice?: number | null) {
-  if (!comparePrice || comparePrice <= price) return null
-  return Math.round(((comparePrice - price) / comparePrice) * 100)
-}
 
 function getStockTone(stock: number) {
   if (stock <= 0) {
@@ -191,7 +188,10 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
   const favorite = isFavorite(product.id)
   const highlights = useMemo(() => buildHighlights(product, categoryName), [product, categoryName])
   const faqItems = useMemo(() => buildFaq(product, categoryName), [product, categoryName])
-  const discountPercent = getDiscountPercent(product.price, product.compare_price)
+  const discountPercent =
+    product.compare_price && product.compare_price > product.price
+      ? calculateDiscount(product.compare_price, product.price)
+      : null
   const stockTone = getStockTone(product.stock_quantity)
   const dimensionsLabel = formatDimensions(product.dimensions)
   const deliveryTone = isOutOfStock
@@ -275,7 +275,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
   const handleShare = async () => {
     const shareData = {
       title: product.name,
-      text: `Revisa ${product.name} en CapiShop`,
+      text: `Revisa ${product.name} en ${brand.name}`,
       url: window.location.href,
     }
 
@@ -289,6 +289,23 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
 
   const decreaseQuantity = () => setQuantity(prev => Math.max(1, prev - 1))
   const increaseQuantity = () => setQuantity(prev => Math.min(maxQuantity, prev + 1))
+
+  const favoriteShareButtons = (
+    <div className="grid grid-cols-2 gap-3">
+      <Button
+        variant="outline"
+        className={`rounded-full ${favorite ? 'border-red-200 bg-red-50 text-red-600' : ''}`}
+        onClick={handleToggleFavorite}
+      >
+        <Heart className={`mr-2 h-4 w-4 ${favorite ? 'fill-current' : ''}`} />
+        Guardar
+      </Button>
+      <Button variant="outline" className="rounded-full" onClick={handleShare}>
+        <Share2 className="mr-2 h-4 w-4" />
+        Compartir
+      </Button>
+    </div>
+  )
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -316,7 +333,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                     onClick={() => setSelectedImage(image.url)}
                     className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border bg-white transition-all ${
                       selectedImage === image.url
-                        ? 'border-[hsl(var(--brand))] shadow-[0_0_0_3px_rgba(249,115,22,0.14)]'
+                        ? 'border-[hsl(var(--brand))] shadow-[0_0_0_3px_hsla(var(--brand),0.18)]'
                         : 'border-[hsl(var(--border-subtle))] hover:border-[hsl(var(--border-strong))]'
                     }`}
                   >
@@ -327,7 +344,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
 
               <div className="order-1 xl:order-2">
                 <div className="surface-elevated relative overflow-hidden rounded-2xl">
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-orange-100/80 via-amber-50/60 to-transparent" />
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[hsla(var(--brand),0.12)] via-[hsla(var(--brand),0.06)] to-transparent" />
                   <div className="pointer-events-none absolute -right-10 bottom-0 h-40 w-40 rounded-full bg-[hsla(var(--brand),0.12)] blur-3xl" />
                   <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
                     {discountPercent ? (
@@ -422,7 +439,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
             </div>
           </div>
 
-          <aside className="border-l border-[hsl(var(--border-subtle))] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,247,237,0.9))]">
+          <aside className="border-l border-[hsl(var(--border-subtle))] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(233,241,250,0.92))]">
             <div className="lg:sticky lg:top-0 overflow-hidden">
               <div className="px-5 py-4">
                 <div className="flex flex-wrap items-center gap-2">
@@ -534,20 +551,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       Agregar al carrito
                     </Button>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button
-                        variant="outline"
-                        className={`rounded-full ${favorite ? 'border-red-200 bg-red-50 text-red-600' : ''}`}
-                        onClick={handleToggleFavorite}
-                      >
-                        <Heart className={`mr-2 h-4 w-4 ${favorite ? 'fill-current' : ''}`} />
-                        Guardar
-                      </Button>
-                      <Button variant="outline" className="rounded-full" onClick={handleShare}>
-                        <Share2 className="mr-2 h-4 w-4" />
-                        Compartir
-                      </Button>
-                    </div>
+                    {favoriteShareButtons}
                   </div>
                 ) : (
                   <div>
@@ -555,20 +559,7 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                     <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">
                       Puedes guardarlo en favoritos o compartir la referencia para retomarlo cuando vuelva a estar disponible.
                     </p>
-                    <div className="mt-4 grid grid-cols-2 gap-3">
-                      <Button
-                        variant="outline"
-                        className={`rounded-full ${favorite ? 'border-red-200 bg-red-50 text-red-600' : ''}`}
-                        onClick={handleToggleFavorite}
-                      >
-                        <Heart className={`mr-2 h-4 w-4 ${favorite ? 'fill-current' : ''}`} />
-                        Guardar
-                      </Button>
-                      <Button variant="outline" className="rounded-full" onClick={handleShare}>
-                        <Share2 className="mr-2 h-4 w-4" />
-                        Compartir
-                      </Button>
-                    </div>
+                    <div className="mt-4">{favoriteShareButtons}</div>
                   </div>
                 )}
               </div>

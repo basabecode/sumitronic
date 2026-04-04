@@ -1,11 +1,5 @@
-import {
-  Shield,
-  Headphones,
-  CreditCard,
-  Clock,
-  Award,
-  Mail,
-} from 'lucide-react'
+import { Shield, Clock, Award } from 'lucide-react'
+import { brand } from '@/lib/brand'
 
 export default function FeaturesSection() {
   const features = [
@@ -13,33 +7,33 @@ export default function FeaturesSection() {
       icon: Shield,
       title: 'Garantía de 12 Meses',
       description: 'Múltiples métodos de pago para mayor facilidad',
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-[hsl(var(--brand-strong))]',
+      bgColor: 'bg-[hsl(var(--surface-highlight))]',
     },
     {
       icon: Clock,
       title: 'Configuración Rápida',
       description: 'Algunos Productos con Video tutoriales para la Configuración',
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      color: 'text-sky-700',
+      bgColor: 'bg-sky-50',
     },
     {
       icon: Award,
       title: 'Productos Originales',
       description: '100% originales con certificación oficial',
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
+      color: 'text-cyan-700',
+      bgColor: 'bg-cyan-50',
     },
   ]
 
   return (
-    <section className="py-16 bg-gradient-to-br from-orange-50 via-white to-orange-50">
+    <section className="bg-gradient-to-br from-[hsl(var(--surface-highlight))] via-white to-[hsl(var(--background))] py-16">
       <div className="container">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            ¿Por qué elegir CapiShoping?
+          <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl mb-4">
+            ¿Por qué elegir {brand.name}?
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
             Ofrecemos la mejor experiencia de compra con servicios premium que
             garantizan tu satisfacción
           </p>
@@ -59,11 +53,11 @@ export default function FeaturesSection() {
                   <IconComponent className={`w-6 h-6 ${feature.color}`} />
                 </div>
 
-                <h3 className="text-base font-semibold text-gray-900 mb-1 group-hover:text-orange-600 transition-colors">
+                <h3 className="text-base font-semibold text-[hsl(var(--foreground))] mb-1 group-hover:text-[hsl(var(--brand-strong))] transition-colors">
                   {feature.title}
                 </h3>
 
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-[hsl(var(--text-muted))] leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -72,25 +66,25 @@ export default function FeaturesSection() {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-10 bg-gradient-to-r from-orange-600 to-orange-700 rounded-xl p-4 text-white">
+        <div className="mt-10 rounded-xl bg-gradient-to-r from-[hsl(var(--brand-strong))] to-[hsl(var(--brand))] p-4 text-white">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">150+</div>
-              <div className="text-orange-100 text-xs">Productos Vendidos</div>
+              <div className="text-sky-100 text-xs">Productos Vendidos</div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">120+</div>
-              <div className="text-orange-100 text-xs">
+              <div className="text-sky-100 text-xs">
                 Clientes Satisfechos
               </div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">5+</div>
-              <div className="text-orange-100 text-xs">Marcas Oficiales</div>
+              <div className="text-sky-100 text-xs">Marcas Oficiales</div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">98%</div>
-              <div className="text-orange-100 text-xs">Satisfacción</div>
+              <div className="text-sky-100 text-xs">Satisfacción</div>
             </div>
           </div>
         </div>

@@ -8,15 +8,15 @@ export default function CTASection() {
   return (
     <section
       id="contacto"
-      className="py-16 bg-gradient-to-br from-orange-50 to-white"
+      className="bg-gradient-to-br from-[hsl(var(--surface-highlight))] to-white py-16"
     >
       <div className="container">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl mb-4">
             ¿Listo para Comprar?
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
             Contáctanos ahora y obtén asesoría personalizada para encontrar el
             producto perfecto para ti
           </p>
@@ -127,10 +127,7 @@ export default function CTASection() {
                 />
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 text-lg font-semibold"
-              >
+              <Button type="submit" className="w-full py-3 text-lg font-semibold">
                 Enviar Solicitud
               </Button>
             </form>
@@ -168,7 +165,7 @@ export default function CTASection() {
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-orange-600 mt-1" />
+                  <MapPin className="w-5 h-5 text-[hsl(var(--brand-strong))] mt-1" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Dirección</h4>
                     <p className="text-gray-600">
@@ -180,7 +177,7 @@ export default function CTASection() {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Clock className="w-5 h-5 text-orange-600 mt-1" />
+                  <Clock className="w-5 h-5 text-[hsl(var(--brand-strong))] mt-1" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Horarios</h4>
                     <div className="text-gray-600 text-sm">
@@ -194,7 +191,7 @@ export default function CTASection() {
 
               <Button
                 variant="outline"
-                className="w-full mt-6 border-orange-600 text-orange-600 hover:bg-orange-50 bg-transparent"
+                className="mt-6 w-full border-[hsl(var(--brand))] bg-transparent text-[hsl(var(--brand-strong))] hover:bg-[hsl(var(--surface-highlight))]"
               >
                 Ver en Google Maps
               </Button>

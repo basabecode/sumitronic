@@ -54,7 +54,7 @@ const statusConfig = {
   },
   processing: {
     label: 'Procesando',
-    color: 'bg-blue-100 text-blue-800',
+    color: 'bg-[hsl(var(--surface-highlight))] text-[hsl(var(--brand-strong))]',
     icon: Package,
   },
   shipped: {

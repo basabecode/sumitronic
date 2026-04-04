@@ -311,13 +311,13 @@ export default function ProductFormTab({
                   <Label>Subir Imágenes *</Label>
                   <div 
                     className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                      isDragging ? 'border-orange-500 bg-orange-50' : 'border-gray-300 bg-transparent'
+                      isDragging ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))]' : 'border-gray-300 bg-transparent'
                     }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                   >
-                    <Upload className={`mx-auto h-12 w-12 mb-4 ${isDragging ? 'text-orange-500' : 'text-gray-400'}`} />
+                    <Upload className={`mx-auto mb-4 h-12 w-12 ${isDragging ? 'text-[hsl(var(--brand))]' : 'text-gray-400'}`} />
                     <p className="text-sm text-gray-600">Arrastra las imágenes aquí o haz clic para seleccionar</p>
                     <p className="text-xs text-gray-500 mt-1">Máximo {5 - formData.images.length} imágenes más</p>
                     <input

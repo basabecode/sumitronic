@@ -52,16 +52,16 @@ const colorMap = {
     progress: 'bg-red-600',
   },
   warning: {
-    bg: 'bg-orange-50',
-    border: 'border-orange-200',
-    icon: 'text-orange-600',
-    progress: 'bg-orange-600',
+    bg: 'bg-[hsl(var(--surface-highlight))]',
+    border: 'border-[hsl(var(--border-subtle))]',
+    icon: 'text-[hsl(var(--brand-strong))]',
+    progress: 'bg-[hsl(var(--brand))]',
   },
   info: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    icon: 'text-blue-600',
-    progress: 'bg-blue-600',
+    bg: 'bg-[hsl(var(--surface-highlight))]',
+    border: 'border-[hsl(var(--border-subtle))]',
+    icon: 'text-[hsl(var(--brand-strong))]',
+    progress: 'bg-[hsl(var(--brand))]',
   },
 }
 

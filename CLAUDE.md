@@ -7,7 +7,7 @@ Guía de referencia para Claude Code y el equipo de agentes autónomos.
 
 ## Visión del proyecto
 
-**CapiShop** es un ecommerce B2C/B2B especializado en productos de seguridad electrónica para el mercado colombiano.
+**SUMITRONIC** es un ecommerce B2C/B2B especializado en productos de seguridad electrónica para el mercado colombiano.
 Marcas: Hikvision, Dahua, Hanwha, Bosch, Paradox. Precios en COP (pesos colombianos).
 
 ---
@@ -58,6 +58,7 @@ app/
 │   ├── favorites/route.ts     → GET / POST / DELETE favoritos
 │   ├── products/route.ts      → GET productos (con filtros)
 │   ├── products/[id]/route.ts → GET producto por ID
+│   ├── sync-products/route.ts → POST sincronización catálogo desde Google Sheets
 │   └── setup-favorites/route.ts
 │
 ├── auth/
@@ -65,8 +66,8 @@ app/
 │   └── register/page.tsx
 │
 ├── products/
-│   ├── page.tsx               → Catálogo
-│   └── [id]/page.tsx          → Detalle de producto
+│   ├── page.tsx               → Catálogo (wrapper de ProductsSection — no duplicar lógica aquí)
+│   └── [id]/page.tsx          → Detalle de producto (usa ProductClient.tsx)
 │
 ├── cart/page.tsx
 ├── checkout/
@@ -171,6 +172,7 @@ lib/
 │   ├── validation.ts
 │   ├── index.ts
 │   └── __tests__/
+├── brand.ts                   → Datos de marca (nombre, contacto, redes) — usar en lugar de strings hardcodeados
 ├── content.ts                 → Contenido estático (FAQ, features, etc.)
 ├── formatting.ts              → Formateo de precios, fechas
 ├── storefront.ts              → Lógica de productos y categorías
@@ -186,6 +188,7 @@ lib/
 ## Base de datos (PostgreSQL / Supabase)
 
 **Docker local:** contenedor `capishop-postgres` | Puerto `54329` | DB `postgres` | Usuario `capishop_admin`
+Estos nombres tecnicos siguen vigentes como legado de compatibilidad.
 
 ### Tablas principales
 
@@ -321,6 +324,14 @@ NEXT_PUBLIC_SITE_URL=
 - **shadcn/ui:** no editar `components/ui/` directamente
 - **Tests:** no mockear la DB en tests de integración
 
+### Convenciones de UI (actualizadas 2026-04)
+
+- **Tarjetas de producto:** `rounded-2xl`, `aspect-square` en imagen, `object-cover`, sombra `shadow-sm hover:shadow-md`
+- **Botones primarios:** `rounded-xl`, color `bg-[hsl(var(--brand))]`, hover `bg-[hsl(var(--brand-strong))]`
+- **Tokens CSS válidos:** `--brand`, `--brand-strong`, `--surface-highlight`, `--foreground`, `--text-muted`, `--border-subtle`, `--border-strong`, `--success`. NO usar tokens que no existen como `--surface-0`
+- **No duplicar lógica:** `/products/page.tsx` reutiliza `ProductsSection` — no crear fetch propio en la página
+- **Marca:** importar de `lib/brand.ts`, no hardcodear strings de nombre/contacto
+
 ---
 
 ## Equipo de agentes autónomos
@@ -336,6 +347,14 @@ Los agentes están definidos en `.claude/agents/`. Úsalos antes de trabajar en 
 | `@auth-specialist`   | Supabase Auth, sesiones, roles, rutas protegidas                 | "problema de login", "proteger ruta", "sesión expira"         |
 | `@design-reviewer`   | UI/UX, responsive, breakpoints, Tailwind, componentes            | "revisa el diseño", "cómo se ve en móvil", "layout roto"      |
 | `@content-strategist`| SEO, metadata, blog, keywords, descripciones de producto        | "optimiza SEO", "crea contenido", "estrategia de marketing"   |
+| `@code-refactor`     | Refactorizar archivos, eliminar duplicación, aplicar convenciones | "refactoriza", "limpia el código", "hay duplicación", "code review" |
+
+### Agente pendiente de crear
+
+> **`@test-engineer`** — Escribir y mantener tests Vitest (cobertura mínima 80%).
+> Crear cuando los tests se vuelvan prioritarios o la cobertura baje del umbral.
+> Responsabilidad: escribir unit tests para `lib/`, `components/` y `contexts/`,
+> tests de integración para API routes, y mantener el reporte de cobertura.
 
 ### Flujo recomendado para los agentes
 

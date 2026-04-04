@@ -70,9 +70,9 @@ export default function TestimonialsSection() {
                 className="group relative shrink-0 w-[20rem] md:w-[22rem] bg-white rounded-xl p-6 shadow-sm ring-1 ring-gray-100 border border-white/0 hover:border-white/0 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 snap-start"
               >
                 {/* Icono decorativo */}
-                <Quote className="absolute right-4 top-4 w-5 h-5 text-orange-300/40" />
+                <Quote className="absolute right-4 top-4 h-5 w-5 text-[hsla(var(--brand),0.35)]" />
                 {/* Barra de acento */}
-                <div className="h-1 w-12 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mb-4 opacity-80" />
+                <div className="mb-4 h-1 w-12 rounded-full bg-gradient-to-r from-[hsl(var(--brand-strong))] to-[hsl(var(--brand))] opacity-80" />
 
                 <div className="flex items-center gap-1 mb-3 text-amber-400">
                   {[...Array(5)].map((_, i) => (
@@ -109,7 +109,7 @@ export default function TestimonialsSection() {
                       )}
                     </div>
                     <p className="text-xs text-gray-600">{testimonial.role}</p>
-                    <p className="text-xs text-orange-600 font-medium">
+                    <p className="text-xs font-medium text-[hsl(var(--brand-strong))]">
                       Compró: {testimonial.product}
                     </p>
                   </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { brand } from '@/lib/brand'
 import { cn } from '@/lib/utils'
 
 interface BrandProps {
@@ -17,7 +18,7 @@ export function Brand({ compact = false, onClick }: BrandProps) {
     >
       <img
         src="/favicon.png"
-        alt="CapiShop"
+        alt={brand.name}
         className={cn(
           'rounded-full object-contain transition-transform duration-300 group-hover:scale-105',
           compact ? 'h-9 w-9' : 'h-11 w-11'
@@ -25,11 +26,11 @@ export function Brand({ compact = false, onClick }: BrandProps) {
       />
       <div className="leading-none">
         <p className="font-display text-lg font-semibold uppercase tracking-[0.16em] text-[hsl(var(--brand-strong))]">
-          CapiShop
+          {brand.name}
         </p>
         {!compact && (
           <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--text-muted))]">
-            Seguridad y conectividad
+            Seguridad electronica y repuestos
           </p>
         )}
       </div>

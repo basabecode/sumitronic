@@ -1,8 +1,8 @@
-# 💳 Guía Maestra del Sistema de Pagos - CapiShop
+# 💳 Guía Maestra del Sistema de Pagos - SUMITRONIC
 
 ## 🎯 Resumen Ejecutivo
 
-CapiShop utiliza actualmente un sistema de **Pagos Manuales con Billeteras Digitales** (Nequi, Daviplata, etc.). Este sistema permite operar inmediatamente sin comisiones de pasarelas, funcionando bajo un modelo de "Pago Contra-Verificación".
+SUMITRONIC utiliza actualmente un sistema de **Pagos Manuales con Billeteras Digitales** (Nequi, Daviplata, etc.). Este sistema permite operar inmediatamente sin comisiones de pasarelas, funcionando bajo un modelo de "Pago Contra-Verificación".
 
 ---
 
