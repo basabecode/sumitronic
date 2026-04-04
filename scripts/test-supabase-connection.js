@@ -86,7 +86,7 @@ function makeRequest(url, options = {}) {
 }
 
 async function validateSupabase() {
-  logSection('VALIDACIÓN DE CONEXIÓN A SUPABASE - CAPISHOP')
+  logSection('VALIDACIÓN DE CONEXIÓN A SUPABASE - SUMITRONIC')
 
   // 1. Cargar variables de entorno
   const env = loadEnvFile()

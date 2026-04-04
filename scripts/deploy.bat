@@ -1,5 +1,5 @@
 @echo off
-REM Script de deploy automático para CapiShop_Web
+REM Script de deploy automático para SUMITRONIC
 setlocal enabledelayedexpansion
 set TIMESTAMP=%date% %time%
 git add .

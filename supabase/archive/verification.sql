@@ -1,5 +1,5 @@
 -- ===================================
--- VERIFICACIÓN DEL SCHEMA CAPISHOP
+-- VERIFICACIÓN DEL SCHEMA SUMITRONIC
 -- ===================================
 -- Script para verificar que todas las tablas, políticas y funciones
 -- se hayan creado correctamente en Supabase

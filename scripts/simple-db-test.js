@@ -1,6 +1,6 @@
 /**
  * ===================================================
- * CAPISHOP - STANDALONE DATABASE TESTER
+ * SUMITRONIC - STANDALONE DATABASE TESTER
  * ===================================================
  * Version standalone que no requiere tsx o dotenv externos
  */
@@ -59,7 +59,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 // TESTER SIMPLE
 // ===================================
 async function runSimpleTest() {
-  console.log('🚀 CAPISHOP - SIMPLE DATABASE TEST')
+  console.log('🚀 SUMITRONIC - SIMPLE DATABASE TEST')
   console.log('=' + '='.repeat(50))
   console.log('🔗 Supabase URL:', supabaseUrl.substring(0, 30) + '...')
   console.log('🔑 Supabase Key:', supabaseKey.substring(0, 20) + '...')

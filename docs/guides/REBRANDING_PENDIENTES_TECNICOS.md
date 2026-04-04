@@ -1,4 +1,9 @@
-# Pendientes Tecnicos del Rebranding a SUMITRONIC
+> **DOCUMENTO REEMPLAZADO**
+> Este archivo es el registro original de pendientes técnicos del rebranding.
+> Las etapas 1 a 4 fueron ejecutadas el 3 de abril de 2026.
+> El documento vigente y actualizado es: `docs/guides/REBRANDING_ESTADO_MIGRACION.md`
+
+# Pendientes Tecnicos del Rebranding a SUMITRONIC (HISTÓRICO)
 
 Fecha de referencia: 3 de abril de 2026.
 

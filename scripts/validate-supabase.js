@@ -37,7 +37,7 @@ function logSection(title) {
 }
 
 async function validateSupabase() {
-  logSection('VALIDACIÓN DE SUPABASE - CAPISHOP')
+  logSection('VALIDACIÓN DE SUPABASE - SUMITRONIC')
 
   // 1. Verificar variables de entorno
   logSection('1. Variables de Entorno')

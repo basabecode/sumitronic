@@ -1,5 +1,5 @@
 // ===================================
-// TIPOS UNIFICADOS PARA CAPISHOP
+// TIPOS UNIFICADOS PARA SUMITRONIC
 // ===================================
 
 export interface DatabaseProduct {

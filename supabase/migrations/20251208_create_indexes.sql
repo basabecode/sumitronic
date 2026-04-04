@@ -1,5 +1,5 @@
 -- ============================================
--- ÍNDICES DE OPTIMIZACIÓN - CapiShop Database
+-- ÍNDICES DE OPTIMIZACIÓN - SUMITRONIC Database
 -- ============================================
 -- Fecha: 8 de Diciembre 2025
 -- Propósito: Mejorar performance de queries frecuentes

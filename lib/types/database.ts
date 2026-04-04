@@ -1,5 +1,5 @@
 // ============================================================
-// TIPOS TYPESCRIPT — BASE DE DATOS REAL DE CAPISHOP
+// TIPOS TYPESCRIPT — BASE DE DATOS REAL DE SUMITRONIC
 // Generado: 2026-04-01
 // Fuente: supabase/schema.sql + migraciones aplicadas
 //
@@ -538,7 +538,15 @@ export interface Database {
     }
 
     Functions: {
+      // Función original — contrato histórico activo. No renombrar.
+      // Definida en: supabase/migrations/20260329_restore_backup_compatibility.sql
       capishop_slugify: {
+        Args: { input_text: string }
+        Returns: string
+      }
+      // Alias post-rebranding — usar este en código nuevo.
+      // Definida en: supabase/migrations/20260403_add_sumitronic_slugify.sql
+      sumitronic_slugify: {
         Args: { input_text: string }
         Returns: string
       }

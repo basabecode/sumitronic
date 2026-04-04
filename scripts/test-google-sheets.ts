@@ -26,7 +26,7 @@ function getRequiredEnv(name: string) {
 }
 
 async function testGoogleSheetsConnection() {
-  log('VALIDACION DE GOOGLE SHEETS - CAPISHOP', 'cyan')
+  log('VALIDACION DE GOOGLE SHEETS - SUMITRONIC', 'cyan')
   console.log('='.repeat(60))
 
   const serviceAccountEmail = getRequiredEnv('GOOGLE_SERVICE_ACCOUNT_EMAIL')

@@ -1,6 +1,6 @@
 /**
  * ===================================================
- * CAPISHOP - QUICK DATABASE FIX
+ * SUMITRONIC - QUICK DATABASE FIX
  * ===================================================
  * Script rápido para diagnosticar y corregir problemas
  * comunes de la base de datos.
@@ -216,7 +216,7 @@ COMMIT;
             description: 'Producto de prueba para validar funcionamiento',
             price: 100000,
             category_id: category.id,
-            brand: 'CAPISHOP',
+            brand: 'SUMITRONIC',
             image_url: '/placeholder.svg',
             stock_quantity: 10,
             active: true,
@@ -237,7 +237,7 @@ COMMIT;
   // 5. MÉTODO PRINCIPAL
   // ===================================
   async runQuickFix() {
-    console.log('🚀 CAPISHOP - QUICK DATABASE FIX')
+    console.log('🚀 SUMITRONIC - QUICK DATABASE FIX')
     console.log('=' + '='.repeat(50))
 
     const problemType = await this.quickDiagnosis()

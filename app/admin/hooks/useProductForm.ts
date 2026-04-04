@@ -21,13 +21,24 @@ const DEFAULT_BRANDS = [
   'Logitech', 'Mercusys', 'Tapo', 'Forza',
 ]
 
-const BRANDS_STORAGE_KEY = 'capishop_admin_brands'
+const BRANDS_STORAGE_KEY = 'sumitronic_admin_brands'
+const BRANDS_STORAGE_KEY_LEGACY = 'capishop_admin_brands'
 
 function loadBrandsFromStorage(): string[] {
   if (typeof window === 'undefined') return DEFAULT_BRANDS
   try {
     const stored = localStorage.getItem(BRANDS_STORAGE_KEY)
-    return stored ? JSON.parse(stored) : DEFAULT_BRANDS
+    if (stored) return JSON.parse(stored)
+
+    // Migración silenciosa desde clave legacy
+    const legacy = localStorage.getItem(BRANDS_STORAGE_KEY_LEGACY)
+    if (legacy) {
+      const parsed = JSON.parse(legacy)
+      localStorage.setItem(BRANDS_STORAGE_KEY, legacy)
+      return parsed
+    }
+
+    return DEFAULT_BRANDS
   } catch {
     return DEFAULT_BRANDS
   }
@@ -164,7 +175,7 @@ export function useProductForm(callbacks: {
     const updated = [...brands, newBrand.trim()].sort()
     setBrands(updated)
 
-    // Persist to localStorage so brands survive page reloads
+    // Persistir en clave nueva; ignorar clave legacy (se migra en lectura)
     try {
       localStorage.setItem(BRANDS_STORAGE_KEY, JSON.stringify(updated))
     } catch {
