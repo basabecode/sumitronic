@@ -1,3 +1,14 @@
+/**
+ * lib/content.ts — Fuente única de contenido estático indexable
+ *
+ * BLOG: Agrega un objeto a `blogPosts[]` → aparece automáticamente en
+ *   /blog, /blog/[slug] y en el sitemap sin tocar ningún otro archivo.
+ *
+ * AYUDA: Agrega un objeto a `helpArticles[]` → aparece en /help y sitemap.
+ *
+ * MARCAS: Edita lib/brands.ts → aparece en /marcas, /marcas/[slug] y sitemap.
+ * PRODUCTOS/CATEGORÍAS: Se leen directo de la DB → crecen solos al cargarlos.
+ */
 import { brand } from '@/lib/brand'
 
 export type BlogPost = {
