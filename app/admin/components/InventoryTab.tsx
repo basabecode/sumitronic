@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Package, Search, Filter, Plus, Eye, Edit, Trash2, Loader2 } from 'lucide-react'
+import { Package, Search, Filter, Plus, Eye, Edit, Trash2, Loader2, Download } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +37,8 @@ interface InventoryTabProps {
   onDeleteRequest: (product: Product) => void
   onDeleteConfirm: (product: Product) => void
   onDeleteCancel: () => void
+  onExportCSV: () => void
+  exportingCSV?: boolean
 }
 
 export default function InventoryTab({
@@ -58,6 +60,8 @@ export default function InventoryTab({
   onDeleteRequest,
   onDeleteConfirm,
   onDeleteCancel,
+  onExportCSV,
+  exportingCSV = false,
 }: InventoryTabProps) {
   const activeFilters = (searchQuery ? 1 : 0) + (categoryFilter !== 'all' ? 1 : 0)
 
@@ -146,6 +150,19 @@ export default function InventoryTab({
               <Button onClick={onAdd}>
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar
+              </Button>
+              <Button
+                variant="outline"
+                onClick={onExportCSV}
+                disabled={exportingCSV || totalProducts === 0}
+                title="Descargar todos los productos como CSV"
+              >
+                {exportingCSV ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4 mr-2" />
+                )}
+                {exportingCSV ? 'Exportando...' : 'Exportar CSV'}
               </Button>
             </div>
           </CardContent>

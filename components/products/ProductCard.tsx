@@ -40,7 +40,7 @@ interface Product {
 
 interface ProductCardProps {
   product: Product
-  viewMode?: 'grid' | 'list'
+  viewMode?: 'grid' | 'list' | 'compact'
 }
 
 export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
@@ -93,6 +93,62 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       stockCount: stockQuantity, // Para compatibilidad
       category: categoryName,
     })
+  }
+
+  if (viewMode === 'compact') {
+    return (
+      <Card className="group overflow-hidden rounded-2xl border border-[hsl(var(--border-subtle))] bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+        <Link href={`/products/${product.id}`} className="block">
+          <div className="relative aspect-square overflow-hidden bg-slate-50">
+            <Image
+              src={imageUrl}
+              alt={imageAlt}
+              fill
+              className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+              sizes="(min-width: 1024px) 200px, (min-width: 640px) 25vw, 45vw"
+            />
+            {isOutOfStock && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                <Badge variant="destructive" className="text-xs">Agotado</Badge>
+              </div>
+            )}
+            {categoryName && (
+              <div className="absolute left-2 top-2">
+                <Badge variant="secondary" className="bg-white/90 px-2 py-0.5 text-[0.65rem] text-slate-600">
+                  {categoryName}
+                </Badge>
+              </div>
+            )}
+          </div>
+        </Link>
+
+        <CardContent className="px-3 pb-3 pt-2.5">
+          <Link href={`/products/${product.id}`}>
+            <h3
+              className="line-clamp-2 text-[0.82rem] font-semibold leading-snug text-slate-900 transition-colors hover:text-[hsl(var(--brand-strong))]"
+              title={product.name}
+            >
+              {product.name}
+            </h3>
+          </Link>
+
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <p className="font-display text-[1.1rem] font-semibold leading-none tracking-tight text-slate-950">
+              {formatCurrency(product.price)}
+            </p>
+            <Button
+              size="sm"
+              disabled={isOutOfStock}
+              onClick={handleAddToCart}
+              className="h-8 rounded-full bg-[hsl(var(--brand))] px-3 text-xs font-semibold text-white hover:bg-[hsl(var(--brand-strong))]"
+            >
+              <ShoppingCart className="h-3 w-3 sm:mr-1" />
+              <span className="hidden sm:inline">{isOutOfStock ? 'Agotado' : 'Agregar'}</span>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   if (viewMode === 'list') {

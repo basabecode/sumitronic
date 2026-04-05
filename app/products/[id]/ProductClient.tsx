@@ -178,6 +178,7 @@ function getStockTone(stock: number) {
 export default function ProductClient({ product, relatedProducts }: ProductClientProps) {
   const [selectedImage, setSelectedImage] = useState<string>(getPrimaryImage(product))
   const [quantity, setQuantity] = useState(1)
+  const [descExpanded, setDescExpanded] = useState(false)
   const { addItem, openCart, formatCurrency } = useCart()
   const { addItem: addFavorite, isFavorite, removeItem: removeFavorite } = useFavorites()
 
@@ -399,21 +400,35 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
 
             <div className="grid gap-5 sm:grid-cols-[1.2fr_0.8fr]">
               <div>
-                <h3 className="font-display text-base font-semibold text-[hsl(var(--foreground))] mb-2">
-                  Información principal
-                </h3>
-                <p className="text-sm leading-relaxed text-[hsl(var(--text-muted))]">
-                  {product.description}
-                </p>
+                <button
+                  type="button"
+                  onClick={() => setDescExpanded(prev => !prev)}
+                  className="flex w-full items-center justify-between gap-2 rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] px-4 py-3 text-left transition-colors hover:bg-[hsl(var(--surface-highlight))]"
+                  aria-expanded={descExpanded}
+                >
+                  <h3 className="font-display text-sm font-semibold text-[hsl(var(--foreground))]">
+                    Descripción del producto
+                  </h3>
+                  <ChevronRight
+                    className={`h-4 w-4 flex-shrink-0 text-[hsl(var(--text-muted))] transition-transform duration-200 ${descExpanded ? 'rotate-90' : ''}`}
+                  />
+                </button>
 
-                <ul className="mt-3 space-y-2">
-                  {highlights.map(item => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-[hsl(var(--success))]" />
-                      <span className="text-xs leading-relaxed text-[hsl(var(--foreground))]">{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                {descExpanded && (
+                  <div className="mt-2 rounded-xl border border-[hsl(var(--border-subtle))] bg-white px-4 py-3">
+                    <p className="text-sm leading-relaxed text-[hsl(var(--text-muted))]">
+                      {product.description}
+                    </p>
+                    <ul className="mt-3 space-y-2 border-t border-[hsl(var(--border-subtle))] pt-3">
+                      {highlights.map(item => (
+                        <li key={item} className="flex items-start gap-2">
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-[hsl(var(--success))]" />
+                          <span className="text-xs leading-relaxed text-[hsl(var(--foreground))]">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               <div className="rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-3.5">
@@ -622,9 +637,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
               Productos relacionados para comparar otras opciones similares.
             </p>
           </div>
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {relatedProducts.map(relatedProduct => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} viewMode="grid" />
+              <ProductCard key={relatedProduct.id} product={relatedProduct} viewMode="compact" />
             ))}
           </div>
         </section>

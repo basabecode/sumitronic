@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Home, Package, Plus, DollarSign, ExternalLink, Loader2 } from 'lucide-react'
+import { Home, Package, Plus, DollarSign, ExternalLink, Loader2, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
@@ -23,9 +23,81 @@ const TAB_BUTTONS: { id: Tab; label: string; Icon: React.ElementType }[] = [
   { id: 'add-product', label: 'Agregar Producto', Icon: Plus },
 ]
 
+type SyncStatus = { state: 'idle' } | { state: 'loading' } | { state: 'ok'; synced: number } | { state: 'error'; message: string }
+
+function escapeCSV(value: unknown): string {
+  const str = value === null || value === undefined ? '' : String(value)
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str
+}
+
 export default function AdminDashboard() {
   const { user, loading, profile } = useAuth()
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>({ state: 'idle' })
+  const [exportingCSV, setExportingCSV] = useState(false)
+
+  const handleExportCSV = async () => {
+    setExportingCSV(true)
+    try {
+      const res = await fetch('/api/products?limit=1000&sortBy=created_at&sortOrder=asc')
+      const data = await res.json()
+      const allProducts = data.products ?? []
+
+      const headers = ['sku', 'name', 'description', 'price', 'compare_price', 'cost_price', 'brand', 'category_slug', 'stock_quantity', 'weight', 'featured', 'active', 'tags', 'image_url', 'extra_images']
+
+      const rows = allProducts.map((p: any) => [
+        p.sku ?? '',
+        p.name ?? '',
+        p.description ?? '',
+        p.price ?? 0,
+        p.compare_price ?? '',
+        '',
+        p.brand ?? '',
+        p.category?.slug ?? '',
+        p.stock_quantity ?? 0,
+        p.weight ?? '',
+        p.featured ? 'TRUE' : 'FALSE',
+        p.active !== false ? 'TRUE' : 'FALSE',
+        Array.isArray(p.tags) ? p.tags.join(',') : '',
+        p.image_url ?? '',
+        Array.isArray(p.images) && p.images.length > 1
+          ? p.images.slice(1).join(',')
+          : '',
+      ])
+
+      const csv = [headers, ...rows].map(row => row.map(escapeCSV).join(',')).join('\n')
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `sumitronic-productos-${new Date().toISOString().slice(0, 10)}.csv`
+      link.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Error exportando CSV:', err)
+    } finally {
+      setExportingCSV(false)
+    }
+  }
+
+  const handleSyncSheets = async () => {
+    setSyncStatus({ state: 'loading' })
+    try {
+      const secret = process.env.NEXT_PUBLIC_SYNC_SECRET
+      const res = await fetch(`/api/sync-products?secret=${secret}`)
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Error al sincronizar')
+      setSyncStatus({ state: 'ok', synced: data.synced })
+      products.fetchProducts()
+      setTimeout(() => setSyncStatus({ state: 'idle' }), 4000)
+    } catch (err) {
+      setSyncStatus({ state: 'error', message: err instanceof Error ? err.message : 'Error desconocido' })
+      setTimeout(() => setSyncStatus({ state: 'idle' }), 5000)
+    }
+  }
 
   const products = useAdminProducts()
   const form = useProductForm({
@@ -101,12 +173,34 @@ export default function AdminDashboard() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Panel de Administración</h1>
           <p className="text-sm md:text-base text-gray-600">Bienvenido, {user.email}</p>
         </div>
-        <Button asChild variant="outline" className="w-full md:w-auto min-h-[44px]">
-          <Link href="/" target="_blank">
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Ver Tienda
-          </Link>
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto min-h-[44px] gap-2"
+            onClick={handleSyncSheets}
+            disabled={syncStatus.state === 'loading'}
+          >
+            {syncStatus.state === 'loading' ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : syncStatus.state === 'ok' ? (
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            ) : syncStatus.state === 'error' ? (
+              <AlertCircle className="w-4 h-4 text-red-500" />
+            ) : (
+              <RefreshCw className="w-4 h-4" />
+            )}
+            {syncStatus.state === 'loading' && 'Sincronizando...'}
+            {syncStatus.state === 'ok' && `${syncStatus.synced} producto(s) sincronizados`}
+            {syncStatus.state === 'error' && syncStatus.message}
+            {syncStatus.state === 'idle' && 'Sincronizar Sheets'}
+          </Button>
+          <Button asChild variant="outline" className="w-full sm:w-auto min-h-[44px]">
+            <Link href="/" target="_blank">
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Ver Tienda
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-6">
@@ -163,6 +257,8 @@ export default function AdminDashboard() {
             onDeleteRequest={p => products.setDeleteDialog({ open: true, product: p })}
             onDeleteConfirm={products.handleDeleteProduct}
             onDeleteCancel={() => products.setDeleteDialog({ open: false, product: null })}
+            onExportCSV={handleExportCSV}
+            exportingCSV={exportingCSV}
           />
         )}
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu } from 'lucide-react'
@@ -8,43 +8,27 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
+import { useSharedData } from '@/contexts/SharedDataContext'
 import { Brand } from './header/Brand'
 import { HeaderActions } from './header/HeaderActions'
 import { MobileDrawer } from './header/MobileDrawer'
 import { SearchBar } from './header/SearchBar'
 import { primaryNavLinks } from './header/headerData'
-import { NavCategory } from './header/types'
 import { DynamicBreadcrumbs } from './DynamicBreadcrumbs'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [categories, setCategories] = useState<NavCategory[]>([])
   const { state, toggleCart } = useCart()
   const { user, profile, signOut, isAdmin } = useAuth()
   const { state: favoritesState, openFavorites } = useFavorites()
+  const { categories } = useSharedData()
   const pathname = usePathname()
   const router = useRouter()
   const isHome = pathname === '/'
 
   const totalItems = state.items.reduce((total, item) => total + item.quantity, 0)
   const totalFavorites = favoritesState.items.length
-
-  useEffect(() => {
-    fetch('/api/categories')
-      .then(res => (res.ok ? res.json() : []))
-      .then((data: { id: string; name: string; slug: string; image_url?: string | null }[]) => {
-        if (!Array.isArray(data)) return
-        setCategories(
-          data.map(category => ({
-            id: category.slug,
-            name: category.name,
-            image: category.image_url || '/placeholder.svg',
-          }))
-        )
-      })
-      .catch(() => {})
-  }, [])
 
   const broadcastSearch = (query: string) => {
     window.dispatchEvent(
