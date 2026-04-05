@@ -1,173 +1,246 @@
 'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { BRAND_PROFILES } from '@/lib/brands'
+
+const DAY_MS = 24 * 60 * 60 * 1000
+const ROTATION_REFERENCE = new Date('2026-01-06T00:00:00-05:00')
+
+function formatNextChange(date: Date) {
+  return new Intl.DateTimeFormat('es-CO', {
+    day: 'numeric',
+    month: 'long',
+  }).format(date)
+}
+
+function getRotation(intervalDays: number, offset = 0) {
+  const now = new Date()
+  const elapsedDays = Math.max(
+    0,
+    Math.floor((now.getTime() - ROTATION_REFERENCE.getTime()) / DAY_MS)
+  )
+  const period = Math.floor(elapsedDays / intervalDays)
+  const rawIndex = (period + offset) % BRAND_PROFILES.length
+  const index = rawIndex < 0 ? rawIndex + BRAND_PROFILES.length : rawIndex
+  const nextChange = new Date(
+    ROTATION_REFERENCE.getTime() + (period + 1) * intervalDays * DAY_MS
+  )
+
+  return {
+    index,
+    brand: BRAND_PROFILES[index],
+    nextChangeLabel: formatNextChange(nextChange),
+  }
+}
+
 export default function BrandsSection() {
-  const brands = [
-    { name: 'Dahua', logo: '/marcas_originales/dahua-logo-png.png' },
-    { name: 'Imou', logo: '/marcas_originales/imou_logo.png' },
-    { name: 'Logitech', logo: '/marcas_originales/logitech-logo.png' },
-    { name: 'Forza', logo: '/marcas_originales/forza logo.png' },
-    { name: 'Tp-Link', logo: '/marcas_originales/TPLINK_Logo_2.png' },
-    { name: 'Mercusys', logo: '/marcas_originales/mercusys-logo.png' },
-  ]
+  const featuredRotation = getRotation(14, 0)
+  let noveltyRotation = getRotation(7, 2)
 
-  const stats = [
-    { number: '50+', label: 'Marcas Oficiales' },
-    { number: '10,000+', label: 'Productos Vendidos' },
-    { number: '5,000+', label: 'Clientes Satisfechos' },
-    { number: '99%', label: 'Productos Originales' },
-  ]
+  if (noveltyRotation.index === featuredRotation.index) {
+    const adjustedIndex = (noveltyRotation.index + 1) % BRAND_PROFILES.length
+    noveltyRotation = {
+      ...noveltyRotation,
+      index: adjustedIndex,
+      brand: BRAND_PROFILES[adjustedIndex],
+    }
+  }
 
-  // Duplicar marcas para efecto infinito seamless
-  const duplicatedBrands = [...brands, ...brands, ...brands, ...brands]
+  const featuredBrand = featuredRotation.brand
+  const noveltyBrand = noveltyRotation.brand
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
+    <section className="overflow-hidden bg-gradient-to-b from-white via-[hsl(var(--surface-highlight))]/35 to-white py-14 md:py-16">
       <div className="container">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Marcas con buen respaldo
+        <div className="mb-8 text-center md:mb-10">
+          <p className="eyebrow-label">Marcas destacadas</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-[hsl(var(--foreground))] md:text-4xl">
+            Referencias que el cliente reconoce y vuelve a buscar
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Reunimos marcas reconocidas en seguridad, conectividad, energia y accesorios para que compres con mas confianza.
+          <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
+            Seguridad, redes, energia y accesorios con marcas que suelen tener buena salida por respaldo, disponibilidad y facilidad para recomendar segun la necesidad.
           </p>
         </div>
 
-        {/* Infinite Carousel for Brands */}
-        <div className="mb-16 relative">
-          <div className="brands-carousel-container">
-            <div className="brands-carousel-track">
-              {duplicatedBrands.map((brand, index) => (
-                <div
-                  key={`${brand.name}-${index}`}
-                  className="brands-carousel-item flex items-center justify-center p-4 md:p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300 group cursor-pointer"
-                  title={brand.name}
-                >
-                  <div className="w-full h-full flex items-center justify-center overflow-hidden">
-                    <img
-                      src={brand.logo || '/placeholder.svg'}
-                      alt={brand.name}
-                      className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0"
-                      loading="lazy"
-                    />
-                  </div>
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="inline-flex rounded-full bg-[hsl(var(--surface-highlight))] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[hsl(var(--brand-strong))]">
+            Explora por marca
+          </span>
+          <span className="hidden text-sm text-[hsl(var(--text-muted))] sm:inline">
+            Pasa el cursor o toca un logo para ver su linea
+          </span>
+        </div>
+
+        {/* Grid de logos — todos con el mismo bounding box para proporciones uniformes */}
+        <div className="mb-12 mt-6 grid grid-cols-2 items-center justify-items-center gap-x-6 gap-y-8 px-4 sm:grid-cols-3 md:grid-cols-6 md:gap-x-8 lg:gap-x-12">
+          {BRAND_PROFILES.map(brand => (
+            <Link
+              key={brand.slug}
+              href={`/marcas/${brand.slug}`}
+              className="group flex w-full flex-col items-center justify-center transition-transform hover:-translate-y-1 hover:scale-105"
+              title={brand.name}
+              aria-label={`Ver productos de ${brand.name}`}
+            >
+              {/* Contenedor con dimensiones fijas: 160×56 px — igual para todos los logos */}
+              <div className="relative mx-auto h-14 w-full max-w-[160px]">
+                <Image
+                  src={brand.logo}
+                  alt={`Logo ${brand.name}`}
+                  fill
+                  className={`object-contain px-2 py-1 opacity-70 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0 group-hover:drop-shadow-[0_6px_14px_rgba(0,119,168,0.22)] ${brand.carouselLogoClass}`}
+                  sizes="160px"
+                />
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1.15fr_0.9fr]">
+          {/* Tarjeta: Marca destacada */}
+          <article className="section-shell p-5 md:p-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <span className="inline-flex rounded-full bg-[hsl(var(--surface-highlight))] px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--brand-strong))]">
+                    Marca destacada
+                  </span>
+                  <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-[hsl(var(--foreground))] md:text-[2rem]">
+                    {featuredBrand.name}
+                  </h3>
+                  <p className="mt-2 text-xs uppercase tracking-[0.22em] text-[hsl(var(--text-muted))]">
+                    {featuredBrand.category}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* Stats: Marca del Mes y Novedad de Marca */}
-        <div className="rounded-xl bg-gradient-to-r from-[hsl(var(--brand-strong))] to-[hsl(var(--brand))] px-4 py-3 text-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
-            {/* Marca del Mes */}
-            <div className="flex items-center bg-white/10 rounded-lg px-4 py-3 shadow-sm min-h-[80px] w-full">
-              <span className="mr-3 inline-block flex-shrink-0 rounded bg-white/90 px-2 py-1 text-xs font-bold text-[hsl(var(--brand-strong))]">
-                Marca del Mes
-              </span>
-              <img
-                src="/marcas_originales/imou_logo.png"
-                alt="Imou"
-                className="w-12 h-12 object-contain rounded bg-white mr-3 flex-shrink-0"
-              />
-              <div className="flex flex-col justify-center flex-1 min-w-0">
-                <span className="font-semibold text-white text-sm leading-tight">
-                  Imou
-                </span>
-                <span className="text-sky-100 text-xs leading-tight">
-                  Una marca muy consultada para camaras WiFi y monitoreo practico en casa, negocio o bodega.
-                </span>
+                <div className="relative h-14 w-24 shrink-0 rounded-2xl border border-[hsl(var(--border-subtle))] bg-white">
+                  <Image
+                    src={featuredBrand.logo}
+                    alt={`Logo ${featuredBrand.name}`}
+                    fill
+                    className={`object-contain p-3 ${featuredBrand.panelLogoClass}`}
+                    sizes="96px"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Novedad de Marca */}
-            <div className="flex items-center bg-white/10 rounded-lg px-4 py-3 shadow-sm min-h-[80px] w-full">
-              <span className="mr-3 inline-block flex-shrink-0 rounded bg-[hsl(var(--surface-highlight))] px-2 py-1 text-xs font-bold text-[hsl(var(--brand-strong))]">
-                Novedad
-              </span>
-              <img
-                src="/marcas_originales/imou_logo.png"
-                alt="Imou"
-                className="w-12 h-12 object-contain rounded bg-white mr-3 flex-shrink-0"
-              />
-              <div className="flex flex-col justify-center flex-1 min-w-0">
-                <span className="font-semibold text-white text-sm leading-tight">
-                  Imou Ranger 2C
-                </span>
-                <span className="text-sky-100 text-xs leading-tight">
-                  Camara WiFi con giro, vision nocturna y alertas al celular para quienes quieren vigilar su espacio sin complicarse.
-                </span>
-                <a
-                  href="#"
-                  className="text-xs underline text-white/80 hover:text-white mt-1"
+              <p className="text-sm leading-6 text-[hsl(var(--text-muted))] md:text-[0.96rem]">
+                {featuredBrand.summary}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {featuredBrand.useCases.map(useCase => (
+                  <span
+                    key={useCase}
+                    className="rounded-full border border-[hsl(var(--border-subtle))] bg-white px-3 py-1.5 text-sm text-[hsl(var(--text-muted))]"
+                  >
+                    {useCase}
+                  </span>
+                ))}
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2">
+                <div className="rounded-[1.35rem] bg-[hsl(var(--surface-highlight))] px-4 py-4">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[hsl(var(--brand-strong))]">
+                    Donde mejor encaja
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">
+                    {featuredBrand.salesAngle}
+                  </p>
+                </div>
+
+                <div className="rounded-[1.35rem] bg-[hsl(var(--surface-muted))] px-4 py-4">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[hsl(var(--foreground))]">
+                    {featuredBrand.lineupTitle}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">
+                    {featuredBrand.lineupCopy}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-[hsl(var(--text-muted))]">
+                  <span className="font-semibold text-[hsl(var(--foreground))]">Proxima publicacion:</span>{' '}
+                  {featuredRotation.nextChangeLabel}
+                </p>
+                <Link
+                  href={`/marcas/${featuredBrand.slug}`}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-opacity hover:opacity-80"
                 >
-                  Conocer mas
-                </a>
+                  Ver linea {featuredBrand.name}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
+          </article>
 
-        {/* Partnership Message */}
-        <div className="text-center mt-12">
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Trabajar con marcas reconocidas nos permite ofrecer referencias originales, mejor respaldo y una compra mucho mas clara para el cliente.
-          </p>
+          {/* Tarjeta: Novedad de marca */}
+          <article className="section-shell p-5 md:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="inline-flex rounded-full bg-[hsl(var(--surface-highlight))] px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[hsl(var(--brand-strong))]">
+                  Novedad de marca
+                </span>
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[hsl(var(--foreground))]">
+                  {noveltyBrand.focusTitle}
+                </h3>
+              </div>
+
+              <div className="relative h-14 w-24 shrink-0 rounded-2xl border border-[hsl(var(--border-subtle))] bg-white">
+                <Image
+                  src={noveltyBrand.logo}
+                  alt={`Logo ${noveltyBrand.name}`}
+                  fill
+                  className={`object-contain p-3 ${noveltyBrand.panelLogoClass}`}
+                  sizes="96px"
+                />
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-[1.35rem] bg-[hsl(var(--surface-muted))] px-4 py-4">
+              <p className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${noveltyBrand.accentClass}`}>
+                {noveltyBrand.name}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-[hsl(var(--text-muted))]">
+                {noveltyBrand.lineupCopy}
+              </p>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              <p className="text-sm leading-6 text-[hsl(var(--text-muted))]">
+                {noveltyBrand.salesAngle}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {noveltyBrand.useCases.map(useCase => (
+                  <span
+                    key={useCase}
+                    className="rounded-full border border-[hsl(var(--border-subtle))] bg-white px-3 py-1.5 text-sm text-[hsl(var(--text-muted))]"
+                  >
+                    {useCase}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-4 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-[hsl(var(--text-muted))]">
+                <span className="font-semibold text-[hsl(var(--foreground))]">Proxima publicacion:</span>{' '}
+                {noveltyRotation.nextChangeLabel}
+              </p>
+              <Link
+                href={`/marcas/${noveltyBrand.slug}`}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-opacity hover:opacity-80"
+              >
+                Ver linea {noveltyBrand.name}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </article>
         </div>
       </div>
-
-      {/* Carousel Animation Styles */}
-      <style jsx>{`
-        .brands-carousel-container {
-          overflow: hidden;
-          position: relative;
-          width: 100%;
-        }
-
-        .brands-carousel-track {
-          display: flex;
-          gap: 1rem;
-          animation: brands-scroll 30s linear infinite;
-          will-change: transform;
-        }
-
-        .brands-carousel-track:hover {
-          animation-play-state: paused;
-        }
-
-        .brands-carousel-item {
-          flex-shrink: 0;
-          width: 150px;
-          height: 100px;
-        }
-
-        @keyframes brands-scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-100% / 4));
-          }
-        }
-
-        @media (max-width: 768px) {
-          .brands-carousel-item {
-            width: 120px;
-            height: 80px;
-          }
-
-          .brands-carousel-track {
-            animation-duration: 20s;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .brands-carousel-item {
-            width: 100px;
-            height: 70px;
-          }
-        }
-      `}</style>
     </section>
   )
 }

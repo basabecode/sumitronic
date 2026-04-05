@@ -86,12 +86,36 @@ export async function getActiveBrands() {
 }
 
 export async function getProductsByBrandSlug(slug: string) {
-  const brands = await getActiveBrands()
-  const brand = brands.find(item => item.slug === slug)
-  if (!brand) return null
-
   const supabase = createStaticSupabaseClient()
   if (!supabase) return null
+
+  // Determinar el nombre de marca: primero desde perfiles estáticos,
+  // luego buscando en la DB para cubrir marcas no perfiladas.
+  const { BRAND_PROFILES } = await import('@/lib/brands')
+  const staticProfile = BRAND_PROFILES.find(b => b.slug === slug)
+
+  let brandName: string
+
+  if (staticProfile) {
+    brandName = staticProfile.name
+  } else {
+    // Buscar en la DB marcas cuyos slugs coincidan
+    const { data: rawBrands } = await supabase
+      .from('products')
+      .select('brand')
+      .eq('active', true)
+      .not('brand', 'is', null)
+
+    const match = (rawBrands || [])
+      .map((r: { brand: string }) => r.brand?.trim())
+      .filter(Boolean)
+      .find((name: string) =>
+        name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === slug
+      )
+
+    if (!match) return null
+    brandName = match
+  }
 
   const { data: products } = await supabase
     .from('products')
@@ -111,14 +135,14 @@ export async function getProductsByBrandSlug(slug: string) {
       )
     `
     )
-    .ilike('brand', brand.name)
+    .ilike('brand', brandName)
     .eq('active', true)
     .order('featured', { ascending: false })
     .order('created_at', { ascending: false })
-    .limit(12)
+    .limit(24)
 
   return {
-    brand,
+    brand: { name: brandName, slug },
     products: products || [],
   }
 }
