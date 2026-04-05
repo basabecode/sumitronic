@@ -411,26 +411,28 @@ export default function ProductDetailsModal({
             <h3 className="text-lg font-semibold">Descripción del Producto</h3>
             <div className="prose prose-sm">
               <p>
-                El <strong>{product.name}</strong> de{' '}
-                <strong>{product.brand}</strong> es un producto de alta calidad
-                diseñado para satisfacer las necesidades más exigentes. Con
-                tecnología de vanguardia y materiales premium, este producto
-                ofrece un rendimiento excepcional y durabilidad garantizada.
+                El <strong>{product.name}</strong> de <strong>{product.brand}</strong>{' '}
+                es una buena opcion si buscas{' '}
+                {product.category === 'camaras'
+                  ? 'vigilancia practica para hogar, local u oficina'
+                  : product.category === 'gaming'
+                  ? 'mejor rendimiento y comodidad para jugar o trabajar'
+                  : 'un equipo confiable para uso diario o trabajo'}.
               </p>
               <p>
+                Esta referencia destaca por ofrecer un equilibrio entre precio,
+                respaldo y funcionalidad, algo clave cuando se compra en Colombia y se quiere evitar devoluciones o compras mal elegidas.
+              </p>
+              <p>
+                Si necesitas confirmar disponibilidad, compatibilidad o detalles
+                de uso, te damos una guia comercial clara antes del pedido.{' '}
                 Perfecto para uso{' '}
                 {product.category === 'camaras'
                   ? 'en seguridad doméstica y comercial'
                   : product.category === 'gaming'
                   ? 'en gaming profesional y entretenimiento'
                   : 'profesional y personal'}
-                , este producto combina funcionalidad avanzada con facilidad de
-                uso.
-              </p>
-              <p>
-                Incluye garantía oficial del fabricante y soporte técnico
-                especializado. Instalación y configuración disponibles en las
-                principales ciudades de Colombia.
+                .
               </p>
             </div>
           </TabsContent>

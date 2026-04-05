@@ -155,12 +155,12 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     return (
       <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/30 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(14,165,233,0.32)]">
         <div className="flex flex-col sm:flex-row">
-          <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-slate-100/80 bg-transparent sm:w-48 sm:flex-shrink-0 sm:aspect-square sm:border-b-0 sm:border-r">
+          <div className="relative aspect-square w-full overflow-hidden bg-slate-50 sm:w-48 sm:flex-shrink-0 sm:border-r border-slate-100">
             <Image
               src={imageUrl}
               alt={imageAlt}
               fill
-              className="object-contain object-center px-0 py-0 drop-shadow-[0_18px_28px_rgba(15,23,42,0.14)] scale-[1.14]"
+              className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
               sizes="(min-width: 640px) 192px, 100vw"
             />
             {isOutOfStock && (
@@ -232,13 +232,13 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   }
 
   return (
-    <Card className="group overflow-hidden rounded-[30px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/40 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-32px_rgba(14,165,233,0.35)]">
-      <div className="relative min-h-[250px] overflow-hidden border-b border-slate-100/80 bg-transparent sm:min-h-[270px]">
+    <Card className="group overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+      <div className="relative aspect-square overflow-hidden bg-slate-50">
         <Image
           src={imageUrl}
           alt={imageAlt}
           fill
-          className="object-contain object-center px-0 py-0 drop-shadow-[0_20px_30px_rgba(15,23,42,0.14)] transition-transform duration-500 scale-[1.18] group-hover:scale-[1.24] group-hover:-translate-y-1"
+          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
           sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
         />
 

@@ -9,12 +9,12 @@ export default function BlogSection() {
       <div className="container">
         <div className="mb-12 flex flex-col gap-4 text-center md:flex-row md:items-end md:justify-between md:text-left">
           <div>
-            <p className="eyebrow-label">Contenido indexable</p>
+            <p className="eyebrow-label">Guias de compra</p>
             <h2 className="font-display mt-2 text-3xl font-semibold text-[hsl(var(--foreground))] md:text-4xl">
               Guías y comparativas para comprar mejor
             </h2>
             <p className="mt-4 max-w-3xl text-lg text-[hsl(var(--text-muted))]">
-              Publicamos contenido orientado a decisión de compra, instalación y soporte para Colombia.
+              Compartimos contenido util para comparar referencias, entender diferencias y tomar mejores decisiones de compra en Colombia.
             </p>
           </div>
           <Button asChild variant="outline" className="rounded-full px-6">

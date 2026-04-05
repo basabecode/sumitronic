@@ -1,7 +1,32 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { ProductsSection } from '@/components/products/ProductsSection'
+import { brand } from '@/lib/brand'
+
+export const metadata: Metadata = {
+  title: 'Catálogo de productos — Seguridad, redes y energía',
+  description:
+    `Cámaras de seguridad, routers WiFi, UPS y repuestos para TV de marcas como Hikvision, Dahua, TP-Link y Forza. Compre con envío a toda Colombia desde ${brand.name}.`,
+  keywords: [
+    'camaras seguridad colombia',
+    'comprar router wifi cali',
+    'ups respaldo colombia',
+    'repuestos tv colombia',
+    'productos hikvision dahua colombia',
+  ],
+  alternates: { canonical: '/products' },
+  openGraph: {
+    title: `Catálogo — ${brand.name}`,
+    description:
+      'Cámaras, routers, UPS y repuestos tecnológicos con envío a toda Colombia.',
+    url: `${brand.siteUrl}/products`,
+    siteName: brand.organizationName,
+    locale: 'es_CO',
+    type: 'website',
+  },
+}
 
 function ProductsPageSkeleton() {
   return (

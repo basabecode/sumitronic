@@ -188,7 +188,7 @@ export default function SalesTab() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-500">
@@ -250,8 +250,70 @@ export default function SalesTab() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border overflow-x-auto">
-            <Table className="min-w-[700px]">
+          <>
+            <div className="space-y-3 md:hidden">
+              {filteredOrders.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+                  {searchQuery ? 'No se encontraron pedidos con ese criterio' : 'Aún no hay pedidos registrados'}
+                </div>
+              ) : (
+                filteredOrders.map(order => (
+                  <div key={`mobile-${order.id}`} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-medium text-gray-900">
+                          {order.customer_info?.fullName || order.user?.full_name || 'Cliente sin nombre'}
+                        </p>
+                        <p className="truncate text-sm text-gray-500">
+                          {order.customer_info?.email || order.user?.email}
+                        </p>
+                      </div>
+                      <p className="shrink-0 text-sm font-semibold text-gray-900">
+                        {formatCurrency(Number(order.total))}
+                      </p>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-1 gap-2 text-sm text-gray-600">
+                      <p>
+                        <span className="font-medium text-gray-800">Fecha:</span>{' '}
+                        {format(new Date(order.created_at), 'dd MMM yyyy, hh:mm a', { locale: es })}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-800">Ciudad:</span>{' '}
+                        {order.shipping_address?.city}, {order.shipping_address?.department}
+                      </p>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <Badge variant="outline" className="capitalize">
+                        {order.payment_method || 'N/A'}
+                      </Badge>
+                      <Badge className={
+                        order.payment_status === 'paid' ? 'bg-green-100 text-green-800 hover:bg-green-100' :
+                        order.payment_status === 'pending' ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100' :
+                        'bg-red-100 text-red-800 hover:bg-red-100'
+                      }>
+                        {order.payment_status === 'paid' ? 'Pagado' :
+                         order.payment_status === 'pending' ? 'Pendiente' :
+                         order.payment_status === 'failed' ? 'Fallido' : order.payment_status}
+                      </Badge>
+                    </div>
+
+                    {order.payment_proof_url && (
+                      <Button size="sm" variant="outline" asChild className="mt-4 h-10 w-full justify-center">
+                        <a href={order.payment_proof_url} target="_blank" rel="noreferrer">
+                          <FileText className="mr-2 h-4 w-4" />
+                          Ver comprobante
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="hidden rounded-md border overflow-x-auto md:block">
+              <Table className="min-w-[700px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Fecha</TableHead>
@@ -330,8 +392,9 @@ export default function SalesTab() {
                   ))
                 )}
               </TableBody>
-            </Table>
-          </div>
+              </Table>
+            </div>
+          </>
         </CardContent>
       </Card>
     </div>

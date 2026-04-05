@@ -86,7 +86,7 @@ export default function Header() {
       <header className="sticky top-0 z-50 w-full flex flex-col border-b border-[hsl(var(--border-subtle))]">
         {/* ROW 1: Fondo claro (superficie) */}
         <div className="bg-[hsl(var(--surface-overlay))]/90 backdrop-blur-xl">
-          <div className="mx-auto w-full max-w-[1720px] px-4 py-3 md:px-6 xl:px-8">
+          <div className="mx-auto w-full max-w-[1720px] px-4 py-2 md:px-6 xl:px-8">
             
             {/* Desktop Row 1 */}
             <div className="hidden md:flex items-center gap-6">
@@ -149,7 +149,7 @@ export default function Header() {
         <div className="bg-[hsl(var(--brand))]">
           <div className="mx-auto w-full max-w-[1720px] px-4 md:px-6 xl:px-8">
             {/* Desktop Row 2 */}
-            <div className="hidden md:flex items-center justify-between py-2">
+            <div className="hidden md:flex items-center justify-between py-1.5">
               <nav className="flex items-center gap-6 shrink-0">
                 {primaryNavLinks.map(link => (
                   <Link

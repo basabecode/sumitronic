@@ -18,12 +18,12 @@ export default function HelpIndexPage() {
       <Header />
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <header className="mb-10 max-w-3xl">
-          <p className="eyebrow-label">Soporte indexable</p>
+          <p className="eyebrow-label">Soporte al cliente</p>
           <h1 className="font-display mt-2 text-4xl font-semibold text-[hsl(var(--foreground))]">
             Centro de ayuda de {brand.name}
           </h1>
           <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
-            Documentación separada por tema para resolver objeciones comerciales y dudas operativas con URLs reales.
+            Aquí encontrará respuesta a las preguntas más frecuentes sobre envíos, garantías, pagos y soporte técnico. Si no encuentra lo que busca, escríbanos por WhatsApp y le ayudamos directamente.
           </p>
         </header>
 

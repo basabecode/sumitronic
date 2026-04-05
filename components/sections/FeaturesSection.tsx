@@ -5,22 +5,22 @@ export default function FeaturesSection() {
   const features = [
     {
       icon: Shield,
-      title: 'Garantía de 12 Meses',
-      description: 'Múltiples métodos de pago para mayor facilidad',
+      title: 'Garantia y respaldo',
+      description: 'Trabajamos con productos originales y te ayudamos a validar garantia, compatibilidad y condiciones de compra.',
       color: 'text-[hsl(var(--brand-strong))]',
       bgColor: 'bg-[hsl(var(--surface-highlight))]',
     },
     {
       icon: Clock,
-      title: 'Configuración Rápida',
-      description: 'Algunos Productos con Video tutoriales para la Configuración',
+      title: 'Compra sin enredos',
+      description: 'Te atendemos por WhatsApp para cotizar, resolver dudas y confirmar lo que realmente te sirve.',
       color: 'text-sky-700',
       bgColor: 'bg-sky-50',
     },
     {
       icon: Award,
-      title: 'Productos Originales',
-      description: '100% originales con certificación oficial',
+      title: 'Asesoria util',
+      description: 'En varias referencias te orientamos con instalacion, uso basico y recomendaciones segun tu necesidad.',
       color: 'text-cyan-700',
       bgColor: 'bg-cyan-50',
     },
@@ -34,8 +34,7 @@ export default function FeaturesSection() {
             ¿Por qué elegir {brand.name}?
           </h2>
           <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
-            Ofrecemos la mejor experiencia de compra con servicios premium que
-            garantizan tu satisfacción
+            No somos un marketplace gigante. Somos un equipo pequeño con respaldo local, atención directa y productos que conocemos bien.
           </p>
         </div>
 
@@ -70,21 +69,21 @@ export default function FeaturesSection() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">150+</div>
-              <div className="text-sky-100 text-xs">Productos Vendidos</div>
+              <div className="text-sky-100 text-xs">Pedidos despachados</div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">120+</div>
               <div className="text-sky-100 text-xs">
-                Clientes Satisfechos
+                Clientes con compra confirmada
               </div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">5+</div>
-              <div className="text-sky-100 text-xs">Marcas Oficiales</div>
+              <div className="text-sky-100 text-xs">Marcas con respaldo</div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">98%</div>
-              <div className="text-sky-100 text-xs">Satisfacción</div>
+              <div className="text-sky-100 text-xs">Pedidos sin novedades reportadas</div>
             </div>
           </div>
         </div>

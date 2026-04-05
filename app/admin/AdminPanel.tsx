@@ -166,7 +166,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-3 py-5 sm:px-4 sm:py-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
@@ -205,20 +205,22 @@ export default function AdminDashboard() {
 
       <div className="space-y-6">
         {/* Tab Navigation — completely responsive and scalable */}
-        <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
-          <div className="inline-flex min-w-full md:grid md:grid-cols-4 items-center rounded-lg bg-muted p-1.5 text-muted-foreground gap-1 md:gap-0">
+        <div className="w-full">
+          <div className="grid grid-cols-2 items-stretch gap-1 rounded-lg bg-muted p-1.5 text-muted-foreground lg:grid-cols-4">
             {TAB_BUTTONS.map(({ id, label, Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-3 md:py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 gap-2 min-h-[44px] ${
+                className={`inline-flex min-h-[52px] items-center justify-center gap-2 rounded-md px-3 py-3 text-center text-sm font-medium leading-tight ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:min-h-[44px] sm:px-4 sm:py-2 ${
                   activeTab === id
                     ? 'bg-background text-foreground shadow-sm'
                     : 'hover:bg-background/50 hover:text-foreground'
                 }`}
               >
-                <Icon className="w-5 h-5 md:w-4 md:h-4 shrink-0" />
-                <span>{id === 'add-product' && form.editingProduct ? 'Editar Producto' : label}</span>
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="whitespace-normal">
+                  {id === 'add-product' && form.editingProduct ? 'Editar Producto' : label}
+                </span>
               </button>
             ))}
           </div>

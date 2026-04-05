@@ -26,11 +26,10 @@ export default function BrandsSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Marcas de Confianza
+            Marcas con buen respaldo
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Trabajamos con las mejores marcas del mundo para ofrecerte productos
-            originales y de calidad
+            Reunimos marcas reconocidas en seguridad, conectividad, energia y accesorios para que compres con mas confianza.
           </p>
         </div>
 
@@ -76,9 +75,7 @@ export default function BrandsSection() {
                   Imou
                 </span>
                 <span className="text-sky-100 text-xs leading-tight">
-                  Innovación en videovigilancia y seguridad inteligente, esta
-                  linea hace de tu casa un espacio seguro para ti y tus hijos,
-                  ademas si tienes mascotas que se quedan solas.
+                  Una marca muy consultada para camaras WiFi y monitoreo practico en casa, negocio o bodega.
                 </span>
               </div>
             </div>
@@ -98,15 +95,13 @@ export default function BrandsSection() {
                   Imou Ranger 2C
                 </span>
                 <span className="text-sky-100 text-xs leading-tight">
-                  Nueva cámara WiFi con giro 360°, visión nocturna y app móvil,
-                  tiene la habilidad de enviar alertas a tu telefono celular ,
-                  puedes observar todo desde su propia aplicacion.
+                  Camara WiFi con giro, vision nocturna y alertas al celular para quienes quieren vigilar su espacio sin complicarse.
                 </span>
                 <a
                   href="#"
                   className="text-xs underline text-white/80 hover:text-white mt-1"
                 >
-                  Ver detalles
+                  Conocer mas
                 </a>
               </div>
             </div>
@@ -116,9 +111,7 @@ export default function BrandsSection() {
         {/* Partnership Message */}
         <div className="text-center mt-12">
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Nuestras alianzas estratégicas con las mejores marcas nos permiten
-            ofrecerte productos originales, garantías oficiales y el mejor
-            servicio postventa del mercado.
+            Trabajar con marcas reconocidas nos permite ofrecer referencias originales, mejor respaldo y una compra mucho mas clara para el cliente.
           </p>
         </div>
       </div>

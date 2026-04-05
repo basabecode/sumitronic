@@ -26,7 +26,7 @@ export default function Home() {
         <h1 className="sr-only">{brand.organizationName} - Seguridad electronica, conectividad y repuestos</h1>
         <HeroSection />
         <SectionErrorBoundary title="Error al cargar los productos">
-          <ProductsSection />
+          <ProductsSection showViewAllLink />
         </SectionErrorBoundary>
         <SectionErrorBoundary title="Error al cargar las ofertas">
           <OffersSection />

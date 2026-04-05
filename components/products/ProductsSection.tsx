@@ -13,6 +13,7 @@ import {
   XCircle,
   Loader2,
   Search,
+  ChevronRight,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -44,7 +45,14 @@ type FilterChip = {
   onRemove: () => void
 }
 
-export function ProductsSection() {
+interface ProductsSectionProps {
+  onOffer?: boolean
+  sectionTitle?: string
+  sectionDescription?: string
+  showViewAllLink?: boolean
+}
+
+export function ProductsSection({ onOffer, sectionTitle, sectionDescription, showViewAllLink }: ProductsSectionProps = {}) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
   const { addItem, openCart, formatCurrency } = useCart()
@@ -100,6 +108,10 @@ export function ProductsSection() {
       params.append('featured', 'true')
     }
 
+    if (onOffer) {
+      params.append('onOffer', 'true')
+    }
+
     if (priceRange[0] > minPrice) {
       params.append('minPrice', priceRange[0].toString())
     }
@@ -118,6 +130,7 @@ export function ProductsSection() {
     searchQuery,
     inStockOnly,
     featuredOnly,
+    onOffer,
     priceRange,
     minPrice,
     maxPrice,
@@ -701,14 +714,15 @@ export function ProductsSection() {
       <div className="container space-y-8">
         <header className="space-y-3 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(var(--brand-strong))]">
-            Catalogo
+            {onOffer ? 'Descuentos vigentes' : 'Catálogo'}
           </p>
           <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl">
-            Nuestros productos
+            {sectionTitle ?? (onOffer ? 'Todos los equipos con descuento' : 'Equipos y repuestos listos para tu compra')}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-[hsl(var(--text-muted))]">
-            Explora tecnologia, energia y soluciones de seguridad seleccionadas
-            para equipos profesionales y hogares conectados.
+            {sectionDescription ?? (onOffer
+              ? 'Solo referencias donde el precio de oferta es inferior al precio regular. Stock verificado y garantía incluida.'
+              : 'Encuentra seguridad electrónica, conectividad, energía y repuestos con información clara para elegir mejor.')}
           </p>
         </header>
 
@@ -990,11 +1004,10 @@ export function ProductsSection() {
             {!loading && products.length === 0 && (
               <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-12 text-center">
                 <p className="text-lg font-semibold text-gray-800">
-                  No encontramos productos con esos filtros
+                  No encontramos resultados con esos filtros
                 </p>
                 <p className="mt-2 text-sm text-gray-600">
-                  Ajusta la busqueda o limpia los filtros para ver mas
-                  resultados.
+                  Prueba con otra busqueda o limpia los filtros para volver a ver todo el catalogo.
                 </p>
                 <Button
                   variant="outline"
@@ -1051,6 +1064,18 @@ export function ProductsSection() {
             setSelectedProduct(null)
           }}
         />
+
+        {showViewAllLink && (
+          <div className="pt-4 text-center">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-[hsl(var(--brand))] px-6 py-3 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-all hover:bg-[hsl(var(--brand))] hover:text-white"
+            >
+              Ver todos los productos
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )

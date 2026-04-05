@@ -7,6 +7,7 @@ export interface DatabaseProduct {
   name: string
   description: string
   price: number
+  compare_price?: number
   category_id: string
   brand: string
   image_url: string
@@ -143,6 +144,9 @@ export const convertDatabaseProductToProduct = (
     name: dbProduct.name,
     description: dbProduct.description,
     price: dbProduct.price,
+    originalPrice: dbProduct.compare_price && dbProduct.compare_price > dbProduct.price
+      ? dbProduct.compare_price
+      : undefined,
     category: dbProduct.category?.name || 'Sin categoría',
     brand: dbProduct.brand,
     image: dbProduct.image_url,

@@ -69,7 +69,7 @@ export default function InventoryTab({
     <>
       <div className="space-y-6">
         {/* Quick stats bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -217,8 +217,79 @@ export default function InventoryTab({
                 </Button>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <Table>
+              <>
+                <div className="space-y-3 md:hidden">
+                  {products.map(product => (
+                    <div key={`mobile-${product.id}`} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                      <div className="flex items-start gap-3">
+                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                          <Image
+                            src={product.image_url || '/placeholder.svg'}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="line-clamp-2 font-medium text-gray-900">{product.name}</p>
+                          <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
+                          <div className="mt-2 flex flex-wrap items-center gap-2">
+                            <Badge variant="secondary">
+                              {product.category?.name || 'Sin categoría'}
+                            </Badge>
+                            {product.featured && (
+                              <Badge variant="default" className="text-xs">Destacado</Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <p className="text-gray-500">Precio</p>
+                          <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
+                        </div>
+                        <div>
+                          <p className="text-gray-500">Stock</p>
+                          <div className="flex items-center gap-2 font-medium text-gray-900">
+                            <span className={`inline-block h-2 w-2 rounded-full ${
+                              product.stock_quantity > 10
+                                ? 'bg-green-500'
+                                : product.stock_quantity > 0
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500'
+                            }`} />
+                            {product.stock_quantity} unidades
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 flex items-center gap-2">
+                        <Button variant="outline" size="sm" asChild className="h-10 flex-1">
+                          <Link href={`/products/${product.id}`} target="_blank">
+                            <Eye className="mr-2 h-4 w-4" />
+                            Ver
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => onEdit(product)} className="h-10 flex-1">
+                          <Edit className="mr-2 h-4 w-4" />
+                          Editar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onDeleteRequest(product)}
+                          className="h-10 border-red-200 px-3 text-red-600 hover:bg-red-50 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden overflow-x-auto md:block">
+                  <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Producto</TableHead>
@@ -296,8 +367,9 @@ export default function InventoryTab({
                       </TableRow>
                     ))}
                   </TableBody>
-                </Table>
-              </div>
+                  </Table>
+                </div>
+              </>
             )}
           </CardContent>
         </Card>

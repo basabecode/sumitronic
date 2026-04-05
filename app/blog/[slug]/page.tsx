@@ -100,7 +100,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
             {post.faq && post.faq.length > 0 && (
               <section className="space-y-4 border-t border-[hsl(var(--border-subtle))] pt-8">
-                <p className="eyebrow-label">FAQ editorial</p>
+                <p className="eyebrow-label">Preguntas frecuentes</p>
                 {post.faq.map(item => (
                   <div key={item.question} className="rounded-[1.25rem] bg-[hsl(var(--surface-muted))] p-4">
                     <h2 className="text-lg font-medium text-[hsl(var(--foreground))]">{item.question}</h2>

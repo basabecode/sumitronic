@@ -32,8 +32,7 @@ export default function Footer() {
               {brand.name}
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Soluciones confiables en seguridad electronica, conectividad y
-              repuestos tecnicos con acompanamiento comercial y soporte local.
+              Cámaras, redes, energía y repuestos tecnológicos con atención directa, respaldo en Cali y envío a todo Colombia.
             </p>
 
             {/* Social Media */}
@@ -71,7 +70,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
+                  href="/"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Inicio
@@ -79,7 +78,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#productos"
+                  href="/products"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Productos
@@ -87,7 +86,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#ofertas"
+                  href="/ofertas"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Ofertas
@@ -95,7 +94,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#blog"
+                  href="/blog"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Blog
@@ -103,7 +102,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#contacto"
+                  href="/contacto"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Contacto
@@ -111,7 +110,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/nosotros"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Sobre Nosotros
@@ -126,7 +125,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="/help?section=faq"
+                  href="/help"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Centro de Ayuda
@@ -134,7 +133,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/help?section=returns"
+                  href="/help/garantias-y-devoluciones"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Política de Devoluciones
@@ -142,7 +141,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/help?section=terms"
+                  href="/help/terminos-y-condiciones"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Términos y Condiciones
@@ -150,7 +149,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/help?section=privacy"
+                  href="/help/politica-de-privacidad"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Política de Privacidad
@@ -158,7 +157,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/help?section=warranty"
+                  href="/help/garantias-y-devoluciones"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
                   Garantías
@@ -166,10 +165,10 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/help?section=support"
+                  href="/help/servicio-tecnico"
                   className="text-gray-300 transition-colors hover:text-[hsl(var(--brand))]"
                 >
-                  Servicio Técnico
+                  Soporte Técnico
                 </a>
               </li>
             </ul>
@@ -238,14 +237,11 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
             <p>© 2025 {brand.name}. Todos los derechos reservados.</p>
             <div className="flex space-x-6 mt-2 md:mt-0">
-              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
+              <a href="/help/politica-de-privacidad" className="transition-colors hover:text-[hsl(var(--brand))]">
                 Política de Privacidad
               </a>
-              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
+              <a href="/help/terminos-y-condiciones" className="transition-colors hover:text-[hsl(var(--brand))]">
                 Términos de Uso
-              </a>
-              <a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">
-                Cookies
               </a>
             </div>
           </div>

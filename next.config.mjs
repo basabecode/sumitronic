@@ -48,6 +48,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'dcdn-us.mitiendanube.com',
+        port: '',
+        pathname: '/**',
+      },
       // Patrones locales solo en desarrollo
       ...(!isProduction
         ? [

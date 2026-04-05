@@ -51,7 +51,7 @@ export function MobileDrawer({
       />
       <aside className="surface-elevated relative z-[61] h-full w-[22rem] max-w-[86%] overflow-auto border-r border-[hsl(var(--border-subtle))] px-4 py-5 shadow-2xl">
         <div className="mb-5 flex items-center justify-between">
-          <Brand compact onClick={onClose} />
+          <Brand compact onClick={onClose} logoClassName="mix-blend-multiply" />
           <button
             type="button"
             className="touch-target rounded-full border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-0))]"

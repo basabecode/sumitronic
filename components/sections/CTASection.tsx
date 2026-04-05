@@ -1,4 +1,4 @@
-import { Phone, Mail, MessageCircle, MapPin, Clock } from 'lucide-react'
+import { MessageCircle, MapPin, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,11 +14,10 @@ export default function CTASection() {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl mb-4">
-            ¿Listo para Comprar?
+            Hablemos de lo que necesitas
           </h2>
           <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
-            Contáctanos ahora y obtén asesoría personalizada para encontrar el
-            producto perfecto para ti
+            Si buscas una referencia puntual o quieres comparar opciones, te ayudamos a elegir sin enredos.
           </p>
         </div>
 
@@ -26,7 +25,7 @@ export default function CTASection() {
           {/* Contact Form */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
-              Solicita una Cotización
+              Pide tu cotizacion
             </h3>
 
             <form className="space-y-6">
@@ -41,7 +40,7 @@ export default function CTASection() {
                   <Input
                     id="firstName"
                     type="text"
-                    placeholder="Tu nombre"
+                    placeholder="Escribe tu nombre"
                     className="w-full"
                     required
                   />
@@ -56,7 +55,7 @@ export default function CTASection() {
                   <Input
                     id="lastName"
                     type="text"
-                    placeholder="Tu apellido"
+                    placeholder="Escribe tu apellido"
                     className="w-full"
                     required
                   />
@@ -74,7 +73,7 @@ export default function CTASection() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="tu@email.com"
+                    placeholder="nombre@correo.com"
                     className="w-full"
                     required
                   />
@@ -89,7 +88,7 @@ export default function CTASection() {
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="+57 (555) 123-4567"
+                    placeholder="300 123 4567"
                     className="w-full"
                     required
                   />
@@ -106,7 +105,7 @@ export default function CTASection() {
                 <Input
                   id="product"
                   type="text"
-                  placeholder="¿Qué producto te interesa?"
+                  placeholder="Ejemplo: camara WiFi, UPS, tarjeta para TV"
                   className="w-full"
                 />
               </div>
@@ -120,7 +119,7 @@ export default function CTASection() {
                 </Label>
                 <Textarea
                   id="message"
-                  placeholder="Cuéntanos más sobre lo que necesitas..."
+                  placeholder="Cuéntanos para que lo necesitas, cuantas unidades buscas o que duda quieres resolver."
                   rows={4}
                   className="w-full"
                   required
@@ -128,7 +127,7 @@ export default function CTASection() {
               </div>
 
               <Button type="submit" className="w-full py-3 text-lg font-semibold">
-                Enviar Solicitud
+                Enviar solicitud
               </Button>
             </form>
           </div>
@@ -138,7 +137,7 @@ export default function CTASection() {
             {/* Quick Contact */}
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Contacto Directo
+                Atencion rapida por WhatsApp
               </h3>
 
               <div className="space-y-6">
@@ -151,7 +150,7 @@ export default function CTASection() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">WhatsApp</h4>
-                    <p className="text-gray-600">Respuesta inmediata</p>
+                    <p className="text-gray-600">Te ayudamos con disponibilidad, precio y compatibilidad</p>
                   </div>
                 </a>
               </div>
@@ -160,7 +159,7 @@ export default function CTASection() {
             {/* Store Info */}
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Somos Tienda Virtual
+                Atencion y cobertura
               </h3>
 
               <div className="space-y-4">
@@ -171,7 +170,7 @@ export default function CTASection() {
                     <p className="text-gray-600">
                       Cra 3 # 72A - 70
                       <br />
-                      Cali, Valle del Cauca, 760006
+                      Cali, Valle del Cauca
                     </p>
                   </div>
                 </div>
@@ -193,7 +192,7 @@ export default function CTASection() {
                 variant="outline"
                 className="mt-6 w-full border-[hsl(var(--brand))] bg-transparent text-[hsl(var(--brand-strong))] hover:bg-[hsl(var(--surface-highlight))]"
               >
-                Ver en Google Maps
+                Ver ubicacion de referencia
               </Button>
             </div>
           </div>

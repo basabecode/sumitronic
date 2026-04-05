@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductFilters, ProductsApiResponse } from '@/lib/types/products'
 
 // Whitelist de campos permitidos para ordenamiento (previene inyeccion de columnas)
-const ALLOWED_SORT_FIELDS = ['created_at', 'price', 'name', 'updated_at']
+const ALLOWED_SORT_FIELDS = ['created_at', 'price', 'name', 'updated_at', 'compare_price']
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -92,7 +92,8 @@ export async function GET(request: NextRequest) {
       query = query.gt('stock_quantity', 0)
     }
 
-    // Filter for products with active offers (compare_price > price)
+    // Filter for products with active offers (compare_price IS NOT NULL AND compare_price > 0)
+    // La verificación compare_price > price se hace post-fetch en JS (PostgREST no soporta comparación columna-columna)
     if (onOffer) {
       query = query.not('compare_price', 'is', null).gt('compare_price', 0)
     }
@@ -105,7 +106,7 @@ export async function GET(request: NextRequest) {
     const to = from + limit - 1
     query = query.range(from, to)
 
-    const { data: products, error, count } = await query
+    const { data: rawProducts, error, count } = await query
 
     if (error) {
       console.error('Error fetching products:', error)
@@ -115,10 +116,17 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    // Post-fetch: filtrar solo productos donde compare_price > price (descuento real)
+    const products = onOffer
+      ? (rawProducts || []).filter(
+          (p: any) => typeof p.compare_price === 'number' && p.compare_price > p.price
+        )
+      : rawProducts || []
+
     const totalPages = Math.ceil((count || 0) / limit)
 
     const response: ProductsApiResponse = {
-      products: products || [],
+      products,
       pagination: {
         page,
         limit,

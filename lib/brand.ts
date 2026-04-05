@@ -9,9 +9,30 @@ export const brand = {
   orderSupportEmail: 'soporte@capishop.com',
   whatsappNumber: '573003094854',
   whatsappDisplay: '300 309 4854',
+  whatsappClean: '3003094854',
+  address: {
+    street: 'Cra 3 # 72A-70',
+    city: 'Cali',
+    region: 'Valle del Cauca',
+    postalCode: '760006',
+    country: 'CO',
+    full: 'Cra 3 # 72A-70, Cali, Valle del Cauca',
+    mapsUrl: 'https://maps.google.com/?q=Cra+3+%2372A-70+Cali+Valle+del+Cauca+Colombia',
+  },
+  hours: {
+    weekday: 'Lunes a viernes: 8:00 AM – 5:00 PM',
+    saturday: 'Sábados: 8:00 AM – 2:00 PM',
+    sunday: 'Domingos y festivos: no atendemos',
+    schema: {
+      weekdayOpen: '08:00',
+      weekdayClose: '17:00',
+      saturdayOpen: '08:00',
+      saturdayClose: '14:00',
+    },
+  },
   socialLinks: [
     'https://instagram.com/capishop_col',
     'https://facebook.com/capishop_col',
   ],
-  tagline: 'Seguridad electronica, conectividad y repuestos tecnicos',
+  tagline: 'Seguridad electronica, conectividad y repuestos con respaldo local',
 } as const

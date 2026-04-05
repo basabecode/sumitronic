@@ -290,6 +290,9 @@ npm run test:database     # Health-check de conexión
 npm run fix:database      # Fixes rápidos
 npm run migrate:json      # Migrar datos JSON a DB
 
+# Iconos y favicon
+node scripts/generate-icons.mjs   # Regenerar favicon e iconos desde public/logos/logo_sumitronic_3.png
+
 # Docker DB — conectar directo
 docker exec -it capishop-postgres psql -U capishop_admin -d postgres
 ```

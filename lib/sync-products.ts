@@ -25,6 +25,12 @@ type SheetProduct = {
   updated_at: string
 }
 
+type ExistingProductRef = {
+  id: string
+  sku: string | null
+  name: string
+}
+
 function getRequiredEnv(name: string) {
   const value = process.env[name]
 
@@ -155,39 +161,93 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
     }
   })
 
-  const { error: upsertError } = await supabase
-    .from('products')
-    .upsert(products, {
-      onConflict: 'sku',
-    })
-
-  if (upsertError) {
-    throw upsertError
-  }
-
   const errors: string[] = []
   let synced = 0
 
+  const existingBySku = new Map<string, ExistingProductRef>()
+  const existingByName = new Map<string, ExistingProductRef>()
+
+  const skus = Array.from(new Set(products.map(product => product.sku).filter(Boolean)))
+  const names = Array.from(new Set(products.map(product => product.name).filter(Boolean)))
+
+  if (skus.length > 0) {
+    const { data: existingProductsBySku, error: existingSkuError } = await supabase
+      .from('products')
+      .select('id, sku, name')
+      .in('sku', skus)
+
+    if (existingSkuError) {
+      throw existingSkuError
+    }
+
+    for (const product of existingProductsBySku ?? []) {
+      if (product.sku) {
+        existingBySku.set(product.sku, product)
+      }
+      existingByName.set(product.name, product)
+    }
+  }
+
+  if (names.length > 0) {
+    const { data: existingProductsByName, error: existingNameError } = await supabase
+      .from('products')
+      .select('id, sku, name')
+      .in('name', names)
+
+    if (existingNameError) {
+      throw existingNameError
+    }
+
+    for (const product of existingProductsByName ?? []) {
+      if (product.sku) {
+        existingBySku.set(product.sku, product)
+      }
+      existingByName.set(product.name, product)
+    }
+  }
+
   for (const product of products) {
     try {
-      const { data: storedProduct, error: productLookupError } = await supabase
-        .from('products')
-        .select('id')
-        .eq('sku', product.sku)
-        .maybeSingle()
+      const existingProduct =
+        existingBySku.get(product.sku) ?? existingByName.get(product.name) ?? null
 
-      if (productLookupError) {
-        throw productLookupError
+      let storedProductId = existingProduct?.id ?? null
+
+      if (existingProduct) {
+        const { error: updateError } = await supabase
+          .from('products')
+          .update(product)
+          .eq('id', existingProduct.id)
+
+        if (updateError) {
+          throw updateError
+        }
+      } else {
+        const { data: insertedProduct, error: insertError } = await supabase
+          .from('products')
+          .insert(product)
+          .select('id, sku, name')
+          .single()
+
+        if (insertError) {
+          throw insertError
+        }
+
+        storedProductId = insertedProduct.id
+        existingByName.set(insertedProduct.name, insertedProduct)
+        if (insertedProduct.sku) {
+          existingBySku.set(insertedProduct.sku, insertedProduct)
+        }
       }
 
-      if (!storedProduct?.id) {
-        throw new Error(`Product not found after upsert for sku: ${product.sku}`)
+      if (!storedProductId) {
+        throw new Error(`Product not found after sync for sku: ${product.sku}`)
       }
 
       const { error: deleteImagesError } = await supabase
         .from('product_images')
         .delete()
-        .eq('product_id', storedProduct.id)
+        .eq('product_id', storedProductId)
 
       if (deleteImagesError) {
         throw deleteImagesError
@@ -197,7 +257,7 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
 
       if (product.image_url) {
         productImages.push({
-          product_id: storedProduct.id,
+          product_id: storedProductId,
           image_url: product.image_url,
           alt_text: product.name,
           is_primary: true,
@@ -207,7 +267,7 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
 
       product.images.forEach((imageUrl, index) => {
         productImages.push({
-          product_id: storedProduct.id,
+          product_id: storedProductId,
           image_url: imageUrl,
           alt_text: product.name,
           is_primary: false,

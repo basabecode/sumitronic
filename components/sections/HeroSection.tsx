@@ -36,12 +36,12 @@ export default function HeroSection() {
     {
       id: 1,
       title: 'Imou Cruiser Bullet 2E',
-      subtitle: 'Camara profesional con vision nocturna y conectividad WiFi',
+      subtitle: 'Camara WiFi para vigilar tu hogar o negocio con vision nocturna y monitoreo desde el celular',
       image: '/encabezado/cuiser_mini.png',
       cta: 'Comprar ahora',
       price: 192000,
       originalPrice: 199000,
-      badge: 'Nuevo',
+      badge: 'Recomendada',
       brand: 'Imou',
       stockCount: 10,
       category: 'Seguridad',
@@ -50,12 +50,12 @@ export default function HeroSection() {
     {
       id: 2,
       title: 'Diadema Logitech G335',
-      subtitle: 'Comodidad y sonido ligero para sesiones de juego largas',
+      subtitle: 'Sonido comodo y liviano para jugar, estudiar o trabajar durante horas sin incomodidad',
       image: '/encabezado/diademaG335_lateral.png',
       cta: 'Comprar ahora',
       price: 258000,
       originalPrice: 289000,
-      badge: 'Oferta',
+      badge: 'Precio especial',
       brand: 'Logitech',
       stockCount: 25,
       category: 'Gaming',
@@ -64,12 +64,12 @@ export default function HeroSection() {
     {
       id: 3,
       title: 'Central Electrica Forza FPP-T100',
-      subtitle: 'Energia portatil para hogar y oficina con multiples puertos',
+      subtitle: 'Respaldo portatil para mantener conectados tus equipos en casa, oficina o punto de venta',
       image: '/encabezado/FPP-T100_2.PNG',
       cta: 'Comprar ahora',
       price: 580000,
       originalPrice: 599000,
-      badge: 'Popular',
+      badge: 'Muy buscado',
       brand: 'Forza',
       stockCount: 5,
       category: 'Energia',
@@ -231,21 +231,21 @@ export default function HeroSection() {
                           className="h-2 w-2 rounded-full bg-green-500"
                           aria-hidden="true"
                         ></span>
-                        <span>Envío nacional</span>
+                        <span>Envio a toda Colombia</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span
                           className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"
                           aria-hidden="true"
                         ></span>
-                        <span>Garantía 12 meses</span>
+                        <span>Garantia y respaldo</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span
                           className="h-2 w-2 rounded-full bg-purple-500"
                           aria-hidden="true"
                         ></span>
-                        <span>Soporte Lun-Vie</span>
+                        <span>Atencion Lun-Vie</span>
                       </div>
                     </dl>
                   </div>

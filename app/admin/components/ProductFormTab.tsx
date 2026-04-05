@@ -103,7 +103,7 @@ export default function ProductFormTab({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
         <Button variant="outline" size="sm" onClick={handleCancelGuard} className="min-h-[44px]">
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -120,7 +120,7 @@ export default function ProductFormTab({
       </div>
 
       <form onSubmit={onSubmit} className="space-y-8">
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 xl:grid-cols-2">
           {/* Información básica */}
           <Card>
             <CardHeader>
@@ -150,7 +150,7 @@ export default function ProductFormTab({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {/* Categoría */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -166,7 +166,7 @@ export default function ProductFormTab({
                     </Button>
                   </div>
                   {showAddCategory && (
-                    <div className="flex gap-2 mb-2">
+                    <div className="mb-2 flex flex-col gap-2 sm:flex-row">
                       <Input
                         placeholder="Nueva categoría"
                         value={newCategory}
@@ -174,7 +174,7 @@ export default function ProductFormTab({
                         className="text-sm"
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onAddCategory() } }}
                       />
-                      <Button type="button" size="sm" onClick={onAddCategory} disabled={!newCategory.trim()}>
+                      <Button type="button" size="sm" onClick={onAddCategory} disabled={!newCategory.trim()} className="sm:w-auto">
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
@@ -206,7 +206,7 @@ export default function ProductFormTab({
                     </Button>
                   </div>
                   {showAddBrand && (
-                    <div className="flex gap-2 mb-2">
+                    <div className="mb-2 flex flex-col gap-2 sm:flex-row">
                       <Input
                         placeholder="Nueva marca"
                         value={newBrand}
@@ -214,7 +214,7 @@ export default function ProductFormTab({
                         className="text-sm"
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onAddBrand() } }}
                       />
-                      <Button type="button" size="sm" onClick={onAddBrand} disabled={!newBrand.trim()}>
+                      <Button type="button" size="sm" onClick={onAddBrand} disabled={!newBrand.trim()} className="sm:w-auto">
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
@@ -232,7 +232,7 @@ export default function ProductFormTab({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="price">Precio (COP) *</Label>
                   <Input
@@ -269,7 +269,7 @@ export default function ProductFormTab({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="stock">Stock *</Label>
                   <Input
@@ -333,7 +333,7 @@ export default function ProductFormTab({
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="mt-3"
+                      className="mt-3 w-full sm:w-auto"
                       disabled={imageUploading || formData.images.length >= 5}
                       onClick={() => document.getElementById('image-upload')?.click()}
                     >
@@ -346,7 +346,7 @@ export default function ProductFormTab({
               {formData.images.length > 0 && (
                 <div className="space-y-2">
                   <Label>Vista Previa</Label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {formData.images.map((image, index) => (
                       <div key={index} className="relative group">
                         <Image
