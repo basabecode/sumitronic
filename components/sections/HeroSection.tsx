@@ -37,7 +37,7 @@ export default function HeroSection() {
       id: 1,
       title: 'Imou Cruiser Bullet 2E',
       subtitle: 'Camara profesional con vision nocturna y conectividad WiFi',
-      image: '/productos/imou/Cruiser_bullet_2E/bullet_2E.png',
+      image: '/encabezado/cuiser_mini.png',
       cta: 'Comprar ahora',
       price: 192000,
       originalPrice: 199000,
@@ -51,7 +51,7 @@ export default function HeroSection() {
       id: 2,
       title: 'Diadema Logitech G335',
       subtitle: 'Comodidad y sonido ligero para sesiones de juego largas',
-      image: '/productos/Logitech/diadema/g335-black-gallery-1 (9).png',
+      image: '/encabezado/diademaG335_lateral.png',
       cta: 'Comprar ahora',
       price: 258000,
       originalPrice: 289000,
@@ -121,8 +121,8 @@ export default function HeroSection() {
               index === currentSlide
                 ? 'translate-x-0 opacity-100'
                 : index < currentSlide
-                ? '-translate-x-full opacity-0'
-                : 'translate-x-full opacity-0'
+                  ? '-translate-x-full opacity-0'
+                  : 'translate-x-full opacity-0'
 
             return (
               <article

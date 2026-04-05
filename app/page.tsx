@@ -1,17 +1,22 @@
+import dynamic from 'next/dynamic'
 import Header from '@/components/layout/Header'
 import HeroSection from '@/components/sections/HeroSection'
-import FeaturesSection from '@/components/sections/FeaturesSection'
-import ProductsSection from '@/components/products/ProductsSection'
-import OffersSection from '@/components/sections/OffersSection'
-import BrandsSection from '@/components/sections/BrandsSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import FAQSection from '@/components/sections/FAQSection'
-import BlogSection from '@/components/sections/BlogSection'
-import CTASection from '@/components/sections/CTASection'
-import Footer from '@/components/layout/Footer'
-import WhatsAppFAB from '@/components/features/WhatsAppFAB'
 import { SectionErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { brand } from '@/lib/brand'
+
+// Carga inmediata: secciones críticas above-the-fold
+import ProductsSection from '@/components/products/ProductsSection'
+
+// Carga diferida: secciones below-fold — se cargan tras el render inicial
+const OffersSection = dynamic(() => import('@/components/sections/OffersSection'), { ssr: false })
+const FeaturesSection = dynamic(() => import('@/components/sections/FeaturesSection'), { ssr: false })
+const BrandsSection = dynamic(() => import('@/components/sections/BrandsSection'), { ssr: false })
+const TestimonialsSection = dynamic(() => import('@/components/sections/TestimonialsSection'), { ssr: false })
+const FAQSection = dynamic(() => import('@/components/sections/FAQSection'), { ssr: false })
+const BlogSection = dynamic(() => import('@/components/sections/BlogSection'), { ssr: false })
+const CTASection = dynamic(() => import('@/components/sections/CTASection'), { ssr: false })
+const Footer = dynamic(() => import('@/components/layout/Footer'))
+const WhatsAppFAB = dynamic(() => import('@/components/features/WhatsAppFAB'), { ssr: false })
 
 export default function Home() {
   return (
