@@ -40,6 +40,7 @@ import {
   validateCheckoutForm,
   sanitizeCheckoutForm,
 } from '@/lib/payments'
+import { isValidEmail, isValidColombianPhone } from '@/lib/formatting'
 
 
 interface CheckoutForm {
@@ -70,6 +71,8 @@ export default function CheckoutPageContent() {
   const { state, formatCurrency, clearCart } = useCart()
   const { user, profile } = useAuth()
   const [isProcessing, setIsProcessing] = useState(false)
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = useState('')
   const [savedAddresses, setSavedAddresses] = useState<any[]>([])
   const [selectedAddressIndex, setSelectedAddressIndex] = useState<string>('new')
 
@@ -90,7 +93,9 @@ export default function CheckoutPageContent() {
     newsletter: false,
   })
 
-  // Helper para actualizar form con dirección seleccionada
+  const clearFieldError = (field: string) =>
+    setFormErrors(p => ({ ...p, [field]: '' }))
+
   const handleAddressSelect = (indexStr: string, addressesList: any[] = savedAddresses) => {
     setSelectedAddressIndex(indexStr)
     const isNew = indexStr === 'new'
@@ -118,7 +123,6 @@ export default function CheckoutPageContent() {
     }
   }
 
-  // Cargar datos del perfil
   // Cargar datos del perfil
   useEffect(() => {
     if (user && profile) {
@@ -163,14 +167,92 @@ export default function CheckoutPageContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormErrors({})
+    setSubmitError('')
+
+    // ── Validación de campos obligatorios ──
+    const errors: Record<string, string> = {}
+    if (!form.firstName.trim()) errors.firstName = 'El nombre es obligatorio'
+    if (!form.lastName.trim()) errors.lastName = 'El apellido es obligatorio'
+    if (!isValidEmail(form.email.trim()))
+      errors.email = 'Ingresa un correo electrónico válido'
+    if (!isValidColombianPhone(form.phone))
+      errors.phone = 'El teléfono debe ser un número colombiano de 10 dígitos (ej: 300 000 0000)'
+    if (!form.address.trim()) errors.address = 'La dirección de entrega es obligatoria'
+    if (!form.city.trim()) errors.city = 'La ciudad es obligatoria'
+    if (!form.state) errors.state = 'Selecciona el departamento'
+    if (!form.acceptTerms) errors.acceptTerms = 'Debes aceptar los términos para continuar'
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors)
+      // Hacer scroll al primer error
+      setTimeout(() => {
+        document.querySelector('[data-field-error]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 50)
+      return
+    }
+
     setIsProcessing(true)
 
-    // Simular procesamiento de pago
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    try {
+      // ── Guardar orden en la base de datos ──
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_info: {
+            fullName: `${form.firstName.trim()} ${form.lastName.trim()}`,
+            email: form.email.trim(),
+            phone: form.phone.trim(),
+          },
+          items: state.items.map(item => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            image_url: item.image_url || null,
+          })),
+          shipping_address: {
+            address: form.address.trim(),
+            city: form.city.trim(),
+            department: form.state,
+            zipCode: form.zipCode.trim(),
+            country: form.country,
+          },
+          subtotal: state.subtotal,
+          shipping: state.shipping,
+          total: state.total,
+          payment_method: form.paymentMethod,
+          notes: form.paymentReference
+            ? `Billetera: ${form.paymentReference.selectedProvider} | Ref: ${form.paymentReference.referenceNumber || '-'} | Cel: ${form.paymentReference.senderPhone || '-'}`
+            : null,
+        }),
+      })
 
-    // Redireccionar a página de confirmación
-    clearCart()
-    window.location.href = '/checkout/success'
+      const json = await res.json()
+
+      if (!res.ok) {
+        setSubmitError(json.error || 'No se pudo procesar el pedido. Intenta de nuevo.')
+        setIsProcessing(false)
+        return
+      }
+
+      const orderId = json.data?.id || `SUM-${Date.now()}`
+
+      // ── Notificar al administrador (sin bloquear el flujo) ──
+      fetch('/api/notify-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order: json.data }),
+      }).catch(() => {})
+
+      // ── Limpiar carrito y redirigir a éxito ──
+      clearCart()
+      window.location.href = `/checkout/success?orderId=${encodeURIComponent(orderId)}&email=${encodeURIComponent(form.email.trim())}&total=${state.total}`
+    } catch {
+      setSubmitError('Error de conexión. Verifica tu internet e intenta de nuevo.')
+      setIsProcessing(false)
+    }
   }
 
   if (state.items.length === 0) {
@@ -245,22 +327,30 @@ export default function CheckoutPageContent() {
                       <Input
                         id="firstName"
                         value={form.firstName}
-                        onChange={e =>
+                        onChange={e => {
                           handleInputChange('firstName', e.target.value)
-                        }
+                          if (formErrors.firstName) clearFieldError('firstName')
+                        }}
+                        placeholder="Ej: Carlos"
+                        className={formErrors.firstName ? 'border-red-500' : ''}
                         required
                       />
+                      {formErrors.firstName && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.firstName}</p>}
                     </div>
                     <div>
                       <Label htmlFor="lastName">Apellido *</Label>
                       <Input
                         id="lastName"
                         value={form.lastName}
-                        onChange={e =>
+                        onChange={e => {
                           handleInputChange('lastName', e.target.value)
-                        }
+                          if (formErrors.lastName) clearFieldError('lastName')
+                        }}
+                        placeholder="Ej: García"
+                        className={formErrors.lastName ? 'border-red-500' : ''}
                         required
                       />
+                      {formErrors.lastName && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.lastName}</p>}
                     </div>
                   </div>
 
@@ -271,11 +361,15 @@ export default function CheckoutPageContent() {
                         id="email"
                         type="email"
                         value={form.email}
-                        onChange={e =>
+                        onChange={e => {
                           handleInputChange('email', e.target.value)
-                        }
+                          if (formErrors.email) clearFieldError('email')
+                        }}
+                        placeholder="correo@ejemplo.com"
+                        className={formErrors.email ? 'border-red-500' : ''}
                         required
                       />
+                      {formErrors.email && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.email}</p>}
                     </div>
                     <div>
                       <Label htmlFor="phone">Teléfono *</Label>
@@ -283,11 +377,15 @@ export default function CheckoutPageContent() {
                         id="phone"
                         type="tel"
                         value={form.phone}
-                        onChange={e =>
+                        onChange={e => {
                           handleInputChange('phone', e.target.value)
-                        }
+                          if (formErrors.phone) clearFieldError('phone')
+                        }}
+                        placeholder="300 000 0000"
+                        className={formErrors.phone ? 'border-red-500' : ''}
                         required
                       />
+                      {formErrors.phone && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.phone}</p>}
                     </div>
                   </div>
                 </CardContent>
@@ -341,12 +439,15 @@ export default function CheckoutPageContent() {
                     <Input
                       id="address"
                       value={form.address}
-                      onChange={e =>
+                      onChange={e => {
                         handleInputChange('address', e.target.value)
-                      }
+                        if (formErrors.address) clearFieldError('address')
+                      }}
                       placeholder="Calle, número, edificio, apartamento"
+                      className={formErrors.address ? 'border-red-500' : ''}
                       required
                     />
+                    {formErrors.address && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.address}</p>}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -355,21 +456,27 @@ export default function CheckoutPageContent() {
                       <Input
                         id="city"
                         value={form.city}
-                        onChange={e =>
+                        onChange={e => {
                           handleInputChange('city', e.target.value)
-                        }
+                          if (formErrors.city) clearFieldError('city')
+                        }}
+                        placeholder="Ej: Bogotá"
+                        className={formErrors.city ? 'border-red-500' : ''}
                         required
                       />
+                      {formErrors.city && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.city}</p>}
                     </div>
                     <div>
                       <Label htmlFor="state">Departamento *</Label>
                       <Select
-                        onValueChange={value =>
+                        value={form.state}
+                        onValueChange={value => {
                           handleInputChange('state', value)
-                        }
+                          if (formErrors.state) clearFieldError('state')
+                        }}
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar" />
+                        <SelectTrigger className={formErrors.state ? 'border-red-500' : ''}>
+                          <SelectValue placeholder="Seleccionar departamento" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="amazonas">Amazonas</SelectItem>
@@ -406,6 +513,7 @@ export default function CheckoutPageContent() {
                           <SelectItem value="vichada">Vichada</SelectItem>
                         </SelectContent>
                       </Select>
+                      {formErrors.state && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.state}</p>}
                     </div>
                     <div>
                       <Label htmlFor="zipCode">Código Postal</Label>
@@ -415,6 +523,7 @@ export default function CheckoutPageContent() {
                         onChange={e =>
                           handleInputChange('zipCode', e.target.value)
                         }
+                        placeholder="Ej: 110111"
                       />
                     </div>
                   </div>
@@ -471,9 +580,10 @@ export default function CheckoutPageContent() {
                     <Checkbox
                       id="acceptTerms"
                       checked={form.acceptTerms}
-                      onCheckedChange={checked =>
+                      onCheckedChange={checked => {
                         handleInputChange('acceptTerms', checked as boolean)
-                      }
+                        if (formErrors.acceptTerms) clearFieldError('acceptTerms')
+                      }}
                       required
                     />
                     <Label htmlFor="acceptTerms" className="text-sm">
@@ -494,8 +604,18 @@ export default function CheckoutPageContent() {
                       *
                     </Label>
                   </div>
+                  {formErrors.acceptTerms && (
+                    <p className="text-sm text-red-600" data-field-error>{formErrors.acceptTerms}</p>
+                  )}
                 </CardContent>
               </Card>
+
+              {/* Error global de envío */}
+              {submitError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {submitError}
+                </div>
+              )}
             </div>
 
             {/* Resumen del pedido */}
@@ -605,46 +725,20 @@ export default function CheckoutPageContent() {
                       Métodos de pago aceptados
                     </p>
                     <div className="flex justify-center flex-wrap gap-3">
-                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
-                        <Image
-                          src="/bancos/nequi_1.png"
-                          alt="Nequi"
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
-                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
-                        <Image
-                          src="/bancos/daviplata_1.png"
-                          alt="Daviplata"
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
-                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
-                        <Image
-                          src="/bancos/bancolombia_3.png"
-                          alt="Bancolombia"
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
-                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
-                        <Image
-                          src="/bancos/davivienda_1.png"
-                          alt="Davivienda"
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
-                      <div className="relative h-16 w-24 cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md">
-                        <Image
-                          src="/bancos/nubank_1.png"
-                          alt="Nubank"
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
+                      {[
+                        { src: '/bancos/nequi_1.png',       alt: 'Nequi' },
+                        { src: '/bancos/daviplata_1.png',    alt: 'Daviplata' },
+                        { src: '/bancos/bancolombia_3.png',  alt: 'Bancolombia' },
+                        { src: '/bancos/davivienda_1.png',   alt: 'Davivienda' },
+                        { src: '/bancos/nubank_1.png',       alt: 'Nubank' },
+                      ].map(bank => (
+                        <div
+                          key={bank.alt}
+                          className="relative h-16 w-24 rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md"
+                        >
+                          <Image src={bank.src} alt={bank.alt} fill className="object-contain p-1" />
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </CardContent>

@@ -90,7 +90,7 @@ export function ForgotPasswordForm() {
             <Input
               id="email"
               type="email"
-              placeholder="tu@email.com"
+              placeholder="correo@ejemplo.com"
               {...register('email')}
               disabled={isLoading}
             />

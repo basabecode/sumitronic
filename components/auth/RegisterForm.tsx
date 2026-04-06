@@ -138,7 +138,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             <Input
               id="fullName"
               type="text"
-              placeholder="Tu nombre completo"
+              placeholder="Ej: Carlos García"
               {...register('fullName')}
               disabled={isLoading}
             />
@@ -152,7 +152,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             <Input
               id="email"
               type="email"
-              placeholder="tu@email.com"
+              placeholder="correo@ejemplo.com"
               {...register('email')}
               disabled={isLoading}
             />

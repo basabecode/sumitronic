@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 interface RouteParams {
   params: { id: string }
@@ -99,19 +100,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
     }
 
-    // Verificar que la orden existe
-    const { data: existing, error: fetchError } = await supabase
-      .from('orders')
-      .select('id')
-      .eq('id', params.id)
-      .single()
-
-    if (fetchError || !existing) {
-      return NextResponse.json(
-        { error: 'Pedido no encontrado' },
-        { status: 404 }
-      )
-    }
+    const adminClient = createAdminClient()
 
     const body = await request.json()
     const { status, payment_status, tracking_number, notes } = body
@@ -180,7 +169,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       updates.notes = notes.trim()
     }
 
-    const { data: order, error: updateError } = await supabase
+    const { data: order, error: updateError } = await adminClient
       .from('orders')
       .update(updates)
       .eq('id', params.id)
@@ -188,16 +177,82 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .single()
 
     if (updateError) {
+      if (updateError.code === 'PGRST116') {
+        return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 })
+      }
       console.error('Error updating order:', updateError)
-      return NextResponse.json(
-        { error: 'Error al actualizar el pedido' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al actualizar el pedido' }, { status: 500 })
     }
 
     return NextResponse.json({ data: order })
   } catch (error) {
     console.error('Order PATCH [id] error:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  try {
+    const supabase = createClient()
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    // Solo admins pueden eliminar pedidos
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role !== 'admin') {
+      return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
+    }
+
+    const adminClient = createAdminClient()
+
+    // Verificar que el pedido existe y obtener su estado de pago
+    const { data: existing, error: fetchError } = await adminClient
+      .from('orders')
+      .select('id, payment_status, status')
+      .eq('id', params.id)
+      .single()
+
+    if (fetchError || !existing) {
+      return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 })
+    }
+
+    // Solo se pueden eliminar pedidos con pago pendiente o cancelados
+    const deletableStatuses = ['pending', 'failed', 'refunded']
+    if (!deletableStatuses.includes(existing.payment_status) && existing.status !== 'cancelled') {
+      return NextResponse.json(
+        { error: 'Solo se pueden eliminar pedidos con pago pendiente, rechazado o cancelados' },
+        { status: 400 }
+      )
+    }
+
+    const { error: deleteError } = await adminClient
+      .from('orders')
+      .delete()
+      .eq('id', params.id)
+
+    if (deleteError) {
+      console.error('Error deleting order:', deleteError)
+      return NextResponse.json({ error: 'Error al eliminar el pedido' }, { status: 500 })
+    }
+
+    return NextResponse.json({ ok: true })
+  } catch (error) {
+    console.error('Order DELETE [id] error:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }

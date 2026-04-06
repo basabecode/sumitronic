@@ -116,7 +116,7 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
             <Input
               id="email"
               type="email"
-              placeholder="tu@email.com"
+              placeholder="correo@ejemplo.com"
               {...register('email')}
               disabled={isLoading}
             />
@@ -131,7 +131,7 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Tu contraseña"
+                placeholder="Ingresa tu contraseña"
                 {...register('password')}
                 disabled={isLoading}
               />

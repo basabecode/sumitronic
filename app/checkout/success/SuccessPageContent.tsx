@@ -191,12 +191,20 @@ const SuccessPageContent: React.FC = () => {
                 contactarnos.
               </p>
               <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                <Button variant="outline" size="sm">
-                  WhatsApp: +57 123 456 7890
-                </Button>
-                <Button variant="outline" size="sm">
-                  Email de soporte
-                </Button>
+                <a
+                  href={`https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent('Hola, tengo una consulta sobre mi pedido')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="outline" size="sm">
+                    WhatsApp: +57 {brand.whatsappDisplay}
+                  </Button>
+                </a>
+                <a href={`mailto:${brand.supportEmail}`}>
+                  <Button variant="outline" size="sm">
+                    {brand.supportEmail}
+                  </Button>
+                </a>
               </div>
             </div>
           </CardContent>

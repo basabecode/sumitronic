@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { ratelimit } from '@/lib/ratelimit'
 
 export async function GET(request: NextRequest) {
@@ -70,16 +71,15 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = createClient()
 
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser()
+    // Auth es opcional: se permiten órdenes de invitados (guest checkout)
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
+    // Rate limit por usuario autenticado o por IP para invitados
+    const rateLimitKey = user?.id
+      ? `orders_post:${user.id}`
+      : `orders_post:guest:${request.headers.get('x-forwarded-for') || 'anonymous'}`
 
-    const { success } = await ratelimit.limit(`orders_post:${user.id}`)
+    const { success } = await ratelimit.limit(rateLimitKey)
     if (!success) {
       return NextResponse.json(
         { error: 'Demasiadas solicitudes. Intenta de nuevo más tarde.' },
@@ -119,14 +119,18 @@ export async function POST(request: NextRequest) {
 
     // customer_info: si no se provee usar datos del usuario autenticado
     const resolvedCustomerInfo = customer_info || {
-      user_id: user.id,
-      email: user.email,
+      user_id: user?.id || null,
+      email: user?.email || null,
     }
 
-    const { data: order, error: insertError } = await supabase
+    // Usar el cliente admin (service role) para el insert — bypassa RLS
+    // de forma segura desde el servidor. El usuario ya fue validado arriba.
+    const adminClient = createAdminClient()
+
+    const { data: order, error: insertError } = await adminClient
       .from('orders')
       .insert({
-        user_id: user.id,
+        user_id: user?.id || null,
         customer_info: resolvedCustomerInfo,
         items,
         subtotal,

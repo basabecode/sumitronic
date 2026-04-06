@@ -300,6 +300,7 @@ export default function ProfilePage() {
                     <Input
                       id="full_name"
                       type="text"
+                      placeholder="Ej: Carlos García"
                       {...register('full_name')}
                       disabled={isLoading}
                     />

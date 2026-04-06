@@ -1,8 +1,6 @@
 import {
   Facebook,
-  Twitter,
   Instagram,
-  Youtube,
   Mail,
   Phone,
   MapPin,
@@ -38,28 +36,22 @@ export default function Footer() {
             {/* Social Media */}
             <div className="flex space-x-4">
               <a
-                href="#"
+                href={brand.socialLinks[1]}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
                 className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
+                href={brand.socialLinks[0]}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
                 className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
               >
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="rounded-lg bg-gray-800 p-2 transition-colors hover:bg-[hsl(var(--brand))]"
-              >
-                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>
