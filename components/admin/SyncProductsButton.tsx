@@ -43,8 +43,7 @@ export default function SyncProductsButton() {
       setStatus('success')
       setMessage(`Sincronizados ${data.synced} productos`)
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Error al sincronizar'
+      const message = error instanceof Error ? error.message : 'Error al sincronizar'
 
       setStatus('error')
       setMessage(message)
@@ -60,8 +59,8 @@ export default function SyncProductsButton() {
         status === 'success'
           ? 'bg-green-600 hover:bg-green-700'
           : status === 'error'
-          ? 'bg-red-600 hover:bg-red-700'
-          : ''
+            ? 'bg-red-600 hover:bg-red-700'
+            : ''
       }
     >
       {message}

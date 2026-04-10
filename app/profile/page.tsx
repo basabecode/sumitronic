@@ -9,13 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -45,9 +39,7 @@ const addressSchema = z.object({
   street: z.string().min(5, 'La dirección debe tener al menos 5 caracteres'),
   city: z.string().min(2, 'La ciudad es requerida'),
   department: z.string().min(2, 'El departamento es requerido'),
-  postal_code: z
-    .string()
-    .min(5, 'El código postal debe tener al menos 5 dígitos'),
+  postal_code: z.string().min(5, 'El código postal debe tener al menos 5 dígitos'),
   neighborhood: z.string().optional(),
   additional_info: z.string().optional(),
   is_default: z.boolean().optional(),
@@ -149,9 +141,7 @@ export default function ProfilePage() {
     if (profile?.address) {
       try {
         // Asegurarse de que sea un array
-        const savedAddresses = Array.isArray(profile.address)
-          ? profile.address
-          : [profile.address]
+        const savedAddresses = Array.isArray(profile.address) ? profile.address : [profile.address]
         setAddresses(savedAddresses as AddressForm[])
       } catch (err) {
         console.error('Error al cargar direcciones:', err)
@@ -176,7 +166,7 @@ export default function ProfilePage() {
     // Guardar en base de datos
     try {
       await updateProfile({
-        address: updatedAddresses as unknown as any // Casting para satisfacer tipo Json
+        address: updatedAddresses as unknown as any, // Casting para satisfacer tipo Json
       })
     } catch (err) {
       console.error('Error al guardar direcciones:', err)
@@ -193,10 +183,7 @@ export default function ProfilePage() {
     const address = addresses[index]
     setEditingAddress(index)
     Object.keys(address).forEach(key => {
-      setAddressValue(
-        key as keyof AddressForm,
-        address[key as keyof AddressForm]
-      )
+      setAddressValue(key as keyof AddressForm, address[key as keyof AddressForm])
     })
     setShowAddressDialog(true)
   }
@@ -208,7 +195,7 @@ export default function ProfilePage() {
     // Guardar en base de datos
     try {
       await updateProfile({
-        address: updatedAddresses as unknown as any
+        address: updatedAddresses as unknown as any,
       })
     } catch (err) {
       console.error('Error al eliminar dirección:', err)
@@ -250,9 +237,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="text-center">
-                <h3 className="text-lg font-semibold">
-                  {profile?.full_name || 'Usuario'}
-                </h3>
+                <h3 className="text-lg font-semibold">{profile?.full_name || 'Usuario'}</h3>
                 <p className="text-sm text-gray-500">{user?.email}</p>
                 <div className="mt-2">
                   <span
@@ -276,9 +261,7 @@ export default function ProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle>Editar Perfil</CardTitle>
-              <CardDescription>
-                Actualiza tu información personal
-              </CardDescription>
+              <CardDescription>Actualiza tu información personal</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -305,9 +288,7 @@ export default function ProfilePage() {
                       disabled={isLoading}
                     />
                     {errors.full_name && (
-                      <p className="text-sm text-red-600">
-                        {errors.full_name.message}
-                      </p>
+                      <p className="text-sm text-red-600">{errors.full_name.message}</p>
                     )}
                   </div>
 
@@ -320,11 +301,7 @@ export default function ProfilePage() {
                       {...register('phone')}
                       disabled={isLoading}
                     />
-                    {errors.phone && (
-                      <p className="text-sm text-red-600">
-                        {errors.phone.message}
-                      </p>
-                    )}
+                    {errors.phone && <p className="text-sm text-red-600">{errors.phone.message}</p>}
                   </div>
                 </div>
 
@@ -337,16 +314,12 @@ export default function ProfilePage() {
                     disabled
                     className="bg-gray-50"
                   />
-                  <p className="text-sm text-gray-500">
-                    El email no se puede cambiar
-                  </p>
+                  <p className="text-sm text-gray-500">El email no se puede cambiar</p>
                 </div>
 
                 <div className="flex justify-end">
                   <Button type="submit" disabled={isLoading}>
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Guardar Cambios
                   </Button>
                 </div>
@@ -361,9 +334,7 @@ export default function ProfilePage() {
                 <MapPin className="w-5 h-5" />
                 Direcciones de Envío
               </CardTitle>
-              <CardDescription>
-                Gestiona tus direcciones para el envío de productos
-              </CardDescription>
+              <CardDescription>Gestiona tus direcciones para el envío de productos</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -371,31 +342,23 @@ export default function ProfilePage() {
                   <div className="text-center py-8 text-gray-500">
                     <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                     <p>No tienes direcciones de envío registradas</p>
-                    <p className="text-sm">
-                      Agrega una dirección para realizar pedidos
-                    </p>
+                    <p className="text-sm">Agrega una dirección para realizar pedidos</p>
                   </div>
                 ) : (
                   addresses.map((address, index) => (
-                    <div
-                      key={index}
-                      className="border rounded-lg p-4 space-y-2"
-                    >
+                    <div key={index} className="border rounded-lg p-4 space-y-2">
                       <div className="flex justify-between items-start">
                         <div>
                           <h4 className="font-medium">{address.street}</h4>
                           <p className="text-sm text-gray-600">
-                            {address.neighborhood &&
-                              `${address.neighborhood}, `}
+                            {address.neighborhood && `${address.neighborhood}, `}
                             {address.city}, {address.department}
                           </p>
                           <p className="text-sm text-gray-600">
                             Código postal: {address.postal_code}
                           </p>
                           {address.additional_info && (
-                            <p className="text-sm text-gray-500">
-                              {address.additional_info}
-                            </p>
+                            <p className="text-sm text-gray-500">{address.additional_info}</p>
                           )}
                         </div>
                         <div className="flex gap-2">
@@ -441,44 +404,27 @@ export default function ProfilePage() {
             </DialogDescription>
           </DialogHeader>
 
-          <form
-            onSubmit={handleSubmitAddress(onSubmitAddress)}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmitAddress(onSubmitAddress)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="street">Dirección *</Label>
-              <Input
-                id="street"
-                placeholder="Calle 123 # 45-67"
-                {...registerAddress('street')}
-              />
+              <Input id="street" placeholder="Calle 123 # 45-67" {...registerAddress('street')} />
               {addressErrors.street && (
-                <p className="text-sm text-red-600">
-                  {addressErrors.street.message}
-                </p>
+                <p className="text-sm text-red-600">{addressErrors.street.message}</p>
               )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="city">Ciudad *</Label>
-                <Input
-                  id="city"
-                  placeholder="Bogotá"
-                  {...registerAddress('city')}
-                />
+                <Input id="city" placeholder="Bogotá" {...registerAddress('city')} />
                 {addressErrors.city && (
-                  <p className="text-sm text-red-600">
-                    {addressErrors.city.message}
-                  </p>
+                  <p className="text-sm text-red-600">{addressErrors.city.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="department">Departamento *</Label>
-                <Select
-                  onValueChange={value => setAddressValue('department', value)}
-                >
+                <Select onValueChange={value => setAddressValue('department', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccionar" />
                   </SelectTrigger>
@@ -491,9 +437,7 @@ export default function ProfilePage() {
                   </SelectContent>
                 </Select>
                 {addressErrors.department && (
-                  <p className="text-sm text-red-600">
-                    {addressErrors.department.message}
-                  </p>
+                  <p className="text-sm text-red-600">{addressErrors.department.message}</p>
                 )}
               </div>
             </div>
@@ -501,15 +445,9 @@ export default function ProfilePage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="postal_code">Código Postal *</Label>
-                <Input
-                  id="postal_code"
-                  placeholder="110111"
-                  {...registerAddress('postal_code')}
-                />
+                <Input id="postal_code" placeholder="110111" {...registerAddress('postal_code')} />
                 {addressErrors.postal_code && (
-                  <p className="text-sm text-red-600">
-                    {addressErrors.postal_code.message}
-                  </p>
+                  <p className="text-sm text-red-600">{addressErrors.postal_code.message}</p>
                 )}
               </div>
 
@@ -534,11 +472,7 @@ export default function ProfilePage() {
             </div>
 
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowAddressDialog(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => setShowAddressDialog(false)}>
                 Cancelar
               </Button>
               <Button type="submit">

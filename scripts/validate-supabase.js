@@ -84,10 +84,7 @@ async function validateSupabase() {
 
   for (const table of tables) {
     try {
-      const { data, error } = await supabase
-        .from(table)
-        .select('*')
-        .limit(1)
+      const { data, error } = await supabase.from(table).select('*').limit(1)
 
       if (error) {
         log(`❌ Tabla '${table}': ${error.message}`, 'red')
@@ -126,11 +123,11 @@ async function validateSupabase() {
   logSection('5. Productos en Base de Datos')
 
   try {
-    const { data: products, error, count } = await supabase
-      .from('products')
-      .select('*', { count: 'exact' })
-      .eq('active', true)
-      .limit(5)
+    const {
+      data: products,
+      error,
+      count,
+    } = await supabase.from('products').select('*', { count: 'exact' }).eq('active', true).limit(5)
 
     if (error) {
       log(`❌ Error al obtener productos: ${error.message}`, 'red')
@@ -155,7 +152,11 @@ async function validateSupabase() {
   logSection('6. Productos con Ofertas')
 
   try {
-    const { data: offers, error, count } = await supabase
+    const {
+      data: offers,
+      error,
+      count,
+    } = await supabase
       .from('products')
       .select('*', { count: 'exact' })
       .eq('active', true)
@@ -176,7 +177,10 @@ async function validateSupabase() {
         log('\n   Productos en oferta:', 'blue')
         offers.forEach((p, i) => {
           const discount = Math.round(((p.compare_price - p.price) / p.compare_price) * 100)
-          log(`   ${i + 1}. ${p.name} - $${p.price} (antes: $${p.compare_price}) - ${discount}% OFF`, 'blue')
+          log(
+            `   ${i + 1}. ${p.name} - $${p.price} (antes: $${p.compare_price}) - ${discount}% OFF`,
+            'blue'
+          )
         })
       } else {
         log('   ℹ️  No hay productos con ofertas configuradas', 'yellow')
@@ -191,10 +195,11 @@ async function validateSupabase() {
   logSection('7. Categorías')
 
   try {
-    const { data: categories, error, count } = await supabase
-      .from('categories')
-      .select('*', { count: 'exact' })
-      .eq('active', true)
+    const {
+      data: categories,
+      error,
+      count,
+    } = await supabase.from('categories').select('*', { count: 'exact' }).eq('active', true)
 
     if (error) {
       log(`❌ Error al obtener categorías: ${error.message}`, 'red')

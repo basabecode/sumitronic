@@ -16,13 +16,7 @@ import {
   MapPin,
   Hash,
 } from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -62,32 +56,32 @@ interface Order {
 }
 
 const orderSteps = [
-  { key: 'pending',    label: 'Recibido',     icon: Clock },
+  { key: 'pending', label: 'Recibido', icon: Clock },
   { key: 'processing', label: 'En preparación', icon: Package },
-  { key: 'shipped',    label: 'Enviado',       icon: Truck },
-  { key: 'delivered',  label: 'Entregado',     icon: CheckCircle },
+  { key: 'shipped', label: 'Enviado', icon: Truck },
+  { key: 'delivered', label: 'Entregado', icon: CheckCircle },
 ]
 
 const statusConfig = {
-  pending:    { label: 'Recibido',       color: 'bg-yellow-100 text-yellow-800',   icon: Clock },
-  processing: { label: 'En preparación', color: 'bg-blue-100 text-blue-800',       icon: Package },
-  shipped:    { label: 'Enviado',         color: 'bg-purple-100 text-purple-800',   icon: Truck },
-  delivered:  { label: 'Entregado',       color: 'bg-green-100 text-green-800',     icon: CheckCircle },
-  cancelled:  { label: 'Cancelado',       color: 'bg-red-100 text-red-800',         icon: XCircle },
+  pending: { label: 'Recibido', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+  processing: { label: 'En preparación', color: 'bg-blue-100 text-blue-800', icon: Package },
+  shipped: { label: 'Enviado', color: 'bg-purple-100 text-purple-800', icon: Truck },
+  delivered: { label: 'Entregado', color: 'bg-green-100 text-green-800', icon: CheckCircle },
+  cancelled: { label: 'Cancelado', color: 'bg-red-100 text-red-800', icon: XCircle },
 }
 
 const paymentStatusConfig = {
-  pending:             { label: 'Pago pendiente',     color: 'bg-yellow-100 text-yellow-800' },
-  paid:                { label: 'Pago confirmado',    color: 'bg-green-100 text-green-800' },
-  failed:              { label: 'Pago rechazado',     color: 'bg-red-100 text-red-800' },
-  refunded:            { label: 'Reembolsado',        color: 'bg-gray-100 text-gray-700' },
-  partially_refunded:  { label: 'Reembolso parcial',  color: 'bg-orange-100 text-orange-800' },
+  pending: { label: 'Pago pendiente', color: 'bg-yellow-100 text-yellow-800' },
+  paid: { label: 'Pago confirmado', color: 'bg-green-100 text-green-800' },
+  failed: { label: 'Pago rechazado', color: 'bg-red-100 text-red-800' },
+  refunded: { label: 'Reembolsado', color: 'bg-gray-100 text-gray-700' },
+  partially_refunded: { label: 'Reembolso parcial', color: 'bg-orange-100 text-orange-800' },
 }
 
 const paymentMethodLabel: Record<string, string> = {
-  nequi:         'Nequi',
-  bancolombia:   'Bancolombia',
-  daviplata:     'Daviplata',
+  nequi: 'Nequi',
+  bancolombia: 'Bancolombia',
+  daviplata: 'Daviplata',
   cash_on_delivery: 'Pago contra entrega',
   bank_transfer: 'Transferencia bancaria',
 }
@@ -107,9 +101,9 @@ function OrderProgressBar({ status }: { status: string }) {
   return (
     <div className="flex items-center gap-0 w-full mt-2 mb-1">
       {orderSteps.map((step, idx) => {
-        const done    = idx <= currentIndex
-        const active  = idx === currentIndex
-        const Icon    = step.icon
+        const done = idx <= currentIndex
+        const active = idx === currentIndex
+        const Icon = step.icon
 
         return (
           <div key={step.key} className="flex items-center flex-1 last:flex-none">
@@ -141,13 +135,13 @@ function OrderProgressBar({ status }: { status: string }) {
 }
 
 export default function OrdersPage() {
-  const [orders, setOrders]       = useState<Order[]>([])
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState('')
-  const [expanded, setExpanded]   = useState<Record<string, boolean>>({})
+  const [orders, setOrders] = useState<Order[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   const { user } = useAuth()
-  const supabase  = createClient()
+  const supabase = createClient()
 
   useEffect(() => {
     if (user) fetchOrders()
@@ -157,7 +151,8 @@ export default function OrdersPage() {
     try {
       const { data, error } = await supabase
         .from('orders')
-        .select(`
+        .select(
+          `
           id,
           status,
           payment_status,
@@ -171,7 +166,8 @@ export default function OrdersPage() {
           shipping_address,
           created_at,
           updated_at
-        `)
+        `
+        )
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false })
 
@@ -187,8 +183,7 @@ export default function OrdersPage() {
     }
   }
 
-  const toggleExpand = (id: string) =>
-    setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+  const toggleExpand = (id: string) => setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
 
   const fmt = formatPrice
 
@@ -225,9 +220,7 @@ export default function OrdersPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Package className="h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No tienes pedidos aún
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No tienes pedidos aún</h3>
             <p className="text-gray-500 text-center mb-6">
               Cuando realices tu primer pedido, aparecerá aquí
             </p>
@@ -239,12 +232,13 @@ export default function OrdersPage() {
       ) : (
         <div className="space-y-6">
           {orders.map(order => {
-            const statusInfo  = statusConfig[order.status] ?? statusConfig['pending']
-            const payInfo     = paymentStatusConfig[order.payment_status] ?? paymentStatusConfig['pending']
-            const StatusIcon  = statusInfo.icon
-            const orderRef    = order.id.slice(0, 8).toUpperCase()
-            const orderItems  = Array.isArray(order.items) ? order.items : []
-            const isExpanded  = !!expanded[order.id]
+            const statusInfo = statusConfig[order.status] ?? statusConfig['pending']
+            const payInfo =
+              paymentStatusConfig[order.payment_status] ?? paymentStatusConfig['pending']
+            const StatusIcon = statusInfo.icon
+            const orderRef = order.id.slice(0, 8).toUpperCase()
+            const orderItems = Array.isArray(order.items) ? order.items : []
+            const isExpanded = !!expanded[order.id]
 
             return (
               <Card key={order.id} className="overflow-hidden">
@@ -253,7 +247,9 @@ export default function OrdersPage() {
                     <div>
                       <CardTitle className="text-lg">Pedido #{orderRef}</CardTitle>
                       <CardDescription>
-                        {format(new Date(order.created_at), "d 'de' MMMM yyyy, HH:mm", { locale: es })}
+                        {format(new Date(order.created_at), "d 'de' MMMM yyyy, HH:mm", {
+                          locale: es,
+                        })}
                       </CardDescription>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
@@ -261,9 +257,7 @@ export default function OrdersPage() {
                         <StatusIcon className="w-3 h-3" />
                         {statusInfo.label}
                       </Badge>
-                      <Badge className={payInfo.color}>
-                        {payInfo.label}
-                      </Badge>
+                      <Badge className={payInfo.color}>{payInfo.label}</Badge>
                     </div>
                   </div>
 
@@ -296,9 +290,13 @@ export default function OrdersPage() {
                         className="flex items-center gap-1"
                       >
                         {isExpanded ? (
-                          <>Ocultar <ChevronUp className="h-4 w-4" /></>
+                          <>
+                            Ocultar <ChevronUp className="h-4 w-4" />
+                          </>
                         ) : (
-                          <>Ver detalles <ChevronDown className="h-4 w-4" /></>
+                          <>
+                            Ver detalles <ChevronDown className="h-4 w-4" />
+                          </>
                         )}
                       </Button>
                     </div>
@@ -307,7 +305,6 @@ export default function OrdersPage() {
                   {/* Detalles expandibles */}
                   {isExpanded && (
                     <div className="mt-4 space-y-6 border-t pt-4">
-
                       {/* Productos */}
                       <div>
                         <h4 className="font-semibold mb-3 flex items-center gap-2">
@@ -334,7 +331,9 @@ export default function OrdersPage() {
                                       {item.quantity} x {fmt(itemPrice)}
                                     </p>
                                   </div>
-                                  <p className="text-sm font-semibold">{fmt(item.quantity * itemPrice)}</p>
+                                  <p className="text-sm font-semibold">
+                                    {fmt(item.quantity * itemPrice)}
+                                  </p>
                                 </div>
                               )
                             })}
@@ -370,7 +369,9 @@ export default function OrdersPage() {
                             {order.payment_method && (
                               <div className="flex justify-between text-gray-600 pt-1">
                                 <span>Método de pago</span>
-                                <span>{paymentMethodLabel[order.payment_method] ?? order.payment_method}</span>
+                                <span>
+                                  {paymentMethodLabel[order.payment_method] ?? order.payment_method}
+                                </span>
                               </div>
                             )}
                             <div className="flex justify-between items-center pt-1">
@@ -389,10 +390,19 @@ export default function OrdersPage() {
                             <p className="text-sm text-gray-600 leading-relaxed">
                               {order.shipping_address.street}
                               {order.shipping_address.city && (
-                                <><br />{order.shipping_address.city}{order.shipping_address.state ? `, ${order.shipping_address.state}` : ''}</>
+                                <>
+                                  <br />
+                                  {order.shipping_address.city}
+                                  {order.shipping_address.state
+                                    ? `, ${order.shipping_address.state}`
+                                    : ''}
+                                </>
                               )}
                               {order.shipping_address.postal_code && (
-                                <><br />CP: {order.shipping_address.postal_code}</>
+                                <>
+                                  <br />
+                                  CP: {order.shipping_address.postal_code}
+                                </>
                               )}
                             </p>
                           </div>
@@ -402,7 +412,9 @@ export default function OrdersPage() {
                       {/* Última actualización */}
                       <p className="text-xs text-gray-400 pt-2 border-t">
                         Última actualización:{' '}
-                        {format(new Date(order.updated_at), "d 'de' MMMM yyyy, HH:mm", { locale: es })}
+                        {format(new Date(order.updated_at), "d 'de' MMMM yyyy, HH:mm", {
+                          locale: es,
+                        })}
                       </p>
                     </div>
                   )}

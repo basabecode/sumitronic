@@ -1,13 +1,4 @@
-import {
-  Facebook,
-  Instagram,
-  Mail,
-  Phone,
-  MapPin,
-  CreditCard,
-  Shield,
-  Truck,
-} from 'lucide-react'
+import { Facebook, Instagram, Mail, Phone, MapPin, CreditCard, Shield, Truck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { brand } from '@/lib/brand'
@@ -30,7 +21,8 @@ export default function Footer() {
               {brand.name}
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Cámaras, redes, energía y repuestos tecnológicos con atención directa, respaldo en Cali y envío a todo Colombia.
+              Cámaras, redes, energía y repuestos tecnológicos con atención directa, respaldo en
+              Cali y envío a todo Colombia.
             </p>
 
             {/* Social Media */}
@@ -176,7 +168,10 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-[hsl(var(--brand))]" />
-                <a href={`mailto:${brand.supportEmail}`} className="text-gray-300 transition-colors hover:text-white">
+                <a
+                  href={`mailto:${brand.supportEmail}`}
+                  className="text-gray-300 transition-colors hover:text-white"
+                >
                   Email de soporte
                 </a>
               </div>
@@ -191,8 +186,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
-
       </div>
 
       {/* Payment & Shipping Info */}
@@ -229,10 +222,16 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
             <p>© 2025 {brand.name}. Todos los derechos reservados.</p>
             <div className="flex space-x-6 mt-2 md:mt-0">
-              <a href="/help/politica-de-privacidad" className="transition-colors hover:text-[hsl(var(--brand))]">
+              <a
+                href="/help/politica-de-privacidad"
+                className="transition-colors hover:text-[hsl(var(--brand))]"
+              >
                 Política de Privacidad
               </a>
-              <a href="/help/terminos-y-condiciones" className="transition-colors hover:text-[hsl(var(--brand))]">
+              <a
+                href="/help/terminos-y-condiciones"
+                className="transition-colors hover:text-[hsl(var(--brand))]"
+              >
                 Términos de Uso
               </a>
             </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Star, CheckCircle2, Quote } from 'lucide-react'
 
 export default function TestimonialsSection() {
@@ -53,8 +54,7 @@ export default function TestimonialsSection() {
             Lo que Dicen Nuestros Clientes
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-            Miles de clientes satisfechos confían en nosotros para sus compras
-            de tecnología
+            Miles de clientes satisfechos confían en nosotros para sus compras de tecnología
           </p>
         </div>
         {/* Testimonials: una sola fila */}
@@ -88,14 +88,16 @@ export default function TestimonialsSection() {
                 </div>
 
                 <p className="text-gray-700/90 leading-relaxed mb-4 italic line-clamp-4">
-                  "{testimonial.text}"
+                  &ldquo;{testimonial.text}&rdquo;
                 </p>
 
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src={testimonial.image || '/placeholder.svg'}
                     alt={testimonial.name}
-                    className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover ring-2 ring-white shadow-sm"
                   />
                   <div>
                     <div className="flex items-center gap-2">

@@ -36,7 +36,8 @@ export default function HeroSection() {
     {
       id: 1,
       title: 'Imou Cruiser Bullet 2E',
-      subtitle: 'Camara WiFi para vigilar tu hogar o negocio con vision nocturna y monitoreo desde el celular',
+      subtitle:
+        'Camara WiFi para vigilar tu hogar o negocio con vision nocturna y monitoreo desde el celular',
       image: '/encabezado/cuiser_mini.png',
       cta: 'Comprar ahora',
       price: 192000,
@@ -50,7 +51,8 @@ export default function HeroSection() {
     {
       id: 2,
       title: 'Diadema Logitech G335',
-      subtitle: 'Sonido comodo y liviano para jugar, estudiar o trabajar durante horas sin incomodidad',
+      subtitle:
+        'Sonido comodo y liviano para jugar, estudiar o trabajar durante horas sin incomodidad',
       image: '/encabezado/diademaG335_lateral.png',
       cta: 'Comprar ahora',
       price: 258000,
@@ -64,7 +66,8 @@ export default function HeroSection() {
     {
       id: 3,
       title: 'Central Electrica Forza FPP-T100',
-      subtitle: 'Respaldo portatil para mantener conectados tus equipos en casa, oficina o punto de venta',
+      subtitle:
+        'Respaldo portatil para mantener conectados tus equipos en casa, oficina o punto de venta',
       image: '/encabezado/FPP-T100_2.PNG',
       cta: 'Comprar ahora',
       price: 580000,
@@ -110,11 +113,7 @@ export default function HeroSection() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="container min-h-[780px] sm:min-h-[700px] md:min-h-[640px] xl:min-h-[680px]">
-        <div
-          className="relative flex h-full"
-          aria-live="polite"
-          aria-roledescription="carousel"
-        >
+        <div className="relative flex h-full" aria-live="polite" aria-roledescription="carousel">
           {slides.map((slide, index) => {
             const isActive = index === currentSlide
             const positionClass =
@@ -207,10 +206,7 @@ export default function HeroSection() {
                         onFocus={() => setIsPaused(true)}
                         onBlur={() => setIsPaused(false)}
                       >
-                        <ShoppingBag
-                          className="mr-2 h-5 w-5"
-                          aria-hidden="true"
-                        />
+                        <ShoppingBag className="mr-2 h-5 w-5" aria-hidden="true" />
                         Comprar ahora
                       </Button>
                       <Button
@@ -227,24 +223,18 @@ export default function HeroSection() {
 
                     <dl className="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-3">
                       <div className="flex items-center gap-2">
-                        <span
-                          className="h-2 w-2 rounded-full bg-green-500"
-                          aria-hidden="true"
-                        ></span>
+                        <span className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />
                         <span>Envio a toda Colombia</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span
                           className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"
                           aria-hidden="true"
-                        ></span>
+                        />
                         <span>Garantia y respaldo</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span
-                          className="h-2 w-2 rounded-full bg-purple-500"
-                          aria-hidden="true"
-                        ></span>
+                        <span className="h-2 w-2 rounded-full bg-purple-500" aria-hidden="true" />
                         <span>Atencion Lun-Vie</span>
                       </div>
                     </dl>
@@ -265,7 +255,7 @@ export default function HeroSection() {
                       <div
                         className="absolute inset-0 -z-10 translate-y-12 rounded-full bg-[hsla(var(--brand),0.22)] blur-3xl"
                         aria-hidden="true"
-                      ></div>
+                      />
                     </div>
                   </div>
                 </div>
@@ -296,9 +286,7 @@ export default function HeroSection() {
                   key={slide.id}
                   type="button"
                   className={`h-3 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2 ${
-                    isActive
-                      ? 'w-8 bg-[hsl(var(--brand))]'
-                      : 'w-3 bg-white/70 hover:bg-white'
+                    isActive ? 'w-8 bg-[hsl(var(--brand))]' : 'w-3 bg-white/70 hover:bg-white'
                   }`}
                   aria-label={`Ir al slide ${index + 1}`}
                   aria-current={isActive}

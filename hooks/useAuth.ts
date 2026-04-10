@@ -21,7 +21,7 @@ export function useRequireAuth({
 
   useEffect(() => {
     if (debugMode) {
-      console.log('🔍 useRequireAuth - Estado:', {
+      console.warn('🔍 useRequireAuth - Estado:', {
         loading,
         user: user?.email,
         profile: profile?.role,
@@ -42,7 +42,7 @@ export function useRequireAuth({
 
     // Si no hay usuario, redirigir al login
     if (!user) {
-      if (debugMode) console.log('❌ Sin usuario, redirigiendo a login')
+      if (debugMode) console.warn('❌ Sin usuario, redirigiendo a login')
       router.push(redirectTo)
       setHasChecked(true)
       return
@@ -50,26 +50,16 @@ export function useRequireAuth({
 
     // Si requiere admin y no es admin, redirigir
     if (adminOnly && !isAdmin) {
-      if (debugMode) console.log('❌ No es admin, redirigiendo a home')
+      if (debugMode) console.warn('❌ No es admin, redirigiendo a home')
       router.push('/')
       setHasChecked(true)
       return
     }
 
     // Usuario autorizado
-    if (debugMode) console.log('✅ Usuario autorizado')
+    if (debugMode) console.warn('✅ Usuario autorizado')
     setHasChecked(true)
-  }, [
-    user,
-    profile,
-    loading,
-    isAdmin,
-    router,
-    redirectTo,
-    adminOnly,
-    hasChecked,
-    debugMode,
-  ])
+  }, [user, profile, loading, isAdmin, router, redirectTo, adminOnly, hasChecked, debugMode])
 
   return {
     user,

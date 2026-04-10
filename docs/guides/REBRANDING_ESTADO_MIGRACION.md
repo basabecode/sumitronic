@@ -45,18 +45,18 @@ if (legacy) {
 
 Archivos actualizados (solo textos de diagnóstico, comentarios y banners):
 
-| Archivo | Cambio |
-| --- | --- |
-| `scripts/quick-database-fix.ts` | Banner, título de log y `brand` del producto de prueba |
-| `scripts/test-google-sheets.ts` | Título de log |
-| `scripts/simple-db-test.js` | Banner y título de log |
-| `scripts/test-supabase-connection.js` | Título de sección |
-| `scripts/validate-supabase.js` | Título de sección |
-| `scripts/deploy.bat` | Comentario REM |
-| `lib/types/products.ts` | Banner de comentario |
-| `lib/types/database.ts` | Banner de comentario |
-| `supabase/archive/verification.sql` | Banner de comentario |
-| `supabase/migrations/20251208_create_indexes.sql` | Banner de comentario |
+| Archivo                                           | Cambio                                                 |
+| ------------------------------------------------- | ------------------------------------------------------ |
+| `scripts/quick-database-fix.ts`                   | Banner, título de log y `brand` del producto de prueba |
+| `scripts/test-google-sheets.ts`                   | Título de log                                          |
+| `scripts/simple-db-test.js`                       | Banner y título de log                                 |
+| `scripts/test-supabase-connection.js`             | Título de sección                                      |
+| `scripts/validate-supabase.js`                    | Título de sección                                      |
+| `scripts/deploy.bat`                              | Comentario REM                                         |
+| `lib/types/products.ts`                           | Banner de comentario                                   |
+| `lib/types/database.ts`                           | Banner de comentario                                   |
+| `supabase/archive/verification.sql`               | Banner de comentario                                   |
+| `supabase/migrations/20251208_create_indexes.sql` | Banner de comentario                                   |
 
 Ninguno de estos cambios afecta lógica, contratos ni funcionalidad.
 
@@ -143,11 +143,11 @@ Archivo: `lib/brand.ts`
 Valores pendientes:
 
 ```ts
-siteUrl: 'https://capishop-web.vercel.app'   // → dominio SUMITRONIC final
-supportEmail: 'info@capishop.com'            // → correo SUMITRONIC oficial
-orderSupportEmail: 'soporte@capishop.com'    // → correo de soporte oficial
-logoUrl                                       // → asset SUMITRONIC final
-faviconUrl                                   // → asset SUMITRONIC final
+siteUrl: 'https://capishop-web.vercel.app' // → dominio SUMITRONIC final
+supportEmail: 'info@capishop.com' // → correo SUMITRONIC oficial
+orderSupportEmail: 'soporte@capishop.com' // → correo de soporte oficial
+logoUrl // → asset SUMITRONIC final
+faviconUrl // → asset SUMITRONIC final
 // enlaces sociales → handles @sumitronic reales
 ```
 
@@ -168,7 +168,7 @@ Archivos: `lib/payments/constants.ts`, `lib/payments/README.md`
 Valor pendiente:
 
 ```ts
-accountHolder: 'CapiShop'   // → cambiar solo cuando la cuenta legal diga SUMITRONIC
+accountHolder: 'CapiShop' // → cambiar solo cuando la cuenta legal diga SUMITRONIC
 ```
 
 No cambiar hasta validar con contabilidad o el titular bancario que las cuentas de Nequi, Daviplata y transferencia están registradas a nombre de SUMITRONIC. Actualizar código, copys, capturas y mensajes de soporte en el mismo despliegue.
@@ -177,14 +177,14 @@ No cambiar hasta validar con contabilidad o el titular bancario que las cuentas 
 
 ## Estado general del rebranding técnico
 
-| Etapa | Descripción | Estado |
-| --- | --- | --- |
-| 1 | localStorage `capishop_admin_brands` | Completada |
-| 2 | Scripts, banners y comentarios internos | Completada |
-| 3 | Variables de entorno y restore con soporte dual | Completada |
-| 4 | Función SQL `sumitronic_slugify` y tipos TypeScript | Completada |
-| 5a | `lib/brand.ts`: dominio, emails, redes sociales | Pendiente — activos externos |
-| 5b | `lib/payments/constants.ts`: titular de pago | Pendiente — validación legal |
+| Etapa | Descripción                                         | Estado                       |
+| ----- | --------------------------------------------------- | ---------------------------- |
+| 1     | localStorage `capishop_admin_brands`                | Completada                   |
+| 2     | Scripts, banners y comentarios internos             | Completada                   |
+| 3     | Variables de entorno y restore con soporte dual     | Completada                   |
+| 4     | Función SQL `sumitronic_slugify` y tipos TypeScript | Completada                   |
+| 5a    | `lib/brand.ts`: dominio, emails, redes sociales     | Pendiente — activos externos |
+| 5b    | `lib/payments/constants.ts`: titular de pago        | Pendiente — validación legal |
 
 ---
 

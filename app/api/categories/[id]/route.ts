@@ -15,11 +15,7 @@ async function requireAdmin(supabase: ReturnType<typeof createClient>) {
     return { user: null, profile: null, error: 'No autorizado', status: 401 }
   }
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+  const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
   if (profile?.role !== 'admin') {
     return { user, profile, error: 'Acceso denegado', status: 403 }
@@ -45,10 +41,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       .single()
 
     if (fetchError || !existing) {
-      return NextResponse.json(
-        { error: 'Categoría no encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Categoría no encontrada' }, { status: 404 })
     }
 
     const body = await request.json()
@@ -90,19 +83,13 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           { status: 409 }
         )
       }
-      return NextResponse.json(
-        { error: 'Error al actualizar la categoría' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al actualizar la categoría' }, { status: 500 })
     }
 
     return NextResponse.json({ category })
   } catch (error) {
     console.error('Category PUT [id] error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -123,10 +110,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     if (countError) {
       console.error('Error checking products for category:', countError)
-      return NextResponse.json(
-        { error: 'Error al verificar productos asociados' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al verificar productos asociados' }, { status: 500 })
     }
 
     if ((count ?? 0) > 0) {
@@ -138,25 +122,16 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const { error: deleteError } = await supabase
-      .from('categories')
-      .delete()
-      .eq('id', params.id)
+    const { error: deleteError } = await supabase.from('categories').delete().eq('id', params.id)
 
     if (deleteError) {
       console.error('Error deleting category:', deleteError)
-      return NextResponse.json(
-        { error: 'Error al eliminar la categoría' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al eliminar la categoría' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Categoría eliminada correctamente' })
   } catch (error) {
     console.error('Category DELETE [id] error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

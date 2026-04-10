@@ -1,16 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import {
-  Heart,
-  LogIn,
-  LogOut,
-  Package,
-  Settings,
-  ShoppingCart,
-  User,
-  UserPlus,
-} from 'lucide-react'
+import { Heart, LogIn, LogOut, Package, Settings, ShoppingCart, User, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -68,7 +59,12 @@ export function HeaderActions({
       <div className={mobile ? 'flex items-center gap-1' : 'flex items-center gap-2'}>
         {mobile ? (
           <>
-            <Button variant="ghost" size="sm" asChild className="rounded-full h-8 w-8 p-0 text-[hsl(var(--foreground))]">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="rounded-full h-8 w-8 p-0 text-[hsl(var(--foreground))]"
+            >
               <Link href="/auth/login" aria-label="Iniciar sesión">
                 <LogIn className="h-4 w-4" />
               </Link>
@@ -86,7 +82,12 @@ export function HeaderActions({
           </>
         ) : (
           <>
-            <Button variant="ghost" size="sm" asChild className="rounded-full text-white hover:bg-white/20 hover:text-white">
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="rounded-full text-white hover:bg-white/20 hover:text-white"
+            >
               <Link href="/auth/login">Iniciar sesión</Link>
             </Button>
             <Button
@@ -139,9 +140,17 @@ export function HeaderActions({
           <Button
             variant="ghost"
             size="sm"
-            className={mobile ? 'relative h-8 w-8 rounded-full p-0' : 'relative h-9 w-9 rounded-full p-0'}
+            className={
+              mobile ? 'relative h-8 w-8 rounded-full p-0' : 'relative h-9 w-9 rounded-full p-0'
+            }
           >
-            <Avatar className={mobile ? 'h-8 w-8 border border-[hsl(var(--border-subtle))]' : 'h-9 w-9 border border-[hsl(var(--border-subtle))]'}>
+            <Avatar
+              className={
+                mobile
+                  ? 'h-8 w-8 border border-[hsl(var(--border-subtle))]'
+                  : 'h-9 w-9 border border-[hsl(var(--border-subtle))]'
+              }
+            >
               <AvatarImage
                 src={profile?.avatar_url || ''}
                 alt={profile?.full_name || user.email || 'Usuario'}
@@ -160,30 +169,45 @@ export function HeaderActions({
           forceMount
         >
           <div className="space-y-1 px-3 py-2.5">
-            {profile?.full_name && <p className="font-medium text-slate-900">{profile.full_name}</p>}
+            {profile?.full_name && (
+              <p className="font-medium text-slate-900">{profile.full_name}</p>
+            )}
             <p className="truncate text-sm text-[hsl(var(--text-muted))]">{user.email}</p>
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900">
+          <DropdownMenuItem
+            asChild
+            className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900"
+          >
             <Link href="/profile" className="w-full">
               <User className="mr-2 h-4 w-4" />
               Mi perfil
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900">
-            <button type="button" onClick={onOpenFavorites} className="flex w-full items-center text-left text-slate-700">
+            <button
+              type="button"
+              onClick={onOpenFavorites}
+              className="flex w-full items-center text-left text-slate-700"
+            >
               <Heart className="mr-2 h-4 w-4" />
               Mis favoritos
             </button>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900">
+          <DropdownMenuItem
+            asChild
+            className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900"
+          >
             <Link href={mobile ? '/profile/orders' : '/orders'} className="w-full">
               <Package className="mr-2 h-4 w-4" />
               Mis pedidos
             </Link>
           </DropdownMenuItem>
           {isAdmin && (
-            <DropdownMenuItem asChild className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900">
+            <DropdownMenuItem
+              asChild
+              className="text-slate-700 focus:bg-[hsl(var(--surface-highlight))] focus:text-slate-900"
+            >
               <Link href="/admin" className="w-full">
                 <Settings className="mr-2 h-4 w-4" />
                 Panel admin
@@ -191,7 +215,10 @@ export function HeaderActions({
             </DropdownMenuItem>
           )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={onSignOut} className="text-red-600 focus:bg-red-50 focus:text-red-700">
+          <DropdownMenuItem
+            onClick={onSignOut}
+            className="text-red-600 focus:bg-red-50 focus:text-red-700"
+          >
             <LogOut className="mr-2 h-4 w-4" />
             Cerrar sesión
           </DropdownMenuItem>

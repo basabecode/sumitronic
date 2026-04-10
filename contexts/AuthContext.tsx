@@ -15,10 +15,7 @@ interface AuthContextType {
     password: string,
     fullName?: string
   ) => Promise<{ error: AuthError | null }>
-  signIn: (
-    email: string,
-    password: string
-  ) => Promise<{ error: AuthError | null }>
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>
   signInWithGoogle: () => Promise<{ error: AuthError | null }>
   signOut: () => Promise<{ error: AuthError | null }>
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>
@@ -75,7 +72,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setProfile(profileData)
         }
       } catch (error) {
-        console.error('Error initializing auth:', error)
+        // Si Supabase local no está disponible (ECONNREFUSED / fetch failed),
+        // terminamos el loading para no bloquear la UI en un bucle infinito.
+        const msg = error instanceof Error ? error.message : String(error)
+        if (
+          msg.includes('fetch failed') ||
+          msg.includes('ECONNREFUSED') ||
+          msg.includes('Failed to fetch')
+        ) {
+          console.warn(
+            '[Auth] Supabase no disponible en este momento. La app continuará sin sesión.'
+          )
+        } else {
+          console.error('Error initializing auth:', error)
+        }
       } finally {
         setLoading(false)
       }
@@ -186,10 +196,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const { error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('id', user.id)
+      const { error } = await supabase.from('users').update(updates).eq('id', user.id)
 
       if (!error) {
         setProfile(prev => (prev ? { ...prev, ...updates } : null))

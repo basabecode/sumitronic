@@ -33,7 +33,9 @@ export default function MarcasPage() {
               aria-label="Ruta de navegacion"
               className="mb-8 flex items-center gap-1.5 text-sm text-[hsl(var(--text-muted))]"
             >
-              <Link href="/" className="transition-colors hover:text-[hsl(var(--foreground))]">Inicio</Link>
+              <Link href="/" className="transition-colors hover:text-[hsl(var(--foreground))]">
+                Inicio
+              </Link>
               <ChevronRight className="h-3.5 w-3.5 shrink-0" />
               <span className="font-medium text-[hsl(var(--foreground))]">Marcas</span>
             </nav>
@@ -43,7 +45,8 @@ export default function MarcasPage() {
               Marcas que distribuimos
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
-              Distribuidores con respaldo local en Cali. Seguridad electronica, redes, energia y accesorios con soporte pre y post venta.
+              Distribuidores con respaldo local en Cali. Seguridad electronica, redes, energia y
+              accesorios con soporte pre y post venta.
             </p>
           </div>
         </section>
@@ -69,7 +72,9 @@ export default function MarcasPage() {
                         sizes="144px"
                       />
                     </div>
-                    <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] ${brand.accentClass}`}>
+                    <span
+                      className={`inline-flex rounded-full border px-2.5 py-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] ${brand.accentClass}`}
+                    >
                       {brand.category}
                     </span>
                   </div>

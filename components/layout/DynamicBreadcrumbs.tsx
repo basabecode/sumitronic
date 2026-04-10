@@ -14,7 +14,7 @@ import {
 
 export function DynamicBreadcrumbs() {
   const pathname = usePathname()
-  
+
   // Ocultar migas de pan en home, admin, login, y detalle de producto (tiene breadcrumb propio con nombre real)
   if (
     pathname === '/' ||
@@ -41,10 +41,10 @@ export function DynamicBreadcrumbs() {
             {paths.map((path, index) => {
               const href = `/${paths.slice(0, index + 1).join('/')}`
               const isLast = index === paths.length - 1
-              
+
               // Decodificar posibles URIs como %20
               let cleanPath = decodeURIComponent(path)
-              // Reemplazar guiones 
+              // Reemplazar guiones
               cleanPath = cleanPath.replace(/-/g, ' ')
               const title = cleanPath.charAt(0).toUpperCase() + cleanPath.slice(1)
 
@@ -53,7 +53,9 @@ export function DynamicBreadcrumbs() {
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     {isLast ? (
-                      <BreadcrumbPage className="font-medium text-[hsl(var(--brand-strong))]">{title}</BreadcrumbPage>
+                      <BreadcrumbPage className="font-medium text-[hsl(var(--brand-strong))]">
+                        {title}
+                      </BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink asChild>
                         <Link href={href}>{title}</Link>

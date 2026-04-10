@@ -47,10 +47,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       .single()
 
     if (error || !order) {
-      return NextResponse.json(
-        { error: 'Pedido no encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 })
     }
 
     // Verificar que la orden pertenece al usuario, o que es admin
@@ -69,10 +66,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ data: order })
   } catch (error) {
     console.error('Order GET [id] error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -90,11 +84,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     // Solo admins pueden actualizar el estado de una orden
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -110,20 +100,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       updated_at: new Date().toISOString(),
     }
 
-    const validStatuses = [
-      'pending',
-      'processing',
-      'shipped',
-      'delivered',
-      'cancelled',
-    ]
-    const validPaymentStatuses = [
-      'pending',
-      'paid',
-      'failed',
-      'refunded',
-      'partially_refunded',
-    ]
+    const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled']
+    const validPaymentStatuses = ['pending', 'paid', 'failed', 'refunded', 'partially_refunded']
 
     if (status !== undefined) {
       if (!validStatuses.includes(status)) {
@@ -187,10 +165,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ data: order })
   } catch (error) {
     console.error('Order PATCH [id] error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -208,11 +183,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     }
 
     // Solo admins pueden eliminar pedidos
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -240,10 +211,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const { error: deleteError } = await adminClient
-      .from('orders')
-      .delete()
-      .eq('id', params.id)
+    const { error: deleteError } = await adminClient.from('orders').delete().eq('id', params.id)
 
     if (deleteError) {
       console.error('Error deleting order:', deleteError)
@@ -253,9 +221,6 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Order DELETE [id] error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

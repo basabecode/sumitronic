@@ -75,7 +75,9 @@ export default function HelpArticlePage({ params }: { params: { slug: string } }
           <div className="space-y-8">
             {article.sections.map(section => (
               <section key={section.heading}>
-                <h2 className="text-2xl font-semibold text-[hsl(var(--foreground))]">{section.heading}</h2>
+                <h2 className="text-2xl font-semibold text-[hsl(var(--foreground))]">
+                  {section.heading}
+                </h2>
                 <div className="mt-4 space-y-4 text-base leading-8 text-[hsl(var(--foreground))]">
                   {section.body.map(paragraph => (
                     <p key={paragraph}>{paragraph}</p>
@@ -90,9 +92,16 @@ export default function HelpArticlePage({ params }: { params: { slug: string } }
               <p className="eyebrow-label">Preguntas frecuentes</p>
               <div className="mt-4 space-y-4">
                 {article.faq.map(item => (
-                  <div key={item.question} className="rounded-[1.25rem] bg-[hsl(var(--surface-muted))] p-4">
-                    <h2 className="text-lg font-medium text-[hsl(var(--foreground))]">{item.question}</h2>
-                    <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">{item.answer}</p>
+                  <div
+                    key={item.question}
+                    className="rounded-[1.25rem] bg-[hsl(var(--surface-muted))] p-4"
+                  >
+                    <h2 className="text-lg font-medium text-[hsl(var(--foreground))]">
+                      {item.question}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">
+                      {item.answer}
+                    </p>
                   </div>
                 ))}
               </div>

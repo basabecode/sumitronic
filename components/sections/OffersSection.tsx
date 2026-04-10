@@ -8,13 +8,19 @@ import { Button } from '@/components/ui/button'
 import { useCart } from '@/contexts/CartContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
 import { cn } from '@/lib/utils'
-import { Product, ProductsApiResponse, convertDatabaseProductsToProducts } from '@/lib/types/products'
+import {
+  Product,
+  ProductsApiResponse,
+  convertDatabaseProductsToProducts,
+} from '@/lib/types/products'
 import ProductDetailsModal from '@/components/products/ProductDetailsModal'
 
 export default function OffersSection() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [carouselSpeed, setCarouselSpeed] = useState<'normal' | 'fast-forward' | 'fast-reverse'>('normal')
+  const [carouselSpeed, setCarouselSpeed] = useState<'normal' | 'fast-forward' | 'fast-reverse'>(
+    'normal'
+  )
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   const { addItem, openCart, formatCurrency } = useCart()
@@ -26,7 +32,10 @@ export default function OffersSection() {
       setLoading(true)
       try {
         // Fetch 2× limit para compensar el post-filter compare_price > price
-        const response = await fetch('/api/products?onOffer=true&limit=24&sortBy=compare_price&sortOrder=desc', { signal: controller.signal })
+        const response = await fetch(
+          '/api/products?onOffer=true&limit=24&sortBy=compare_price&sortOrder=desc',
+          { signal: controller.signal }
+        )
         const data: ProductsApiResponse = await response.json()
         if (response.ok && data.products) {
           setProducts(convertDatabaseProductsToProducts(data.products).slice(0, 12))
@@ -48,20 +57,24 @@ export default function OffersSection() {
     '/placeholder.svg'
 
   const getStockCount = (product: Product): number =>
-    (product as any).stockCount ??
-    (product as any).stock_quantity ??
-    (product as any).stock ??
-    0
+    (product as any).stockCount ?? (product as any).stock_quantity ?? (product as any).stock ?? 0
 
   const getOriginalPrice = (product: Product): number | null =>
-    product.originalPrice && product.originalPrice > product.price
-      ? product.originalPrice
-      : null
+    product.originalPrice && product.originalPrice > product.price ? product.originalPrice : null
 
   const handleAddToCart = (product: Product) => {
     const image = getProductImage(product)
     const stockCount = getStockCount(product)
-    addItem({ id: product.id, name: product.name, price: product.price, image, image_url: image, brand: product.brand, stock: stockCount, stockCount })
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image,
+      image_url: image,
+      brand: product.brand,
+      stock: stockCount,
+      stockCount,
+    })
     openCart()
   }
 
@@ -84,13 +97,20 @@ export default function OffersSection() {
 
   // Pre-computar datos por producto único antes de triplicar para el carrusel
   // DEBE estar antes del early return para no violar las Rules of Hooks
-  const productDataMap = useMemo(() => new Map(
-    products.map(p => [p.id, {
-      image: getProductImage(p),
-      stockCount: getStockCount(p),
-      originalPrice: getOriginalPrice(p),
-    }])
-  ), [products])
+  const productDataMap = useMemo(
+    () =>
+      new Map(
+        products.map(p => [
+          p.id,
+          {
+            image: getProductImage(p),
+            stockCount: getStockCount(p),
+            originalPrice: getOriginalPrice(p),
+          },
+        ])
+      ),
+    [products]
+  )
 
   if (!loading && products.length === 0) return null
 
@@ -114,7 +134,8 @@ export default function OffersSection() {
             Referencias con descuento real
           </h2>
           <p className="mx-auto max-w-2xl text-base text-[hsl(var(--text-muted))] md:text-lg">
-            Revisa equipos con ahorro vigente, inventario disponible y respaldo para compra en Colombia.
+            Revisa equipos con ahorro vigente, inventario disponible y respaldo para compra en
+            Colombia.
           </p>
         </div>
 
@@ -134,13 +155,22 @@ export default function OffersSection() {
                   onMouseUp={() => setCarouselSpeed('normal')}
                   onMouseLeave={() => setCarouselSpeed('normal')}
                 >
-                  <div className={cn(
-                    'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
-                    carouselSpeed === 'fast-reverse'
-                      ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
-                      : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
-                  )}>
-                    <ChevronLeft className={cn('h-6 w-6', carouselSpeed === 'fast-reverse' ? 'text-[hsl(var(--brand-strong))]' : 'text-gray-700')} />
+                  <div
+                    className={cn(
+                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
+                      carouselSpeed === 'fast-reverse'
+                        ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
+                        : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
+                    )}
+                  >
+                    <ChevronLeft
+                      className={cn(
+                        'h-6 w-6',
+                        carouselSpeed === 'fast-reverse'
+                          ? 'text-[hsl(var(--brand-strong))]'
+                          : 'text-gray-700'
+                      )}
+                    />
                   </div>
                 </div>
                 <div
@@ -149,24 +179,35 @@ export default function OffersSection() {
                   onMouseUp={() => setCarouselSpeed('normal')}
                   onMouseLeave={() => setCarouselSpeed('normal')}
                 >
-                  <div className={cn(
-                    'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
-                    carouselSpeed === 'fast-forward'
-                      ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
-                      : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
-                  )}>
-                    <ChevronRight className={cn('h-6 w-6', carouselSpeed === 'fast-forward' ? 'text-[hsl(var(--brand-strong))]' : 'text-gray-700')} />
+                  <div
+                    className={cn(
+                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
+                      carouselSpeed === 'fast-forward'
+                        ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
+                        : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
+                    )}
+                  >
+                    <ChevronRight
+                      className={cn(
+                        'h-6 w-6',
+                        carouselSpeed === 'fast-forward'
+                          ? 'text-[hsl(var(--brand-strong))]'
+                          : 'text-gray-700'
+                      )}
+                    />
                   </div>
                 </div>
               </div>
 
               {/* Carrusel */}
               <div className="carousel-container">
-                <div className={cn('carousel-track', {
-                  'speed-fast-forward': carouselSpeed === 'fast-forward',
-                  'speed-fast-reverse': carouselSpeed === 'fast-reverse',
-                  'speed-normal': carouselSpeed === 'normal',
-                })}>
+                <div
+                  className={cn('carousel-track', {
+                    'speed-fast-forward': carouselSpeed === 'fast-forward',
+                    'speed-fast-reverse': carouselSpeed === 'fast-reverse',
+                    'speed-normal': carouselSpeed === 'normal',
+                  })}
+                >
                   {duplicatedProducts.map((product, index) => {
                     const data = productDataMap.get(product.id)!
                     const { image, stockCount, originalPrice } = data
@@ -203,10 +244,14 @@ export default function OffersSection() {
                           </div>
 
                           {/* Badge stock — top-right */}
-                          <span className={cn(
-                            'absolute right-3 top-3 z-10 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
-                            isOutOfStock ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'
-                          )}>
+                          <span
+                            className={cn(
+                              'absolute right-3 top-3 z-10 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
+                              isOutOfStock
+                                ? 'bg-rose-100 text-rose-700'
+                                : 'bg-emerald-100 text-emerald-700'
+                            )}
+                          >
                             {isOutOfStock ? 'Sin stock' : `Stock ${stockCount}`}
                           </span>
 
@@ -277,7 +322,10 @@ export default function OffersSection() {
               {/* Dots mobile */}
               <div className="mt-6 flex justify-center gap-2 lg:hidden">
                 {products.slice(0, Math.min(6, products.length)).map((_, i) => (
-                  <div key={i} className="h-2 w-2 animate-pulse rounded-full bg-[hsl(var(--brand))]" />
+                  <div
+                    key={i}
+                    className="h-2 w-2 animate-pulse rounded-full bg-[hsl(var(--brand))]"
+                  />
                 ))}
               </div>
             </div>
@@ -299,7 +347,8 @@ export default function OffersSection() {
       {/* Modal de detalle */}
       <ProductDetailsModal
         product={
-          selectedProduct && (() => {
+          selectedProduct &&
+          (() => {
             const d = productDataMap.get(selectedProduct.id)
             return {
               id: Number(selectedProduct.id),
@@ -308,9 +357,10 @@ export default function OffersSection() {
               originalPrice: d?.originalPrice ?? undefined,
               image: d?.image ?? '/placeholder.svg',
               brand: selectedProduct.brand,
-              category: typeof (selectedProduct as any).category === 'object'
-                ? (selectedProduct as any).category?.name
-                : (selectedProduct as any).category ?? '',
+              category:
+                typeof (selectedProduct as any).category === 'object'
+                  ? (selectedProduct as any).category?.name
+                  : ((selectedProduct as any).category ?? ''),
               stockCount: d?.stockCount ?? 0,
               inStock: (d?.stockCount ?? 0) > 0,
               description: selectedProduct.description,
@@ -332,23 +382,47 @@ export default function OffersSection() {
           gap: 1rem;
           will-change: transform;
         }
-        .speed-normal      { animation: scroll 19s linear infinite; }
-        .speed-fast-forward{ animation: scroll 4.5s linear infinite; }
-        .speed-fast-reverse{ animation: scroll-reverse 4.5s linear infinite; }
-        .carousel-track:hover { animation-play-state: paused; }
-        .carousel-item { flex-shrink: 0; }
+        .speed-normal {
+          animation: scroll 19s linear infinite;
+        }
+        .speed-fast-forward {
+          animation: scroll 4.5s linear infinite;
+        }
+        .speed-fast-reverse {
+          animation: scroll-reverse 4.5s linear infinite;
+        }
+        .carousel-track:hover {
+          animation-play-state: paused;
+        }
+        .carousel-item {
+          flex-shrink: 0;
+        }
         @keyframes scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(calc(-100% / 3)); }
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% / 3));
+          }
         }
         @keyframes scroll-reverse {
-          0%   { transform: translateX(calc(-100% / 3)); }
-          100% { transform: translateX(0); }
+          0% {
+            transform: translateX(calc(-100% / 3));
+          }
+          100% {
+            transform: translateX(0);
+          }
         }
         @media (max-width: 640px) {
-          .speed-normal       { animation-duration: 27s; }
-          .speed-fast-forward { animation-duration: 3s; }
-          .speed-fast-reverse { animation-duration: 3s; }
+          .speed-normal {
+            animation-duration: 27s;
+          }
+          .speed-fast-forward {
+            animation-duration: 3s;
+          }
+          .speed-fast-reverse {
+            animation-duration: 3s;
+          }
         }
       `}</style>
     </section>

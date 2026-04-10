@@ -36,11 +36,18 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Log additional information in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error details:', JSON.stringify({
-        message: error.message,
-        stack: error.stack,
-        componentStack: errorInfo.componentStack,
-      }, null, 2))
+      console.error(
+        'Error details:',
+        JSON.stringify(
+          {
+            message: error.message,
+            stack: error.stack,
+            componentStack: errorInfo.componentStack,
+          },
+          null,
+          2
+        )
+      )
     }
 
     // In production, you could send this to an error reporting service
@@ -76,8 +83,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-center text-gray-600">
-                Ha ocurrido un error inesperado. No te preocupes, nuestro equipo
-                ha sido notificado.
+                Ha ocurrido un error inesperado. No te preocupes, nuestro equipo ha sido notificado.
               </p>
 
               {process.env.NODE_ENV === 'development' && this.state.error && (
@@ -105,19 +111,11 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
 
               <div className="flex flex-col gap-2 sm:flex-row">
-                <Button
-                  onClick={this.handleRetry}
-                  className="flex-1"
-                  variant="default"
-                >
+                <Button onClick={this.handleRetry} className="flex-1" variant="default">
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Intentar de nuevo
                 </Button>
-                <Button
-                  onClick={this.handleGoHome}
-                  variant="outline"
-                  className="flex-1"
-                >
+                <Button onClick={this.handleGoHome} variant="outline" className="flex-1">
                   <Home className="mr-2 h-4 w-4" />
                   Ir al inicio
                 </Button>
@@ -143,9 +141,7 @@ export function withErrorBoundary<P extends object>(
     </ErrorBoundary>
   )
 
-  WrappedComponent.displayName = `withErrorBoundary(${
-    Component.displayName || Component.name
-  })`
+  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`
 
   return WrappedComponent
 }
@@ -166,9 +162,7 @@ export function SectionErrorBoundary({
             <AlertTriangle className="h-5 w-5 text-red-600" />
             <div>
               <p className="font-medium text-red-900">{title}</p>
-              <p className="text-sm text-red-700">
-                Ha ocurrido un error al cargar esta sección.
-              </p>
+              <p className="text-sm text-red-700">Ha ocurrido un error al cargar esta sección.</p>
             </div>
           </CardContent>
         </Card>

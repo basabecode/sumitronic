@@ -76,8 +76,8 @@ export function MobileToast({ toast, onDismiss }: MobileToastProps) {
   useEffect(() => {
     // Progress bar animation
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        const newProgress = prev - (100 / (duration / 100))
+      setProgress(prev => {
+        const newProgress = prev - 100 / (duration / 100)
         return newProgress <= 0 ? 0 : newProgress
       })
     }, 100)
@@ -109,9 +109,7 @@ export function MobileToast({ toast, onDismiss }: MobileToastProps) {
         'gpu-accelerated',
         colors.bg,
         colors.border,
-        isExiting
-          ? 'animate-slide-out-up opacity-0'
-          : 'animate-slide-in-up'
+        isExiting ? 'animate-slide-out-up opacity-0' : 'animate-slide-in-up'
       )}
       role="alert"
       aria-live="polite"
@@ -125,14 +123,8 @@ export function MobileToast({ toast, onDismiss }: MobileToastProps) {
 
         {/* Text Content */}
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-900">
-            {toast.title}
-          </p>
-          {toast.message && (
-            <p className="mt-1 text-xs text-gray-600">
-              {toast.message}
-            </p>
-          )}
+          <p className="text-sm font-semibold text-gray-900">{toast.title}</p>
+          {toast.message && <p className="mt-1 text-xs text-gray-600">{toast.message}</p>}
         </div>
 
         {/* Close Button */}
@@ -154,10 +146,7 @@ export function MobileToast({ toast, onDismiss }: MobileToastProps) {
       {/* Progress Bar */}
       <div className="h-1 bg-gray-200">
         <div
-          className={cn(
-            'h-full transition-all duration-100 ease-linear',
-            colors.progress
-          )}
+          className={cn('h-full transition-all duration-100 ease-linear', colors.progress)}
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -203,20 +192,10 @@ export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
   if (toasts.length === 0) return null
 
   return (
-    <div
-      className={cn(
-        'fixed top-0 left-0 right-0 z-[100]',
-        'safe-top',
-        'pointer-events-none'
-      )}
-    >
+    <div className={cn('fixed top-0 left-0 right-0 z-[100]', 'safe-top', 'pointer-events-none')}>
       <div className="p-4 space-y-3 pointer-events-auto">
-        {toasts.map((toast) => (
-          <MobileToast
-            key={toast.id}
-            toast={toast}
-            onDismiss={onDismiss}
-          />
+        {toasts.map(toast => (
+          <MobileToast key={toast.id} toast={toast} onDismiss={onDismiss} />
         ))}
       </div>
     </div>
@@ -229,12 +208,7 @@ export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
 export function useToast() {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const showToast = (
-    type: ToastType,
-    title: string,
-    message?: string,
-    duration?: number
-  ) => {
+  const showToast = (type: ToastType, title: string, message?: string, duration?: number) => {
     const id = Math.random().toString(36).substring(7)
     const newToast: Toast = {
       id,
@@ -243,11 +217,11 @@ export function useToast() {
       message,
       duration,
     }
-    setToasts((prev) => [...prev, newToast])
+    setToasts(prev => [...prev, newToast])
   }
 
   const dismissToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id))
+    setToasts(prev => prev.filter(toast => toast.id !== id))
   }
 
   const success = (title: string, message?: string, duration?: number) => {

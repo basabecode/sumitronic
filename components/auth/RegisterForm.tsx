@@ -8,13 +8,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -22,9 +16,7 @@ const registerSchema = z
   .object({
     fullName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
     email: z.string().email('Email inválido'),
-    password: z
-      .string()
-      .min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
     confirmPassword: z.string(),
   })
   .refine(data => data.password === data.confirmPassword, {
@@ -67,9 +59,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       if (error) {
         setError(getErrorMessage(error.message))
       } else {
-        setSuccess(
-          '¡Registro exitoso! Revisa tu email para confirmar tu cuenta.'
-        )
+        setSuccess('¡Registro exitoso! Revisa tu email para confirmar tu cuenta.')
         reset()
         onSuccess?.()
       }
@@ -115,9 +105,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Crear Cuenta</CardTitle>
-        <CardDescription>
-          Completa el formulario para registrarte
-        </CardDescription>
+        <CardDescription>Completa el formulario para registrarte</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -142,9 +130,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               {...register('fullName')}
               disabled={isLoading}
             />
-            {errors.fullName && (
-              <p className="text-sm text-red-600">{errors.fullName.message}</p>
-            )}
+            {errors.fullName && <p className="text-sm text-red-600">{errors.fullName.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -156,9 +142,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               {...register('email')}
               disabled={isLoading}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -179,16 +163,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
-            {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -209,17 +187,11 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 disabled={isLoading}
               >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-sm text-red-600">
-                {errors.confirmPassword.message}
-              </p>
+              <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
             )}
           </div>
 
@@ -233,9 +205,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                O continúa con
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">O continúa con</span>
             </div>
           </div>
 

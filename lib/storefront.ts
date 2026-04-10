@@ -73,15 +73,16 @@ export async function getActiveBrands() {
     .eq('active', true)
     .not('brand', 'is', null)
 
-  const normalized = (data || [])
-    .map(item => item.brand?.trim())
-    .filter(Boolean) as string[]
+  const normalized = (data || []).map(item => item.brand?.trim()).filter(Boolean) as string[]
 
   return Array.from(new Set(normalized))
     .sort((a, b) => a.localeCompare(b, 'es'))
     .map(brand => ({
       name: brand,
-      slug: brand.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      slug: brand
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, ''),
     }))
 }
 
@@ -109,8 +110,12 @@ export async function getProductsByBrandSlug(slug: string) {
     const match = (rawBrands || [])
       .map((r: { brand: string }) => r.brand?.trim())
       .filter(Boolean)
-      .find((name: string) =>
-        name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === slug
+      .find(
+        (name: string) =>
+          name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '') === slug
       )
 
     if (!match) return null

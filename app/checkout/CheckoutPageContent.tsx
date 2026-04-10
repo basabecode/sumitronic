@@ -3,16 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import {
-  ArrowLeft,
-  Lock,
-  CreditCard,
-  Truck,
-  MapPin,
-  User,
-  Mail,
-  Phone,
-} from 'lucide-react'
+import { ArrowLeft, Lock, CreditCard, Truck, MapPin, User, Mail, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -41,7 +32,6 @@ import {
   sanitizeCheckoutForm,
 } from '@/lib/payments'
 import { isValidEmail, isValidColombianPhone } from '@/lib/formatting'
-
 
 interface CheckoutForm {
   // Información personal
@@ -93,8 +83,7 @@ export default function CheckoutPageContent() {
     newsletter: false,
   })
 
-  const clearFieldError = (field: string) =>
-    setFormErrors(p => ({ ...p, [field]: '' }))
+  const clearFieldError = (field: string) => setFormErrors(p => ({ ...p, [field]: '' }))
 
   const handleAddressSelect = (indexStr: string, addressesList: any[] = savedAddresses) => {
     setSelectedAddressIndex(indexStr)
@@ -106,7 +95,7 @@ export default function CheckoutPageContent() {
         address: '',
         city: '',
         state: '',
-        zipCode: ''
+        zipCode: '',
       }))
     } else {
       const idx = parseInt(indexStr)
@@ -117,7 +106,7 @@ export default function CheckoutPageContent() {
           address: addr.street,
           city: addr.city,
           state: addr.department?.toLowerCase() || '',
-          zipCode: addr.postal_code
+          zipCode: addr.postal_code,
         }))
       }
     }
@@ -135,21 +124,19 @@ export default function CheckoutPageContent() {
         email: user.email || prev.email,
         phone: profile.phone || prev.phone,
         firstName: firstName || prev.firstName,
-        lastName: lastName || prev.lastName
+        lastName: lastName || prev.lastName,
       }))
 
       // Direcciones guardadas
       if (profile.address) {
         try {
-          const addresses = Array.isArray(profile.address)
-            ? profile.address
-            : [profile.address]
+          const addresses = Array.isArray(profile.address) ? profile.address : [profile.address]
           setSavedAddresses(addresses)
 
           // Seleccionar la primera por defecto si existe y no hemos seleccionado nada aun
           if (addresses.length > 0) {
-             // Solo seleccionamos si estaba en 'new' por defecto y queremos autoseleccionar
-             handleAddressSelect('0', addresses)
+            // Solo seleccionamos si estaba en 'new' por defecto y queremos autoseleccionar
+            handleAddressSelect('0', addresses)
           }
         } catch (e) {
           console.error('Error parsing addresses', e)
@@ -174,8 +161,7 @@ export default function CheckoutPageContent() {
     const errors: Record<string, string> = {}
     if (!form.firstName.trim()) errors.firstName = 'El nombre es obligatorio'
     if (!form.lastName.trim()) errors.lastName = 'El apellido es obligatorio'
-    if (!isValidEmail(form.email.trim()))
-      errors.email = 'Ingresa un correo electrónico válido'
+    if (!isValidEmail(form.email.trim())) errors.email = 'Ingresa un correo electrónico válido'
     if (!isValidColombianPhone(form.phone))
       errors.phone = 'El teléfono debe ser un número colombiano de 10 dígitos (ej: 300 000 0000)'
     if (!form.address.trim()) errors.address = 'La dirección de entrega es obligatoria'
@@ -187,7 +173,9 @@ export default function CheckoutPageContent() {
       setFormErrors(errors)
       // Hacer scroll al primer error
       setTimeout(() => {
-        document.querySelector('[data-field-error]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document
+          .querySelector('[data-field-error]')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 50)
       return
     }
@@ -269,7 +257,10 @@ export default function CheckoutPageContent() {
               Agrega algunos productos antes de proceder al checkout
             </p>
             <Link href="/products">
-              <Button size="lg" className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]">
+              <Button
+                size="lg"
+                className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
+              >
                 Explorar Productos
               </Button>
             </Link>
@@ -335,7 +326,11 @@ export default function CheckoutPageContent() {
                         className={formErrors.firstName ? 'border-red-500' : ''}
                         required
                       />
-                      {formErrors.firstName && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.firstName}</p>}
+                      {formErrors.firstName && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.firstName}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="lastName">Apellido *</Label>
@@ -350,7 +345,11 @@ export default function CheckoutPageContent() {
                         className={formErrors.lastName ? 'border-red-500' : ''}
                         required
                       />
-                      {formErrors.lastName && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.lastName}</p>}
+                      {formErrors.lastName && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.lastName}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -369,7 +368,11 @@ export default function CheckoutPageContent() {
                         className={formErrors.email ? 'border-red-500' : ''}
                         required
                       />
-                      {formErrors.email && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.email}</p>}
+                      {formErrors.email && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.email}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="phone">Teléfono *</Label>
@@ -385,7 +388,11 @@ export default function CheckoutPageContent() {
                         className={formErrors.phone ? 'border-red-500' : ''}
                         required
                       />
-                      {formErrors.phone && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.phone}</p>}
+                      {formErrors.phone && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.phone}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -404,31 +411,48 @@ export default function CheckoutPageContent() {
                     <div className="mb-6">
                       <Label className="block mb-3 font-medium">Mis Direcciones</Label>
                       <RadioGroup
-                         value={selectedAddressIndex}
-                         onValueChange={handleAddressSelect}
-                         className="grid grid-cols-1 gap-3"
+                        value={selectedAddressIndex}
+                        onValueChange={handleAddressSelect}
+                        className="grid grid-cols-1 gap-3"
                       >
-                         {savedAddresses.map((addr, idx) => (
-                           <div key={idx} className={`flex items-start space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === idx.toString() ? 'border-primary bg-primary/5' : 'border-gray-200'}`}>
-                              <RadioGroupItem value={idx.toString()} id={`addr-${idx}`} className="mt-1" />
-                              <Label htmlFor={`addr-${idx}`} className="font-normal cursor-pointer flex-1">
-                                 <div className="font-medium text-gray-900">{addr.street}</div>
-                                 <div className="text-sm text-gray-500">
-                                   {addr.neighborhood ? `${addr.neighborhood}, ` : ''}
-                                   {addr.city}, {addr.department}
-                                 </div>
-                                 {addr.additional_info && (
-                                   <div className="text-xs text-gray-400 mt-1">{addr.additional_info}</div>
-                                 )}
-                              </Label>
-                           </div>
-                         ))}
-                         <div className={`flex items-center space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}>
-                              <RadioGroupItem value="new" id="addr-new" />
-                              <Label htmlFor="addr-new" className="font-medium cursor-pointer text-gray-900">
-                                 Usar una nueva dirección
-                              </Label>
-                         </div>
+                        {savedAddresses.map((addr, idx) => (
+                          <div
+                            key={idx}
+                            className={`flex items-start space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === idx.toString() ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
+                          >
+                            <RadioGroupItem
+                              value={idx.toString()}
+                              id={`addr-${idx}`}
+                              className="mt-1"
+                            />
+                            <Label
+                              htmlFor={`addr-${idx}`}
+                              className="font-normal cursor-pointer flex-1"
+                            >
+                              <div className="font-medium text-gray-900">{addr.street}</div>
+                              <div className="text-sm text-gray-500">
+                                {addr.neighborhood ? `${addr.neighborhood}, ` : ''}
+                                {addr.city}, {addr.department}
+                              </div>
+                              {addr.additional_info && (
+                                <div className="text-xs text-gray-400 mt-1">
+                                  {addr.additional_info}
+                                </div>
+                              )}
+                            </Label>
+                          </div>
+                        ))}
+                        <div
+                          className={`flex items-center space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
+                        >
+                          <RadioGroupItem value="new" id="addr-new" />
+                          <Label
+                            htmlFor="addr-new"
+                            className="font-medium cursor-pointer text-gray-900"
+                          >
+                            Usar una nueva dirección
+                          </Label>
+                        </div>
                       </RadioGroup>
                       <Separator className="my-6" />
                     </div>
@@ -447,7 +471,11 @@ export default function CheckoutPageContent() {
                       className={formErrors.address ? 'border-red-500' : ''}
                       required
                     />
-                    {formErrors.address && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.address}</p>}
+                    {formErrors.address && (
+                      <p className="text-sm text-red-600 mt-1" data-field-error>
+                        {formErrors.address}
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -464,7 +492,11 @@ export default function CheckoutPageContent() {
                         className={formErrors.city ? 'border-red-500' : ''}
                         required
                       />
-                      {formErrors.city && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.city}</p>}
+                      {formErrors.city && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.city}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="state">Departamento *</Label>
@@ -513,16 +545,18 @@ export default function CheckoutPageContent() {
                           <SelectItem value="vichada">Vichada</SelectItem>
                         </SelectContent>
                       </Select>
-                      {formErrors.state && <p className="text-sm text-red-600 mt-1" data-field-error>{formErrors.state}</p>}
+                      {formErrors.state && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.state}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="zipCode">Código Postal</Label>
                       <Input
                         id="zipCode"
                         value={form.zipCode}
-                        onChange={e =>
-                          handleInputChange('zipCode', e.target.value)
-                        }
+                        onChange={e => handleInputChange('zipCode', e.target.value)}
                         placeholder="Ej: 110111"
                       />
                     </div>
@@ -533,7 +567,7 @@ export default function CheckoutPageContent() {
               {/* Método de Pago */}
               <PaymentMethodSelector
                 selectedMethod={form.paymentMethod}
-                onMethodChange={(method) => handleInputChange('paymentMethod', method)}
+                onMethodChange={method => handleInputChange('paymentMethod', method)}
               />
 
               {/* Digital Wallet Payment Details */}
@@ -541,7 +575,7 @@ export default function CheckoutPageContent() {
                 <DigitalWalletPayment
                   totalAmount={state.total}
                   orderId="PREVIEW"
-                  onPaymentReferenceChange={(reference) =>
+                  onPaymentReferenceChange={reference =>
                     handleInputChange('paymentReference', reference)
                   }
                 />
@@ -554,9 +588,7 @@ export default function CheckoutPageContent() {
                     <Checkbox
                       id="saveInfo"
                       checked={form.saveInfo}
-                      onCheckedChange={checked =>
-                        handleInputChange('saveInfo', checked as boolean)
-                      }
+                      onCheckedChange={checked => handleInputChange('saveInfo', checked as boolean)}
                     />
                     <Label htmlFor="saveInfo" className="text-sm">
                       Guardar información para futuras compras
@@ -605,7 +637,9 @@ export default function CheckoutPageContent() {
                     </Label>
                   </div>
                   {formErrors.acceptTerms && (
-                    <p className="text-sm text-red-600" data-field-error>{formErrors.acceptTerms}</p>
+                    <p className="text-sm text-red-600" data-field-error>
+                      {formErrors.acceptTerms}
+                    </p>
                   )}
                 </CardContent>
               </Card>
@@ -628,10 +662,7 @@ export default function CheckoutPageContent() {
                   {/* Productos */}
                   <div className="space-y-3">
                     {state.items.map(item => (
-                      <div
-                        key={item.id}
-                        className="flex items-center space-x-3"
-                      >
+                      <div key={item.id} className="flex items-center space-x-3">
                         <div className="relative w-12 h-12 flex-shrink-0">
                           <Image
                             src={item.image_url || '/placeholder.svg'}
@@ -641,12 +672,8 @@ export default function CheckoutPageContent() {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium line-clamp-1">
-                            {item.name}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Cantidad: {item.quantity}
-                          </p>
+                          <p className="text-sm font-medium line-clamp-1">{item.name}</p>
+                          <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
                         </div>
                         <span className="text-sm font-medium">
                           {formatCurrency(item.price * item.quantity)}
@@ -674,7 +701,9 @@ export default function CheckoutPageContent() {
                       </span>
                     </div>
                     {state.shipping === 0 && (
-                      <p className="text-xs text-amber-600 mt-1">Envío calculado por el equipo tras confirmar el pedido</p>
+                      <p className="text-xs text-amber-600 mt-1">
+                        Envío calculado por el equipo tras confirmar el pedido
+                      </p>
                     )}
 
                     <Separator />
@@ -698,7 +727,7 @@ export default function CheckoutPageContent() {
                 >
                   {isProcessing ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                       Procesando...
                     </>
                   ) : (
@@ -721,22 +750,25 @@ export default function CheckoutPageContent() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-4">
-                      Métodos de pago aceptados
-                    </p>
+                    <p className="text-sm text-gray-600 mb-4">Métodos de pago aceptados</p>
                     <div className="flex justify-center flex-wrap gap-3">
                       {[
-                        { src: '/bancos/nequi_1.png',       alt: 'Nequi' },
-                        { src: '/bancos/daviplata_1.png',    alt: 'Daviplata' },
-                        { src: '/bancos/bancolombia_3.png',  alt: 'Bancolombia' },
-                        { src: '/bancos/davivienda_1.png',   alt: 'Davivienda' },
-                        { src: '/bancos/nubank_1.png',       alt: 'Nubank' },
+                        { src: '/bancos/nequi_1.png', alt: 'Nequi' },
+                        { src: '/bancos/daviplata_1.png', alt: 'Daviplata' },
+                        { src: '/bancos/bancolombia_3.png', alt: 'Bancolombia' },
+                        { src: '/bancos/davivienda_1.png', alt: 'Davivienda' },
+                        { src: '/bancos/nubank_1.png', alt: 'Nubank' },
                       ].map(bank => (
                         <div
                           key={bank.alt}
                           className="relative h-16 w-24 rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md"
                         >
-                          <Image src={bank.src} alt={bank.alt} fill className="object-contain p-1" />
+                          <Image
+                            src={bank.src}
+                            alt={bank.alt}
+                            fill
+                            className="object-contain p-1"
+                          />
                         </div>
                       ))}
                     </div>

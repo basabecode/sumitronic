@@ -70,7 +70,9 @@ export default function DashboardTab({
                   {loadingProducts ? (
                     <Loader2 className={`h-6 w-6 animate-spin ${stat.color} mt-2`} />
                   ) : (
-                    <p className="text-2xl md:text-3xl font-bold mt-1 text-gray-900">{stat.value}</p>
+                    <p className="text-2xl md:text-3xl font-bold mt-1 text-gray-900">
+                      {stat.value}
+                    </p>
                   )}
                 </div>
                 {stat.icon}

@@ -122,7 +122,7 @@ export default function BottomNav() {
         aria-label="Navegación principal móvil"
       >
         <div className="flex items-center justify-around px-2 py-2">
-          {navItems.map((item) => {
+          {navItems.map(item => {
             // Ocultar items que requieren auth si no está autenticado
             if (item.requiresAuth && !user) {
               return null
@@ -196,10 +196,7 @@ export default function BottomNav() {
         </div>
 
         {/* Safe area spacer for iOS home indicator */}
-        <div
-          className="h-[env(safe-area-inset-bottom)] bg-white"
-          aria-hidden="true"
-        />
+        <div className="h-[env(safe-area-inset-bottom)] bg-white" aria-hidden="true" />
       </nav>
     </>
   )

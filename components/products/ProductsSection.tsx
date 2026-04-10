@@ -52,17 +52,17 @@ interface ProductsSectionProps {
   showViewAllLink?: boolean
 }
 
-export function ProductsSection({ onOffer, sectionTitle, sectionDescription, showViewAllLink }: ProductsSectionProps = {}) {
+export function ProductsSection({
+  onOffer,
+  sectionTitle,
+  sectionDescription,
+  showViewAllLink,
+}: ProductsSectionProps = {}) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
   const { addItem, openCart, formatCurrency } = useCart()
-  const {
-    addItem: addToFavorites,
-    removeItem: removeFromFavorites,
-    isFavorite,
-  } = useFavorites()
-  const { categories, brands, isLoadingCategories, isLoadingBrands } =
-    useSharedData()
+  const { addItem: addToFavorites, removeItem: removeFromFavorites, isFavorite } = useFavorites()
+  const { categories, brands, isLoadingCategories, isLoadingBrands } = useSharedData()
   const [sortBy, setSortBy] = useState('featured')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -144,18 +144,12 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
       const data: ProductsApiResponse = await response.json()
 
       if (response.ok) {
-        const convertedProducts = convertDatabaseProductsToProducts(
-          data.products
-        )
+        const convertedProducts = convertDatabaseProductsToProducts(data.products)
         setProducts(convertedProducts)
         setTotalPages(data.pagination.totalPages)
         setTotalProducts(data.pagination.total)
 
-        if (
-          convertedProducts.length > 0 &&
-          minPrice === 0 &&
-          maxPrice === 1000000
-        ) {
+        if (convertedProducts.length > 0 && minPrice === 0 && maxPrice === 1000000) {
           const prices = convertedProducts.map(item => item.price)
           const newMin = Math.min(...prices)
           const newMax = Math.max(...prices)
@@ -222,28 +216,13 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
     }
 
     window.addEventListener('globalSearch', handleGlobalSearch as EventListener)
-    window.addEventListener(
-      'categoryFilterChanged',
-      handleCategoryEvent as EventListener
-    )
-    window.addEventListener(
-      'filterByOffers',
-      handleOffersEvent as EventListener
-    )
+    window.addEventListener('categoryFilterChanged', handleCategoryEvent as EventListener)
+    window.addEventListener('filterByOffers', handleOffersEvent as EventListener)
 
     return () => {
-      window.removeEventListener(
-        'globalSearch',
-        handleGlobalSearch as EventListener
-      )
-      window.removeEventListener(
-        'categoryFilterChanged',
-        handleCategoryEvent as EventListener
-      )
-      window.removeEventListener(
-        'filterByOffers',
-        handleOffersEvent as EventListener
-      )
+      window.removeEventListener('globalSearch', handleGlobalSearch as EventListener)
+      window.removeEventListener('categoryFilterChanged', handleCategoryEvent as EventListener)
+      window.removeEventListener('filterByOffers', handleOffersEvent as EventListener)
     }
   }, [])
 
@@ -302,10 +281,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
 
   const resolveStockBadge = (product: Product) => {
     const stockCount =
-      (product as any).stockCount ??
-      (product as any).stock_quantity ??
-      (product as any).stock ??
-      0
+      (product as any).stockCount ?? (product as any).stock_quantity ?? (product as any).stock ?? 0
     const available = product.inStock ?? stockCount > 0
 
     if (!available || stockCount <= 0) {
@@ -328,10 +304,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
   const handleAddToCart = (product: Product) => {
     const image = getProductImage(product)
     const stockCount =
-      (product as any).stockCount ??
-      (product as any).stock_quantity ??
-      (product as any).stock ??
-      0
+      (product as any).stockCount ?? (product as any).stock_quantity ?? (product as any).stock ?? 0
 
     addItem({
       id: product.id,
@@ -369,8 +342,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
   }
   const isInitialLoading = loading && products.length === 0
   const showingFrom = totalProducts === 0 ? 0 : (currentPage - 1) * limit + 1
-  const showingTo =
-    totalProducts === 0 ? 0 : Math.min(currentPage * limit, totalProducts)
+  const showingTo = totalProducts === 0 ? 0 : Math.min(currentPage * limit, totalProducts)
 
   const categoryLabelMap = useMemo(() => {
     const map = new Map<string, string>()
@@ -385,8 +357,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
   }, [brands])
 
   const hasCustomPriceRange =
-    minPrice !== maxPrice &&
-    (priceRange[0] > minPrice || priceRange[1] < maxPrice)
+    minPrice !== maxPrice && (priceRange[0] > minPrice || priceRange[1] < maxPrice)
 
   const activeFilterChips = useMemo<FilterChip[]>(() => {
     const chips: FilterChip[] = []
@@ -405,8 +376,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
       chips.push({
         key: `category-${categoryId}`,
         label: `Categoria: ${label}`,
-        onRemove: () =>
-          setSelectedCategories(prev => prev.filter(id => id !== categoryId)),
+        onRemove: () => setSelectedCategories(prev => prev.filter(id => id !== categoryId)),
       })
     })
 
@@ -415,8 +385,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
       chips.push({
         key: `brand-${brandId}`,
         label: `Marca: ${label}`,
-        onRemove: () =>
-          setSelectedBrands(prev => prev.filter(id => id !== brandId)),
+        onRemove: () => setSelectedBrands(prev => prev.filter(id => id !== brandId)),
       })
     })
 
@@ -439,9 +408,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
     if (hasCustomPriceRange) {
       chips.push({
         key: 'price',
-        label: `Precio: ${formatCurrency(priceRange[0])} - ${formatCurrency(
-          priceRange[1]
-        )}`,
+        label: `Precio: ${formatCurrency(priceRange[0])} - ${formatCurrency(priceRange[1])}`,
         onRemove: () => setPriceRange([minPrice, maxPrice]),
       })
     }
@@ -467,16 +434,14 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
   const renderGridCard = (product: Product) => {
     const image = getProductImage(product)
     const stockBadge = resolveStockBadge(product)
-    const originalPrice =
-      (product as any).originalPrice ?? (product as any).original_price ?? null
+    const originalPrice = (product as any).originalPrice ?? (product as any).original_price ?? null
     const originalValue =
       typeof originalPrice === 'number'
         ? originalPrice
         : originalPrice
-        ? Number(originalPrice)
-        : null
-    const hasDiscount =
-      typeof originalValue === 'number' && originalValue > product.price
+          ? Number(originalPrice)
+          : null
+    const hasDiscount = typeof originalValue === 'number' && originalValue > product.price
     const discountPercent =
       hasDiscount && originalValue
         ? Math.round(((originalValue - product.price) / originalValue) * 100)
@@ -528,9 +493,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
               size="icon"
               className={cn(
                 'h-8 w-8 rounded-full border border-white/80 bg-white/90 shadow-sm backdrop-blur-sm transition-colors',
-                isFavorite(product.id)
-                  ? 'text-rose-500'
-                  : 'text-slate-500 hover:text-rose-500'
+                isFavorite(product.id) ? 'text-rose-500' : 'text-slate-500 hover:text-rose-500'
               )}
               onClick={() => handleToggleFavorite(product)}
               aria-label={isFavorite(product.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
@@ -591,16 +554,14 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
   const renderListCard = (product: Product) => {
     const image = getProductImage(product)
     const stockBadge = resolveStockBadge(product)
-    const originalPrice =
-      (product as any).originalPrice ?? (product as any).original_price ?? null
+    const originalPrice = (product as any).originalPrice ?? (product as any).original_price ?? null
     const originalValue =
       typeof originalPrice === 'number'
         ? originalPrice
         : originalPrice
-        ? Number(originalPrice)
-        : null
-    const hasDiscount =
-      typeof originalValue === 'number' && originalValue > product.price
+          ? Number(originalPrice)
+          : null
+    const hasDiscount = typeof originalValue === 'number' && originalValue > product.price
     const discountPercent =
       hasDiscount && originalValue
         ? Math.round(((originalValue - product.price) / originalValue) * 100)
@@ -678,9 +639,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                 size="icon"
                 className={cn(
                   'h-9 w-9 rounded-xl border border-slate-200 bg-white shadow-sm transition-colors',
-                  isFavorite(product.id)
-                    ? 'text-rose-500'
-                    : 'text-slate-400 hover:text-rose-500'
+                  isFavorite(product.id) ? 'text-rose-500' : 'text-slate-400 hover:text-rose-500'
                 )}
                 onClick={() => handleToggleFavorite(product)}
                 aria-label={isFavorite(product.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
@@ -717,12 +676,16 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
             {onOffer ? 'Descuentos vigentes' : 'Catálogo'}
           </p>
           <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl">
-            {sectionTitle ?? (onOffer ? 'Todos los equipos con descuento' : 'Equipos y repuestos listos para tu compra')}
+            {sectionTitle ??
+              (onOffer
+                ? 'Todos los equipos con descuento'
+                : 'Equipos y repuestos listos para tu compra')}
           </h2>
           <p className="mx-auto max-w-2xl text-base text-[hsl(var(--text-muted))]">
-            {sectionDescription ?? (onOffer
-              ? 'Solo referencias donde el precio de oferta es inferior al precio regular. Stock verificado y garantía incluida.'
-              : 'Encuentra seguridad electrónica, conectividad, energía y repuestos con información clara para elegir mejor.')}
+            {sectionDescription ??
+              (onOffer
+                ? 'Solo referencias donde el precio de oferta es inferior al precio regular. Stock verificado y garantía incluida.'
+                : 'Encuentra seguridad electrónica, conectividad, energía y repuestos con información clara para elegir mejor.')}
           </p>
         </header>
 
@@ -849,9 +812,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
             <Card className="border border-gray-100 shadow-sm">
               <CardContent className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-gray-900">
-                    Filtrar por
-                  </h3>
+                  <h3 className="text-base font-semibold text-gray-900">Filtrar por</h3>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -865,9 +826,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
 
                 <div className="space-y-5">
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">
-                      Categorias
-                    </h4>
+                    <h4 className="text-sm font-semibold text-gray-700">Categorias</h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {categories.map(category => (
                         <label
@@ -878,10 +837,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                             id={`category-${category.id}`}
                             checked={selectedCategories.includes(category.id)}
                             onCheckedChange={checked =>
-                              handleCategoryChange(
-                                category.id,
-                                checked === true
-                              )
+                              handleCategoryChange(category.id, checked === true)
                             }
                           />
                           <span>{category.name}</span>
@@ -891,9 +847,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                   </div>
 
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">
-                      Marcas
-                    </h4>
+                    <h4 className="text-sm font-semibold text-gray-700">Marcas</h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {brands.map(brand => (
                         <label
@@ -937,9 +891,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                       <Checkbox
                         id="in-stock"
                         checked={inStockOnly}
-                        onCheckedChange={checked =>
-                          setInStockOnly(checked === true)
-                        }
+                        onCheckedChange={checked => setInStockOnly(checked === true)}
                       />
                       <span>Solo productos en stock</span>
                     </label>
@@ -947,9 +899,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                       <Checkbox
                         id="featured"
                         checked={featuredOnly}
-                        onCheckedChange={checked =>
-                          setFeaturedOnly(checked === true)
-                        }
+                        onCheckedChange={checked => setFeaturedOnly(checked === true)}
                       />
                       <span>Solo destacados</span>
                     </label>
@@ -976,28 +926,23 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
               )}
             >
               {isInitialLoading
-                ? Array.from(
-                    { length: viewMode === 'grid' ? 8 : 4 },
-                    (_, index) => (
-                      <div
-                        key={`skeleton-${index}`}
-                        className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5"
-                      >
-                        <div className="skeleton mb-5 aspect-square w-full rounded-2xl" />
-                        <div className="skeleton h-4 w-24 rounded-full" />
-                        <div className="skeleton mt-3 h-4 w-full rounded-full" />
-                        <div className="skeleton mt-2 h-4 w-3/4 rounded-full" />
-                        <div className="mt-auto space-y-3 pt-6">
-                          <div className="skeleton h-5 w-28 rounded-full" />
-                          <div className="skeleton h-11 w-full rounded-full" />
-                        </div>
+                ? Array.from({ length: viewMode === 'grid' ? 8 : 4 }, (_, index) => (
+                    <div
+                      key={`skeleton-${index}`}
+                      className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5"
+                    >
+                      <div className="skeleton mb-5 aspect-square w-full rounded-2xl" />
+                      <div className="skeleton h-4 w-24 rounded-full" />
+                      <div className="skeleton mt-3 h-4 w-full rounded-full" />
+                      <div className="skeleton mt-2 h-4 w-3/4 rounded-full" />
+                      <div className="mt-auto space-y-3 pt-6">
+                        <div className="skeleton h-5 w-28 rounded-full" />
+                        <div className="skeleton h-11 w-full rounded-full" />
                       </div>
-                    )
-                  )
+                    </div>
+                  ))
                 : products.map(product =>
-                    viewMode === 'grid'
-                      ? renderGridCard(product)
-                      : renderListCard(product)
+                    viewMode === 'grid' ? renderGridCard(product) : renderListCard(product)
                   )}
             </div>
 
@@ -1030,9 +975,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                 <div className="flex items-center gap-3">
                   <Button
                     variant="outline"
-                    onClick={() =>
-                      setCurrentPage(prev => Math.max(1, prev - 1))
-                    }
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage <= 1}
                     className="h-10 rounded-full px-4"
                     aria-label="Pagina anterior"
@@ -1041,9 +984,7 @@ export function ProductsSection({ onOffer, sectionTitle, sectionDescription, sho
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() =>
-                      setCurrentPage(prev => Math.min(totalPages, prev + 1))
-                    }
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage >= totalPages}
                     className="h-10 rounded-full px-4"
                     aria-label="Pagina siguiente"

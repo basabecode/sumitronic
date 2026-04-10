@@ -68,9 +68,7 @@ async function testGoogleSheetsConnection() {
   log(`   Hojas detectadas: ${sheetTitles.join(', ') || 'ninguna'}`, 'green')
 
   if (!sheetTitles.includes(sheetName)) {
-    throw new Error(
-      `La hoja "${sheetName}" no existe dentro del spreadsheet configurado.`
-    )
+    throw new Error(`La hoja "${sheetName}" no existe dentro del spreadsheet configurado.`)
   }
 
   log('\n4. Leyendo muestra de datos', 'cyan')
@@ -107,9 +105,6 @@ testGoogleSheetsConnection()
   })
   .catch(error => {
     console.log('='.repeat(60))
-    log(
-      `ERROR: ${error instanceof Error ? error.message : 'Fallo desconocido'}`,
-      'red'
-    )
+    log(`ERROR: ${error instanceof Error ? error.message : 'Fallo desconocido'}`, 'red')
     process.exit(1)
   })

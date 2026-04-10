@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
@@ -91,9 +85,7 @@ export default function SettingsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Configuración</h1>
-        <p className="mt-2 text-gray-600">
-          Gestiona tus preferencias y configuraciones de cuenta
-        </p>
+        <p className="mt-2 text-gray-600">Gestiona tus preferencias y configuraciones de cuenta</p>
       </div>
 
       {message && (
@@ -106,9 +98,7 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Notificaciones</CardTitle>
-          <CardDescription>
-            Configura cómo y cuándo quieres recibir notificaciones
-          </CardDescription>
+          <CardDescription>Configura cómo y cuándo quieres recibir notificaciones</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
@@ -120,9 +110,7 @@ export default function SettingsPage() {
             </div>
             <Switch
               checked={notifications.email}
-              onCheckedChange={value =>
-                handleNotificationChange('email', value)
-              }
+              onCheckedChange={value => handleNotificationChange('email', value)}
             />
           </div>
 
@@ -131,15 +119,11 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label>Actualizaciones de pedidos</Label>
-              <p className="text-sm text-gray-500">
-                Notificaciones sobre el estado de tus pedidos
-              </p>
+              <p className="text-sm text-gray-500">Notificaciones sobre el estado de tus pedidos</p>
             </div>
             <Switch
               checked={notifications.orderUpdates}
-              onCheckedChange={value =>
-                handleNotificationChange('orderUpdates', value)
-              }
+              onCheckedChange={value => handleNotificationChange('orderUpdates', value)}
             />
           </div>
 
@@ -154,9 +138,7 @@ export default function SettingsPage() {
             </div>
             <Switch
               checked={notifications.promotions}
-              onCheckedChange={value =>
-                handleNotificationChange('promotions', value)
-              }
+              onCheckedChange={value => handleNotificationChange('promotions', value)}
             />
           </div>
         </CardContent>
@@ -166,9 +148,7 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Privacidad</CardTitle>
-          <CardDescription>
-            Controla la visibilidad de tu información
-          </CardDescription>
+          <CardDescription>Controla la visibilidad de tu información</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
@@ -180,9 +160,7 @@ export default function SettingsPage() {
             </div>
             <Switch
               checked={privacy.profilePublic}
-              onCheckedChange={value =>
-                handlePrivacyChange('profilePublic', value)
-              }
+              onCheckedChange={value => handlePrivacyChange('profilePublic', value)}
             />
           </div>
 
@@ -210,17 +188,13 @@ export default function SettingsPage() {
             <Shield className="w-5 h-5 mr-2" />
             Datos y Privacidad
           </CardTitle>
-          <CardDescription>
-            Gestiona tus datos personales y privacidad
-          </CardDescription>
+          <CardDescription>Gestiona tus datos personales y privacidad</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Exportar mis datos</p>
-              <p className="text-sm text-gray-500">
-                Descarga una copia de todos tus datos
-              </p>
+              <p className="text-sm text-gray-500">Descarga una copia de todos tus datos</p>
             </div>
             <Button variant="outline" onClick={exportData}>
               <Download className="w-4 h-4 mr-2" />

@@ -2,12 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -16,12 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import {
   CreditCard,
@@ -98,19 +88,25 @@ interface Order {
 }
 
 const PAYMENT_STATUS_LABELS: Record<string, { label: string; className: string }> = {
-  pending:   { label: 'Pendiente',     className: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100' },
-  paid:      { label: 'Pagado',        className: 'bg-green-100 text-green-800 hover:bg-green-100' },
-  failed:    { label: 'Rechazado',     className: 'bg-red-100 text-red-800 hover:bg-red-100' },
-  refunded:  { label: 'Reembolsado',   className: 'bg-purple-100 text-purple-800 hover:bg-purple-100' },
-  partially_refunded: { label: 'Reemb. parcial', className: 'bg-orange-100 text-orange-800 hover:bg-orange-100' },
+  pending: { label: 'Pendiente', className: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100' },
+  paid: { label: 'Pagado', className: 'bg-green-100 text-green-800 hover:bg-green-100' },
+  failed: { label: 'Rechazado', className: 'bg-red-100 text-red-800 hover:bg-red-100' },
+  refunded: {
+    label: 'Reembolsado',
+    className: 'bg-purple-100 text-purple-800 hover:bg-purple-100',
+  },
+  partially_refunded: {
+    label: 'Reemb. parcial',
+    className: 'bg-orange-100 text-orange-800 hover:bg-orange-100',
+  },
 }
 
 const ORDER_STATUS_LABELS: Record<string, { label: string; className: string }> = {
-  pending:    { label: 'Pendiente',    className: 'bg-yellow-100 text-yellow-800' },
-  processing: { label: 'En proceso',   className: 'bg-blue-100 text-blue-800' },
-  shipped:    { label: 'Enviado',      className: 'bg-indigo-100 text-indigo-800' },
-  delivered:  { label: 'Entregado',    className: 'bg-green-100 text-green-800' },
-  cancelled:  { label: 'Cancelado',    className: 'bg-red-100 text-red-800' },
+  pending: { label: 'Pendiente', className: 'bg-yellow-100 text-yellow-800' },
+  processing: { label: 'En proceso', className: 'bg-blue-100 text-blue-800' },
+  shipped: { label: 'Enviado', className: 'bg-indigo-100 text-indigo-800' },
+  delivered: { label: 'Entregado', className: 'bg-green-100 text-green-800' },
+  cancelled: { label: 'Cancelado', className: 'bg-red-100 text-red-800' },
 }
 
 const formatCurrency = formatPrice
@@ -136,16 +132,19 @@ function printShippingLabel(order: Order) {
     addr?.country || 'Colombia',
   ].filter(Boolean)
 
-  const itemsHtml = Array.isArray(order.items) && order.items.length > 0
-    ? order.items.map(item => {
-        const price = item.price ?? (item as unknown as { unit_price?: number }).unit_price ?? 0
-        return `<tr>
+  const itemsHtml =
+    Array.isArray(order.items) && order.items.length > 0
+      ? order.items
+          .map(item => {
+            const price = item.price ?? (item as unknown as { unit_price?: number }).unit_price ?? 0
+            return `<tr>
           <td style="padding:4px 8px;border-bottom:1px solid #eee;">${item.name}</td>
           <td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:center;">${item.quantity}</td>
           <td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:right;">${formatCurrency(price * item.quantity)}</td>
         </tr>`
-      }).join('')
-    : `<tr><td colspan="3" style="padding:4px 8px;color:#999;">Sin detalle</td></tr>`
+          })
+          .join('')
+      : `<tr><td colspan="3" style="padding:4px 8px;color:#999;">Sin detalle</td></tr>`
 
   const orderRef = order.id.slice(0, 8).toUpperCase()
   const fecha = format(new Date(order.created_at), "d 'de' MMMM yyyy", { locale: es })
@@ -268,8 +267,7 @@ function OrderDetailModal({
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   const canDelete =
-    ['pending', 'failed', 'refunded'].includes(order.payment_status) ||
-    order.status === 'cancelled'
+    ['pending', 'failed', 'refunded'].includes(order.payment_status) || order.status === 'cancelled'
 
   const deleteOrder = async () => {
     setLoadingAction('delete')
@@ -307,8 +305,14 @@ function OrderDetailModal({
     }
   }
 
-  const paymentStatus = PAYMENT_STATUS_LABELS[order.payment_status] ?? { label: order.payment_status, className: 'bg-gray-100 text-gray-800' }
-  const orderStatus   = ORDER_STATUS_LABELS[order.status] ?? { label: order.status, className: 'bg-gray-100 text-gray-800' }
+  const paymentStatus = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
+    label: order.payment_status,
+    className: 'bg-gray-100 text-gray-800',
+  }
+  const orderStatus = ORDER_STATUS_LABELS[order.status] ?? {
+    label: order.status,
+    className: 'bg-gray-100 text-gray-800',
+  }
 
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
@@ -318,7 +322,7 @@ function OrderDetailModal({
             <Package className="h-5 w-5 text-[hsl(var(--brand))]" />
             Pedido #{order.id.slice(0, 8).toUpperCase()}
             <span className="text-sm font-normal text-gray-500">
-              {format(new Date(order.created_at), "d MMM yyyy, hh:mm a", { locale: es })}
+              {format(new Date(order.created_at), 'd MMM yyyy, hh:mm a', { locale: es })}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -356,16 +360,14 @@ function OrderDetailModal({
                 disabled={loadingAction === 'delete'}
                 onClick={deleteOrder}
               >
-                {loadingAction === 'delete'
-                  ? <Loader2 className="h-3 w-3 animate-spin" />
-                  : <Trash2 className="h-3 w-3" />}
+                {loadingAction === 'delete' ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <Trash2 className="h-3 w-3" />
+                )}
                 Sí, eliminar
               </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setConfirmDelete(false)}
-              >
+              <Button size="sm" variant="outline" onClick={() => setConfirmDelete(false)}>
                 Cancelar
               </Button>
             </div>
@@ -373,7 +375,6 @@ function OrderDetailModal({
         </div>
 
         <div className="space-y-5 pt-1">
-
           {/* ── Datos del cliente ── */}
           <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-gray-50 p-4">
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--text-muted))]">
@@ -385,15 +386,21 @@ function OrderDetailModal({
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="h-4 w-4 shrink-0 text-[hsl(var(--brand))]" />
-                <a href={`mailto:${order.customer_info?.email || order.user?.email}`}
-                   className="hover:underline">
+                <a
+                  href={`mailto:${order.customer_info?.email || order.user?.email}`}
+                  className="hover:underline"
+                >
                   {order.customer_info?.email || order.user?.email || '—'}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Phone className="h-4 w-4 shrink-0 text-[hsl(var(--brand))]" />
-                <a href={`https://wa.me/57${(order.customer_info?.phone || '').replace(/\D/g, '')}`}
-                   target="_blank" rel="noopener noreferrer" className="hover:underline">
+                <a
+                  href={`https://wa.me/57${(order.customer_info?.phone || '').replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
                   {order.customer_info?.phone || '—'}
                 </a>
               </div>
@@ -411,10 +418,12 @@ function OrderDetailModal({
                 <p>{order.shipping_address?.address || order.shipping_address?.street || '—'}</p>
                 <p className="text-gray-500">
                   {order.shipping_address?.city}
-                  {(order.shipping_address?.department || order.shipping_address?.state)
-                    ? `, ${order.shipping_address.department || order.shipping_address.state}` : ''}
-                  {(order.shipping_address?.zipCode || order.shipping_address?.postal_code)
-                    ? ` — CP ${order.shipping_address.zipCode || order.shipping_address.postal_code}` : ''}
+                  {order.shipping_address?.department || order.shipping_address?.state
+                    ? `, ${order.shipping_address.department || order.shipping_address.state}`
+                    : ''}
+                  {order.shipping_address?.zipCode || order.shipping_address?.postal_code
+                    ? ` — CP ${order.shipping_address.zipCode || order.shipping_address.postal_code}`
+                    : ''}
                 </p>
                 {order.shipping_address?.country && (
                   <p className="text-gray-400 text-xs">{order.shipping_address.country}</p>
@@ -433,18 +442,22 @@ function OrderDetailModal({
                 order.items.map((item, i) => {
                   const itemPrice = item.price ?? item.unit_price ?? 0
                   return (
-                  <div key={i} className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2 text-sm">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 truncate">{item.name}</p>
-                      <p className="text-xs text-gray-500">
-                        {formatCurrency(itemPrice)} × {item.quantity}
-                      </p>
+                    <div
+                      key={i}
+                      className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2 text-sm"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 truncate">{item.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {formatCurrency(itemPrice)} × {item.quantity}
+                        </p>
+                      </div>
+                      <span className="shrink-0 font-semibold text-gray-900">
+                        {formatCurrency(itemPrice * item.quantity)}
+                      </span>
                     </div>
-                    <span className="shrink-0 font-semibold text-gray-900">
-                      {formatCurrency(itemPrice * item.quantity)}
-                    </span>
-                  </div>
-                )})
+                  )
+                })
               ) : (
                 <p className="text-sm text-gray-400 italic">Sin detalle de productos</p>
               )}
@@ -479,15 +492,21 @@ function OrderDetailModal({
               </div>
               {order.notes && (
                 <div className="rounded-lg bg-white border border-[hsl(var(--border-subtle))] p-3 text-xs text-gray-700 space-y-1">
-                  <p className="font-semibold text-gray-900 text-sm mb-1">Referencia del cliente:</p>
+                  <p className="font-semibold text-gray-900 text-sm mb-1">
+                    Referencia del cliente:
+                  </p>
                   {order.notes.split('|').map((part, i) => (
                     <p key={i}>{part.trim()}</p>
                   ))}
                 </div>
               )}
               {order.payment_proof_url && (
-                <a href={order.payment_proof_url} target="_blank" rel="noreferrer"
-                   className="inline-flex items-center gap-2 text-[hsl(var(--brand-strong))] hover:underline">
+                <a
+                  href={order.payment_proof_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-[hsl(var(--brand-strong))] hover:underline"
+                >
                   <FileText className="h-4 w-4" />
                   Ver comprobante adjunto
                 </a>
@@ -515,9 +534,11 @@ function OrderDetailModal({
                 disabled={order.payment_status === 'paid' || !!loadingAction}
                 onClick={() => updateOrder('payment_status', 'paid', 'Pagado')}
               >
-                {loadingAction === 'paid'
-                  ? <Loader2 className="h-4 w-4 animate-spin" />
-                  : <CheckCircle2 className="h-4 w-4" />}
+                {loadingAction === 'paid' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4" />
+                )}
                 Confirmar pago
               </Button>
 
@@ -528,9 +549,11 @@ function OrderDetailModal({
                 disabled={order.payment_status === 'failed' || !!loadingAction}
                 onClick={() => updateOrder('payment_status', 'failed', 'Rechazado')}
               >
-                {loadingAction === 'failed'
-                  ? <Loader2 className="h-4 w-4 animate-spin" />
-                  : <XCircle className="h-4 w-4" />}
+                {loadingAction === 'failed' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <XCircle className="h-4 w-4" />
+                )}
                 Rechazar pago
               </Button>
 
@@ -541,9 +564,11 @@ function OrderDetailModal({
                 disabled={order.payment_status === 'pending' || !!loadingAction}
                 onClick={() => updateOrder('payment_status', 'pending', 'Pendiente')}
               >
-                {loadingAction === 'pending_pay'
-                  ? <Loader2 className="h-4 w-4 animate-spin" />
-                  : <Clock className="h-4 w-4" />}
+                {loadingAction === 'pending_pay' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Clock className="h-4 w-4" />
+                )}
                 Volver a pendiente
               </Button>
             </div>
@@ -556,10 +581,18 @@ function OrderDetailModal({
             </h3>
             <div className="flex flex-wrap gap-2">
               {[
-                { value: 'processing', label: 'En proceso',  icon: <RefreshCw className="h-4 w-4" /> },
-                { value: 'shipped',    label: 'Enviado',     icon: <Truck className="h-4 w-4" /> },
-                { value: 'delivered',  label: 'Entregado',   icon: <CheckCircle2 className="h-4 w-4" /> },
-                { value: 'cancelled',  label: 'Cancelado',   icon: <XCircle className="h-4 w-4" /> },
+                {
+                  value: 'processing',
+                  label: 'En proceso',
+                  icon: <RefreshCw className="h-4 w-4" />,
+                },
+                { value: 'shipped', label: 'Enviado', icon: <Truck className="h-4 w-4" /> },
+                {
+                  value: 'delivered',
+                  label: 'Entregado',
+                  icon: <CheckCircle2 className="h-4 w-4" />,
+                },
+                { value: 'cancelled', label: 'Cancelado', icon: <XCircle className="h-4 w-4" /> },
               ].map(action => (
                 <Button
                   key={action.value}
@@ -569,9 +602,11 @@ function OrderDetailModal({
                   disabled={order.status === action.value || !!loadingAction}
                   onClick={() => updateOrder('status', action.value, action.label)}
                 >
-                  {loadingAction === action.value
-                    ? <Loader2 className="h-4 w-4 animate-spin" />
-                    : action.icon}
+                  {loadingAction === action.value ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    action.icon
+                  )}
                   {action.label}
                 </Button>
               ))}
@@ -579,8 +614,7 @@ function OrderDetailModal({
 
             {order.tracking_number && (
               <p className="mt-3 text-sm text-gray-600">
-                <span className="font-medium">Número de seguimiento:</span>{' '}
-                {order.tracking_number}
+                <span className="font-medium">Número de seguimiento:</span> {order.tracking_number}
               </p>
             )}
           </section>
@@ -625,7 +659,9 @@ export default function SalesTab() {
     }
 
     load()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const fetchOrders = async () => {
@@ -649,8 +685,8 @@ export default function SalesTab() {
   }
 
   const handleOrderUpdated = (updated: Order) => {
-    setOrders(prev => prev.map(o => o.id === updated.id ? { ...o, ...updated } : o))
-    setSelectedOrder(prev => prev?.id === updated.id ? { ...prev, ...updated } : prev)
+    setOrders(prev => prev.map(o => (o.id === updated.id ? { ...o, ...updated } : o)))
+    setSelectedOrder(prev => (prev?.id === updated.id ? { ...prev, ...updated } : prev))
   }
 
   const handleOrderDeleted = (id: string) => {
@@ -665,22 +701,36 @@ export default function SalesTab() {
     const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1)
     const todayStr = now.toISOString().split('T')[0]
 
-    let totalSales = 0, monthlySales = 0, lastMonthSales = 0, dailySales = 0, pendingCount = 0
+    let totalSales = 0,
+      monthlySales = 0,
+      lastMonthSales = 0,
+      dailySales = 0,
+      pendingCount = 0
 
     for (const o of orders) {
       const total = Number(o.total) || 0
-      if (o.payment_status === 'pending') { pendingCount++; continue }
+      if (o.payment_status === 'pending') {
+        pendingCount++
+        continue
+      }
       if (o.payment_status !== 'paid') continue
       totalSales += total
       const d = new Date(o.created_at)
       if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) monthlySales += total
-      if (d.getMonth() === lastMonthDate.getMonth() && d.getFullYear() === lastMonthDate.getFullYear()) lastMonthSales += total
+      if (
+        d.getMonth() === lastMonthDate.getMonth() &&
+        d.getFullYear() === lastMonthDate.getFullYear()
+      )
+        lastMonthSales += total
       if (o.created_at.startsWith(todayStr)) dailySales += total
     }
 
-    const growth = lastMonthSales > 0
-      ? ((monthlySales - lastMonthSales) / lastMonthSales) * 100
-      : monthlySales > 0 ? 100 : 0
+    const growth =
+      lastMonthSales > 0
+        ? ((monthlySales - lastMonthSales) / lastMonthSales) * 100
+        : monthlySales > 0
+          ? 100
+          : 0
 
     return { totalSales, monthlySales, dailySales, growth: growth.toFixed(1), pendingCount }
   }, [orders])
@@ -688,13 +738,14 @@ export default function SalesTab() {
   const filteredOrders = useMemo(() => {
     if (!searchQuery) return orders
     const q = searchQuery.toLowerCase()
-    return orders.filter(o =>
-      o.id.toLowerCase().includes(q) ||
-      o.customer_info?.fullName?.toLowerCase().includes(q) ||
-      o.customer_info?.email?.toLowerCase().includes(q) ||
-      o.customer_info?.phone?.includes(q) ||
-      o.payment_method?.toLowerCase().includes(q) ||
-      o.shipping_address?.city?.toLowerCase().includes(q)
+    return orders.filter(
+      o =>
+        o.id.toLowerCase().includes(q) ||
+        o.customer_info?.fullName?.toLowerCase().includes(q) ||
+        o.customer_info?.email?.toLowerCase().includes(q) ||
+        o.customer_info?.phone?.includes(q) ||
+        o.payment_method?.toLowerCase().includes(q) ||
+        o.shipping_address?.city?.toLowerCase().includes(q)
     )
   }, [orders, searchQuery])
 
@@ -711,14 +762,15 @@ export default function SalesTab() {
       <div className="flex flex-col items-center justify-center h-64 gap-4 text-center">
         <AlertCircle className="h-10 w-10 text-red-500" />
         <p className="text-gray-700 font-medium">{error}</p>
-        <Button variant="outline" onClick={fetchOrders}>Reintentar</Button>
+        <Button variant="outline" onClick={fetchOrders}>
+          Reintentar
+        </Button>
       </div>
     )
   }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-
       {/* Stats */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
@@ -735,11 +787,15 @@ export default function SalesTab() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-500">Ventas del Mes</CardTitle>
-            <TrendingUp className={`h-4 w-4 ${Number(stats.growth) >= 0 ? 'text-green-600' : 'text-red-600'}`} />
+            <TrendingUp
+              className={`h-4 w-4 ${Number(stats.growth) >= 0 ? 'text-green-600' : 'text-red-600'}`}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.monthlySales)}</div>
-            <p className={`text-xs mt-1 ${Number(stats.growth) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <p
+              className={`text-xs mt-1 ${Number(stats.growth) >= 0 ? 'text-green-600' : 'text-red-600'}`}
+            >
               {stats.growth}% vs mes anterior
             </p>
           </CardContent>
@@ -753,7 +809,11 @@ export default function SalesTab() {
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.dailySales)}</div>
             <p className="text-xs text-gray-500 mt-1">
-              {new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' })}
+              {new Date().toLocaleDateString('es-CO', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+              })}
             </p>
           </CardContent>
         </Card>
@@ -776,7 +836,9 @@ export default function SalesTab() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <CardTitle>Historial de Pedidos</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">Haz clic en un pedido para ver detalles y gestionar el estado</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Haz clic en un pedido para ver detalles y gestionar el estado
+              </p>
             </div>
             <div className="relative w-full md:w-64">
               <Search className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
@@ -798,7 +860,10 @@ export default function SalesTab() {
               </div>
             ) : (
               filteredOrders.map(order => {
-                const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? { label: order.payment_status, className: 'bg-gray-100 text-gray-800' }
+                const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
+                  label: order.payment_status,
+                  className: 'bg-gray-100 text-gray-800',
+                }
                 return (
                   <button
                     key={`mobile-${order.id}`}
@@ -813,18 +878,19 @@ export default function SalesTab() {
                         <p className="text-sm text-gray-500 truncate">
                           {order.customer_info?.email || order.user?.email}
                         </p>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {order.customer_info?.phone}
-                        </p>
+                        <p className="text-xs text-gray-400 mt-0.5">{order.customer_info?.phone}</p>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="font-semibold text-gray-900">{formatCurrency(Number(order.total))}</p>
+                        <p className="font-semibold text-gray-900">
+                          {formatCurrency(Number(order.total))}
+                        </p>
                         <Badge className={`mt-1 text-xs ${ps.className}`}>{ps.label}</Badge>
                       </div>
                     </div>
                     <p className="mt-2 text-xs text-gray-400">
-                      {format(new Date(order.created_at), "d MMM yyyy, hh:mm a", { locale: es })}
-                      {' — '}{order.shipping_address?.city}
+                      {format(new Date(order.created_at), 'd MMM yyyy, hh:mm a', { locale: es })}
+                      {' — '}
+                      {order.shipping_address?.city}
                     </p>
                   </button>
                 )
@@ -855,8 +921,14 @@ export default function SalesTab() {
                   </TableRow>
                 ) : (
                   filteredOrders.map(order => {
-                    const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? { label: order.payment_status, className: 'bg-gray-100 text-gray-800' }
-                    const os = ORDER_STATUS_LABELS[order.status] ?? { label: order.status, className: 'bg-gray-100 text-gray-800' }
+                    const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
+                      label: order.payment_status,
+                      className: 'bg-gray-100 text-gray-800',
+                    }
+                    const os = ORDER_STATUS_LABELS[order.status] ?? {
+                      label: order.status,
+                      className: 'bg-gray-100 text-gray-800',
+                    }
                     return (
                       <TableRow
                         key={order.id}
@@ -875,11 +947,10 @@ export default function SalesTab() {
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col">
-                            <span className="font-medium text-sm">
-                              {getCustomerName(order)}
-                            </span>
+                            <span className="font-medium text-sm">{getCustomerName(order)}</span>
                             <span className="text-xs text-gray-500 truncate max-w-[160px]">
-                              {order.shipping_address?.city}, {order.shipping_address?.department || order.shipping_address?.state}
+                              {order.shipping_address?.city},{' '}
+                              {order.shipping_address?.department || order.shipping_address?.state}
                             </span>
                           </div>
                         </TableCell>
@@ -888,7 +959,9 @@ export default function SalesTab() {
                             <span className="truncate max-w-[150px]">
                               {order.customer_info?.email || order.user?.email || '—'}
                             </span>
-                            <span className="text-gray-400">{order.customer_info?.phone || '—'}</span>
+                            <span className="text-gray-400">
+                              {order.customer_info?.phone || '—'}
+                            </span>
                           </div>
                         </TableCell>
                         <TableCell>

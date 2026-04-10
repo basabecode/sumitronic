@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { CartProvider, useCart } from '@/contexts/CartContext'
-import { ReactNode } from 'react'
 
 // Mock de AuthContext
 vi.mock('@/contexts/AuthContext', () => ({
@@ -17,30 +16,38 @@ vi.mock('@/lib/supabase/client', () => ({
   createClient: () => ({
     from: vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({
-          data: [],
-          error: null,
-        })),
+        eq: vi.fn(() =>
+          Promise.resolve({
+            data: [],
+            error: null,
+          })
+        ),
       })),
       insert: vi.fn(() => ({
         select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve({
-            data: null,
-            error: null,
-          })),
+          single: vi.fn(() =>
+            Promise.resolve({
+              data: null,
+              error: null,
+            })
+          ),
         })),
       })),
       update: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({
-          data: null,
-          error: null,
-        })),
+        eq: vi.fn(() =>
+          Promise.resolve({
+            data: null,
+            error: null,
+          })
+        ),
       })),
       delete: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({
-          data: null,
-          error: null,
-        })),
+        eq: vi.fn(() =>
+          Promise.resolve({
+            data: null,
+            error: null,
+          })
+        ),
       })),
     })),
   }),
@@ -55,9 +62,7 @@ vi.mock('sonner', () => ({
 }))
 
 describe('CartContext', () => {
-  const wrapper = ({ children }: { children: ReactNode }) => (
-    <CartProvider>{children}</CartProvider>
-  )
+  const wrapper = ({ children }: { children: ReactNode }) => <CartProvider>{children}</CartProvider>
 
   const mockProduct = {
     id: '1',

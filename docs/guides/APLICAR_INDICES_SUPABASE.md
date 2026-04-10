@@ -5,6 +5,7 @@
 Se han creado **20+ índices optimizados** para mejorar el rendimiento de las consultas en la base de datos.
 
 **Impacto esperado**: Queries 10-100x más rápidas en:
+
 - Listado de productos
 - Carrito de compras
 - Favoritos
@@ -80,6 +81,7 @@ supabase db push
 ## 📊 Índices Creados
 
 ### Productos (6 índices)
+
 - ✅ `idx_products_category_id` - Filtrar por categoría
 - ✅ `idx_products_featured` - Productos destacados
 - ✅ `idx_products_active` - Productos activos
@@ -87,21 +89,25 @@ supabase db push
 - ✅ `idx_products_price` - Ordenar por precio
 
 ### Pedidos (3 índices)
+
 - ✅ `idx_orders_user_id` - Pedidos por usuario
 - ✅ `idx_orders_status` - Filtrar por estado
 - ✅ `idx_orders_admin` - Dashboard admin
 
 ### Carrito (3 índices)
+
 - ✅ `idx_carts_user_id` - Carrito por usuario
 - ✅ `idx_cart_items_cart_id` - Items del carrito
 - ✅ `idx_cart_items_product` - Producto en carrito
 
 ### Favoritos (3 índices)
+
 - ✅ `idx_favorites_user_id` - Favoritos por usuario
 - ✅ `idx_favorites_user_product` - Verificar favorito
 - ✅ `idx_favorites_product_id` - Analytics de favoritos
 
 ### Otros (5 índices)
+
 - ✅ Categorías, Usuarios, Variantes
 
 ---
@@ -155,6 +161,7 @@ SELECT * FROM products WHERE category_id = 1 AND is_active = true;
 ### Espacio en Disco
 
 Los índices ocupan espacio adicional:
+
 - **Estimado**: ~5-10 MB para 1,000 productos
 - **Crecimiento**: Proporcional al número de registros
 

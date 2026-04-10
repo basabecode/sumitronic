@@ -13,6 +13,7 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 #### ✅ 1.1 — Eliminar dependencia de `products.json` como fallback funcional (2026-03-30)
 
 **Archivos modificados:**
+
 - `app/api/products/route.ts` — eliminados 2 bloques de fallback (~220 líneas). Cuando Supabase/DB falla, ahora retorna HTTP 503 limpio en lugar de datos mock. De 464 → 247 líneas.
 - `app/api/categories/route.ts` — eliminados 2 bloques de fallback. Mismo comportamiento. De 136 → 105 líneas.
 - `components/layout/Header.tsx` — reemplazado import estático de `products.json` por fetch dinámico a `/api/categories` con `useEffect`. Las categorías del menú de navegación ahora vienen de la base de datos real.
@@ -24,33 +25,36 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 #### ✅ 1.2 — Unificar tipos de `Product` y `Order` (2026-03-30)
 
 **Diagnóstico:** Tres archivos de tipos con definiciones conflictivas de `Product`, `Order` y `Profile`:
+
 - `lib/types/database.ts` (588 líneas) — Schema DB completo, fuente real. Usado por AuthContext para `Profile`.
 - `lib/supabase/types.ts` (64 líneas) — Tipos legacy con `Product.image`, `Order.customer_info` — no importado por nadie.
 - `lib/types/products.ts` (168 líneas) — Tipos de catálogo para UI — usado por 3 archivos.
 
 **Archivos modificados:**
+
 - `lib/supabase/types.ts` — **eliminado**. Dead code con tipos desactualizados que contradecían el schema real.
 - `lib/index.ts` — eliminada la re-exportación del archivo borrado.
 
 **Resultado:** Una sola definición activa por entidad. `lib/types/database.ts` = schema DB. `lib/types/products.ts` = tipos de UI/catálogo.
 
 **Build:** pasa sin errores.
+
 #### ✅ 1.3 — Dividir `AdminPanel.tsx` en módulos (2026-03-30)
 
 **Antes:** 1526 líneas en un solo archivo con 7 responsabilidades mezcladas.
 
 **Archivos creados:**
 
-| Archivo | Líneas | Responsabilidad |
-|---|---|---|
-| `app/admin/types.ts` | 50 | Interfaces `Product`, `ProductFormData`, `EMPTY_FORM`, `formatPrice` |
-| `app/admin/hooks/useAdminProducts.ts` | 125 | Estado de lista: fetch, paginación, búsqueda, filtros, eliminar |
-| `app/admin/hooks/useProductForm.ts` | 235 | Estado de formulario: CRUD producto, imágenes, categorías, marcas |
-| `app/admin/components/DashboardTab.tsx` | 154 | Cards de stats + acciones rápidas |
-| `app/admin/components/InventoryTab.tsx` | 312 | Tabla de productos, filtros, paginación, diálogo de borrado |
-| `app/admin/components/ProductFormTab.tsx` | 366 | Formulario de creación/edición de producto |
-| `app/admin/components/SalesTab.tsx` | 331 | Ventas, analytics y métricas de ingresos |
-| `app/admin/AdminPanel.tsx` | 193 | Orquestador: auth check + nav de tabs + composición |
+| Archivo                                   | Líneas | Responsabilidad                                                      |
+| ----------------------------------------- | ------ | -------------------------------------------------------------------- |
+| `app/admin/types.ts`                      | 50     | Interfaces `Product`, `ProductFormData`, `EMPTY_FORM`, `formatPrice` |
+| `app/admin/hooks/useAdminProducts.ts`     | 125    | Estado de lista: fetch, paginación, búsqueda, filtros, eliminar      |
+| `app/admin/hooks/useProductForm.ts`       | 235    | Estado de formulario: CRUD producto, imágenes, categorías, marcas    |
+| `app/admin/components/DashboardTab.tsx`   | 154    | Cards de stats + acciones rápidas                                    |
+| `app/admin/components/InventoryTab.tsx`   | 312    | Tabla de productos, filtros, paginación, diálogo de borrado          |
+| `app/admin/components/ProductFormTab.tsx` | 366    | Formulario de creación/edición de producto                           |
+| `app/admin/components/SalesTab.tsx`       | 331    | Ventas, analytics y métricas de ingresos                             |
+| `app/admin/AdminPanel.tsx`                | 193    | Orquestador: auth check + nav de tabs + composición                  |
 
 **Resultado:** 1526 líneas → 193 líneas el orquestador. Cada módulo tiene una sola responsabilidad. Testeable de forma independiente. `SalesTab` cubre la oportunidad de ventas/analytics identificada en §9.3.
 
@@ -59,6 +63,7 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 #### ✅ 1.4 — Limpiar `console.log` residuales (2026-03-30)
 
 **Archivos modificados:**
+
 - `app/admin/products/add/ProductForm.tsx` — eliminados 2 `console.log` de debug: "Insertando producto" y "Producto creado exitosamente". Renombrado `console.error('Error de Supabase:')` a mensaje claro. Limpiada variable `data` sin usar.
 
 **Nota:** `ProductForm.tsx` es un componente huérfano (sin `page.tsx` asociado, no es ruta activa). Su funcionalidad está cubierta por `app/admin/components/ProductFormTab.tsx`.
@@ -93,6 +98,7 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 **Contexto:** La recomendación §7.4.2 indicaba reemplazar el blog modal por rutas reales tipo `/blog/[slug]`.
 
 **Archivos creados:**
+
 - `app/blog/page.tsx` (79 líneas) — índice del blog, lista de artículos con links a slugs
 - `app/blog/[slug]/page.tsx` (117 líneas) — artículo individual con metadata dinámica y JSON-LD
 - `lib/content.ts` (205 líneas) — tipos `BlogPost`, `HelpArticle`, `Brand`, `CategoryContent` + datos de contenido editorial
@@ -106,6 +112,7 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 **Contexto:** La recomendación §7.4.1 indicaba crear landings indexables para categorías y marcas.
 
 **Archivos creados:**
+
 - `app/categorias/[slug]/page.tsx` (63 líneas) — landing de categoría con productos filtrados, metadata dinámica
 - `app/marcas/[slug]/page.tsx` (63 líneas) — landing de marca con productos filtrados, metadata dinámica
 - `lib/storefront.ts` (124 líneas) — helpers `getActiveCategories()`, `getActiveBrands()` para SSG desde DB
@@ -119,6 +126,7 @@ Alcance: frontend, backend, base de datos, SEO, contenido, responsive design, UI
 **Contexto:** La recomendación §5.2 indicaba que la página de ayuda no era escalable como una sola URL.
 
 **Archivos creados:**
+
 - `app/help/[slug]/page.tsx` (106 líneas) — artículo de ayuda individual con metadata dinámica, breadcrumb y navegación
 
 **Resultado:** El help center ahora soporta artículos individuales en `/help/[slug]`, indexables por Google.

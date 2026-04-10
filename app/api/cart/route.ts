@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
             'X-RateLimit-Limit': limit.toString(),
             'X-RateLimit-Remaining': remaining.toString(),
             'X-RateLimit-Reset': new Date(reset).toISOString(),
-          }
+          },
         }
       )
     }
@@ -46,7 +46,8 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single()
 
-    if (cartError && cartError.code !== 'PGRST116') { // PGRST116 es "no rows returned"
+    if (cartError && cartError.code !== 'PGRST116') {
+      // PGRST116 es "no rows returned"
       console.error('Error fetching cart:', cartError)
       return NextResponse.json({ error: 'Error al obtener carrito' }, { status: 500 })
     }
@@ -75,7 +76,8 @@ export async function GET(request: NextRequest) {
 
     const { data: products, error: productsError } = await supabase
       .from('products')
-      .select(`
+      .select(
+        `
         id,
         name,
         price,
@@ -83,7 +85,8 @@ export async function GET(request: NextRequest) {
         brand,
         category_id,
         stock_quantity
-      `)
+      `
+      )
       .in('id', productIds)
 
     if (productsError) {
@@ -109,7 +112,7 @@ export async function GET(request: NextRequest) {
           brand: product.brand,
           category: product.category_id,
           description: '',
-          inStock: (product.stock_quantity || 0) > 0
+          inStock: (product.stock_quantity || 0) > 0,
         }
       })
       .filter(Boolean)
@@ -181,29 +184,27 @@ export async function POST(request: NextRequest) {
     if (items.length > 0) {
       // Mapear los IDs de los productos desde el cliente
       const productIds = items.map((i: any) => i.id)
-      
+
       // Validar qué productos todavía existen en la base de datos
       const { data: validProducts } = await supabase
         .from('products')
         .select('id')
         .in('id', productIds)
-        
+
       const validProductIds = new Set(validProducts?.map(p => p.id) || [])
 
       const itemsToInsert = items
         .filter((item: any) => validProductIds.has(item.id))
         .map((item: any) => ({
-        cart_id: cart.id,
-        product_id: item.id,
-        quantity: item.quantity,
-        price: item.price,
-        // variant_id: item.variantId // Si se implementa variantes
-      }))
+          cart_id: cart.id,
+          product_id: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          // variant_id: item.variantId // Si se implementa variantes
+        }))
 
       if (itemsToInsert.length > 0) {
-        const { error: insertError } = await supabase
-          .from('cart_items')
-          .insert(itemsToInsert)
+        const { error: insertError } = await supabase.from('cart_items').insert(itemsToInsert)
 
         if (insertError) throw insertError
       }
@@ -212,9 +213,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error: any) {
     console.error('Sync cart error:', error.message || error)
-    return NextResponse.json({ 
-      error: 'Error al sincronizar carrito', 
-      details: 'Error procesando el carrito. Intenta de nuevo.'
-    }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: 'Error al sincronizar carrito',
+        details: 'Error procesando el carrito. Intenta de nuevo.',
+      },
+      { status: 500 }
+    )
   }
 }

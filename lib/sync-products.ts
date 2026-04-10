@@ -98,11 +98,7 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
   const rows = response.data.values ?? []
   const validRows = rows.filter(row => (row[0] ?? '').trim() !== '')
   const categorySlugs = Array.from(
-    new Set(
-      validRows
-        .map(row => (row[7] ?? '').trim())
-        .filter(Boolean)
-    )
+    new Set(validRows.map(row => (row[7] ?? '').trim()).filter(Boolean))
   )
 
   const categoryMap = new Map<string, string>()
@@ -287,8 +283,7 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
 
       synced += 1
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Unknown sync error'
+      const message = error instanceof Error ? error.message : 'Unknown sync error'
       errors.push(`${product.sku}: ${message}`)
     }
   }

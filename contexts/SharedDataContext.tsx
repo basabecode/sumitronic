@@ -39,7 +39,8 @@ export function SharedDataProvider({ children }: { children: React.ReactNode }) 
     try {
       const res = await fetch('/api/categories')
       if (res.ok) {
-        const data: { id: string; slug: string; name: string; image_url?: string | null }[] = await res.json()
+        const data: { id: string; slug: string; name: string; image_url?: string | null }[] =
+          await res.json()
         setCategories(
           data.map(cat => ({
             id: cat.slug,

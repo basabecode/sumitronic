@@ -48,7 +48,8 @@ export default async function CategoryPage({ params }: { params: { slug: string 
             {data.category.name}
           </h1>
           <p className="mt-4 max-w-3xl text-lg text-[hsl(var(--text-muted))]">
-            Selección curada de {data.category.name.toLowerCase()} con inventario activo, soporte comercial y despacho nacional.
+            Selección curada de {data.category.name.toLowerCase()} con inventario activo, soporte
+            comercial y despacho nacional.
           </p>
         </header>
 

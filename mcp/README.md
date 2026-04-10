@@ -9,6 +9,7 @@ Para vincular Supabase, necesitas agregar la siguiente configuración a tu archi
 Puedes copiar el contenido de `supabase-config.json` y reemplazar los valores con tus credenciales de `.env.local`.
 
 ### Credenciales necesarias:
+
 - `SUPABASE_URL`: Tu URL del proyecto (ej. `https://xyz.supabase.co`)
 - `SUPABASE_KEY`: Tu clave `anon` pública (o `service_role` si necesitas permisos de administración total, pero ten cuidado).
 
@@ -17,6 +18,7 @@ Puedes copiar el contenido de `supabase-config.json` y reemplazar los valores co
 Para vincular Netlify, usa la configuración de `netlify-config.json`.
 
 ### Credenciales necesarias:
+
 - `NETLIFY_AUTH_TOKEN`: Tu token de acceso personal (Personal Access Token) de Netlify. Lo puedes generar en "User Settings" > "Applications" > "New access token".
 - `NETLIFY_SITE_ID`: (Opcional) El API ID de tu sitio específico si quieres limitar el contexto.
 

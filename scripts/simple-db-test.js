@@ -46,10 +46,7 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Error: Variables de entorno de Supabase no configuradas')
   console.log('🔍 Variables encontradas:')
   console.log('  NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'SET' : 'NOT SET')
-  console.log(
-    '  NEXT_PUBLIC_SUPABASE_ANON_KEY:',
-    supabaseKey ? 'SET' : 'NOT SET'
-  )
+  console.log('  NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseKey ? 'SET' : 'NOT SET')
   process.exit(1)
 }
 
@@ -67,22 +64,15 @@ async function runSimpleTest() {
   // Test 1: Conexión básica
   console.log('\n🔍 Test 1: Conexión básica...')
   try {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('count')
-      .limit(1)
+    const { data, error } = await supabase.from('categories').select('count').limit(1)
 
     if (error) {
       console.log('❌ Error de conexión:', error.message)
 
       if (error.message.includes('infinite recursion')) {
-        console.log(
-          '\n🚨 PROBLEMA DETECTADO: Recursión infinita en políticas RLS'
-        )
+        console.log('\n🚨 PROBLEMA DETECTADO: Recursión infinita en políticas RLS')
         console.log('💡 SOLUCIÓN REQUERIDA:')
-        console.log(
-          '1. Abre tu panel de Supabase: https://supabase.com/dashboard'
-        )
+        console.log('1. Abre tu panel de Supabase: https://supabase.com/dashboard')
         console.log('2. Ve a SQL Editor')
         console.log('3. Ejecuta el archivo: supabase/fix-rls-policies.sql')
         console.log('4. Reinicia la aplicación Next.js')
@@ -110,15 +100,11 @@ async function runSimpleTest() {
       console.log('❌ Error accediendo a categorías:', error.message)
       return false
     } else {
-      console.log(
-        `✅ Acceso a categorías: OK (${categories.length} encontradas)`
-      )
+      console.log(`✅ Acceso a categorías: OK (${categories.length} encontradas)`)
       if (categories.length > 0) {
         console.log('   📋 Categorías encontradas:')
         categories.forEach(cat => {
-          console.log(
-            `     - ${cat.name} (${cat.active ? 'activa' : 'inactiva'})`
-          )
+          console.log(`     - ${cat.name} (${cat.active ? 'activa' : 'inactiva'})`)
         })
       }
     }
@@ -144,9 +130,7 @@ async function runSimpleTest() {
         console.log('   📋 Productos encontrados:')
         products.forEach(prod => {
           console.log(
-            `     - ${prod.name}: $${prod.price} (${
-              prod.active ? 'activo' : 'inactivo'
-            })`
+            `     - ${prod.name}: $${prod.price} (${prod.active ? 'activo' : 'inactivo'})`
           )
         })
       }
@@ -176,15 +160,11 @@ async function runSimpleTest() {
       console.log('❌ Error en relaciones:', error.message)
       return false
     } else {
-      console.log(
-        `✅ Relaciones: OK (${productsWithCats.length} productos con categoría)`
-      )
+      console.log(`✅ Relaciones: OK (${productsWithCats.length} productos con categoría)`)
       if (productsWithCats.length > 0) {
         console.log('   📋 Relaciones encontradas:')
         productsWithCats.forEach(prod => {
-          const categoryName = prod.categories
-            ? prod.categories.name
-            : 'Sin categoría'
+          const categoryName = prod.categories ? prod.categories.name : 'Sin categoría'
           console.log(`     - ${prod.name} → ${categoryName}`)
         })
       }

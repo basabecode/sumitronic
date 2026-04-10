@@ -6,21 +6,24 @@ export default function FeaturesSection() {
     {
       icon: Shield,
       title: 'Garantia y respaldo',
-      description: 'Trabajamos con productos originales y te ayudamos a validar garantia, compatibilidad y condiciones de compra.',
+      description:
+        'Trabajamos con productos originales y te ayudamos a validar garantia, compatibilidad y condiciones de compra.',
       color: 'text-[hsl(var(--brand-strong))]',
       bgColor: 'bg-[hsl(var(--surface-highlight))]',
     },
     {
       icon: Clock,
       title: 'Compra sin enredos',
-      description: 'Te atendemos por WhatsApp para cotizar, resolver dudas y confirmar lo que realmente te sirve.',
+      description:
+        'Te atendemos por WhatsApp para cotizar, resolver dudas y confirmar lo que realmente te sirve.',
       color: 'text-sky-700',
       bgColor: 'bg-sky-50',
     },
     {
       icon: Award,
       title: 'Asesoria util',
-      description: 'En varias referencias te orientamos con instalacion, uso basico y recomendaciones segun tu necesidad.',
+      description:
+        'En varias referencias te orientamos con instalacion, uso basico y recomendaciones segun tu necesidad.',
       color: 'text-cyan-700',
       bgColor: 'bg-cyan-50',
     },
@@ -34,7 +37,8 @@ export default function FeaturesSection() {
             ¿Por qué elegir {brand.name}?
           </h2>
           <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
-            No somos un marketplace gigante. Somos un equipo pequeño con respaldo local, atención directa y productos que conocemos bien.
+            No somos un marketplace gigante. Somos un equipo pequeño con respaldo local, atención
+            directa y productos que conocemos bien.
           </p>
         </div>
 
@@ -73,9 +77,7 @@ export default function FeaturesSection() {
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">120+</div>
-              <div className="text-sky-100 text-xs">
-                Clientes con compra confirmada
-              </div>
+              <div className="text-sky-100 text-xs">Clientes con compra confirmada</div>
             </div>
             <div>
               <div className="text-lg md:text-xl font-bold mb-1">5+</div>

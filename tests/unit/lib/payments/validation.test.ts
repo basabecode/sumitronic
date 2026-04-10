@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest'
 import {
   validateEmail,
@@ -12,9 +11,7 @@ import {
 describe('Payment Validation Utilities', () => {
   describe('sanitizeString', () => {
     it('should remove dangerous characters', () => {
-      expect(sanitizeString('<script>alert("xss")</script>')).toBe(
-        'scriptalert(xss)/script'
-      )
+      expect(sanitizeString('<script>alert("xss")</script>')).toBe('scriptalert(xss)/script')
     })
 
     it('should trim whitespace', () => {
@@ -29,8 +26,8 @@ describe('Payment Validation Utilities', () => {
     })
 
     it('should limit to 10 digits', () => {
-        const res = sanitizePhone('300123456789')
-        expect(res).toBe('3001234567')
+      const res = sanitizePhone('300123456789')
+      expect(res).toBe('3001234567')
     })
   })
 
@@ -50,9 +47,9 @@ describe('Payment Validation Utilities', () => {
 
   describe('validatePhone', () => {
     it('should validate correct Colombian phones', () => {
-        const phone = '3001234567'
-        const isValid = validatePhone(phone)
-        expect(isValid).toBe(true)
+      const phone = '3001234567'
+      const isValid = validatePhone(phone)
+      expect(isValid).toBe(true)
     })
   })
 
@@ -68,9 +65,9 @@ describe('Payment Validation Utilities', () => {
   })
 
   describe('formatCurrency', () => {
-      it('should format correctly', () => {
-          const formatted = formatCurrency(50000)
-          expect(formatted).toContain('50.000')
-      })
+    it('should format correctly', () => {
+      const formatted = formatCurrency(50000)
+      expect(formatted).toContain('50.000')
+    })
   })
 })

@@ -17,7 +17,9 @@ export async function GET() {
       return NextResponse.json([], { status: 200 })
     }
 
-    const uniqueBrands = Array.from(new Set((data || []).map(p => p.brand).filter(Boolean))) as string[]
+    const uniqueBrands = Array.from(
+      new Set((data || []).map(p => p.brand).filter(Boolean))
+    ) as string[]
     const brands = uniqueBrands.map(brand => ({ id: brand, name: brand }))
 
     return NextResponse.json(brands, {

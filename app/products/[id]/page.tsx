@@ -138,10 +138,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     openGraph: {
       title: `${product.name} - ${price} | ${brand.organizationName}`,
       description: product.description.substring(0, 200),
-      images: product.product_images?.map((img: any) => ({
-        url: img.image_url,
-        alt: img.alt_text || product.name,
-      })) || [],
+      images:
+        product.product_images?.map((img: any) => ({
+          url: img.image_url,
+          alt: img.alt_text || product.name,
+        })) || [],
       locale: 'es_CO',
       type: 'website',
     },
@@ -177,9 +178,8 @@ export default async function ProductPage({ params }: { params: { id: string } }
       url: `${brand.siteUrl}/products/${product.id}`,
       priceCurrency: 'COP',
       price: product.price,
-      availability: product.stock_quantity > 0
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
+      availability:
+        product.stock_quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
     },
   }

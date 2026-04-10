@@ -7,8 +7,7 @@ import { brand } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: 'Catálogo de productos — Seguridad, redes y energía',
-  description:
-    `Cámaras de seguridad, routers WiFi, UPS y repuestos para TV de marcas como Hikvision, Dahua, TP-Link y Forza. Compre con envío a toda Colombia desde ${brand.name}.`,
+  description: `Cámaras de seguridad, routers WiFi, UPS y repuestos para TV de marcas como Hikvision, Dahua, TP-Link y Forza. Compre con envío a toda Colombia desde ${brand.name}.`,
   keywords: [
     'camaras seguridad colombia',
     'comprar router wifi cali',
@@ -19,8 +18,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/products' },
   openGraph: {
     title: `Catálogo — ${brand.name}`,
-    description:
-      'Cámaras, routers, UPS y repuestos tecnológicos con envío a toda Colombia.',
+    description: 'Cámaras, routers, UPS y repuestos tecnológicos con envío a toda Colombia.',
     url: `${brand.siteUrl}/products`,
     siteName: brand.organizationName,
     locale: 'es_CO',

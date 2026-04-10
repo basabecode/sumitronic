@@ -51,19 +51,13 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching orders:', error)
-      return NextResponse.json(
-        { error: 'Error al obtener pedidos' },
-        { status: 503 }
-      )
+      return NextResponse.json({ error: 'Error al obtener pedidos' }, { status: 503 })
     }
 
     return NextResponse.json({ data: orders || [] })
   } catch (error) {
     console.error('Orders GET error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -72,7 +66,9 @@ export async function POST(request: NextRequest) {
     const supabase = createClient()
 
     // Auth es opcional: se permiten órdenes de invitados (guest checkout)
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
     // Rate limit por usuario autenticado o por IP para invitados
     const rateLimitKey = user?.id
@@ -148,18 +144,12 @@ export async function POST(request: NextRequest) {
 
     if (insertError) {
       console.error('Error creating order:', insertError)
-      return NextResponse.json(
-        { error: 'Error al crear el pedido' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al crear el pedido' }, { status: 500 })
     }
 
     return NextResponse.json({ data: order }, { status: 201 })
   } catch (error) {
     console.error('Orders POST error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

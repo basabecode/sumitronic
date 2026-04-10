@@ -136,17 +136,16 @@ export interface ProductFilters {
 }
 
 // Función helper para convertir DatabaseProduct a Product (frontend)
-export const convertDatabaseProductToProduct = (
-  dbProduct: ProductWithRelations
-): Product => {
+export const convertDatabaseProductToProduct = (dbProduct: ProductWithRelations): Product => {
   return {
     id: dbProduct.id,
     name: dbProduct.name,
     description: dbProduct.description,
     price: dbProduct.price,
-    originalPrice: dbProduct.compare_price && dbProduct.compare_price > dbProduct.price
-      ? dbProduct.compare_price
-      : undefined,
+    originalPrice:
+      dbProduct.compare_price && dbProduct.compare_price > dbProduct.price
+        ? dbProduct.compare_price
+        : undefined,
     category: dbProduct.category?.name || 'Sin categoría',
     brand: dbProduct.brand,
     image: dbProduct.image_url,

@@ -87,18 +87,17 @@ export default function Header() {
         {/* ROW 1: Fondo claro (superficie) */}
         <div className="bg-[hsl(var(--surface-overlay))]/90 backdrop-blur-xl">
           <div className="mx-auto w-full max-w-[1720px] px-4 py-2 md:px-6 xl:px-8">
-            
             {/* Desktop Row 1 */}
             <div className="hidden md:flex items-center gap-6">
               <div className="shrink-0">
                 <Brand />
               </div>
-              
+
               {/* Contenedor central buscador */}
               <div className="flex-1 min-w-0 max-w-4xl mx-auto">
                 <SearchBar value={searchQuery} onChange={handleSearch} onClear={clearSearch} />
               </div>
-              
+
               {/* Asesoría / WhatsApp */}
               <div className="hidden xl:flex flex-col items-end shrink-0 rounded-full border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] px-4 py-2">
                 <p className="text-[10px] uppercase tracking-[0.22em] text-[hsl(var(--text-muted))] leading-none">
@@ -195,7 +194,7 @@ export default function Header() {
           </div>
         </div>
       </header>
-      
+
       <MobileDrawer
         isOpen={isMenuOpen}
         categories={categories}

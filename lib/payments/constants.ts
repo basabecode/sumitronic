@@ -3,7 +3,7 @@
  * Security: These are public-facing constants. Never store sensitive data here.
  */
 
-import { DigitalWalletAccount, PaymentConfig } from './types';
+import { DigitalWalletAccount, PaymentConfig } from './types'
 
 /**
  * Digital Wallet Accounts Configuration
@@ -55,13 +55,13 @@ export const DIGITAL_WALLET_ACCOUNTS: DigitalWalletAccount[] = [
     icon: '/bancos/nubank_1.png',
     instructions: 'Transferencia a cuenta Nubank',
   },
-];
+]
 
 /**
  * WhatsApp Contact for Payment Verification
  */
-export const WHATSAPP_NUMBER = '573003094854';
-export const WHATSAPP_NUMBER_DISPLAY = '300 309 4854';
+export const WHATSAPP_NUMBER = '573003094854'
+export const WHATSAPP_NUMBER_DISPLAY = '300 309 4854'
 
 /**
  * Payment Configuration
@@ -72,7 +72,7 @@ export const PAYMENT_CONFIG: PaymentConfig = {
   whatsappNumber: WHATSAPP_NUMBER,
   requirePaymentReference: false, // Made optional for better UX
   allowScreenshotUpload: false, // Disabled for MVP, use WhatsApp instead
-};
+}
 
 /**
  * Payment Status Display Names
@@ -84,7 +84,7 @@ export const PAYMENT_STATUS_LABELS = {
   PROCESSING: 'En Proceso',
   CANCELLED: 'Cancelado',
   FAILED: 'Fallido',
-} as const;
+} as const
 
 /**
  * Payment Method Display Names
@@ -93,7 +93,7 @@ export const PAYMENT_METHOD_LABELS = {
   DIGITAL_WALLET: 'Billeteras Digitales / Transferencia',
   CREDIT_CARD: 'Tarjeta de Crédito',
   PSE: 'PSE',
-} as const;
+} as const
 
 /**
  * Validation Rules
@@ -114,7 +114,7 @@ export const VALIDATION_RULES = {
     MIN: 1000, // Minimum 1,000 COP
     MESSAGE: 'El monto mínimo es $1,000 COP',
   },
-} as const;
+} as const
 
 /**
  * Security: Input Sanitization Patterns
@@ -125,7 +125,7 @@ export const SANITIZATION_PATTERNS = {
   NUMERIC: /^[0-9]+$/,
   PHONE: /^[0-9\s\+\-\(\)]+$/,
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-} as const;
+} as const
 
 /**
  * Error Messages
@@ -138,7 +138,7 @@ export const ERROR_MESSAGES = {
   TERMS_NOT_ACCEPTED: 'Debes aceptar los términos y condiciones',
   PAYMENT_REFERENCE_REQUIRED: 'Ingresa la referencia de pago o envíala por WhatsApp',
   GENERIC_ERROR: 'Ocurrió un error. Por favor intenta nuevamente.',
-} as const;
+} as const
 
 /**
  * Success Messages
@@ -147,4 +147,4 @@ export const SUCCESS_MESSAGES = {
   ORDER_CREATED: '¡Pedido creado exitosamente!',
   PAYMENT_VERIFIED: 'Pago verificado correctamente',
   PAYMENT_SUBMITTED: 'Información de pago recibida',
-} as const;
+} as const

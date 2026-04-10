@@ -29,11 +29,7 @@ function createNoopRateLimit(limitValue: number): RateLimiter {
   }
 }
 
-function createRateLimit(
-  prefix: string,
-  limitValue: number,
-  window: `${number} s`
-): RateLimiter {
+function createRateLimit(prefix: string, limitValue: number, window: `${number} s`): RateLimiter {
   if (!hasUpstashConfig) {
     return createNoopRateLimit(limitValue)
   }
@@ -55,15 +51,7 @@ function createRateLimit(
 export const ratelimit = createRateLimit('@upstash/ratelimit', 10, '10 s')
 
 // Rate limiter más estricto para autenticación (5 intentos por minuto)
-export const authRatelimit = createRateLimit(
-  '@upstash/ratelimit/auth',
-  5,
-  '60 s'
-)
+export const authRatelimit = createRateLimit('@upstash/ratelimit/auth', 5, '60 s')
 
 // Rate limiter para operaciones de carrito (20 requests por 10 segundos)
-export const cartRatelimit = createRateLimit(
-  '@upstash/ratelimit/cart',
-  20,
-  '10 s'
-)
+export const cartRatelimit = createRateLimit('@upstash/ratelimit/cart', 20, '10 s')

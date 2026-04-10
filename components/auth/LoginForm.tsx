@@ -8,13 +8,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -99,9 +93,7 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Iniciar Sesión</CardTitle>
-        <CardDescription>
-          Ingresa tu email y contraseña para acceder
-        </CardDescription>
+        <CardDescription>Ingresa tu email y contraseña para acceder</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -120,9 +112,7 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
               {...register('email')}
               disabled={isLoading}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-2">
@@ -143,16 +133,10 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
-            {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
@@ -165,9 +149,7 @@ export function LoginForm({ onSuccess, redirectTo }: LoginFormProps) {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                O continúa con
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">O continúa con</span>
             </div>
           </div>
 

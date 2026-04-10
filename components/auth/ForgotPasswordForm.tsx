@@ -8,13 +8,7 @@ import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -64,12 +58,8 @@ export function ForgotPasswordForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
-          Recuperar Contraseña
-        </CardTitle>
-        <CardDescription>
-          Ingresa tu email para recibir un link de recuperación
-        </CardDescription>
+        <CardTitle className="text-2xl font-bold">Recuperar Contraseña</CardTitle>
+        <CardDescription>Ingresa tu email para recibir un link de recuperación</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -94,9 +84,7 @@ export function ForgotPasswordForm() {
               {...register('email')}
               disabled={isLoading}
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>

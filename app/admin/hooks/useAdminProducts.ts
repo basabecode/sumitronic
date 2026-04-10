@@ -111,9 +111,21 @@ export function useAdminProducts() {
     try {
       const [totalRes, inStockRes, outOfStockRes, featuredRes] = await Promise.all([
         supabase.from('products').select('*', { count: 'exact', head: true }).eq('active', true),
-        supabase.from('products').select('*', { count: 'exact', head: true }).eq('active', true).gt('stock_quantity', 0),
-        supabase.from('products').select('*', { count: 'exact', head: true }).eq('active', true).eq('stock_quantity', 0),
-        supabase.from('products').select('*', { count: 'exact', head: true }).eq('active', true).eq('featured', true),
+        supabase
+          .from('products')
+          .select('*', { count: 'exact', head: true })
+          .eq('active', true)
+          .gt('stock_quantity', 0),
+        supabase
+          .from('products')
+          .select('*', { count: 'exact', head: true })
+          .eq('active', true)
+          .eq('stock_quantity', 0),
+        supabase
+          .from('products')
+          .select('*', { count: 'exact', head: true })
+          .eq('active', true)
+          .eq('featured', true),
       ])
 
       setDashboardStats({

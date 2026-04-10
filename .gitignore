@@ -26,10 +26,18 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# eslint cache
+.eslintcache
+
 # supabase local db/storage
 supabase/*.storage/
 supabase/.temp/
 
+# Logs con posibles secretos
+.docs/supabase-*.txt
+
 # IDE & AI
 .claude/
 .gemini/
+# Claude Code hooks logs
+.claude/logs/

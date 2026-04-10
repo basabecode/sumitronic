@@ -32,9 +32,9 @@ function loadEnv() {
 
 async function makeRequest(url, options) {
   return new Promise((resolve, reject) => {
-    const req = https.request(url, options, (res) => {
+    const req = https.request(url, options, res => {
       let data = ''
-      res.on('data', chunk => data += chunk)
+      res.on('data', chunk => (data += chunk))
       res.on('end', () => {
         try {
           resolve({ status: res.statusCode, data: JSON.parse(data) })
@@ -68,9 +68,9 @@ async function quickCheck() {
     const productsUrl = `${url}/rest/v1/products?select=id,name,price,compare_price&active=eq.true&limit=10`
     const res = await makeRequest(productsUrl, {
       headers: {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-      }
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
     })
 
     if (res.status === 200) {

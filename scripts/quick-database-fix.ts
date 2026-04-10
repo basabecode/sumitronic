@@ -29,26 +29,18 @@ class QuickDatabaseFix {
 
     // Test 1: Conexión básica
     try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('count')
-        .limit(1)
+      const { data, error } = await supabase.from('categories').select('count').limit(1)
 
       if (error) {
         console.log('❌ Error de conexión:', error.message)
 
         if (error.message.includes('infinite recursion')) {
-          console.log(
-            '🚨 PROBLEMA DETECTADO: Recursión infinita en políticas RLS'
-          )
+          console.log('🚨 PROBLEMA DETECTADO: Recursión infinita en políticas RLS')
           console.log('💡 SOLUCIÓN: Ejecutar script de corrección de políticas')
           return 'RLS_RECURSION'
         }
 
-        if (
-          error.message.includes('relation') &&
-          error.message.includes('does not exist')
-        ) {
+        if (error.message.includes('relation') && error.message.includes('does not exist')) {
           console.log('🚨 PROBLEMA DETECTADO: Tablas no existen')
           console.log('💡 SOLUCIÓN: Ejecutar esquema de base de datos')
           return 'MISSING_SCHEMA'
@@ -65,18 +57,13 @@ class QuickDatabaseFix {
 
     // Test 2: Acceso a productos
     try {
-      const { data: products, error } = await supabase
-        .from('products')
-        .select('id, name')
-        .limit(1)
+      const { data: products, error } = await supabase.from('products').select('id, name').limit(1)
 
       if (error) {
         console.log('❌ Error accediendo a productos:', error.message)
         return 'PRODUCTS_ERROR'
       } else {
-        console.log(
-          `✅ Acceso a productos: OK (${products.length} productos encontrados)`
-        )
+        console.log(`✅ Acceso a productos: OK (${products.length} productos encontrados)`)
       }
     } catch (error) {
       console.log('❌ Error en productos:', error)
@@ -94,18 +81,14 @@ class QuickDatabaseFix {
         console.log('❌ Error accediendo a categorías:', error.message)
         return 'CATEGORIES_ERROR'
       } else {
-        console.log(
-          `✅ Acceso a categorías: OK (${categories.length} categorías encontradas)`
-        )
+        console.log(`✅ Acceso a categorías: OK (${categories.length} categorías encontradas)`)
       }
     } catch (error) {
       console.log('❌ Error en categorías:', error)
       return 'CATEGORIES_ERROR'
     }
 
-    console.log(
-      '\n🟢 DIAGNÓSTICO COMPLETADO: No se encontraron problemas críticos'
-    )
+    console.log('\n🟢 DIAGNÓSTICO COMPLETADO: No se encontraron problemas críticos')
     return 'HEALTHY'
   }
 
@@ -122,12 +105,8 @@ class QuickDatabaseFix {
         break
 
       case 'MISSING_SCHEMA':
-        console.log(
-          '❌ SCHEMA FALTANTE: Este problema requiere intervención manual'
-        )
-        console.log(
-          '💡 Ejecuta el archivo supabase/schema.sql en tu panel de Supabase'
-        )
+        console.log('❌ SCHEMA FALTANTE: Este problema requiere intervención manual')
+        console.log('💡 Ejecuta el archivo supabase/schema.sql en tu panel de Supabase')
         break
 
       case 'PRODUCTS_ERROR':
@@ -136,9 +115,7 @@ class QuickDatabaseFix {
         break
 
       default:
-        console.log(
-          'ℹ️  No hay correcciones automáticas disponibles para este problema'
-        )
+        console.log('ℹ️  No hay correcciones automáticas disponibles para este problema')
     }
   }
 
@@ -179,9 +156,7 @@ COMMIT;
 
     console.log(fixSQL)
     console.log('='.repeat(50))
-    console.log(
-      '\n💡 Después de ejecutar este SQL, reinicia tu aplicación Next.js'
-    )
+    console.log('\n💡 Después de ejecutar este SQL, reinicia tu aplicación Next.js')
   }
 
   // ===================================
@@ -209,18 +184,16 @@ COMMIT;
         console.log('✅ Categoría básica creada')
 
         // Intentar crear un producto básico
-        const { data: product, error: prodError } = await supabase
-          .from('products')
-          .insert({
-            name: 'Producto de Prueba',
-            description: 'Producto de prueba para validar funcionamiento',
-            price: 100000,
-            category_id: category.id,
-            brand: 'SUMITRONIC',
-            image_url: '/placeholder.svg',
-            stock_quantity: 10,
-            active: true,
-          })
+        const { data: product, error: prodError } = await supabase.from('products').insert({
+          name: 'Producto de Prueba',
+          description: 'Producto de prueba para validar funcionamiento',
+          price: 100000,
+          category_id: category.id,
+          brand: 'SUMITRONIC',
+          image_url: '/placeholder.svg',
+          stock_quantity: 10,
+          active: true,
+        })
 
         if (prodError) {
           console.log('❌ No se pudo crear producto:', prodError.message)
@@ -248,12 +221,8 @@ COMMIT;
 
     console.log('\n🏁 QUICK FIX COMPLETADO')
     console.log('=' + '='.repeat(50))
-    console.log(
-      '💡 Para un diagnóstico completo, ejecuta: npm run test:database'
-    )
-    console.log(
-      '🌐 Para testing visual, visita: http://localhost:3004/test/database'
-    )
+    console.log('💡 Para un diagnóstico completo, ejecuta: npm run test:database')
+    console.log('🌐 Para testing visual, visita: http://localhost:3004/test/database')
   }
 }
 

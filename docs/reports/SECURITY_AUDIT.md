@@ -25,16 +25,16 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ### ✅ Tablas Principales
 
-| Tabla | Estado | RLS Habilitado | Descripción |
-|-------|--------|----------------|-------------|
-| `users` | ✅ | ✅ | Perfiles de usuario |
-| `categories` | ✅ | ✅ | Categorías de productos |
-| `products` | ✅ | ✅ | Catálogo de productos |
-| `product_images` | ✅ | ✅ | Imágenes de productos |
-| `inventory` | ✅ | ✅ | Control de inventario |
-| `orders` | ✅ | ✅ | Pedidos de clientes |
-| `cart_items` | ✅ | ✅ | Carrito de compras |
-| `system_settings` | ✅ | ✅ | Configuraciones del sistema |
+| Tabla             | Estado | RLS Habilitado | Descripción                 |
+| ----------------- | ------ | -------------- | --------------------------- |
+| `users`           | ✅     | ✅             | Perfiles de usuario         |
+| `categories`      | ✅     | ✅             | Categorías de productos     |
+| `products`        | ✅     | ✅             | Catálogo de productos       |
+| `product_images`  | ✅     | ✅             | Imágenes de productos       |
+| `inventory`       | ✅     | ✅             | Control de inventario       |
+| `orders`          | ✅     | ✅             | Pedidos de clientes         |
+| `cart_items`      | ✅     | ✅             | Carrito de compras          |
+| `system_settings` | ✅     | ✅             | Configuraciones del sistema |
 
 ### ⚠️ Campo Faltante: `compare_price`
 
@@ -56,22 +56,26 @@ ADD COLUMN IF NOT EXISTS compare_price DECIMAL(10,2) CHECK (compare_price >= 0);
 ### ✅ Políticas de Seguridad Implementadas
 
 #### Tabla: `users`
+
 - ✅ Los usuarios pueden ver su propio perfil
 - ✅ Los usuarios pueden actualizar su propio perfil
 - ✅ Los admins pueden ver todos los usuarios
 - ✅ Los admins pueden gestionar todos los usuarios
 
 #### Tabla: `products`
+
 - ✅ Cualquiera puede ver productos activos
 - ✅ Solo admins pueden crear/editar/eliminar productos
 - ✅ Usuarios autenticados pueden ver productos inactivos
 
 #### Tabla: `orders`
+
 - ✅ Los usuarios solo pueden ver sus propios pedidos
 - ✅ Los usuarios solo pueden crear pedidos para sí mismos
 - ✅ Los admins pueden ver y gestionar todos los pedidos
 
 #### Tabla: `cart_items`
+
 - ✅ Los usuarios solo pueden gestionar su propio carrito
 - ✅ Aislamiento completo entre usuarios
 
@@ -130,18 +134,21 @@ return await updateSession(request)
 ### ✅ Endpoints Protegidos
 
 #### `/api/products` (GET)
+
 - ✅ Público para lectura
 - ✅ Filtros validados server-side
 - ✅ Paginación implementada (previene DoS)
 - ✅ Fallback a datos JSON si Supabase falla
 
 #### `/api/products` (POST)
+
 - ✅ Requiere autenticación
 - ✅ Verifica rol de admin
 - ✅ Validación de datos de entrada
 - ✅ Manejo de errores apropiado
 
 #### Otros Endpoints
+
 - Revisar todos los endpoints en `/app/api/`
 - Verificar autenticación y autorización
 - Validar inputs para prevenir SQL injection
@@ -149,12 +156,14 @@ return await updateSession(request)
 ### 🔒 Mejores Prácticas Implementadas
 
 1. **Validación de Entrada**
+
    ```typescript
    const page = parseInt(searchParams.get('page') || '1')
    const limit = parseInt(searchParams.get('limit') || '12')
    ```
 
 2. **Verificación de Roles**
+
    ```typescript
    if (profile?.role !== 'admin') {
      return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -202,12 +211,14 @@ return await updateSession(request)
 ### ✅ Formularios Implementados
 
 #### Admin - Agregar/Editar Producto
+
 - ✅ Validación client-side (required fields)
 - ✅ Validación server-side en API
 - ✅ Sanitización de inputs
 - ✅ Manejo de errores con feedback al usuario
 
 #### Checkout
+
 - Verificar validación de datos de pago
 - Verificar validación de dirección de envío
 - Implementar rate limiting para prevenir spam
@@ -215,6 +226,7 @@ return await updateSession(request)
 ### 🔒 Mejoras Recomendadas
 
 1. **Validación con Zod**
+
    ```typescript
    import { z } from 'zod'
 
@@ -235,12 +247,14 @@ return await updateSession(request)
 ## 8. CHECKLIST DE VALIDACIÓN
 
 ### Base de Datos
+
 - [ ] Ejecutar migración `add_compare_price.sql` en Supabase
 - [ ] Verificar que todas las tablas existen
 - [ ] Confirmar que RLS está habilitado en todas las tablas
 - [ ] Probar políticas RLS con diferentes roles
 
 ### Autenticación
+
 - [ ] Configurar email de verificación en Supabase
 - [ ] Probar registro de nuevo usuario
 - [ ] Probar inicio de sesión
@@ -248,12 +262,14 @@ return await updateSession(request)
 - [ ] Verificar que las sesiones expiran correctamente
 
 ### API
+
 - [ ] Probar endpoint `/api/products?onOffer=true`
 - [ ] Verificar que solo admins pueden crear productos
 - [ ] Probar manejo de errores en todos los endpoints
 - [ ] Verificar rate limiting (si está implementado)
 
 ### Admin Panel
+
 - [ ] Crear producto con `compare_price`
 - [ ] Verificar que el descuento se calcula correctamente
 - [ ] Editar producto existente
@@ -261,12 +277,14 @@ return await updateSession(request)
 - [ ] Verificar que no-admins no pueden acceder
 
 ### Frontend
+
 - [ ] Verificar que OffersSection muestra productos con ofertas
 - [ ] Probar agregar producto al carrito desde ofertas
 - [ ] Verificar que los precios se muestran correctamente
 - [ ] Probar en diferentes dispositivos (responsive)
 
 ### Seguridad
+
 - [ ] Reactivar middleware cuando credenciales estén configuradas
 - [ ] Verificar que las variables de entorno no están en el repositorio
 - [ ] Confirmar que `.env.local` está en `.gitignore`

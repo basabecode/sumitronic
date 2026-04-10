@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  blogPosts,
-  getBlogPostBySlug,
-  getHelpArticleBySlug,
-  helpArticles,
-} from '@/lib/content'
+import { blogPosts, getBlogPostBySlug, getHelpArticleBySlug, helpArticles } from '@/lib/content'
 
 describe('content collections', () => {
   it('exposes blog posts with unique slugs', () => {

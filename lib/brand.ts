@@ -30,9 +30,6 @@ export const brand = {
       saturdayClose: '14:00',
     },
   },
-  socialLinks: [
-    'https://instagram.com/capishop_col',
-    'https://facebook.com/capishop_col',
-  ],
+  socialLinks: ['https://instagram.com/capishop_col', 'https://facebook.com/capishop_col'],
   tagline: 'Seguridad electronica, conectividad y repuestos con respaldo local',
 } as const

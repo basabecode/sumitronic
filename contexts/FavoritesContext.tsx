@@ -41,10 +41,7 @@ const initialState: FavoritesState = {
 }
 
 // Reducer
-function favoritesReducer(
-  state: FavoritesState,
-  action: FavoritesAction
-): FavoritesState {
+function favoritesReducer(state: FavoritesState, action: FavoritesAction): FavoritesState {
   switch (action.type) {
     case 'ADD_ITEM':
       if (state.items.some(item => item.id === action.payload.id)) {

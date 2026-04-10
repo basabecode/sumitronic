@@ -8,22 +8,14 @@ import { Loader2, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useAuth } from '@/contexts/AuthContext'
 
 const passwordSchema = z
   .object({
     currentPassword: z.string().min(1, 'La contraseña actual es requerida'),
-    newPassword: z
-      .string()
-      .min(6, 'La nueva contraseña debe tener al menos 6 caracteres'),
+    newPassword: z.string().min(6, 'La nueva contraseña debe tener al menos 6 caracteres'),
     confirmPassword: z.string().min(1, 'Confirma la nueva contraseña'),
   })
   .refine(data => data.newPassword === data.confirmPassword, {
@@ -77,17 +69,13 @@ export default function PasswordPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Cambiar Contraseña</h1>
-        <p className="mt-2 text-gray-600">
-          Actualiza tu contraseña para mantener tu cuenta segura
-        </p>
+        <p className="mt-2 text-gray-600">Actualiza tu contraseña para mantener tu cuenta segura</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Actualizar Contraseña</CardTitle>
-          <CardDescription>
-            Ingresa tu contraseña actual y la nueva contraseña
-          </CardDescription>
+          <CardDescription>Ingresa tu contraseña actual y la nueva contraseña</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -128,9 +116,7 @@ export default function PasswordPage() {
                 </Button>
               </div>
               {errors.currentPassword && (
-                <p className="text-sm text-red-600">
-                  {errors.currentPassword.message}
-                </p>
+                <p className="text-sm text-red-600">{errors.currentPassword.message}</p>
               )}
             </div>
 
@@ -151,24 +137,16 @@ export default function PasswordPage() {
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                 >
-                  {showNewPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
               </div>
               {errors.newPassword && (
-                <p className="text-sm text-red-600">
-                  {errors.newPassword.message}
-                </p>
+                <p className="text-sm text-red-600">{errors.newPassword.message}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">
-                Confirmar nueva contraseña
-              </Label>
+              <Label htmlFor="confirmPassword">Confirmar nueva contraseña</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
@@ -192,9 +170,7 @@ export default function PasswordPage() {
                 </Button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-sm text-red-600">
-                  {errors.confirmPassword.message}
-                </p>
+                <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
               )}
             </div>
 
@@ -209,9 +185,7 @@ export default function PasswordPage() {
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Actualizar Contraseña
                 </Button>
               </div>

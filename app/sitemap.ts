@@ -58,14 +58,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     // Páginas estáticas principales
-    { url: baseUrl,                      lastModified: new Date(), changeFrequency: 'daily',   priority: 1.0  },
-    { url: `${baseUrl}/products`,        lastModified: new Date(), changeFrequency: 'daily',   priority: 0.9  },
-    { url: `${baseUrl}/ofertas`,         lastModified: new Date(), changeFrequency: 'daily',   priority: 0.88 },
-    { url: `${baseUrl}/blog`,            lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.82 },
-    { url: `${baseUrl}/contacto`,        lastModified: new Date(), changeFrequency: 'monthly', priority: 0.80 },
-    { url: `${baseUrl}/help`,            lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.78 },
-    { url: `${baseUrl}/marcas`,          lastModified: new Date(), changeFrequency: 'weekly',  priority: 0.78 },
-    { url: `${baseUrl}/nosotros`,        lastModified: new Date(), changeFrequency: 'monthly', priority: 0.70 },
+    { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+    {
+      url: `${baseUrl}/products`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/ofertas`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.88,
+    },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.82 },
+    {
+      url: `${baseUrl}/contacto`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    { url: `${baseUrl}/help`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.78 },
+    {
+      url: `${baseUrl}/marcas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.78,
+    },
+    {
+      url: `${baseUrl}/nosotros`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
     // Dinámicas
     ...categoryUrls,
     ...brandUrls,

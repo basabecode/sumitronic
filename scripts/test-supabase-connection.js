@@ -55,10 +55,10 @@ function logSection(title) {
 // Hacer petición HTTPS
 function makeRequest(url, options = {}) {
   return new Promise((resolve, reject) => {
-    const req = https.request(url, options, (res) => {
+    const req = https.request(url, options, res => {
       let data = ''
 
-      res.on('data', (chunk) => {
+      res.on('data', chunk => {
         data += chunk
       })
 
@@ -77,7 +77,7 @@ function makeRequest(url, options = {}) {
       })
     })
 
-    req.on('error', (error) => {
+    req.on('error', error => {
       reject(error)
     })
 
@@ -125,8 +125,8 @@ async function validateSupabase() {
     const response = await makeRequest(testUrl, {
       method: 'GET',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
       },
     })
 
@@ -149,8 +149,8 @@ async function validateSupabase() {
     const response = await makeRequest(productsUrl, {
       method: 'GET',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
         'Content-Type': 'application/json',
       },
     })
@@ -183,8 +183,8 @@ async function validateSupabase() {
     const response = await makeRequest(categoriesUrl, {
       method: 'GET',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
         'Content-Type': 'application/json',
       },
     })

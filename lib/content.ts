@@ -162,8 +162,7 @@ export const helpArticles: HelpArticle[] = [
   {
     slug: 'envios-y-seguimiento',
     title: 'Envíos y seguimiento de pedidos',
-    description:
-      `Tiempos de entrega, cómo rastrear tu pedido y qué esperar después de comprar en ${brand.name}.`,
+    description: `Tiempos de entrega, cómo rastrear tu pedido y qué esperar después de comprar en ${brand.name}.`,
     category: 'Envíos',
     keywords: ['envios sumitronic', 'seguimiento pedido', 'tiempos de entrega colombia'],
     sections: [
@@ -307,8 +306,7 @@ export const helpArticles: HelpArticle[] = [
   {
     slug: 'terminos-y-condiciones',
     title: 'Términos y Condiciones de compra',
-    description:
-      `Las reglas claras de la relación comercial entre ${brand.name} y sus clientes. Sin letra pequeña ni lenguaje enredado.`,
+    description: `Las reglas claras de la relación comercial entre ${brand.name} y sus clientes. Sin letra pequeña ni lenguaje enredado.`,
     category: 'Legal',
     keywords: [
       'terminos y condiciones sumitronic',
@@ -370,8 +368,7 @@ export const helpArticles: HelpArticle[] = [
   {
     slug: 'politica-de-privacidad',
     title: 'Política de Privacidad y tratamiento de datos',
-    description:
-      `Cómo ${brand.name} recopila, usa y protege su información personal conforme a la Ley 1581 de 2012 de Colombia.`,
+    description: `Cómo ${brand.name} recopila, usa y protege su información personal conforme a la Ley 1581 de 2012 de Colombia.`,
     category: 'Legal',
     keywords: [
       'politica privacidad sumitronic',
@@ -434,8 +431,7 @@ export const helpArticles: HelpArticle[] = [
   {
     slug: 'servicio-tecnico',
     title: 'Soporte técnico y asesoría postventa',
-    description:
-      `Cómo solicitamos soporte, qué incluye la asesoría técnica de ${brand.name} y en qué casos podemos ayudarle directamente.`,
+    description: `Cómo solicitamos soporte, qué incluye la asesoría técnica de ${brand.name} y en qué casos podemos ayudarle directamente.`,
     category: 'Soporte',
     keywords: [
       'servicio tecnico sumitronic',

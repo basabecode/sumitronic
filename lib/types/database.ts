@@ -8,13 +8,7 @@
 // ============================================================
 
 // Helper type para JSON de PostgreSQL
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export interface Database {
   public: {
@@ -404,7 +398,14 @@ export interface Database {
           tax: number
           shipping: number
           total: number
-          status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+          status:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
           payment_status: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
           payment_method: string | null
           payment_proof_url: string | null
@@ -425,7 +426,14 @@ export interface Database {
           tax?: number
           shipping?: number
           total: number
-          status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+          status?:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
           payment_status?: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
           payment_method?: string | null
           payment_proof_url?: string | null
@@ -446,7 +454,14 @@ export interface Database {
           tax?: number
           shipping?: number
           total?: number
-          status?: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded'
+          status?:
+            | 'pending'
+            | 'confirmed'
+            | 'processing'
+            | 'shipped'
+            | 'delivered'
+            | 'cancelled'
+            | 'refunded'
           payment_status?: 'pending' | 'paid' | 'failed' | 'refunded' | 'partial'
           payment_method?: string | null
           payment_proof_url?: string | null
@@ -570,29 +585,29 @@ export type TablesUpdate<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Update']
 
 // Tipos base por tabla
-export type UserProfile       = Tables<'users'>
+export type UserProfile = Tables<'users'>
 /** Alias de UserProfile para compatibilidad con AuthContext */
-export type Profile           = Tables<'users'>
-export type Category          = Tables<'categories'>
-export type Product           = Tables<'products'>
-export type ProductImage      = Tables<'product_images'>
-export type ProductVariant    = Tables<'product_variants'>
-export type Inventory         = Tables<'inventory'>
-export type Cart              = Tables<'carts'>
-export type CartItem          = Tables<'cart_items'>
-export type Favorite          = Tables<'favorites'>
-export type Order             = Tables<'orders'>
-export type OrderItem         = Tables<'order_items'>
-export type SystemSetting     = Tables<'system_settings'>
+export type Profile = Tables<'users'>
+export type Category = Tables<'categories'>
+export type Product = Tables<'products'>
+export type ProductImage = Tables<'product_images'>
+export type ProductVariant = Tables<'product_variants'>
+export type Inventory = Tables<'inventory'>
+export type Cart = Tables<'carts'>
+export type CartItem = Tables<'cart_items'>
+export type Favorite = Tables<'favorites'>
+export type Order = Tables<'orders'>
+export type OrderItem = Tables<'order_items'>
+export type SystemSetting = Tables<'system_settings'>
 
 // Tipos de insercion
-export type ProductInsert     = TablesInsert<'products'>
-export type CategoryInsert    = TablesInsert<'categories'>
-export type OrderInsert       = TablesInsert<'orders'>
+export type ProductInsert = TablesInsert<'products'>
+export type CategoryInsert = TablesInsert<'categories'>
+export type OrderInsert = TablesInsert<'orders'>
 
 // Tipos de actualizacion
-export type ProductUpdate     = TablesUpdate<'products'>
-export type CategoryUpdate    = TablesUpdate<'categories'>
+export type ProductUpdate = TablesUpdate<'products'>
+export type CategoryUpdate = TablesUpdate<'categories'>
 
 // ──────────────────────────────────────────────────────────────
 // TIPOS EXTENDIDOS CON RELACIONES
@@ -623,15 +638,9 @@ export type OrderWithItems = Order & {
 // TIPOS PARA FORMULARIOS (sin campos auto-generados)
 // ──────────────────────────────────────────────────────────────
 
-export type ProductForm = Omit<
-  ProductInsert,
-  'id' | 'created_at' | 'updated_at' | 'search_vector'
->
+export type ProductForm = Omit<ProductInsert, 'id' | 'created_at' | 'updated_at' | 'search_vector'>
 
-export type CategoryForm = Omit<
-  CategoryInsert,
-  'id' | 'created_at' | 'updated_at'
->
+export type CategoryForm = Omit<CategoryInsert, 'id' | 'created_at' | 'updated_at'>
 
 // ──────────────────────────────────────────────────────────────
 // TIPO DE DIRECCION (estructura JSON almacenada en orders

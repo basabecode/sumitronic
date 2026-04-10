@@ -8,8 +8,7 @@ import { brand } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: 'Centro de ayuda y soporte',
-  description:
-    `Documentacion de soporte, garantias, devoluciones, envios y pagos de ${brand.name} en rutas indexables.`,
+  description: `Documentacion de soporte, garantias, devoluciones, envios y pagos de ${brand.name} en rutas indexables.`,
 }
 
 export default function HelpIndexPage() {
@@ -23,7 +22,9 @@ export default function HelpIndexPage() {
             Centro de ayuda de {brand.name}
           </h1>
           <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
-            Aquí encontrará respuesta a las preguntas más frecuentes sobre envíos, garantías, pagos y soporte técnico. Si no encuentra lo que busca, escríbanos por WhatsApp y le ayudamos directamente.
+            Aquí encontrará respuesta a las preguntas más frecuentes sobre envíos, garantías, pagos
+            y soporte técnico. Si no encuentra lo que busca, escríbanos por WhatsApp y le ayudamos
+            directamente.
           </p>
         </header>
 

@@ -23,7 +23,12 @@ import {
   Truck,
   Zap,
 } from 'lucide-react'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -81,7 +86,8 @@ const trustPoints = [
   },
   {
     title: 'Compra con respaldo',
-    description: 'Gestión clara para devoluciones y novedades cubiertas según las condiciones de la compra.',
+    description:
+      'Gestión clara para devoluciones y novedades cubiertas según las condiciones de la compra.',
     icon: RotateCcw,
   },
 ]
@@ -99,7 +105,10 @@ function getPrimaryImage(product: Product) {
 
 function getAllImageUrls(product: Product): { url: string; alt: string }[] {
   if (product.product_images?.length > 0) {
-    return product.product_images.map(img => ({ url: img.image_url, alt: img.alt_text || product.name }))
+    return product.product_images.map(img => ({
+      url: img.image_url,
+      alt: img.alt_text || product.name,
+    }))
   }
   if (product.images && product.images.length > 0) {
     return product.images.map(url => ({ url, alt: product.name }))
@@ -152,7 +161,6 @@ function formatDimensions(dimensions: unknown) {
   }
   return String(dimensions)
 }
-
 
 function getStockTone(stock: number) {
   if (stock <= 0) {
@@ -207,7 +215,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
   const specCards = [
     {
       title: 'Disponibilidad',
-      value: isOutOfStock ? 'Actualmente agotado' : `${product.stock_quantity} unidades listas para despacho`,
+      value: isOutOfStock
+        ? 'Actualmente agotado'
+        : `${product.stock_quantity} unidades listas para despacho`,
       icon: PackageCheck,
     },
     {
@@ -310,7 +320,10 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-[hsl(var(--text-muted))]" aria-label="Breadcrumb">
+      <nav
+        className="mb-6 flex flex-wrap items-center gap-2 text-sm text-[hsl(var(--text-muted))]"
+        aria-label="Breadcrumb"
+      >
         <Link href="/" className="transition-colors hover:text-[hsl(var(--brand-strong))]">
           Inicio
         </Link>
@@ -319,7 +332,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
           Productos
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-[hsl(var(--foreground))]">{formatProductName(product.name)}</span>
+        <span className="font-medium text-[hsl(var(--foreground))]">
+          {formatProductName(product.name)}
+        </span>
       </nav>
 
       <section className="section-shell overflow-hidden">
@@ -354,7 +369,10 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                         {discountPercent}% OFF
                       </Badge>
                     ) : null}
-                    <Badge variant="outline" className={`rounded-full border ${stockTone.className}`}>
+                    <Badge
+                      variant="outline"
+                      className={`rounded-full border ${stockTone.className}`}
+                    >
                       {stockTone.label}
                     </Badge>
                   </div>
@@ -390,8 +408,12 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       <Icon className="h-4 w-4 text-[hsl(var(--brand-strong))]" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-[hsl(var(--foreground))]">{point.title}</p>
-                      <p className="mt-0.5 text-xs leading-relaxed text-[hsl(var(--text-muted))]">{point.description}</p>
+                      <p className="text-xs font-semibold text-[hsl(var(--foreground))]">
+                        {point.title}
+                      </p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-[hsl(var(--text-muted))]">
+                        {point.description}
+                      </p>
                     </div>
                   </div>
                 )
@@ -423,7 +445,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       {highlights.map(item => (
                         <li key={item} className="flex items-start gap-2">
                           <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-[hsl(var(--success))]" />
-                          <span className="text-xs leading-relaxed text-[hsl(var(--foreground))]">{item}</span>
+                          <span className="text-xs leading-relaxed text-[hsl(var(--foreground))]">
+                            {item}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -445,7 +469,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       >
                         <Icon className="h-3 w-3 flex-shrink-0 text-[hsl(var(--text-muted))]" />
                         <span className="text-[hsl(var(--text-muted))]">{card.title}</span>
-                        <span className="font-medium text-[hsl(var(--foreground))] ml-auto text-right">{card.value}</span>
+                        <span className="font-medium text-[hsl(var(--foreground))] ml-auto text-right">
+                          {card.value}
+                        </span>
                       </div>
                     )
                   })}
@@ -520,7 +546,9 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       {isOutOfStock ? 'Pendiente de reposición' : 'Disponible para compra'}
                     </p>
                     <p className="mt-1 text-sm leading-6 text-[hsl(var(--text-muted))]">
-                      {discountPercent ? `${discountPercent}% de descuento disponible.` : 'Producto listo para agregar al carrito.'}
+                      {discountPercent
+                        ? `${discountPercent}% de descuento disponible.`
+                        : 'Producto listo para agregar al carrito.'}
                     </p>
                   </div>
                 </div>
@@ -531,8 +559,12 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                   <div className="space-y-4">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-sm font-medium text-[hsl(var(--foreground))]">Cantidad</p>
-                        <p className="text-sm text-[hsl(var(--text-muted))]">Máximo {maxQuantity} unidades por pedido</p>
+                        <p className="text-sm font-medium text-[hsl(var(--foreground))]">
+                          Cantidad
+                        </p>
+                        <p className="text-sm text-[hsl(var(--text-muted))]">
+                          Máximo {maxQuantity} unidades por pedido
+                        </p>
                       </div>
                       <div className="flex items-center rounded-full border border-[hsl(var(--border-strong))] bg-[hsl(var(--surface-muted))] p-1">
                         <button
@@ -570,9 +602,12 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                   </div>
                 ) : (
                   <div>
-                    <p className="text-base font-semibold text-[hsl(var(--foreground))]">Producto sin inventario en este momento</p>
+                    <p className="text-base font-semibold text-[hsl(var(--foreground))]">
+                      Producto sin inventario en este momento
+                    </p>
                     <p className="mt-2 text-sm leading-6 text-[hsl(var(--text-muted))]">
-                      Puedes guardarlo en favoritos o compartir la referencia para retomarlo cuando vuelva a estar disponible.
+                      Puedes guardarlo en favoritos o compartir la referencia para retomarlo cuando
+                      vuelva a estar disponible.
                     </p>
                     <div className="mt-4">{favoriteShareButtons}</div>
                   </div>
@@ -584,16 +619,22 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                   <div className="flex items-start gap-2.5">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
                     <p className="text-sm text-[hsl(var(--foreground))]">
-                      {isOutOfStock ? 'Podemos ayudarte cuando el producto vuelva a estar disponible.' : 'Inventario disponible para compra y despacho.'}
+                      {isOutOfStock
+                        ? 'Podemos ayudarte cuando el producto vuelva a estar disponible.'
+                        : 'Inventario disponible para compra y despacho.'}
                     </p>
                   </div>
                   <div className="flex items-start gap-2.5">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
-                    <p className="text-sm text-[hsl(var(--foreground))]">Atención para resolver dudas de compatibilidad o uso.</p>
+                    <p className="text-sm text-[hsl(var(--foreground))]">
+                      Atención para resolver dudas de compatibilidad o uso.
+                    </p>
                   </div>
                   <div className="flex items-start gap-2.5">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
-                    <p className="text-sm text-[hsl(var(--foreground))]">Información visible para comprar con mayor tranquilidad.</p>
+                    <p className="text-sm text-[hsl(var(--foreground))]">
+                      Información visible para comprar con mayor tranquilidad.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -649,8 +690,12 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
         <div className="fixed bottom-16 left-0 right-0 z-40 border-t border-[hsl(var(--border-subtle))] bg-white/95 p-3 backdrop-blur-sm lg:hidden">
           <div className="mx-auto flex max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-[hsl(var(--foreground))]">{formatProductName(product.name)}</p>
-              <p className="text-sm text-[hsl(var(--text-muted))]">{formatCurrency(product.price)}</p>
+              <p className="truncate text-sm font-medium text-[hsl(var(--foreground))]">
+                {formatProductName(product.name)}
+              </p>
+              <p className="text-sm text-[hsl(var(--text-muted))]">
+                {formatCurrency(product.price)}
+              </p>
             </div>
             <Button
               size="lg"

@@ -68,7 +68,11 @@ export default function DigitalWalletPayment({
     }
   }
 
-  const whatsappURL = generateWhatsAppURL(orderId, totalAmount, WHATSAPP_NUMBER_DISPLAY.replace(/\s/g, ''))
+  const whatsappURL = generateWhatsAppURL(
+    orderId,
+    totalAmount,
+    WHATSAPP_NUMBER_DISPLAY.replace(/\s/g, '')
+  )
 
   return (
     <Card className="border-2 border-[hsl(var(--border-subtle))] bg-gradient-to-br from-[hsl(var(--surface-highlight))] to-[hsl(var(--background))]">
@@ -84,7 +88,13 @@ export default function DigitalWalletPayment({
           <AlertDescription className="text-sm">
             <strong className="text-[hsl(var(--foreground))]">Instrucciones:</strong>
             <ol className="list-decimal pl-5 mt-2 space-y-1 text-gray-700">
-              <li>Transfiere <strong className="text-[hsl(var(--foreground))]">{formatCurrency(totalAmount)}</strong> a una de las cuentas</li>
+              <li>
+                Transfiere{' '}
+                <strong className="text-[hsl(var(--foreground))]">
+                  {formatCurrency(totalAmount)}
+                </strong>{' '}
+                a una de las cuentas
+              </li>
               <li>Copia el número de cuenta haciendo clic en el botón</li>
               <li>Completa el pago desde tu app bancaria</li>
               <li>Envía el comprobante por WhatsApp o ingresa la referencia</li>
@@ -99,7 +109,7 @@ export default function DigitalWalletPayment({
           </Label>
 
           <div className="grid gap-3">
-            {DIGITAL_WALLET_ACCOUNTS.map((account) => (
+            {DIGITAL_WALLET_ACCOUNTS.map(account => (
               <div
                 key={account.provider}
                 className={`
@@ -124,16 +134,13 @@ export default function DigitalWalletPayment({
                       />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        {account.displayName}
-                      </p>
+                      <p className="font-semibold text-gray-900">{account.displayName}</p>
                       <p className="text-sm text-gray-600">
-                        {account.accountType === 'WALLET' ? 'Celular' : 'Cuenta'}: {account.accountNumber}
+                        {account.accountType === 'WALLET' ? 'Celular' : 'Cuenta'}:{' '}
+                        {account.accountNumber}
                       </p>
                       {account.instructions && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          {account.instructions}
-                        </p>
+                        <p className="text-xs text-gray-500 mt-1">{account.instructions}</p>
                       )}
                     </div>
                   </div>
@@ -142,7 +149,7 @@ export default function DigitalWalletPayment({
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation()
                       handleCopyAccount(account.accountNumber)
                     }}
@@ -182,7 +189,7 @@ export default function DigitalWalletPayment({
                 type="text"
                 placeholder="Ej: 123456789"
                 value={referenceNumber}
-                onChange={(e) => handleReferenceChange('reference', e.target.value)}
+                onChange={e => handleReferenceChange('reference', e.target.value)}
                 className="mt-1 focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -199,12 +206,10 @@ export default function DigitalWalletPayment({
                 type="tel"
                 placeholder="300 123 4567"
                 value={senderPhone}
-                onChange={(e) => handleReferenceChange('phone', e.target.value)}
+                onChange={e => handleReferenceChange('phone', e.target.value)}
                 className="mt-1 focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Nos ayuda a verificar tu pago más rápido
-              </p>
+              <p className="text-xs text-gray-500 mt-1">Nos ayuda a verificar tu pago más rápido</p>
             </div>
           </div>
         </div>
@@ -218,9 +223,7 @@ export default function DigitalWalletPayment({
               </div>
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-green-900 mb-1">
-                ¿Ya realizaste el pago?
-              </h4>
+              <h4 className="font-semibold text-green-900 mb-1">¿Ya realizaste el pago?</h4>
               <p className="text-sm text-green-800 mb-3">
                 Envíanos tu comprobante por WhatsApp para procesar tu pedido más rápido
               </p>
@@ -239,9 +242,7 @@ export default function DigitalWalletPayment({
                   Enviar Comprobante a WhatsApp
                 </Button>
               </a>
-              <p className="text-xs text-green-700 mt-2">
-                WhatsApp: {WHATSAPP_NUMBER_DISPLAY}
-              </p>
+              <p className="text-xs text-green-700 mt-2">WhatsApp: {WHATSAPP_NUMBER_DISPLAY}</p>
             </div>
           </div>
         </div>
@@ -249,8 +250,8 @@ export default function DigitalWalletPayment({
         {/* Security Note */}
         <Alert className="border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-highlight))]">
           <AlertDescription className="text-xs text-[hsl(var(--foreground))]">
-            🔒 <strong>Seguridad:</strong> Nunca compartas tu contraseña o PIN. Solo necesitamos el comprobante de pago.
-            Verificaremos tu pago manualmente antes de procesar tu pedido.
+            🔒 <strong>Seguridad:</strong> Nunca compartas tu contraseña o PIN. Solo necesitamos el
+            comprobante de pago. Verificaremos tu pago manualmente antes de procesar tu pedido.
           </AlertDescription>
         </Alert>
       </CardContent>

@@ -76,7 +76,7 @@ Selector de método de pago con estados visuales claros.
 ```tsx
 <PaymentMethodSelector
   selectedMethod={paymentMethod}
-  onMethodChange={(method) => setPaymentMethod(method)}
+  onMethodChange={method => setPaymentMethod(method)}
   enabledMethods={['DIGITAL_WALLET']}
 />
 ```
@@ -89,7 +89,7 @@ Componente premium para pagos con billeteras digitales.
 <DigitalWalletPayment
   totalAmount={50000}
   orderId="ORD123"
-  onPaymentReferenceChange={(ref) => setPaymentReference(ref)}
+  onPaymentReferenceChange={ref => setPaymentReference(ref)}
 />
 ```
 
@@ -147,7 +147,7 @@ export const DIGITAL_WALLET_ACCOUNTS: DigitalWalletAccount[] = [
     instructions: 'Envía a este número desde tu app Nequi',
   },
   // ... más cuentas
-];
+]
 ```
 
 ## 🌐 Integración con WhatsApp
@@ -155,11 +155,7 @@ export const DIGITAL_WALLET_ACCOUNTS: DigitalWalletAccount[] = [
 El sistema genera automáticamente mensajes pre-llenados para WhatsApp:
 
 ```typescript
-const whatsappURL = generateWhatsAppURL(
-  orderId,
-  totalAmount,
-  WHATSAPP_NUMBER
-);
+const whatsappURL = generateWhatsAppURL(orderId, totalAmount, WHATSAPP_NUMBER)
 
 // Resultado:
 // https://wa.me/573003094854?text=Hola!%20Acabo%20de%20realizar...
@@ -168,11 +164,13 @@ const whatsappURL = generateWhatsAppURL(
 ## 📝 Tipos de Datos
 
 ### PaymentMethod
+
 ```typescript
-type PaymentMethod = 'DIGITAL_WALLET' | 'CREDIT_CARD' | 'PSE';
+type PaymentMethod = 'DIGITAL_WALLET' | 'CREDIT_CARD' | 'PSE'
 ```
 
 ### PaymentStatus
+
 ```typescript
 type PaymentStatus =
   | 'PENDING_VERIFICATION'
@@ -180,36 +178,40 @@ type PaymentStatus =
   | 'PAID'
   | 'PROCESSING'
   | 'CANCELLED'
-  | 'FAILED';
+  | 'FAILED'
 ```
 
 ### PaymentReference
+
 ```typescript
 interface PaymentReference {
-  referenceNumber?: string;
-  senderPhone?: string;
-  paymentDate?: Date;
-  paymentTime?: string;
-  amount: number;
-  selectedProvider: DigitalWalletProvider;
+  referenceNumber?: string
+  senderPhone?: string
+  paymentDate?: Date
+  paymentTime?: string
+  amount: number
+  selectedProvider: DigitalWalletProvider
 }
 ```
 
 ## 🚀 Próximos Pasos
 
 ### Fase 1 (Actual) ✅
+
 - [x] Sistema de pagos manuales
 - [x] Integración con billeteras digitales
 - [x] Validación y seguridad
 - [x] Tests unitarios
 
 ### Fase 2 (Futuro)
+
 - [ ] Panel de administración para verificar pagos
 - [ ] Notificaciones automáticas por email
 - [ ] Subida de comprobantes (screenshots)
 - [ ] Dashboard de pagos pendientes
 
 ### Fase 3 (Largo Plazo)
+
 - [ ] Integración con Wompi (automático)
 - [ ] Pagos con tarjeta de crédito
 - [ ] PSE (Pago Seguro en Línea)
@@ -218,17 +220,20 @@ interface PaymentReference {
 ## ⚠️ Consideraciones Importantes
 
 ### Ventajas
+
 - ✅ **Cero comisiones** por transacción
 - ✅ **Implementación inmediata** sin aprobaciones
 - ✅ **Familiar para usuarios** colombianos
 - ✅ **Control total** del proceso
 
 ### Desventajas
+
 - ⚠️ **Proceso manual** (no escala bien con alto volumen)
 - ⚠️ **Fricción de usuario** (debe salir de la web)
 - ⚠️ **Riesgo de error** humano en verificación
 
 ### Recomendaciones
+
 1. **Volumen bajo-medio**: Ideal para 1-50 pedidos diarios
 2. **Verificación rápida**: Revisar pagos al menos 2 veces al día
 3. **Comunicación clara**: Mantener al cliente informado del estado
@@ -237,6 +242,7 @@ interface PaymentReference {
 ## 📞 Soporte
 
 Para preguntas o problemas:
+
 - WhatsApp: 300 309 4854
 - Email: soporte@capishop.com
 

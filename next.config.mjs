@@ -3,7 +3,7 @@
 const isProduction = process.env.NODE_ENV === 'production'
 
 // URLs de Supabase según entorno
-const supabaseLocalUrl = 'http://127.0.0.1:54321 http://localhost:54321'
+const supabaseLocalUrl = 'http://127.0.0.1:54500 http://localhost:54500'
 const supabaseCloudUrl = 'https://pmvhtxlciekynczjspja.supabase.co'
 const connectSrcDev = `'self' ${supabaseLocalUrl} ${supabaseCloudUrl}`
 const connectSrcProd = `'self' ${supabaseCloudUrl}`

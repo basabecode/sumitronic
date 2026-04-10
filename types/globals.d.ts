@@ -5,16 +5,9 @@ declare module '@/components/ui/button' {
   import * as React from 'react'
 
   export interface ButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-      VariantProps<any> {
+    extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<any> {
     asChild?: boolean
-    variant?:
-      | 'default'
-      | 'destructive'
-      | 'outline'
-      | 'secondary'
-      | 'ghost'
-      | 'link'
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
     size?: 'default' | 'sm' | 'lg' | 'icon'
   }
 
@@ -27,9 +20,7 @@ declare module '@/components/ui/badge' {
   import { VariantProps } from 'class-variance-authority'
   import * as React from 'react'
 
-  export interface BadgeProps
-    extends React.HTMLAttributes<HTMLDivElement>,
-      VariantProps<any> {
+  export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<any> {
     variant?: 'default' | 'secondary' | 'destructive' | 'outline'
   }
 

@@ -24,9 +24,7 @@ function getRotation(intervalDays: number, offset = 0) {
   const period = Math.floor(elapsedDays / intervalDays)
   const rawIndex = (period + offset) % BRAND_PROFILES.length
   const index = rawIndex < 0 ? rawIndex + BRAND_PROFILES.length : rawIndex
-  const nextChange = new Date(
-    ROTATION_REFERENCE.getTime() + (period + 1) * intervalDays * DAY_MS
-  )
+  const nextChange = new Date(ROTATION_REFERENCE.getTime() + (period + 1) * intervalDays * DAY_MS)
 
   return {
     index,
@@ -60,7 +58,8 @@ export default function BrandsSection() {
             Referencias que el cliente reconoce y vuelve a buscar
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
-            Seguridad, redes, energia y accesorios con marcas que suelen tener buena salida por respaldo, disponibilidad y facilidad para recomendar segun la necesidad.
+            Seguridad, redes, energia y accesorios con marcas que suelen tener buena salida por
+            respaldo, disponibilidad y facilidad para recomendar segun la necesidad.
           </p>
         </div>
 
@@ -162,7 +161,9 @@ export default function BrandsSection() {
 
               <div className="flex flex-col gap-3 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-[hsl(var(--text-muted))]">
-                  <span className="font-semibold text-[hsl(var(--foreground))]">Proxima publicacion:</span>{' '}
+                  <span className="font-semibold text-[hsl(var(--foreground))]">
+                    Proxima publicacion:
+                  </span>{' '}
                   {featuredRotation.nextChangeLabel}
                 </p>
                 <Link
@@ -200,7 +201,9 @@ export default function BrandsSection() {
             </div>
 
             <div className="mt-5 rounded-[1.35rem] bg-[hsl(var(--surface-muted))] px-4 py-4">
-              <p className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${noveltyBrand.accentClass}`}>
+              <p
+                className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${noveltyBrand.accentClass}`}
+              >
                 {noveltyBrand.name}
               </p>
               <p className="mt-3 text-sm leading-6 text-[hsl(var(--text-muted))]">
@@ -227,7 +230,9 @@ export default function BrandsSection() {
 
             <div className="mt-6 flex flex-col gap-4 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-[hsl(var(--text-muted))]">
-                <span className="font-semibold text-[hsl(var(--foreground))]">Proxima publicacion:</span>{' '}
+                <span className="font-semibold text-[hsl(var(--foreground))]">
+                  Proxima publicacion:
+                </span>{' '}
                 {noveltyRotation.nextChangeLabel}
               </p>
               <Link

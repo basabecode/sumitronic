@@ -9,8 +9,7 @@ import { ArrowRight, Calendar, Clock, User } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Blog — Guías de compra y consejos técnicos',
-  description:
-    `Aprende a elegir cámaras, routers, UPS y repuestos para TV con guías prácticas del equipo de ${brand.name}. Comparativas, consejos de instalación y ayuda para comprar bien en Colombia.`,
+  description: `Aprende a elegir cámaras, routers, UPS y repuestos para TV con guías prácticas del equipo de ${brand.name}. Comparativas, consejos de instalación y ayuda para comprar bien en Colombia.`,
   keywords: [
     'guias de compra seguridad electronica',
     'como elegir camara seguridad',
@@ -21,8 +20,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
   openGraph: {
     title: `Blog de ${brand.name} — Guías y consejos técnicos`,
-    description:
-      `Guías prácticas para elegir cámaras, routers, UPS y repuestos. Escrito por el equipo de ${brand.name} en Cali.`,
+    description: `Guías prácticas para elegir cámaras, routers, UPS y repuestos. Escrito por el equipo de ${brand.name} en Cali.`,
     url: `${brand.siteUrl}/blog`,
     siteName: brand.organizationName,
     locale: 'es_CO',
@@ -69,7 +67,9 @@ export default function BlogIndexPage() {
                 Aprende a comprar mejor
               </h1>
               <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
-                Escribimos guías prácticas para que puedas comparar opciones, entender diferencias técnicas y tomar una decisión de compra sin depender solo del vendedor. Todo con contexto colombiano.
+                Escribimos guías prácticas para que puedas comparar opciones, entender diferencias
+                técnicas y tomar una decisión de compra sin depender solo del vendedor. Todo con
+                contexto colombiano.
               </p>
             </div>
 
@@ -218,7 +218,8 @@ export default function BlogIndexPage() {
               ¿Tiene una pregunta que no está en los artículos?
             </h2>
             <p className="mt-3 text-base text-[hsl(var(--text-muted))]">
-              Escríbanos por WhatsApp y le orientamos según su caso puntual — sin costo y sin compromiso de compra.
+              Escríbanos por WhatsApp y le orientamos según su caso puntual — sin costo y sin
+              compromiso de compra.
             </p>
             <a
               href={`https://wa.me/${brand.whatsappNumber}`}

@@ -46,9 +46,7 @@ async function migrateProducts() {
         image_url: product.image,
         images: [product.image],
         stock_quantity: product.stockCount || 0,
-        sku: `${product.brand.toUpperCase()}-${product.id
-          .toString()
-          .padStart(3, '0')}`,
+        sku: `${product.brand.toUpperCase()}-${product.id.toString().padStart(3, '0')}`,
         featured: product.id <= 4, // Los primeros 4 como destacados
         active: true,
       }
@@ -73,10 +71,7 @@ async function migrateProducts() {
         .single()
 
       if (productError) {
-        console.error(
-          `❌ Error creando producto ${productData.name}:`,
-          productError
-        )
+        console.error(`❌ Error creando producto ${productData.name}:`, productError)
         errorCount++
         continue
       }

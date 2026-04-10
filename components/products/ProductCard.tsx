@@ -17,11 +17,13 @@ interface Product {
   stock?: number
   stock_quantity?: number
   sku?: string
-  category?: string | {
-    id: string
-    name: string
-    slug: string
-  }
+  category?:
+    | string
+    | {
+        id: string
+        name: string
+        slug: string
+      }
   brand?: string
   image_url?: string
   featured?: boolean
@@ -109,12 +111,17 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             />
             {isOutOfStock && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                <Badge variant="destructive" className="text-xs">Agotado</Badge>
+                <Badge variant="destructive" className="text-xs">
+                  Agotado
+                </Badge>
               </div>
             )}
             {categoryName && (
               <div className="absolute left-2 top-2">
-                <Badge variant="secondary" className="bg-white/90 px-2 py-0.5 text-[0.65rem] text-slate-600">
+                <Badge
+                  variant="secondary"
+                  className="bg-white/90 px-2 py-0.5 text-[0.65rem] text-slate-600"
+                >
                   {categoryName}
                 </Badge>
               </div>
@@ -218,9 +225,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                     className="h-10 rounded-full bg-[hsl(var(--brand))] px-5 text-sm font-semibold text-white shadow-[0_16px_26px_-16px_rgba(14,165,233,0.85)] transition-all hover:bg-[hsl(var(--brand-strong))] hover:shadow-[0_20px_30px_-16px_rgba(3,105,161,0.7)]"
                   >
                     <ShoppingCart className="w-4 h-4 sm:mr-2" />
-                    <span className="hidden sm:inline">
-                      {isOutOfStock ? 'Agotado' : 'Agregar'}
-                    </span>
+                    <span className="hidden sm:inline">{isOutOfStock ? 'Agotado' : 'Agregar'}</span>
                   </Button>
                 </div>
               </div>
@@ -284,9 +289,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-4 h-4 ${
-                  i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                }`}
+                className={`w-4 h-4 ${i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
               />
             ))}
           </div>

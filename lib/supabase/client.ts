@@ -7,8 +7,4 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error('Supabase URL and Key must be defined in environment variables')
 }
 
-export const createClient = () =>
-  createBrowserClient(
-    supabaseUrl,
-    supabaseKey
-  )
+export const createClient = () => createBrowserClient(supabaseUrl, supabaseKey)

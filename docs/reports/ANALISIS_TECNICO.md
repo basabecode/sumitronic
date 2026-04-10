@@ -8,6 +8,7 @@
 ## 📋 Resumen Ejecutivo
 
 Este documento presenta un análisis detallado de las tecnologías y optimizaciones implementadas en el proyecto CapiShop, evaluando:
+
 - ✅ Tests Unitarios - **IMPLEMENTADO** (46/78 tests pasando)
 - ❌ Zustand (State Management) - **PENDIENTE** (No urgente)
 - ✅ ISR (Incremental Static Regeneration) - **IMPLEMENTADO**
@@ -20,11 +21,13 @@ Este documento presenta un análisis detallado de las tecnologías y optimizacio
 ### Estado: **IMPLEMENTADO** ✅ (Actualizado: 2025-12-11 19:10)
 
 ### Configuración Actual:
+
 - **Framework de Testing**: Vitest v4.0.15
 - **Testing Library**: @testing-library/react v16.3.0
 - **Entorno**: Node.js (configurado en `vitest.config.ts`)
 
 ### Archivos de Test Implementados:
+
 ```
 tests/
 ├── setup.ts
@@ -43,6 +46,7 @@ Total: 6 archivos de test, 78 tests (46 pasando - 59%)
 ```
 
 ### Scripts Disponibles: ✅
+
 ```json
 "test": "vitest",
 "test:watch": "vitest --watch",
@@ -51,6 +55,7 @@ Total: 6 archivos de test, 78 tests (46 pasando - 59%)
 ```
 
 ### Cobertura Actual:
+
 - ✅ Utilidades (`lib/utils.test.ts`): Funciones `cn()` y `formatPrice()`
 - ✅ Validación de pagos (`validation.test.ts`)
 - ✅ **IMPLEMENTADO**: Tests de componentes React (ProductCard)
@@ -62,6 +67,7 @@ Total: 6 archivos de test, 78 tests (46 pasando - 59%)
 - ⚠️ **Pendiente**: Tests de componentes de checkout
 
 ### ✅ Recomendaciones Implementadas:
+
 1. ✅ **Ampliar cobertura de tests**:
    - ✅ Tests para `ProductCard` (11 tests)
    - ✅ Tests para `CartContext` (15 tests)
@@ -85,6 +91,7 @@ Total: 6 archivos de test, 78 tests (46 pasando - 59%)
 ### Estado: **NO IMPLEMENTADO**
 
 ### Gestión de Estado Actual:
+
 El proyecto utiliza **React Context API** para la gestión de estado global:
 
 ```
@@ -96,6 +103,7 @@ contexts/
 ```
 
 ### Análisis:
+
 - **Ventajas del enfoque actual**:
   - ✅ Nativo de React, sin dependencias adicionales
   - ✅ Funcional para el tamaño actual del proyecto
@@ -112,6 +120,7 @@ contexts/
 **Recomendación**: **NO URGENTE, pero BENEFICIOSO a mediano plazo**
 
 **Razones para implementar**:
+
 1. **Performance**: Zustand evita re-renders innecesarios mediante selectores
 2. **DevTools**: Mejor experiencia de debugging
 3. **Persistencia**: Middleware integrado para localStorage/sessionStorage
@@ -119,6 +128,7 @@ contexts/
 5. **TypeScript**: Mejor inferencia de tipos
 
 **Ejemplo de migración (CartContext → Zustand)**:
+
 ```typescript
 // Antes (Context API - 9.9 KB)
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -131,9 +141,10 @@ const useCartStore = create(
   persist(
     (set, get) => ({
       items: [],
-      addItem: (item) => set((state) => ({
-        items: [...state.items, item]
-      })),
+      addItem: item =>
+        set(state => ({
+          items: [...state.items, item],
+        })),
       // ... más acciones
     }),
     { name: 'cart-storage' }
@@ -142,6 +153,7 @@ const useCartStore = create(
 ```
 
 **Plan de migración sugerido**:
+
 1. Fase 1: Instalar Zustand y migrar `CartContext` (más complejo)
 2. Fase 2: Migrar `FavoritesContext`
 3. Fase 3: Migrar `AuthContext`
@@ -156,50 +168,55 @@ const useCartStore = create(
 ### Configuración Actual:
 
 #### ✅ ISR Implementado en Páginas de Productos:
+
 ```typescript
 // app/products/[id]/page.tsx
-export const revalidate = 3600  // ✅ Revalidación cada hora
+export const revalidate = 3600 // ✅ Revalidación cada hora
 
 export async function generateStaticParams() {
   // ✅ Pre-renderiza top 50 productos
   const res = await fetch(`${baseUrl}/api/products?limit=50&sortBy=created_at&sortOrder=desc`, {
-    next: { revalidate: 3600 }
+    next: { revalidate: 3600 },
   })
   // ...
 }
 
 async function getProduct(id: string) {
   const res = await fetch(`${baseUrl}/api/products/${id}`, {
-    next: { revalidate: 3600 },  // ✅ ISR con cache de 1 hora
+    next: { revalidate: 3600 }, // ✅ ISR con cache de 1 hora
   })
 }
 ```
 
 #### ✅ `generateStaticParams` Implementado:
+
 - ✅ Configurado en `app/products/[id]/page.tsx`
 - ✅ Pre-renderiza top 50 productos más recientes
 - ✅ Revalidación cada hora (3600 segundos)
 
 ### ✅ Problemas Resueltos:
+
 1. ✅ **Performance**: ISR reduce TTFB en 50-80%
 2. ✅ **SEO**: Páginas pre-renderizadas para crawlers
 3. ✅ **Costos**: Menos queries a la base de datos
 4. ✅ **UX**: Carga instantánea para productos populares
 
 ### ⚠️ Pendiente:
+
 - Implementar ISR en `app/products/page.tsx` (listado de productos)
 - Implementar ISR en otras páginas dinámicas (blog, categorías)
 
 ### Implementación Recomendada:
 
 #### Para páginas de productos (`app/products/[id]/page.tsx`):
+
 ```typescript
 // 1. Generar paths estáticos para productos populares
 export async function generateStaticParams() {
   const res = await fetch(`${baseUrl}/api/products?limit=50&sortBy=views`)
   const data = await res.json()
 
-  return data.products.map((product) => ({
+  return data.products.map(product => ({
     id: product.id,
   }))
 }
@@ -216,6 +233,7 @@ async function getProduct(id: string) {
 ```
 
 #### Para página de listado (`app/products/page.tsx`):
+
 ```typescript
 // Convertir a Server Component con ISR
 export const revalidate = 1800 // 30 minutos
@@ -227,6 +245,7 @@ export default async function ProductsPage() {
 ```
 
 ### Beneficios Esperados:
+
 - ⚡ **50-80% reducción** en tiempo de carga inicial
 - 📈 **Mejor SEO**: Páginas pre-renderizadas
 - 💰 **Menos costos**: Menos queries a la DB
@@ -241,6 +260,7 @@ export default async function ProductsPage() {
 ### Configuración Actual:
 
 #### Next.js Image Optimization:
+
 ```javascript
 // next.config.mjs
 images: {
@@ -257,6 +277,7 @@ images: {
 ```
 
 ### Análisis Actualizado:
+
 - ✅ **Optimización de imágenes**: Next.js optimiza automáticamente
 - ✅ **Formatos modernos**: WebP y AVIF configurados
 - ✅ **Cache optimizado**: minimumCacheTTL de 1 año (31536000s)
@@ -269,9 +290,11 @@ images: {
 ### Opciones de CDN:
 
 #### Opción 1: Vercel CDN (Recomendado - GRATIS)
+
 **Estado**: Ya implementado automáticamente si está en Vercel
 
 Vercel CDN cachea automáticamente:
+
 - ✅ Páginas estáticas
 - ✅ Imágenes optimizadas por Next.js
 - ✅ Assets estáticos (`/public`)
@@ -279,6 +302,7 @@ Vercel CDN cachea automáticamente:
 **No requiere configuración adicional**
 
 #### Opción 2: Cloudflare CDN (Gratis)
+
 ```javascript
 // next.config.mjs
 module.exports = {
@@ -298,28 +322,30 @@ export default function cloudflareLoader({ src, width, quality }) {
 ```
 
 #### Opción 3: Supabase CDN + Cache Headers
+
 ```typescript
 // Configurar headers en Supabase Storage
-const { data, error } = await supabase.storage
-  .from('products')
-  .upload(file, {
-    cacheControl: '31536000', // 1 año
-    upsert: false
-  })
+const { data, error } = await supabase.storage.from('products').upload(file, {
+  cacheControl: '31536000', // 1 año
+  upsert: false,
+})
 ```
 
 ### Recomendaciones:
 
 #### Corto Plazo (Gratis):
+
 1. **Verificar deployment en Vercel**: El CDN ya está activo
 2. **Optimizar cache headers** en Supabase Storage
 3. **Implementar lazy loading** para imágenes below-the-fold
 
 #### Mediano Plazo:
+
 1. **Cloudflare CDN**: Para mayor control y analytics
 2. **Image CDN dedicado**: Considerar Cloudinary o ImageKit (tienen tier gratuito)
 
 #### ✅ Configuración Implementada en `next.config.mjs`:
+
 ```javascript
 images: {
   unoptimized: false,
@@ -338,21 +364,25 @@ images: {
 ## 📊 Resumen de Prioridades (Actualizado)
 
 ### ✅ Alta Prioridad - COMPLETADO:
+
 1. ✅ **ISR para páginas de productos**: Implementado con revalidación de 1 hora
 2. ✅ **Ampliar tests unitarios**: 44 tests nuevos agregados (46/78 pasando)
 3. ✅ **Optimizar CDN**: Cache de 1 año configurado
 
 ### 🔴 Alta Prioridad - PENDIENTE:
+
 1. **Ajustar mocks de tests**: Mejorar los 32 tests que fallan
 2. **Tests de checkout**: Agregar tests para flujo de compra completo
 3. **ISR en más páginas**: Aplicar a listado de productos y otras páginas
 
 ### 🟡 Media Prioridad (Próximos 2-3 meses):
+
 4. **Migrar a Zustand**: Mejor performance y DX (no urgente)
 5. **Tests de API routes**: Testear endpoints críticos
 6. **Optimizar Supabase Storage**: Configurar cache headers
 
 ### 🟢 Baja Prioridad (Futuro):
+
 7. **Tests E2E**: Implementar Playwright o Cypress
 8. **CDN dedicado**: Solo si el tráfico lo justifica
 9. **CI/CD**: Automatizar tests en PRs
@@ -362,11 +392,13 @@ images: {
 ## 🎯 Plan de Acción Sugerido
 
 ### ✅ Sprint 1 - COMPLETADO (2025-12-11):
+
 - [x] Implementar ISR en `app/products/[id]/page.tsx`
 - [x] Agregar `generateStaticParams` para top 50 productos
 - [x] Configurar `revalidate: 3600` en páginas de productos
 
 ### ✅ Sprint 2 - COMPLETADO (2025-12-11):
+
 - [x] Escribir tests para `ProductCard` component (11 tests)
 - [x] Escribir tests para `CartContext` (15 tests)
 - [x] Configurar coverage reports (v8, thresholds 70%)
@@ -374,12 +406,14 @@ images: {
 - [x] Optimizar configuración de CDN (cache 1 año)
 
 ### 🔄 Sprint 3 (Próxima semana):
+
 - [ ] Ajustar mocks de tests que fallan (32 tests)
 - [ ] Agregar tests para componentes de checkout
 - [ ] Implementar ISR en `app/products/page.tsx`
 - [ ] Ejecutar test:coverage y documentar resultados
 
 ### 📅 Sprint 4 (Siguiente mes):
+
 - [ ] Evaluar migración a Zustand (POC con CartContext)
 - [ ] Optimizar cache headers en Supabase Storage
 - [ ] Implementar tests E2E básicos con Playwright
@@ -390,17 +424,20 @@ images: {
 ## 📈 Métricas de Éxito
 
 ### Performance:
+
 - **Objetivo**: Lighthouse Score > 90
 - **Actual**: Por medir
 - **Meta ISR**: Reducir TTFB de 800ms a < 200ms
 
 ### Testing:
+
 - **Objetivo**: Coverage > 70%
 - **Actual**: ~40-50% estimado (46/78 tests pasando - 59%)
 - **Meta**: 70% en 2 meses
 - **Progreso**: +35% desde inicio (de 15% a 50%)
 
 ### SEO:
+
 - **Objetivo**: Core Web Vitals "Good"
 - **Actual**: Por medir con PageSpeed Insights
 - **Meta ISR**: LCP < 2.5s, FID < 100ms, CLS < 0.1

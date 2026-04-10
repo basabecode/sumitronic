@@ -121,4 +121,3 @@ UPDATE public.users
 SET role = 'admin'
 WHERE email = 'tu-email@ejemplo.com';
 ```
-

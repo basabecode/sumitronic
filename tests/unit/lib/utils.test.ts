@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest'
 import { cn, formatPrice } from '../../../lib/utils'
 
@@ -11,9 +10,7 @@ describe('lib/utils', () => {
     it('should handle conditional classes', () => {
       const isTrue = true
       const isFalse = false
-      expect(cn('base', isTrue && 'active', isFalse && 'inactive')).toBe(
-        'base active'
-      )
+      expect(cn('base', isTrue && 'active', isFalse && 'inactive')).toBe('base active')
     })
 
     it('should merge tailwind classes properly', () => {
@@ -34,8 +31,8 @@ describe('lib/utils', () => {
     })
 
     it('should handle custom options', () => {
-        const formatted = formatPrice(1000, { currency: 'USD', locale: 'en-US' })
-        expect(formatted).toContain('1,000')
+      const formatted = formatPrice(1000, { currency: 'USD', locale: 'en-US' })
+      expect(formatted).toContain('1,000')
     })
   })
 })

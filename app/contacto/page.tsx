@@ -6,8 +6,7 @@ import { brand } from '@/lib/brand'
 
 export const metadata: Metadata = {
   title: 'Contacto — Escribanos o pida una cotización',
-  description:
-    `Contáctenos por WhatsApp, correo o formulario. Atendemos consultas sobre cámaras, routers, UPS y repuestos en Cali con envíos a todo Colombia.`,
+  description: `Contáctenos por WhatsApp, correo o formulario. Atendemos consultas sobre cámaras, routers, UPS y repuestos en Cali con envíos a todo Colombia.`,
   keywords: [
     'contacto sumitronic',
     'cotizacion camaras seguridad cali',
@@ -17,8 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contacto' },
   openGraph: {
     title: `Contacto — ${brand.name}`,
-    description:
-      `Escríbanos por WhatsApp o formulario. Atendemos consultas sobre seguridad electrónica, redes y energía desde Cali.`,
+    description: `Escríbanos por WhatsApp o formulario. Atendemos consultas sobre seguridad electrónica, redes y energía desde Cali.`,
     url: `${brand.siteUrl}/contacto`,
     siteName: brand.organizationName,
     locale: 'es_CO',

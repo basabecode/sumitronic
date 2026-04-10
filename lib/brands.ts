@@ -176,8 +176,7 @@ export const BRAND_PROFILES: BrandProfile[] = [
     category: 'Conectividad accesible',
     summary:
       'Routers, repetidores, access points y switches pensados para resolver conectividad en casa o negocio pequeno.',
-    salesAngle:
-      'Encaja bien cuando hace falta mejorar el WiFi sin subir demasiado el presupuesto.',
+    salesAngle: 'Encaja bien cuando hace falta mejorar el WiFi sin subir demasiado el presupuesto.',
     useCases: ['WiFi en casa', 'Repetidores', 'Router costo-beneficio'],
     lineupTitle: 'Lo que mas se vende de Mercusys',
     lineupCopy:

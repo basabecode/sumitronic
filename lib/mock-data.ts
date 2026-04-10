@@ -4,8 +4,7 @@ export const mockProducts = [
     id: '1',
     name: 'IMOU Ranger Dual Hogar',
     slug: 'imou-ranger-dual-hogar',
-    description:
-      'Cámara de seguridad WiFi con doble lente para vigilancia completa del hogar',
+    description: 'Cámara de seguridad WiFi con doble lente para vigilancia completa del hogar',
     price: 89900,
     stock: 15,
     category: 'Cámaras de Seguridad',
@@ -24,14 +23,12 @@ export const mockProducts = [
     id: '2',
     name: 'TP-Link Archer BE800 WiFi 7',
     slug: 'tplink-archer-be800-wifi7',
-    description:
-      'Router WiFi 7 de última generación con puertos 10G para máximo rendimiento',
+    description: 'Router WiFi 7 de última generación con puertos 10G para máximo rendimiento',
     price: 459900,
     stock: 8,
     category: 'Routers y Networking',
     brand: 'TP-Link',
-    image_url:
-      '/productos/tplink/Archer_BE800_WiFi_7_Router_with_10G_Ports_3.jpg',
+    image_url: '/productos/tplink/Archer_BE800_WiFi_7_Router_with_10G_Ports_3.jpg',
     featured: true,
     specifications: {
       'Estándar WiFi': 'WiFi 7 (BE19000)',
@@ -45,8 +42,7 @@ export const mockProducts = [
     id: '3',
     name: 'Mouse Logitech Gaming LED',
     slug: 'mouse-logitech-gaming-led',
-    description:
-      'Mouse gaming de alta precisión con iluminación LED RGB personalizable',
+    description: 'Mouse gaming de alta precisión con iluminación LED RGB personalizable',
     price: 35900,
     stock: 25,
     category: 'Accesorios Gaming',
@@ -85,8 +81,7 @@ export const mockProducts = [
     id: '5',
     name: 'Forza UPS 1500VA',
     slug: 'forza-ups-1500va',
-    description:
-      'Sistema de alimentación ininterrumpida para protección de equipos electrónicos',
+    description: 'Sistema de alimentación ininterrumpida para protección de equipos electrónicos',
     price: 189900,
     stock: 10,
     category: 'UPS y Energía',
@@ -105,8 +100,7 @@ export const mockProducts = [
     id: '6',
     name: 'IMOU Panel Solar Z',
     slug: 'imou-panel-solar-z',
-    description:
-      'Panel solar para cámaras IMOU, instalación fácil y carga continua',
+    description: 'Panel solar para cámaras IMOU, instalación fácil y carga continua',
     price: 45900,
     stock: 20,
     category: 'Cámaras de Seguridad',
@@ -125,8 +119,7 @@ export const mockProducts = [
     id: '7',
     name: 'Mercusys Router AC12G',
     slug: 'mercusys-router-ac12g',
-    description:
-      'Router WiFi AC1200 dual band para uso doméstico y pequeñas oficinas',
+    description: 'Router WiFi AC1200 dual band para uso doméstico y pequeñas oficinas',
     price: 29900,
     stock: 30,
     category: 'Routers y Networking',
@@ -145,8 +138,7 @@ export const mockProducts = [
     id: '8',
     name: 'Dahua DVR 8 Canales',
     slug: 'dahua-dvr-8-canales',
-    description:
-      'Grabador digital de video para sistema de cámaras analógicas y HD-CVI',
+    description: 'Grabador digital de video para sistema de cámaras analógicas y HD-CVI',
     price: 159900,
     stock: 6,
     category: 'Cámaras de Seguridad',

@@ -42,13 +42,11 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('Error fetching favorites:', error)
       // Si la tabla no existe, devolver array vacío
-      if (error.code === '42P01') { // undefined_table
+      if (error.code === '42P01') {
+        // undefined_table
         return NextResponse.json([])
       }
-      return NextResponse.json(
-        { error: 'Error al obtener favoritos' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al obtener favoritos' }, { status: 500 })
     }
 
     if (!favorites || favorites.length === 0) {
@@ -60,7 +58,8 @@ export async function GET(request: NextRequest) {
 
     const { data: products, error: productsError } = await supabase
       .from('products')
-      .select(`
+      .select(
+        `
         id,
         name,
         price,
@@ -68,15 +67,13 @@ export async function GET(request: NextRequest) {
         brand,
         category_id,
         stock_quantity
-      `)
+      `
+      )
       .in('id', productIds)
 
     if (productsError) {
       console.error('Error fetching favorite products:', productsError)
-      return NextResponse.json(
-        { error: 'Error al obtener productos favoritos' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al obtener productos favoritos' }, { status: 500 })
     }
 
     // 3. Combinar los datos
@@ -105,10 +102,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(transformedFavorites)
   } catch (error) {
     console.error('Favorites API error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -141,18 +135,12 @@ export async function POST(request: NextRequest) {
     const { product_id } = body
 
     if (!product_id || typeof product_id !== 'string') {
-      return NextResponse.json(
-        { error: 'ID de producto requerido' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'ID de producto requerido' }, { status: 400 })
     }
 
     const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!UUID_REGEX.test(product_id)) {
-      return NextResponse.json(
-        { error: 'Formato de ID inválido' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Formato de ID inválido' }, { status: 400 })
     }
 
     // Verificar que el producto existe
@@ -163,10 +151,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Producto no encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 })
     }
 
     // Agregar a favoritos (evitar duplicados)
@@ -186,19 +171,13 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Error adding favorite:', error)
-      return NextResponse.json(
-        { error: 'Error al agregar favorito' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al agregar favorito' }, { status: 500 })
     }
 
     return NextResponse.json({ favorite }, { status: 201 })
   } catch (error) {
     console.error('Add favorite error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -238,17 +217,11 @@ export async function DELETE(request: NextRequest) {
     }
 
     if (clear_all === true) {
-      const { error } = await supabase
-        .from('favorites')
-        .delete()
-        .eq('user_id', user.id)
+      const { error } = await supabase.from('favorites').delete().eq('user_id', user.id)
 
       if (error) {
         console.error('Error clearing favorites:', error)
-        return NextResponse.json(
-          { error: 'Error al limpiar favoritos' },
-          { status: 500 }
-        )
+        return NextResponse.json({ error: 'Error al limpiar favoritos' }, { status: 500 })
       }
 
       return NextResponse.json({ message: 'Favoritos eliminados' })
@@ -263,18 +236,12 @@ export async function DELETE(request: NextRequest) {
 
     if (error) {
       console.error('Error removing favorite:', error)
-      return NextResponse.json(
-        { error: 'Error al eliminar favorito' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al eliminar favorito' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Favorito eliminado' })
   } catch (error) {
     console.error('Remove favorite error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

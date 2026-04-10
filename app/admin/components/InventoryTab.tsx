@@ -8,13 +8,27 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select'
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table'
 import {
-  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog'
 import { Product, formatPrice } from '../types'
 
@@ -86,7 +100,9 @@ export default function InventoryTab({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Página Actual</p>
-                  <p className="text-2xl font-bold">{currentPage} / {totalPages}</p>
+                  <p className="text-2xl font-bold">
+                    {currentPage} / {totalPages}
+                  </p>
                 </div>
                 <Eye className="h-8 w-8 text-green-500" />
               </div>
@@ -112,7 +128,9 @@ export default function InventoryTab({
                     {loadingProducts ? 'Cargando...' : 'Optimizado'}
                   </p>
                 </div>
-                <div className={`h-3 w-3 rounded-full ${loadingProducts ? 'bg-yellow-500' : 'bg-green-500'}`} />
+                <div
+                  className={`h-3 w-3 rounded-full ${loadingProducts ? 'bg-yellow-500' : 'bg-green-500'}`}
+                />
               </div>
             </CardContent>
           </Card>
@@ -143,7 +161,9 @@ export default function InventoryTab({
                 <SelectContent>
                   <SelectItem value="all">Todas las categorías</SelectItem>
                   {categories.map(cat => (
-                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -172,8 +192,13 @@ export default function InventoryTab({
         <Card>
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 space-y-0 pb-4">
             <CardTitle className="text-lg sm:text-xl">
-              Productos <span className="text-sm font-normal text-gray-500 hidden sm:inline-block">({totalProducts} total — Página {currentPage} de {totalPages})</span>
-              <span className="text-sm font-normal text-gray-500 block sm:hidden">Total: {totalProducts}</span>
+              Productos{' '}
+              <span className="text-sm font-normal text-gray-500 hidden sm:inline-block">
+                ({totalProducts} total — Página {currentPage} de {totalPages})
+              </span>
+              <span className="text-sm font-normal text-gray-500 block sm:hidden">
+                Total: {totalProducts}
+              </span>
             </CardTitle>
             <div className="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-1">
               <Button
@@ -185,7 +210,9 @@ export default function InventoryTab({
               >
                 Anterior
               </Button>
-              <span className="text-sm text-gray-600 whitespace-nowrap px-2">{currentPage} / {totalPages}</span>
+              <span className="text-sm text-gray-600 whitespace-nowrap px-2">
+                {currentPage} / {totalPages}
+              </span>
               <Button
                 variant="outline"
                 size="sm"
@@ -220,7 +247,10 @@ export default function InventoryTab({
               <>
                 <div className="space-y-3 md:hidden">
                   {products.map(product => (
-                    <div key={`mobile-${product.id}`} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <div
+                      key={`mobile-${product.id}`}
+                      className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                    >
                       <div className="flex items-start gap-3">
                         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                           <Image
@@ -238,7 +268,9 @@ export default function InventoryTab({
                               {product.category?.name || 'Sin categoría'}
                             </Badge>
                             {product.featured && (
-                              <Badge variant="default" className="text-xs">Destacado</Badge>
+                              <Badge variant="default" className="text-xs">
+                                Destacado
+                              </Badge>
                             )}
                           </div>
                         </div>
@@ -247,18 +279,22 @@ export default function InventoryTab({
                       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                         <div>
                           <p className="text-gray-500">Precio</p>
-                          <p className="font-semibold text-gray-900">{formatPrice(product.price)}</p>
+                          <p className="font-semibold text-gray-900">
+                            {formatPrice(product.price)}
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-500">Stock</p>
                           <div className="flex items-center gap-2 font-medium text-gray-900">
-                            <span className={`inline-block h-2 w-2 rounded-full ${
-                              product.stock_quantity > 10
-                                ? 'bg-green-500'
-                                : product.stock_quantity > 0
-                                ? 'bg-yellow-500'
-                                : 'bg-red-500'
-                            }`} />
+                            <span
+                              className={`inline-block h-2 w-2 rounded-full ${
+                                product.stock_quantity > 10
+                                  ? 'bg-green-500'
+                                  : product.stock_quantity > 0
+                                    ? 'bg-yellow-500'
+                                    : 'bg-red-500'
+                              }`}
+                            />
                             {product.stock_quantity} unidades
                           </div>
                         </div>
@@ -271,7 +307,12 @@ export default function InventoryTab({
                             Ver
                           </Link>
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => onEdit(product)} className="h-10 flex-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onEdit(product)}
+                          className="h-10 flex-1"
+                        >
                           <Edit className="mr-2 h-4 w-4" />
                           Editar
                         </Button>
@@ -290,83 +331,87 @@ export default function InventoryTab({
 
                 <div className="hidden overflow-x-auto md:block">
                   <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Producto</TableHead>
-                      <TableHead>Categoría</TableHead>
-                      <TableHead>Precio</TableHead>
-                      <TableHead>Stock</TableHead>
-                      <TableHead>Estado</TableHead>
-                      <TableHead className="text-right">Acciones</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {products.map(product => (
-                      <TableRow key={product.id}>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-gray-100">
-                              <Image
-                                src={product.image_url || '/placeholder.svg'}
-                                alt={product.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                            <div>
-                              <p className="font-medium text-gray-900">{product.name}</p>
-                              <p className="text-sm text-gray-500">{product.brand}</p>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="secondary">
-                            {product.category?.name || 'Sin categoría'}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {formatPrice(product.price)}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <span className={`inline-block w-2 h-2 rounded-full ${
-                              product.stock_quantity > 10
-                                ? 'bg-green-500'
-                                : product.stock_quantity > 0
-                                ? 'bg-yellow-500'
-                                : 'bg-red-500'
-                            }`} />
-                            {product.stock_quantity} unidades
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {product.featured && (
-                            <Badge variant="default" className="text-xs">Destacado</Badge>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <Button variant="ghost" size="sm" asChild>
-                              <Link href={`/products/${product.id}`} target="_blank">
-                                <Eye className="w-4 h-4" />
-                              </Link>
-                            </Button>
-                            <Button variant="ghost" size="sm" onClick={() => onEdit(product)}>
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => onDeleteRequest(product)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Producto</TableHead>
+                        <TableHead>Categoría</TableHead>
+                        <TableHead>Precio</TableHead>
+                        <TableHead>Stock</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead className="text-right">Acciones</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
+                    </TableHeader>
+                    <TableBody>
+                      {products.map(product => (
+                        <TableRow key={product.id}>
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-gray-100">
+                                <Image
+                                  src={product.image_url || '/placeholder.svg'}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900">{product.name}</p>
+                                <p className="text-sm text-gray-500">{product.brand}</p>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="secondary">
+                              {product.category?.name || 'Sin categoría'}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {formatPrice(product.price)}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`inline-block w-2 h-2 rounded-full ${
+                                  product.stock_quantity > 10
+                                    ? 'bg-green-500'
+                                    : product.stock_quantity > 0
+                                      ? 'bg-yellow-500'
+                                      : 'bg-red-500'
+                                }`}
+                              />
+                              {product.stock_quantity} unidades
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {product.featured && (
+                              <Badge variant="default" className="text-xs">
+                                Destacado
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button variant="ghost" size="sm" asChild>
+                                <Link href={`/products/${product.id}`} target="_blank">
+                                  <Eye className="w-4 h-4" />
+                                </Link>
+                              </Button>
+                              <Button variant="ghost" size="sm" onClick={() => onEdit(product)}>
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onDeleteRequest(product)}
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 </div>
               </>
@@ -376,20 +421,19 @@ export default function InventoryTab({
       </div>
 
       {/* Delete Dialog */}
-      <Dialog
-        open={deleteDialog.open}
-        onOpenChange={open => !open && onDeleteCancel()}
-      >
+      <Dialog open={deleteDialog.open} onOpenChange={open => !open && onDeleteCancel()}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar eliminación</DialogTitle>
             <DialogDescription>
-              ¿Estás seguro de que quieres eliminar &quot;{deleteDialog.product?.name}&quot;?
-              Esta acción no se puede deshacer.
+              ¿Estás seguro de que quieres eliminar &quot;{deleteDialog.product?.name}&quot;? Esta
+              acción no se puede deshacer.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={onDeleteCancel}>Cancelar</Button>
+            <Button variant="outline" onClick={onDeleteCancel}>
+              Cancelar
+            </Button>
             <Button
               variant="destructive"
               onClick={() => deleteDialog.product && onDeleteConfirm(deleteDialog.product)}

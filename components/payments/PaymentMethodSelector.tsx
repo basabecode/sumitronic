@@ -62,10 +62,10 @@ export default function PaymentMethodSelector({
       <CardContent>
         <RadioGroup
           value={selectedMethod}
-          onValueChange={(value) => onMethodChange(value as PaymentMethod)}
+          onValueChange={value => onMethodChange(value as PaymentMethod)}
           className="space-y-3"
         >
-          {paymentMethods.map((method) => (
+          {paymentMethods.map(method => (
             <div key={method.id} className="relative">
               <div
                 className={`
@@ -96,7 +96,9 @@ export default function PaymentMethodSelector({
 
                 <div className="flex-1">
                   <div className="flex items-center space-x-2">
-                    <method.icon className={`w-5 h-5 ${selectedMethod === method.id ? 'text-[hsl(var(--brand-strong))]' : 'text-gray-600'}`} />
+                    <method.icon
+                      className={`w-5 h-5 ${selectedMethod === method.id ? 'text-[hsl(var(--brand-strong))]' : 'text-gray-600'}`}
+                    />
                     <Label
                       htmlFor={method.id}
                       className={`font-semibold ${
@@ -118,9 +120,7 @@ export default function PaymentMethodSelector({
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">
-                    {method.description}
-                  </p>
+                  <p className="text-sm text-gray-600 mt-1">{method.description}</p>
                 </div>
               </div>
             </div>

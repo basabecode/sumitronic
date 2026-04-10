@@ -7,8 +7,7 @@ import { Tag, ShieldCheck, Truck } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Ofertas y descuentos — Equipos con precio rebajado',
-  description:
-    `Equipos de seguridad, conectividad y energía con descuento real en ${brand.name}. Inventario disponible, respaldo de garantía y envíos a todo Colombia.`,
+  description: `Equipos de seguridad, conectividad y energía con descuento real en ${brand.name}. Inventario disponible, respaldo de garantía y envíos a todo Colombia.`,
   keywords: [
     'ofertas camaras seguridad colombia',
     'descuentos equipos tecnologia cali',
@@ -18,8 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/ofertas' },
   openGraph: {
     title: `Ofertas y descuentos — ${brand.name}`,
-    description:
-      `Equipos con precio rebajado, inventario verificado y envío nacional. Revisa las ofertas vigentes en ${brand.name}.`,
+    description: `Equipos con precio rebajado, inventario verificado y envío nacional. Revisa las ofertas vigentes en ${brand.name}.`,
     url: `${brand.siteUrl}/ofertas`,
     siteName: brand.organizationName,
     locale: 'es_CO',
@@ -60,7 +58,9 @@ export default function OfertasPage() {
                 Ofertas vigentes en {brand.name}
               </h1>
               <p className="mt-4 text-lg text-[hsl(var(--text-muted))]">
-                Equipos con descuento real, inventario verificado y el mismo respaldo de garantía que cualquier otro producto de la tienda. Los precios están actualizados y aplican mientras dure el stock.
+                Equipos con descuento real, inventario verificado y el mismo respaldo de garantía
+                que cualquier otro producto de la tienda. Los precios están actualizados y aplican
+                mientras dure el stock.
               </p>
             </div>
 
@@ -92,7 +92,8 @@ export default function OfertasPage() {
               ¿No encuentra lo que busca entre las ofertas?
             </h2>
             <p className="mt-3 text-base text-[hsl(var(--text-muted))]">
-              Escríbanos por WhatsApp con el equipo que necesita. En muchos casos podemos revisar disponibilidad o condiciones especiales para pedidos puntuales.
+              Escríbanos por WhatsApp con el equipo que necesita. En muchos casos podemos revisar
+              disponibilidad o condiciones especiales para pedidos puntuales.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a

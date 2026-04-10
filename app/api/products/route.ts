@@ -110,10 +110,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching products:', error)
-      return NextResponse.json(
-        { error: 'Error al obtener productos' },
-        { status: 503 }
-      )
+      return NextResponse.json({ error: 'Error al obtener productos' }, { status: 503 })
     }
 
     // Post-fetch: filtrar solo productos donde compare_price > price (descuento real)
@@ -144,10 +141,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Products API error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
@@ -166,11 +160,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar si es admin
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -215,10 +205,7 @@ export async function POST(request: NextRequest) {
 
     if (productError) {
       console.error('Error creating product:', productError)
-      return NextResponse.json(
-        { error: 'Error al crear producto' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al crear producto' }, { status: 500 })
     }
 
     // Crear imagen principal
@@ -255,9 +242,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ product }, { status: 201 })
   } catch (error) {
     console.error('Create product error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

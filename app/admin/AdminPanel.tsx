@@ -2,7 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Home, Package, Plus, DollarSign, ExternalLink, Loader2, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react'
+import {
+  Home,
+  Package,
+  Plus,
+  DollarSign,
+  ExternalLink,
+  Loader2,
+  RefreshCw,
+  CheckCircle2,
+  AlertCircle,
+} from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
@@ -23,7 +33,11 @@ const TAB_BUTTONS: { id: Tab; label: string; Icon: React.ElementType }[] = [
   { id: 'add-product', label: 'Agregar Producto', Icon: Plus },
 ]
 
-type SyncStatus = { state: 'idle' } | { state: 'loading' } | { state: 'ok'; synced: number } | { state: 'error'; message: string }
+type SyncStatus =
+  | { state: 'idle' }
+  | { state: 'loading' }
+  | { state: 'ok'; synced: number }
+  | { state: 'error'; message: string }
 
 function escapeCSV(value: unknown): string {
   const str = value === null || value === undefined ? '' : String(value)
@@ -46,7 +60,23 @@ export default function AdminDashboard() {
       const data = await res.json()
       const allProducts = data.products ?? []
 
-      const headers = ['sku', 'name', 'description', 'price', 'compare_price', 'cost_price', 'brand', 'category_slug', 'stock_quantity', 'weight', 'featured', 'active', 'tags', 'image_url', 'extra_images']
+      const headers = [
+        'sku',
+        'name',
+        'description',
+        'price',
+        'compare_price',
+        'cost_price',
+        'brand',
+        'category_slug',
+        'stock_quantity',
+        'weight',
+        'featured',
+        'active',
+        'tags',
+        'image_url',
+        'extra_images',
+      ]
 
       const rows = allProducts.map((p: any) => [
         p.sku ?? '',
@@ -63,9 +93,7 @@ export default function AdminDashboard() {
         p.active !== false ? 'TRUE' : 'FALSE',
         Array.isArray(p.tags) ? p.tags.join(',') : '',
         p.image_url ?? '',
-        Array.isArray(p.images) && p.images.length > 1
-          ? p.images.slice(1).join(',')
-          : '',
+        Array.isArray(p.images) && p.images.length > 1 ? p.images.slice(1).join(',') : '',
       ])
 
       const csv = [headers, ...rows].map(row => row.map(escapeCSV).join(',')).join('\n')
@@ -94,7 +122,10 @@ export default function AdminDashboard() {
       products.fetchProducts()
       setTimeout(() => setSyncStatus({ state: 'idle' }), 4000)
     } catch (err) {
-      setSyncStatus({ state: 'error', message: err instanceof Error ? err.message : 'Error desconocido' })
+      setSyncStatus({
+        state: 'error',
+        message: err instanceof Error ? err.message : 'Error desconocido',
+      })
       setTimeout(() => setSyncStatus({ state: 'idle' }), 5000)
     }
   }
@@ -118,7 +149,7 @@ export default function AdminDashboard() {
     if (activeTab === 'add-product') {
       form.fetchCategories()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, products.currentPage, products.debouncedSearchQuery, products.categoryFilter])
 
   const handleEditProduct = (product: Parameters<typeof form.loadProductForEdit>[0]) => {
@@ -239,58 +270,58 @@ export default function AdminDashboard() {
             />
           )}
 
-        {activeTab === 'inventory' && (
-          <InventoryTab
-            products={products.products}
-            loadingProducts={products.loadingProducts}
-            isSearching={products.isSearching}
-            totalProducts={products.totalProducts}
-            totalPages={products.totalPages}
-            currentPage={products.currentPage}
-            searchQuery={products.searchQuery}
-            categoryFilter={products.categoryFilter}
-            categories={form.categories}
-            deleteDialog={products.deleteDialog}
-            onPageChange={products.setCurrentPage}
-            onSearchChange={products.setSearchQuery}
-            onCategoryChange={products.setCategoryFilter}
-            onEdit={handleEditProduct}
-            onAdd={handleAddProduct}
-            onDeleteRequest={p => products.setDeleteDialog({ open: true, product: p })}
-            onDeleteConfirm={products.handleDeleteProduct}
-            onDeleteCancel={() => products.setDeleteDialog({ open: false, product: null })}
-            onExportCSV={handleExportCSV}
-            exportingCSV={exportingCSV}
-          />
-        )}
+          {activeTab === 'inventory' && (
+            <InventoryTab
+              products={products.products}
+              loadingProducts={products.loadingProducts}
+              isSearching={products.isSearching}
+              totalProducts={products.totalProducts}
+              totalPages={products.totalPages}
+              currentPage={products.currentPage}
+              searchQuery={products.searchQuery}
+              categoryFilter={products.categoryFilter}
+              categories={form.categories}
+              deleteDialog={products.deleteDialog}
+              onPageChange={products.setCurrentPage}
+              onSearchChange={products.setSearchQuery}
+              onCategoryChange={products.setCategoryFilter}
+              onEdit={handleEditProduct}
+              onAdd={handleAddProduct}
+              onDeleteRequest={p => products.setDeleteDialog({ open: true, product: p })}
+              onDeleteConfirm={products.handleDeleteProduct}
+              onDeleteCancel={() => products.setDeleteDialog({ open: false, product: null })}
+              onExportCSV={handleExportCSV}
+              exportingCSV={exportingCSV}
+            />
+          )}
 
-        {activeTab === 'add-product' && (
-          <ProductFormTab
-            formData={form.formData}
-            formDirty={form.formDirty}
-            editingProduct={form.editingProduct}
-            formLoading={form.formLoading}
-            imageUploading={form.imageUploading}
-            categories={form.categories}
-            brands={form.brands}
-            newCategory={form.newCategory}
-            newBrand={form.newBrand}
-            showAddCategory={form.showAddCategory}
-            showAddBrand={form.showAddBrand}
-            onInputChange={form.handleInputChange}
-            onImageUpload={form.handleImageUpload}
-            onDropFiles={form.processImageFiles}
-            onRemoveImage={form.removeImage}
-            onAddCategory={form.handleAddCategory}
-            onAddBrand={form.handleAddBrand}
-            onSubmit={form.handleSubmitProduct}
-            onCancel={() => setActiveTab('inventory')}
-            onSetNewCategory={form.setNewCategory}
-            onSetNewBrand={form.setNewBrand}
-            onToggleAddCategory={form.setShowAddCategory}
-            onToggleAddBrand={form.setShowAddBrand}
-          />
-        )}
+          {activeTab === 'add-product' && (
+            <ProductFormTab
+              formData={form.formData}
+              formDirty={form.formDirty}
+              editingProduct={form.editingProduct}
+              formLoading={form.formLoading}
+              imageUploading={form.imageUploading}
+              categories={form.categories}
+              brands={form.brands}
+              newCategory={form.newCategory}
+              newBrand={form.newBrand}
+              showAddCategory={form.showAddCategory}
+              showAddBrand={form.showAddBrand}
+              onInputChange={form.handleInputChange}
+              onImageUpload={form.handleImageUpload}
+              onDropFiles={form.processImageFiles}
+              onRemoveImage={form.removeImage}
+              onAddCategory={form.handleAddCategory}
+              onAddBrand={form.handleAddBrand}
+              onSubmit={form.handleSubmitProduct}
+              onCancel={() => setActiveTab('inventory')}
+              onSetNewCategory={form.setNewCategory}
+              onSetNewBrand={form.setNewBrand}
+              onToggleAddCategory={form.setShowAddCategory}
+              onToggleAddBrand={form.setShowAddBrand}
+            />
+          )}
         </div>
       </div>
     </div>

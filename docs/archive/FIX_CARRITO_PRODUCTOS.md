@@ -8,11 +8,13 @@
 ## 🐛 Problema Identificado
 
 ### Síntomas:
+
 - ✅ El carrito funcionaba correctamente en la página principal (`/`)
 - ❌ El carrito NO funcionaba en la página de productos (`/products/`)
 - ❌ El carrito NO funcionaba en páginas de detalle de producto (`/products/[id]`)
 
 ### Causa Raíz:
+
 El componente `<CartSidebar />` solo estaba renderizado en `app/page.tsx` (página principal), pero **NO** estaba disponible en otras páginas de la aplicación.
 
 ```tsx
@@ -21,13 +23,14 @@ export default function Home() {
   return (
     <div>
       {/* ... contenido ... */}
-      <CartSidebar />  // Solo disponible aquí
+      <CartSidebar /> // Solo disponible aquí
     </div>
   )
 }
 ```
 
 Esto causaba que:
+
 1. El contexto `CartContext` funcionaba correctamente (estaba en el layout raíz)
 2. Las funciones `addItem()` y `openCart()` se ejecutaban sin errores
 3. **PERO** el componente visual `<CartSidebar />` no existía en el DOM
@@ -38,11 +41,13 @@ Esto causaba que:
 ## ✅ Solución Implementada
 
 ### Cambio Principal:
+
 Mover los componentes globales de UI (`CartSidebar`, `FavoritesSidebar`, `ChatWidget`) al **layout raíz** (`app/layout.tsx`) para que estén disponibles en **todas las páginas**.
 
 ### Archivos Modificados:
 
 #### 1. `app/layout.tsx` - Agregados componentes globales
+
 ```tsx
 import CartSidebar from '@/components/cart/CartSidebar'
 import FavoritesSidebar from '@/components/cart/FavoritesSidebar'
@@ -74,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 #### 2. `app/page.tsx` - Removidos componentes duplicados
+
 ```tsx
 // ❌ REMOVIDO - Ya no necesario
 import CartSidebar from '@/components/cart/CartSidebar'
@@ -97,6 +103,7 @@ export default function Home() {
 ## 🎯 Beneficios de la Solución
 
 ### 1. **Disponibilidad Global** ✅
+
 - El carrito ahora funciona en **todas las páginas**:
   - ✅ Página principal (`/`)
   - ✅ Listado de productos (`/products`)
@@ -106,15 +113,18 @@ export default function Home() {
   - ✅ Cualquier otra página
 
 ### 2. **Mejor Arquitectura** 🏗️
+
 - Componentes globales de UI en un solo lugar (layout raíz)
 - No hay duplicación de código
 - Más fácil de mantener
 
 ### 3. **Consistencia** 🎨
+
 - La experiencia del usuario es consistente en toda la aplicación
 - El carrito siempre está disponible, sin importar la página
 
 ### 4. **Performance** ⚡
+
 - Los componentes se montan una sola vez (en el layout)
 - No se re-montan al navegar entre páginas
 - El estado del carrito se mantiene al navegar
@@ -124,21 +134,25 @@ export default function Home() {
 ## 🧪 Cómo Probar
 
 ### Test 1: Página de Productos
+
 1. Ir a `http://localhost:3003/products/`
 2. Hacer clic en "Añadir al carrito" en cualquier producto
 3. ✅ El modal del carrito debe abrirse
 
 ### Test 2: Icono del Header
+
 1. Estar en cualquier página (ej: `/products/`)
 2. Hacer clic en el icono del carrito en el header
 3. ✅ El modal del carrito debe abrirse
 
 ### Test 3: Detalle de Producto
+
 1. Ir a `http://localhost:3003/products/[cualquier-id]`
 2. Hacer clic en "Añadir al carrito"
 3. ✅ El modal del carrito debe abrirse
 
 ### Test 4: Persistencia de Estado
+
 1. Agregar productos al carrito desde la página principal
 2. Navegar a `/products/`
 3. ✅ El contador del carrito debe mostrar los items agregados
@@ -150,29 +164,35 @@ export default function Home() {
 ## 📝 Notas Técnicas
 
 ### Orden de Renderizado
+
 Los componentes globales se renderizan **después** del `{children}` en el layout:
+
 ```tsx
 <FavoritesProvider>
-  {children}              // Contenido de la página
-  <CartSidebar />         // Renderizado después
-  <FavoritesSidebar />    // Renderizado después
-  <ChatWidget />          // Renderizado después
+  {children} // Contenido de la página
+  <CartSidebar /> // Renderizado después
+  <FavoritesSidebar /> // Renderizado después
+  <ChatWidget /> // Renderizado después
 </FavoritesProvider>
 ```
 
 Esto asegura que:
+
 - El contenido principal se carga primero
 - Los modales/sidebars están disponibles pero ocultos
 - No bloquean la renderización del contenido
 
 ### Componentes que Permanecen en Páginas Específicas
+
 Algunos componentes siguen siendo específicos de página:
+
 - `<WhatsAppFAB />` - Solo en página principal
 - `<BottomNav />` - Solo en página principal
 - `<Header />` - Renderizado en cada página (podría moverse al layout)
 - `<Footer />` - Renderizado en cada página (podría moverse al layout)
 
 ### Posibles Mejoras Futuras
+
 1. **Mover Header y Footer al layout**: Para evitar re-renders al navegar
 2. **Lazy loading de modales**: Cargar CartSidebar solo cuando se necesita
 3. **Optimización de contextos**: Considerar Zustand para mejor performance
@@ -184,18 +204,21 @@ Algunos componentes siguen siendo específicos de página:
 Si el carrito sigue sin funcionar:
 
 ### 1. Verificar que el componente existe en el DOM
+
 ```javascript
 // En DevTools Console
 document.querySelector('[role="dialog"]') // Debe existir cuando el carrito está abierto
 ```
 
 ### 2. Verificar el estado del contexto
+
 ```javascript
 // En React DevTools
 // Buscar CartProvider y verificar state.isOpen
 ```
 
 ### 3. Verificar errores en consola
+
 ```javascript
 // Buscar errores relacionados con:
 // - "Cannot read property 'openCart' of undefined"

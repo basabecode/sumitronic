@@ -62,9 +62,7 @@ export const metadata: Metadata = {
       { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
       { url: '/favicon.ico', sizes: 'any' },
     ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     other: [
       { rel: 'android-chrome', url: '/android-chrome-192x192.png', sizes: '192x192' },
       { rel: 'android-chrome', url: '/android-chrome-512x512.png', sizes: '512x512' },
@@ -128,11 +126,7 @@ const jsonLd = {
   sameAs: brand.socialLinks,
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" suppressHydrationWarning>
       <head>

@@ -40,9 +40,7 @@ export function Brand({ compact = false, onClick, logoClassName }: BrandProps) {
         <p
           className={cn(
             'font-display font-semibold uppercase text-[hsl(var(--brand-strong))]',
-            compact
-              ? 'truncate text-sm tracking-[0.1em]'
-              : 'text-lg tracking-[0.16em]'
+            compact ? 'truncate text-sm tracking-[0.1em]' : 'text-lg tracking-[0.16em]'
           )}
         >
           {brand.name}

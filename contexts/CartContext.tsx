@@ -58,10 +58,7 @@ const initialState: CartState = {
 
 // Funcion para calcular totales
 function calculateTotals(items: CartItem[]) {
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
   // Los precios ya incluyen IVA, no se calcula adicional
   const tax = 0
   const shipping = subtotal > 100000 ? 0 : 15000 // Envio gratis por compras mayores a $100,000
@@ -80,16 +77,13 @@ function calculateTotals(items: CartItem[]) {
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existingItem = state.items.find(
-        item => item.id === action.payload.id
-      )
+      const existingItem = state.items.find(item => item.id === action.payload.id)
 
       let newItems: CartItem[]
 
       if (existingItem) {
         // Si el item ya existe, incrementar cantidad
-        const maxQuantity =
-          action.payload.stock || action.payload.stockCount || 999
+        const maxQuantity = action.payload.stock || action.payload.stockCount || 999
         newItems = state.items.map(item =>
           item.id === action.payload.id
             ? {
@@ -135,10 +129,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
           item.id === action.payload.id
             ? {
                 ...item,
-                quantity: Math.min(
-                  action.payload.quantity,
-                  item.stock || item.stockCount || 999
-                ),
+                quantity: Math.min(action.payload.quantity, item.stock || item.stockCount || 999),
               }
             : item
         )
@@ -373,5 +364,3 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
-
-

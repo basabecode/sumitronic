@@ -24,8 +24,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
 export default function CartPageContent() {
-  const { state, removeItem, updateQuantity, clearCart, formatCurrency } =
-    useCart()
+  const { state, removeItem, updateQuantity, clearCart, formatCurrency } = useCart()
   const [promoCode, setPromoCode] = useState('')
   const [isPromoApplied, setIsPromoApplied] = useState(false)
 
@@ -52,14 +51,15 @@ export default function CartPageContent() {
         <main className="container mx-auto px-4 py-8">
           <div className="text-center py-16">
             <ShoppingCart className="w-24 h-24 mx-auto text-gray-400 mb-6" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Tu carrito está vacío
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Tu carrito está vacío</h1>
             <p className="text-lg text-gray-600 mb-8">
               Agrega algunos productos increíbles a tu carrito
             </p>
             <Link href="/products">
-              <Button size="lg" className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]">
+              <Button
+                size="lg"
+                className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
+              >
                 Explorar Productos
               </Button>
             </Link>
@@ -87,9 +87,7 @@ export default function CartPageContent() {
 
         {/* Título */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Carrito de Compras
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900">Carrito de Compras</h1>
           <Badge variant="secondary" className="text-lg px-3 py-1">
             {state.itemCount} {state.itemCount === 1 ? 'producto' : 'productos'}
           </Badge>
@@ -114,10 +112,7 @@ export default function CartPageContent() {
 
               <CardContent className="space-y-4">
                 {state.items.map(item => (
-                  <div
-                    key={item.id}
-                    className="flex items-center space-x-4 p-4 border rounded-lg"
-                  >
+                  <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
                     {/* Imagen del producto */}
                     <div className="relative w-20 h-20 flex-shrink-0">
                       <Image
@@ -130,12 +125,8 @@ export default function CartPageContent() {
 
                     {/* Información del producto */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 line-clamp-1">
-                        {item.name}
-                      </h3>
-                      {item.brand && (
-                        <p className="text-sm text-gray-600">{item.brand}</p>
-                      )}
+                      <h3 className="font-semibold text-gray-900 line-clamp-1">{item.name}</h3>
+                      {item.brand && <p className="text-sm text-gray-600">{item.brand}</p>}
                       {item.category && (
                         <Badge variant="outline" className="mt-1">
                           {item.category}
@@ -148,9 +139,7 @@ export default function CartPageContent() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          handleQuantityChange(item.id, item.quantity - 1)
-                        }
+                        onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
                       >
                         <Minus className="w-4 h-4" />
@@ -159,12 +148,7 @@ export default function CartPageContent() {
                       <Input
                         type="number"
                         value={item.quantity}
-                        onChange={e =>
-                          handleQuantityChange(
-                            item.id,
-                            parseInt(e.target.value) || 1
-                          )
-                        }
+                        onChange={e => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
                         className="w-16 text-center"
                         min="1"
                         max={item.stock}
@@ -173,9 +157,7 @@ export default function CartPageContent() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          handleQuantityChange(item.id, item.quantity + 1)
-                        }
+                        onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                         disabled={item.quantity >= (item.stock || 0)}
                       >
                         <Plus className="w-4 h-4" />
@@ -187,9 +169,7 @@ export default function CartPageContent() {
                       <p className="font-semibold text-lg">
                         {formatCurrency(item.price * item.quantity)}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        {formatCurrency(item.price)} c/u
-                      </p>
+                      <p className="text-sm text-gray-600">{formatCurrency(item.price)} c/u</p>
                     </div>
 
                     {/* Botón eliminar */}
@@ -231,9 +211,7 @@ export default function CartPageContent() {
                   </Button>
                 </div>
                 {isPromoApplied && (
-                  <div className="text-green-600 text-sm">
-                    ✓ Código aplicado: 10% de descuento
-                  </div>
+                  <div className="text-green-600 text-sm">✓ Código aplicado: 10% de descuento</div>
                 )}
               </CardContent>
             </Card>
@@ -257,9 +235,7 @@ export default function CartPageContent() {
                   <span>Total:</span>
                   <span>
                     {formatCurrency(
-                      isPromoApplied
-                        ? state.total - state.subtotal * 0.1
-                        : state.total
+                      isPromoApplied ? state.total - state.subtotal * 0.1 : state.total
                     )}
                   </span>
                 </div>

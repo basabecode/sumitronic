@@ -12,7 +12,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select'
 import { Product, ProductFormData } from '../types'
 
@@ -114,7 +118,9 @@ export default function ProductFormTab({
             {editingProduct ? 'Editar Producto' : 'Agregar Nuevo Producto'}
           </h2>
           <p className="text-sm text-gray-600 mt-1">
-            {editingProduct ? 'Modifica los datos del producto' : 'Completa los datos del nuevo producto'}
+            {editingProduct
+              ? 'Modifica los datos del producto'
+              : 'Completa los datos del nuevo producto'}
           </p>
         </div>
       </div>
@@ -172,20 +178,37 @@ export default function ProductFormTab({
                         value={newCategory}
                         onChange={e => onSetNewCategory(e.target.value)}
                         className="text-sm"
-                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onAddCategory() } }}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            onAddCategory()
+                          }
+                        }}
                       />
-                      <Button type="button" size="sm" onClick={onAddCategory} disabled={!newCategory.trim()} className="sm:w-auto">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={onAddCategory}
+                        disabled={!newCategory.trim()}
+                        className="sm:w-auto"
+                      >
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
                   )}
-                  <Select value={formData.category} onValueChange={v => onInputChange('category', v)} required>
+                  <Select
+                    value={formData.category}
+                    onValueChange={v => onInputChange('category', v)}
+                    required
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar categoría" />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map(cat => (
-                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -212,20 +235,37 @@ export default function ProductFormTab({
                         value={newBrand}
                         onChange={e => onSetNewBrand(e.target.value)}
                         className="text-sm"
-                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); onAddBrand() } }}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault()
+                            onAddBrand()
+                          }
+                        }}
                       />
-                      <Button type="button" size="sm" onClick={onAddBrand} disabled={!newBrand.trim()} className="sm:w-auto">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={onAddBrand}
+                        disabled={!newBrand.trim()}
+                        className="sm:w-auto"
+                      >
                         <Plus className="w-4 h-4" />
                       </Button>
                     </div>
                   )}
-                  <Select value={formData.brand} onValueChange={v => onInputChange('brand', v)} required>
+                  <Select
+                    value={formData.brand}
+                    onValueChange={v => onInputChange('brand', v)}
+                    required
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccionar marca" />
                     </SelectTrigger>
                     <SelectContent>
                       {brands.map(brand => (
-                        <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                        <SelectItem key={brand} value={brand}>
+                          {brand}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -242,7 +282,12 @@ export default function ProductFormTab({
                     min="0"
                     step="1000"
                     value={formData.price === 0 ? '' : formData.price}
-                    onChange={e => onInputChange('price', e.target.value === '' ? 0 : parseInt(e.target.value) || 0)}
+                    onChange={e =>
+                      onInputChange(
+                        'price',
+                        e.target.value === '' ? 0 : parseInt(e.target.value) || 0
+                      )
+                    }
                     placeholder="250000"
                   />
                 </div>
@@ -254,12 +299,19 @@ export default function ProductFormTab({
                     min="0"
                     step="1000"
                     value={formData.compare_price ?? ''}
-                    onChange={e => onInputChange('compare_price', e.target.value ? parseInt(e.target.value) : null)}
+                    onChange={e =>
+                      onInputChange(
+                        'compare_price',
+                        e.target.value ? parseInt(e.target.value) : null
+                      )
+                    }
                     placeholder="350000"
                   />
                   <p className="text-xs text-gray-500">Deja en blanco si no hay descuento</p>
                   {discountPct !== null && (
-                    <p className="text-xs font-medium text-emerald-600">Descuento: {discountPct}%</p>
+                    <p className="text-xs font-medium text-emerald-600">
+                      Descuento: {discountPct}%
+                    </p>
                   )}
                   {formData.compare_price && formData.compare_price <= formData.price && (
                     <p className="text-xs font-medium text-rose-600">
@@ -278,7 +330,12 @@ export default function ProductFormTab({
                     required
                     min="0"
                     value={formData.stock === 0 ? '' : formData.stock}
-                    onChange={e => onInputChange('stock', e.target.value === '' ? 0 : parseInt(e.target.value) || 0)}
+                    onChange={e =>
+                      onInputChange(
+                        'stock',
+                        e.target.value === '' ? 0 : parseInt(e.target.value) || 0
+                      )
+                    }
                     placeholder="10"
                     className="h-11"
                   />
@@ -292,7 +349,9 @@ export default function ProductFormTab({
                   onCheckedChange={checked => onInputChange('featured', checked)}
                   className="scale-110"
                 />
-                <Label htmlFor="featured" className="text-base cursor-pointer">Producto destacado</Label>
+                <Label htmlFor="featured" className="text-base cursor-pointer">
+                  Producto destacado
+                </Label>
               </div>
             </CardContent>
           </Card>
@@ -309,17 +368,25 @@ export default function ProductFormTab({
               {formData.images.length < 5 && (
                 <div className="space-y-2">
                   <Label>Subir Imágenes *</Label>
-                  <div 
+                  <div
                     className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                      isDragging ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))]' : 'border-gray-300 bg-transparent'
+                      isDragging
+                        ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))]'
+                        : 'border-gray-300 bg-transparent'
                     }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                   >
-                    <Upload className={`mx-auto mb-4 h-12 w-12 ${isDragging ? 'text-[hsl(var(--brand))]' : 'text-gray-400'}`} />
-                    <p className="text-sm text-gray-600">Arrastra las imágenes aquí o haz clic para seleccionar</p>
-                    <p className="text-xs text-gray-500 mt-1">Máximo {5 - formData.images.length} imágenes más</p>
+                    <Upload
+                      className={`mx-auto mb-4 h-12 w-12 ${isDragging ? 'text-[hsl(var(--brand))]' : 'text-gray-400'}`}
+                    />
+                    <p className="text-sm text-gray-600">
+                      Arrastra las imágenes aquí o haz clic para seleccionar
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Máximo {5 - formData.images.length} imágenes más
+                    </p>
                     <input
                       type="file"
                       multiple
@@ -366,7 +433,9 @@ export default function ProductFormTab({
                           <X className="w-4 h-4" />
                         </Button>
                         {index === 0 && (
-                          <Badge className="absolute bottom-2 left-2" variant="default">Principal</Badge>
+                          <Badge className="absolute bottom-2 left-2" variant="default">
+                            Principal
+                          </Badge>
                         )}
                       </div>
                     ))}
@@ -386,7 +455,12 @@ export default function ProductFormTab({
             </Link>
           </Button>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-            <Button type="button" variant="outline" onClick={handleCancelGuard} className="w-full sm:w-auto h-11">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancelGuard}
+              className="w-full sm:w-auto h-11"
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={formLoading} className="w-full sm:w-auto h-11">

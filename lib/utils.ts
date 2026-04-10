@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 const formatterCache = new Map<string, Intl.NumberFormat>()
 
@@ -14,23 +14,20 @@ export type FormatPriceOptions = {
   maximumFractionDigits?: number
 }
 
-export function formatPrice(
-  value: number,
-  options: FormatPriceOptions = {}
-): string {
+export function formatPrice(value: number, options: FormatPriceOptions = {}): string {
   const {
-    locale = "es-CO",
-    currency = "COP",
+    locale = 'es-CO',
+    currency = 'COP',
     minimumFractionDigits = 0,
     maximumFractionDigits = 0,
   } = options
 
-  const cacheKey = [locale, currency, minimumFractionDigits, maximumFractionDigits].join("-")
+  const cacheKey = [locale, currency, minimumFractionDigits, maximumFractionDigits].join('-')
 
   let formatter = formatterCache.get(cacheKey)
   if (!formatter) {
     formatter = new Intl.NumberFormat(locale, {
-      style: "currency",
+      style: 'currency',
       currency,
       minimumFractionDigits,
       maximumFractionDigits,

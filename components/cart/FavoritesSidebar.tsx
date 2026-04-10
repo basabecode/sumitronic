@@ -3,22 +3,9 @@
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  X,
-  Heart,
-  ShoppingCart,
-  Trash2,
-  Package,
-  SortAsc,
-  AlertCircle,
-} from 'lucide-react'
+import { X, Heart, ShoppingCart, Trash2, Package, SortAsc, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -31,13 +18,7 @@ import {
 import { useFavorites } from '@/contexts/FavoritesContext'
 import { useCart } from '@/contexts/CartContext'
 
-type SortOption =
-  | 'date-desc'
-  | 'date-asc'
-  | 'name-asc'
-  | 'name-desc'
-  | 'price-asc'
-  | 'price-desc'
+type SortOption = 'date-desc' | 'date-asc' | 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc'
 
 export default function FavoritesSidebar() {
   const { state, removeItem, closeFavorites, clearFavorites } = useFavorites()
@@ -90,11 +71,7 @@ export default function FavoritesSidebar() {
   }
 
   const handleClearAll = () => {
-    if (
-      window.confirm(
-        '¿Estás seguro de que quieres eliminar todos los favoritos?'
-      )
-    ) {
+    if (window.confirm('¿Estás seguro de que quieres eliminar todos los favoritos?')) {
       clearFavorites()
     }
   }
@@ -119,8 +96,7 @@ export default function FavoritesSidebar() {
               </div>
             </SheetTitle>
             <Badge variant="secondary" className="ml-auto">
-              {state.items.length}{' '}
-              {state.items.length === 1 ? 'producto' : 'productos'}
+              {state.items.length} {state.items.length === 1 ? 'producto' : 'productos'}
             </Badge>
           </div>
 
@@ -128,10 +104,7 @@ export default function FavoritesSidebar() {
           {state.items.length > 0 && (
             <div className="flex items-center space-x-2">
               <SortAsc className="w-4 h-4 text-gray-500" />
-              <Select
-                value={sortBy}
-                onValueChange={(value: SortOption) => setSortBy(value)}
-              >
+              <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
                 <SelectTrigger className="h-8 text-xs">
                   <SelectValue />
                 </SelectTrigger>
@@ -157,12 +130,9 @@ export default function FavoritesSidebar() {
                 <Heart className="w-12 h-12 text-gray-400" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  No tienes favoritos
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">No tienes favoritos</h3>
                 <p className="text-gray-500 max-w-sm text-sm">
-                  Explora nuestros productos y guarda los que más te gusten
-                  para una futura compra
+                  Explora nuestros productos y guarda los que más te gusten para una futura compra
                 </p>
               </div>
               <Button
@@ -175,8 +145,7 @@ export default function FavoritesSidebar() {
           ) : (
             <div className="space-y-3">
               {sortedItems.map(favorite => {
-                const image =
-                  favorite.image_url || favorite.image || '/placeholder.svg'
+                const image = favorite.image_url || favorite.image || '/placeholder.svg'
                 return (
                   <div
                     key={favorite.id}
@@ -203,10 +172,7 @@ export default function FavoritesSidebar() {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start mb-1">
                         <div className="flex-1 min-w-0 pr-2">
-                          <Link
-                            href={`/products/${favorite.id}`}
-                            onClick={closeFavorites}
-                          >
+                          <Link href={`/products/${favorite.id}`} onClick={closeFavorites}>
                             <h4 className="line-clamp-2 text-sm font-semibold text-gray-900 transition-colors hover:text-[hsl(var(--brand-strong))]">
                               {favorite.name}
                             </h4>
@@ -234,12 +200,11 @@ export default function FavoritesSidebar() {
                           <span className="text-base font-bold text-gray-900">
                             {formatCurrency(favorite.price)}
                           </span>
-                          {favorite.discount_percentage &&
-                            favorite.discount_percentage > 0 && (
-                              <span className="text-xs text-red-600 font-medium">
-                                -{favorite.discount_percentage}% OFF
-                              </span>
-                            )}
+                          {favorite.discount_percentage && favorite.discount_percentage > 0 && (
+                            <span className="text-xs text-red-600 font-medium">
+                              -{favorite.discount_percentage}% OFF
+                            </span>
+                          )}
                         </div>
                         <Button
                           size="sm"
@@ -272,9 +237,7 @@ export default function FavoritesSidebar() {
                       {favorite.stock !== undefined && favorite.stock === 0 && (
                         <div className="flex items-center space-x-1 mt-1">
                           <Package className="w-3 h-3 text-red-600" />
-                          <span className="text-xs text-red-600 font-medium">
-                            Sin stock
-                          </span>
+                          <span className="text-xs text-red-600 font-medium">Sin stock</span>
                         </div>
                       )}
                     </div>
@@ -295,11 +258,7 @@ export default function FavoritesSidebar() {
             </div>
 
             <div className="space-y-2">
-              <Button
-                onClick={closeFavorites}
-                variant="outline"
-                className="w-full"
-              >
+              <Button onClick={closeFavorites} variant="outline" className="w-full">
                 Continuar Explorando
               </Button>
 
@@ -314,9 +273,7 @@ export default function FavoritesSidebar() {
             </div>
 
             <div className="text-center pt-2">
-              <p className="text-xs text-gray-500">
-                Tus favoritos se guardan automáticamente
-              </p>
+              <p className="text-xs text-gray-500">Tus favoritos se guardan automáticamente</p>
             </div>
           </div>
         )}

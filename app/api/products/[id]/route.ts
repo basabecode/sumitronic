@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient()
     const { id } = params
@@ -39,10 +36,7 @@ export async function GET(
       .single()
 
     if (error || !product) {
-      return NextResponse.json(
-        { error: 'Producto no encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 })
     }
 
     // Obtener productos relacionados de la misma categoría
@@ -76,17 +70,11 @@ export async function GET(
     })
   } catch (error) {
     console.error('Product fetch error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient()
     const { id } = params
@@ -102,11 +90,7 @@ export async function PUT(
     }
 
     // Verificar si es admin
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -145,26 +129,17 @@ export async function PUT(
 
     if (error) {
       console.error('Error updating product:', error)
-      return NextResponse.json(
-        { error: 'Error al actualizar producto' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al actualizar producto' }, { status: 500 })
     }
 
     return NextResponse.json({ product })
   } catch (error) {
     console.error('Update product error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient()
     const { id } = params
@@ -180,11 +155,7 @@ export async function DELETE(
     }
 
     // Verificar si es admin
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
+    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -201,18 +172,12 @@ export async function DELETE(
 
     if (error) {
       console.error('Error deleting product:', error)
-      return NextResponse.json(
-        { error: 'Error al eliminar producto' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al eliminar producto' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Producto eliminado exitosamente' })
   } catch (error) {
     console.error('Delete product error:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

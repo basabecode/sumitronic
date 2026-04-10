@@ -17,8 +17,14 @@ const DEFAULT_CATEGORIES = [
 ]
 
 const DEFAULT_BRANDS = [
-  'IMOU', 'TP-Link', 'Dahua', 'Hikvision',
-  'Logitech', 'Mercusys', 'Tapo', 'Forza',
+  'IMOU',
+  'TP-Link',
+  'Dahua',
+  'Hikvision',
+  'Logitech',
+  'Mercusys',
+  'Tapo',
+  'Forza',
 ]
 
 const BRANDS_STORAGE_KEY = 'sumitronic_admin_brands'
@@ -44,9 +50,7 @@ function loadBrandsFromStorage(): string[] {
   }
 }
 
-export function useProductForm(callbacks: {
-  onSaveSuccess: () => void
-}) {
+export function useProductForm(callbacks: { onSaveSuccess: () => void }) {
   const supabase = createClient()
   const { onSaveSuccess } = callbacks
 
@@ -95,9 +99,7 @@ export function useProductForm(callbacks: {
 
     setImageUploading(true)
     try {
-      const results = await Promise.allSettled(
-        toUpload.map(file => uploadImage(file, 'products'))
-      )
+      const results = await Promise.allSettled(toUpload.map(file => uploadImage(file, 'products')))
 
       const urls: string[] = []
       let failed = 0
@@ -112,7 +114,7 @@ export function useProductForm(callbacks: {
       if (failed > 0) {
         toast.error(
           `${failed} imagen(es) no se pudieron subir. ` +
-          'Verifica que Supabase Storage esté activo y configurado.'
+            'Verifica que Supabase Storage esté activo y configurado.'
         )
       }
 
@@ -145,10 +147,16 @@ export function useProductForm(callbacks: {
   const handleAddCategory = async () => {
     if (!newCategory.trim()) return
     try {
-      const { error } = await supabase.from('categories').insert([{
-        name: newCategory.trim(),
-        slug: newCategory.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
-      }])
+      const { error } = await supabase.from('categories').insert([
+        {
+          name: newCategory.trim(),
+          slug: newCategory
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w-]/g, ''),
+        },
+      ])
 
       if (error) {
         toast.error('Error al crear la categoría: ' + error.message)
@@ -256,7 +264,9 @@ export function useProductForm(callbacks: {
         : await supabase.from('products').insert([productData])
 
       if (error) {
-        toast.error(`Error al ${editingProduct ? 'actualizar' : 'crear'} el producto: ${error.message}`)
+        toast.error(
+          `Error al ${editingProduct ? 'actualizar' : 'crear'} el producto: ${error.message}`
+        )
         return
       }
 

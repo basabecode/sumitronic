@@ -1,0 +1,19 @@
+# Generados automáticamente
+.next/
+node_modules/
+out/
+build/
+tsconfig.tsbuildinfo
+
+# Supabase
+supabase/migrations/
+supabase/*.storage/
+
+# Datos y assets
+public/
+lib/products.json
+lib/blogPosts.json
+
+# Docs y reportes
+.docs/
+tests/reports/

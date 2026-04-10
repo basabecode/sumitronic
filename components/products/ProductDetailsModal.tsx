@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import {
   X,
@@ -20,12 +21,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/contexts/CartContext'
@@ -136,10 +132,7 @@ export default function ProductDetailsModal({
       ],
     }
 
-    return [
-      ...baseFeatures,
-      ...(categoryFeatures[category as keyof typeof categoryFeatures] || []),
-    ]
+    return [...baseFeatures, ...(categoryFeatures[category as keyof typeof categoryFeatures] || [])]
   }
 
   const features = getProductFeatures(product.category, product.brand)
@@ -169,9 +162,7 @@ export default function ProductDetailsModal({
       ? product.originalPrice - product.price
       : 0
   const discountPercentage =
-    product.originalPrice && savings > 0
-      ? Math.round((savings / product.originalPrice) * 100)
-      : 0
+    product.originalPrice && savings > 0 ? Math.round((savings / product.originalPrice) * 100) : 0
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -184,10 +175,11 @@ export default function ProductDetailsModal({
           {/* Galería de imágenes */}
           <div className="space-y-4">
             <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden aspect-square">
-              <img
+              <Image
                 src={productImages[selectedImageIndex] || '/placeholder.svg'}
                 alt={product.name}
-                className="w-full h-full object-contain"
+                fill
+                className="object-contain"
               />
               {product.badge && (
                 <Badge className="absolute top-4 left-4 bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand))]">
@@ -239,10 +231,11 @@ export default function ProductDetailsModal({
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <img
+                    <Image
                       src={image || '/placeholder.svg'}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-contain bg-white"
+                      fill
+                      className="object-contain bg-white"
                     />
                   </button>
                 ))}
@@ -255,32 +248,27 @@ export default function ProductDetailsModal({
             {/* Header */}
             <div>
               <p className="text-sm text-gray-500 mb-2">{product.brand}</p>
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                {product.name}
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">{product.name}</h1>
               {/* ...eliminado rating y reviews... */}
               {/* Precio */}
               <div className="flex items-center space-x-3 mb-4">
                 <span className="text-3xl font-bold text-[hsl(var(--brand-strong))]">
                   {formatPrice(product.price)}
                 </span>
-                {product.originalPrice &&
-                  product.originalPrice > product.price && (
-                    <>
-                      <span className="text-xl text-gray-500 line-through">
-                        {formatPrice(product.originalPrice)}
-                      </span>
-                      <Badge variant="destructive" className="bg-red-600">
-                        -{discountPercentage}%
-                      </Badge>
-                    </>
-                  )}
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <>
+                    <span className="text-xl text-gray-500 line-through">
+                      {formatPrice(product.originalPrice)}
+                    </span>
+                    <Badge variant="destructive" className="bg-red-600">
+                      -{discountPercentage}%
+                    </Badge>
+                  </>
+                )}
               </div>
 
               {savings > 0 && (
-                <p className="text-green-600 font-medium mb-4">
-                  Ahorras {formatPrice(savings)}
-                </p>
+                <p className="text-green-600 font-medium mb-4">Ahorras {formatPrice(savings)}</p>
               )}
             </div>
 
@@ -317,15 +305,11 @@ export default function ProductDetailsModal({
                   >
                     <Minus className="w-3 h-3" />
                   </Button>
-                  <span className="w-12 text-center font-medium">
-                    {quantity}
-                  </span>
+                  <span className="w-12 text-center font-medium">{quantity}</span>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      setQuantity(Math.min(product.stockCount, quantity + 1))
-                    }
+                    onClick={() => setQuantity(Math.min(product.stockCount, quantity + 1))}
                     className="h-8 w-8 p-0"
                     disabled={quantity >= product.stockCount}
                   >
@@ -356,27 +340,19 @@ export default function ProductDetailsModal({
             <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-2">
                 <Truck className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium">
-                  Envío a todo el país
-                </span>
+                <span className="text-sm font-medium">Envío a todo el país</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
-                <span className="text-sm font-medium">
-                  Garantía oficial de 12 meses
-                </span>
+                <span className="text-sm font-medium">Garantía oficial de 12 meses</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Package className="w-4 h-4 text-purple-600" />
-                <span className="text-sm font-medium">
-                  Producto 100% original
-                </span>
+                <span className="text-sm font-medium">Producto 100% original</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CreditCard className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
-                <span className="text-sm font-medium">
-                  Múltiples métodos de pago
-                </span>
+                <span className="text-sm font-medium">Múltiples métodos de pago</span>
               </div>
             </div>
           </div>
@@ -396,10 +372,7 @@ export default function ProductDetailsModal({
             <h3 className="text-lg font-semibold">Especificaciones Técnicas</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between py-2 border-b border-gray-100"
-                >
+                <div key={index} className="flex justify-between py-2 border-b border-gray-100">
                   <span className="text-gray-600">{feature.name}:</span>
                   <span className="font-medium">{feature.value}</span>
                 </div>
@@ -411,27 +384,28 @@ export default function ProductDetailsModal({
             <h3 className="text-lg font-semibold">Descripción del Producto</h3>
             <div className="prose prose-sm">
               <p>
-                El <strong>{product.name}</strong> de <strong>{product.brand}</strong>{' '}
-                es una buena opcion si buscas{' '}
+                El <strong>{product.name}</strong> de <strong>{product.brand}</strong> es una buena
+                opcion si buscas{' '}
                 {product.category === 'camaras'
                   ? 'vigilancia practica para hogar, local u oficina'
                   : product.category === 'gaming'
-                  ? 'mejor rendimiento y comodidad para jugar o trabajar'
-                  : 'un equipo confiable para uso diario o trabajo'}.
+                    ? 'mejor rendimiento y comodidad para jugar o trabajar'
+                    : 'un equipo confiable para uso diario o trabajo'}
+                .
               </p>
               <p>
-                Esta referencia destaca por ofrecer un equilibrio entre precio,
-                respaldo y funcionalidad, algo clave cuando se compra en Colombia y se quiere evitar devoluciones o compras mal elegidas.
+                Esta referencia destaca por ofrecer un equilibrio entre precio, respaldo y
+                funcionalidad, algo clave cuando se compra en Colombia y se quiere evitar
+                devoluciones o compras mal elegidas.
               </p>
               <p>
-                Si necesitas confirmar disponibilidad, compatibilidad o detalles
-                de uso, te damos una guia comercial clara antes del pedido.{' '}
-                Perfecto para uso{' '}
+                Si necesitas confirmar disponibilidad, compatibilidad o detalles de uso, te damos
+                una guia comercial clara antes del pedido. Perfecto para uso{' '}
                 {product.category === 'camaras'
                   ? 'en seguridad doméstica y comercial'
                   : product.category === 'gaming'
-                  ? 'en gaming profesional y entretenimiento'
-                  : 'profesional y personal'}
+                    ? 'en gaming profesional y entretenimiento'
+                    : 'profesional y personal'}
                 .
               </p>
             </div>

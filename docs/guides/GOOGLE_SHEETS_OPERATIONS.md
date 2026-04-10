@@ -50,23 +50,23 @@ sku | name | description | price | compare_price | cost_price | brand | category
 
 ## Mapeo real
 
-| Columna | Encabezado | Campo destino |
-|---------|------------|---------------|
-| A | `sku` | `sku` |
-| B | `name` | `name` |
-| C | `description` | `description` |
-| D | `price` | `price` |
-| E | `compare_price` | `compare_price` |
-| F | `cost_price` | `cost_price` |
-| G | `brand` | `brand` |
-| H | `category_slug` | `category_id` por lookup |
-| I | `stock_quantity` | `stock_quantity` |
-| J | `weight` | `weight` |
-| K | `featured` | `featured` |
-| L | `active` | `active` |
-| M | `tags` | `tags` |
-| N | `image_url` | `image_url` |
-| O | `images` | `images` |
+| Columna | Encabezado       | Campo destino            |
+| ------- | ---------------- | ------------------------ |
+| A       | `sku`            | `sku`                    |
+| B       | `name`           | `name`                   |
+| C       | `description`    | `description`            |
+| D       | `price`          | `price`                  |
+| E       | `compare_price`  | `compare_price`          |
+| F       | `cost_price`     | `cost_price`             |
+| G       | `brand`          | `brand`                  |
+| H       | `category_slug`  | `category_id` por lookup |
+| I       | `stock_quantity` | `stock_quantity`         |
+| J       | `weight`         | `weight`                 |
+| K       | `featured`       | `featured`               |
+| L       | `active`         | `active`                 |
+| M       | `tags`           | `tags`                   |
+| N       | `image_url`      | `image_url`              |
+| O       | `images`         | `images`                 |
 
 ## Reglas operativas
 
@@ -78,9 +78,9 @@ sku | name | description | price | compare_price | cost_price | brand | category
 
 ## Ejemplo de fila valida
 
-| sku | name | description | price | compare_price | cost_price | brand | category_slug | stock_quantity | weight | featured | active | tags | image_url | images |
-|-----|------|-------------|-------|---------------|------------|-------|---------------|----------------|--------|----------|--------|------|-----------|--------|
-| HVN-DS2CD2143G2-I | Camara IP Hikvision DS-2CD2143G2-I 4MP | Camara domo IP de 4MP para exterior | 285000 | 320000 | 195000 | Hikvision | camaras-ip | 15 | 0.85 | TRUE | TRUE | camara,exterior,4mp | https://storage.ejemplo.com/hikvision-ds2cd2143.jpg | https://storage.ejemplo.com/hikvision-ds2cd2143-back.jpg |
+| sku               | name                                   | description                         | price  | compare_price | cost_price | brand     | category_slug | stock_quantity | weight | featured | active | tags                | image_url                                           | images                                                   |
+| ----------------- | -------------------------------------- | ----------------------------------- | ------ | ------------- | ---------- | --------- | ------------- | -------------- | ------ | -------- | ------ | ------------------- | --------------------------------------------------- | -------------------------------------------------------- |
+| HVN-DS2CD2143G2-I | Camara IP Hikvision DS-2CD2143G2-I 4MP | Camara domo IP de 4MP para exterior | 285000 | 320000        | 195000     | Hikvision | camaras-ip    | 15             | 0.85   | TRUE     | TRUE   | camara,exterior,4mp | https://storage.ejemplo.com/hikvision-ds2cd2143.jpg | https://storage.ejemplo.com/hikvision-ds2cd2143-back.jpg |
 
 ## Configuracion de Google
 
@@ -125,4 +125,3 @@ Respuesta esperada:
   `GOOGLE_SHEET_ID` o `GOOGLE_SHEET_NAME` no coinciden.
 - `Unauthorized`
   `SYNC_SECRET` incorrecto o ausente.
-

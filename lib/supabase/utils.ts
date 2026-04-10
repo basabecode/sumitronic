@@ -7,9 +7,7 @@ export const uploadImage = async (file: File, bucket: string = 'products') => {
   const fileName = `${Math.random()}.${fileExt}`
   const filePath = `${fileName}`
 
-  let { error: uploadError } = await supabase.storage
-    .from(bucket)
-    .upload(filePath, file)
+  let { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file)
 
   if (uploadError) {
     throw uploadError

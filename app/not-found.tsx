@@ -14,12 +14,9 @@ export default function NotFound() {
           <SearchX className="h-16 w-16 text-[hsla(var(--brand),0.45)]" />
         </div>
         <p className="text-8xl font-bold text-gray-200 leading-none">404</p>
-        <h1 className="text-2xl font-semibold text-gray-800 mt-4">
-          Página no encontrada
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mt-4">Página no encontrada</h1>
         <p className="text-gray-500 mt-3 leading-relaxed">
-          La página que buscas no existe, fue movida o la dirección fue escrita
-          incorrectamente.
+          La página que buscas no existe, fue movida o la dirección fue escrita incorrectamente.
         </p>
       </div>
 

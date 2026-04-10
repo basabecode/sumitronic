@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Calendar, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,8 @@ export default function BlogSection() {
               Guías y comparativas para comprar mejor
             </h2>
             <p className="mt-4 max-w-3xl text-lg text-[hsl(var(--text-muted))]">
-              Compartimos contenido util para comparar referencias, entender diferencias y tomar mejores decisiones de compra en Colombia.
+              Compartimos contenido util para comparar referencias, entender diferencias y tomar
+              mejores decisiones de compra en Colombia.
             </p>
           </div>
           <Button asChild variant="outline" className="rounded-full px-6">
@@ -24,19 +26,14 @@ export default function BlogSection() {
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {blogPosts.map(post => (
-            <article
-              key={post.slug}
-              className="section-shell flex h-full flex-col overflow-hidden"
-            >
-              <Link
-                href={`/blog/${post.slug}`}
-                className="block shrink-0"
-              >
+            <article key={post.slug} className="section-shell flex h-full flex-col overflow-hidden">
+              <Link href={`/blog/${post.slug}`} className="block shrink-0">
                 <div className="relative aspect-[16/10] overflow-hidden bg-[hsl(var(--surface-muted))]">
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
-                    className="block h-full w-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                    fill
+                    className="object-cover object-center transition-transform duration-300 hover:scale-105"
                   />
                   <div className="absolute left-4 top-4">
                     <span className="rounded-full bg-[hsl(var(--brand))] px-3 py-1 text-xs font-semibold text-white">

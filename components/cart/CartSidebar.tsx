@@ -1,24 +1,11 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  X,
-  Plus,
-  Minus,
-  Trash2,
-  CreditCard,
-  Truck,
-  Shield,
-  ShoppingBag,
-} from 'lucide-react'
+import { X, Plus, Minus, Trash2, CreditCard, Truck, Shield, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/contexts/CartContext'
@@ -71,8 +58,7 @@ export default function CartSidebar() {
               </div>
             </SheetTitle>
             <Badge variant="secondary" className="ml-auto">
-              {state.itemCount}{' '}
-              {state.itemCount === 1 ? 'artículo' : 'artículos'}
+              {state.itemCount} {state.itemCount === 1 ? 'artículo' : 'artículos'}
             </Badge>
           </div>
         </SheetHeader>
@@ -84,9 +70,7 @@ export default function CartSidebar() {
                 <ShoppingBag className="w-12 h-12 text-gray-400" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Tu carrito está vacío
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Tu carrito está vacío</h3>
                 <p className="text-gray-500 max-w-sm">
                   Explora nuestros productos y agrega artículos a tu carrito
                 </p>
@@ -103,15 +87,14 @@ export default function CartSidebar() {
               {/* Items del carrito */}
               <div className="space-y-4">
                 {state.items.map(item => (
-                  <div
-                    key={item.id}
-                    className="flex space-x-4 p-4 bg-gray-50 rounded-lg"
-                  >
+                  <div key={item.id} className="flex space-x-4 p-4 bg-gray-50 rounded-lg">
                     <div className="flex-shrink-0">
-                      <img
+                      <Image
                         src={item.image_url || item.image || '/placeholder.svg'}
                         alt={item.name}
-                        className="w-16 h-16 object-contain bg-white rounded-md border"
+                        width={64}
+                        height={64}
+                        className="object-contain bg-white rounded-md border"
                       />
                     </div>
 
@@ -138,9 +121,7 @@ export default function CartSidebar() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
-                            }
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             className="h-8 w-8 p-0"
                             disabled={item.quantity <= 1}
                           >
@@ -154,14 +135,9 @@ export default function CartSidebar() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="h-8 w-8 p-0"
-                            disabled={
-                              item.quantity >=
-                              (item.stock || item.stockCount || 999)
-                            }
+                            disabled={item.quantity >= (item.stock || item.stockCount || 999)}
                           >
                             <Plus className="w-3 h-3" />
                           </Button>
@@ -171,22 +147,16 @@ export default function CartSidebar() {
                           <div className="text-sm font-bold text-gray-900">
                             {formatPrice(item.price * item.quantity)}
                           </div>
-                          {item.originalPrice !== undefined &&
-                            item.originalPrice > item.price && (
-                              <div className="text-xs text-gray-500 line-through">
-                                {formatPrice(
-                                  item.originalPrice * item.quantity
-                                )}
-                              </div>
-                            )}
+                          {item.originalPrice !== undefined && item.originalPrice > item.price && (
+                            <div className="text-xs text-gray-500 line-through">
+                              {formatPrice(item.originalPrice * item.quantity)}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      {item.quantity >=
-                        (item.stock || item.stockCount || 999) && (
-                        <p className="text-xs text-amber-600 mt-1">
-                          Stock máximo alcanzado
-                        </p>
+                      {item.quantity >= (item.stock || item.stockCount || 999) && (
+                        <p className="text-xs text-amber-600 mt-1">Stock máximo alcanzado</p>
                       )}
                     </div>
                   </div>
@@ -212,9 +182,7 @@ export default function CartSidebar() {
               <div className="space-y-3 p-4 bg-green-50 rounded-lg">
                 <div className="flex items-center space-x-2">
                   <Shield className="w-4 h-4 text-green-600" />
-                  <span className="text-sm font-medium text-green-800">
-                    Garantía de 12 meses
-                  </span>
+                  <span className="text-sm font-medium text-green-800">Garantía de 12 meses</span>
                 </div>
                 <p className="text-xs text-green-700">
                   Todos los productos incluyen garantía oficial del fabricante
@@ -231,8 +199,7 @@ export default function CartSidebar() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal</span>
-                <span>{formatPrice(state.subtotal)}
-</span>
+                <span>{formatPrice(state.subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Envío</span>
@@ -241,17 +208,13 @@ export default function CartSidebar() {
                     state.shipping === 0 ? 'text-green-600' : 'text-gray-900'
                   }`}
                 >
-                  {state.shipping === 0
-                    ? 'Calculado en checkout'
-                    : formatPrice(state.shipping)}
+                  {state.shipping === 0 ? 'Calculado en checkout' : formatPrice(state.shipping)}
                 </span>
               </div>
               <Separator />
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span className="text-[hsl(var(--brand-strong))]">
-                  {formatPrice(state.total)}
-                </span>
+                <span className="text-[hsl(var(--brand-strong))]">{formatPrice(state.total)}</span>
               </div>
               <p className="text-xs text-gray-500 text-right">Incluye IVA</p>
             </div>
@@ -298,19 +261,11 @@ export default function CartSidebar() {
 
             {/* Métodos de pago */}
             <div className="text-center pt-2">
-              <p className="text-xs text-gray-500 mb-2">
-                Métodos de pago aceptados
-              </p>
+              <p className="text-xs text-gray-500 mb-2">Métodos de pago aceptados</p>
               <div className="flex justify-center space-x-2">
-                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">
-                  💳 Tarjetas
-                </div>
-                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">
-                  🏦 PSE
-                </div>
-                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">
-                  💰 Efectivo
-                </div>
+                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">💳 Tarjetas</div>
+                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">🏦 PSE</div>
+                <div className="px-2 py-1 bg-gray-100 rounded text-xs font-medium">💰 Efectivo</div>
               </div>
             </div>
           </div>
