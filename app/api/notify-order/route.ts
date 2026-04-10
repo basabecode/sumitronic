@@ -5,16 +5,29 @@ import { brand } from '@/lib/brand'
  * POST /api/notify-order
  * Envía notificación al administrador cuando se crea una orden.
  *
- * Usa Resend API via fetch (sin dependencia extra).
- * Si no hay RESEND_API_KEY configurada, registra en consola y retorna ok.
+ * Endpoint de uso INTERNO: solo puede ser llamado desde el servidor
+ * (api/orders/route.ts) mediante el header x-internal-secret.
  *
  * Variables de entorno requeridas:
- *   RESEND_API_KEY          → Clave de Resend (resend.com - plan gratuito disponible)
+ *   NOTIFY_ORDER_SECRET      → Secreto compartido entre orders y este endpoint
+ *   RESEND_API_KEY           → Clave de Resend (resend.com - plan gratuito disponible)
  *   ADMIN_NOTIFICATION_EMAIL → Email del admin (por defecto usa brand.supportEmail)
  *   RESEND_FROM_EMAIL        → Email remitente verificado en Resend
  */
 export async function POST(request: NextRequest) {
   try {
+    // Validar que la llamada proviene del servidor interno
+    const notifySecret = process.env.NOTIFY_ORDER_SECRET
+    if (!notifySecret) {
+      console.error('[notify-order] NOTIFY_ORDER_SECRET no configurado — endpoint deshabilitado')
+      return NextResponse.json({ error: 'Endpoint no disponible' }, { status: 503 })
+    }
+
+    const providedSecret = request.headers.get('x-internal-secret')
+    if (!providedSecret || providedSecret !== notifySecret) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
     const body = await request.json()
     const { order } = body
 

@@ -26,10 +26,10 @@ function isAuthorized(providedSecret: string | null, expectedSecrets: string[]) 
 }
 
 function getRequestSecret(request: NextRequest) {
+  // El secreto solo se acepta via headers — nunca via query param
+  // (los query params quedan expuestos en logs de Vercel e historial del navegador)
   return (
-    request.headers.get('x-sync-secret') ??
-    extractBearerToken(request.headers.get('authorization')) ??
-    request.nextUrl.searchParams.get('secret')
+    request.headers.get('x-sync-secret') ?? extractBearerToken(request.headers.get('authorization'))
   )
 }
 

@@ -1,5 +1,7 @@
--- CURRENT DATABASE SCHEMA (Auto-generated from Supabase)
--- Timestamp: 2025-12-07
+-- SCHEMA DE REFERENCIA — SUMITRONIC
+-- Última sincronización: 2026-04-10
+-- IMPORTANTE: Este archivo refleja el estado real de la DB incluyendo todas las migraciones.
+-- Para cambios en producción, crear una nueva migración en supabase/migrations/
 
 -- TABLES
 
@@ -37,7 +39,7 @@ CREATE TABLE IF NOT EXISTS public.products (
     name TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     price numeric NOT NULL,
-    compare_at_price numeric,
+    compare_price numeric,           -- Precio de oferta (antes: compare_at_price, eliminado en migración 20260401)
     cost_price numeric,
     category_id UUID REFERENCES public.categories(id),
     brand TEXT NOT NULL,
@@ -119,7 +121,8 @@ CREATE TABLE IF NOT EXISTS public.cart_items (
     cart_id UUID REFERENCES public.carts(id) ON DELETE CASCADE,
     product_id UUID REFERENCES public.products(id) ON DELETE CASCADE,
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    variant_id UUID, -- References product_variants if exists
+    price numeric NOT NULL DEFAULT 0,  -- Precio del producto al momento de agregarlo al carrito
+    variant_id UUID,                   -- References product_variants if exists
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(cart_id, product_id)
