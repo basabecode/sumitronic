@@ -99,7 +99,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   if (viewMode === 'compact') {
     return (
-      <Card className="group overflow-hidden rounded-2xl border border-[hsl(var(--border-subtle))] bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+      <Card className="group overflow-hidden rounded-2xl border border-[hsl(var(--border-subtle))] bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-md">
         <Link href={`/products/${product.id}`} className="block">
           <div className="relative aspect-square overflow-hidden bg-slate-50">
             <Image
@@ -160,7 +160,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   if (viewMode === 'list') {
     return (
-      <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/30 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(14,165,233,0.32)]">
+      <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/30 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(14,165,233,0.32)]">
         <div className="flex flex-col sm:flex-row">
           <div className="relative aspect-square w-full overflow-hidden bg-slate-50 sm:w-48 sm:flex-shrink-0 sm:border-r border-slate-100">
             <Image
@@ -237,7 +237,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   }
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+    <Card className="group overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative aspect-square overflow-hidden bg-slate-50">
         <Image
           src={imageUrl}
@@ -310,7 +310,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             size="sm"
             disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="h-12 rounded-full bg-[hsl(var(--brand))] px-5 text-sm font-semibold text-white shadow-[0_16px_26px_-16px_rgba(14,165,233,0.85)] transition-all hover:bg-[hsl(var(--brand-strong))] hover:shadow-[0_20px_30px_-16px_rgba(3,105,161,0.7)]"
+            className="h-12 rounded-full bg-[hsl(var(--brand))] px-5 text-sm font-semibold text-white shadow-[0_16px_26px_-16px_rgba(14,165,233,0.85)] transition-[background-color,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:bg-[hsl(var(--brand-strong))] hover:shadow-[0_20px_30px_-16px_rgba(3,105,161,0.7)]"
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             {isOutOfStock ? 'Agotado' : 'Agregar'}

@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    /* ── Curvas de easing de alta calidad (Emil Kowalski) ── */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
     --background: 211.8 63% 94.7%;
     --foreground: 198.9 100% 18%;
     --card: 0 0% 100%;
@@ -93,11 +98,23 @@
   font-family: var(--font-display), 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Feedback táctil en botones presionables ──
+   Scale sutil hacia abajo confirma que la UI escuchó al usuario.
+   Emil: "Buttons must feel responsive to press." */
+button:not([disabled]),
+[role='button']:not([aria-disabled='true']) {
+  transition: transform 160ms var(--ease-out);
+}
+button:not([disabled]):active,
+[role='button']:not([aria-disabled='true']):active {
+  transform: scale(0.97);
+}
+
 /* Custom animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -106,7 +123,7 @@
 }
 
 .animate-fadeInUp {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 0.45s var(--ease-out) both;
 }
 
 /* Smooth scrolling + prevent horizontal overflow */
@@ -393,17 +410,12 @@ select {
   display: none;
 }
 
-/* Ripple Effect (Material Design) */
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
+/* Ripple Effect — GPU-acelerado con transform scale, no width/height.
+   Emil: "Only animate transform and opacity — skip layout and paint." */
 .ripple {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .ripple::after {
@@ -411,19 +423,21 @@ select {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 0;
-  height: 0;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.32);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 1;
+  pointer-events: none;
   transition:
-    width 0.6s,
-    height 0.6s;
+    transform 450ms var(--ease-out),
+    opacity 350ms ease-out;
 }
 
 .ripple:active::after {
-  width: 200px;
-  height: 200px;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
 }
 
 /* Bottom Navigation Safe Area */
@@ -458,7 +472,7 @@ select {
   position: sticky;
   top: 0;
   z-index: 50;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 220ms var(--ease-out);
 }
 
 .sticky-header.scrolled {
@@ -477,4 +491,61 @@ select {
 
 .loading-spinner {
   animation: rotate 1s linear infinite;
+}
+
+/* ── prefers-reduced-motion ──────────────────────────────────────────
+   Reduced motion = menos movimiento, NO cero.
+   Mantener transiciones de opacidad/color que ayudan a la comprensión.
+   Eliminar movimiento posicional y escalas.
+   Emil: "Reduced motion means fewer and gentler animations, not zero."
+   ──────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Excepción: spinner de carga — muéstralo estático */
+  .loading-spinner {
+    animation: none !important;
+  }
+
+  /* Excepción: skeleton shimmer — desactivar movimiento horizontal */
+  .skeleton,
+  .skeleton-shimmer {
+    animation: none !important;
+    background: #e5edf5;
+  }
+}
+
+/* ── Hover gating — sólo dispositivos con hover real ─────────────────
+   Touch dispara :hover en tap y crea falsas activaciones.
+   Usar esta clase para contener efectos de escala/desplazamiento.
+   ──────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  .hover-lift {
+    transition:
+      transform 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .hover-scale {
+    transition: transform 220ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-scale:hover {
+      transform: scale(1.04);
+    }
+  }
 }

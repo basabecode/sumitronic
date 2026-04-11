@@ -78,7 +78,7 @@ export default function BrandsSection() {
             <Link
               key={brand.slug}
               href={`/marcas/${brand.slug}`}
-              className="group flex w-full flex-col items-center justify-center transition-transform hover:-translate-y-1 hover:scale-105"
+              className="group flex w-full flex-col items-center justify-center transition-transform duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:scale-[1.04]"
               title={brand.name}
               aria-label={`Ver productos de ${brand.name}`}
             >
@@ -88,7 +88,7 @@ export default function BrandsSection() {
                   src={brand.logo}
                   alt={`Logo ${brand.name}`}
                   fill
-                  className={`object-contain px-2 py-1 opacity-70 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0 group-hover:drop-shadow-[0_6px_14px_rgba(0,119,168,0.22)] ${brand.carouselLogoClass}`}
+                  className={`object-contain px-2 py-1 opacity-70 grayscale transition-[opacity,filter] duration-[250ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-100 group-hover:grayscale-0 group-hover:drop-shadow-[0_6px_14px_rgba(0,119,168,0.22)] ${brand.carouselLogoClass}`}
                   sizes="160px"
                 />
               </div>

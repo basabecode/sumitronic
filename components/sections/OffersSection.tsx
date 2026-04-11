@@ -157,9 +157,9 @@ export default function OffersSection() {
                 >
                   <div
                     className={cn(
-                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
+                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-[transform,background-color,box-shadow,ring-color] duration-[160ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] select-none',
                       carouselSpeed === 'fast-reverse'
-                        ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
+                        ? 'scale-[0.93] bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
                         : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
                     )}
                   >
@@ -181,9 +181,9 @@ export default function OffersSection() {
                 >
                   <div
                     className={cn(
-                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-all duration-200 select-none',
+                      'cursor-pointer rounded-full bg-white p-3 shadow-lg ring-2 transition-[transform,background-color,box-shadow,ring-color] duration-[160ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] select-none',
                       carouselSpeed === 'fast-forward'
-                        ? 'scale-95 bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
+                        ? 'scale-[0.93] bg-[hsl(var(--surface-highlight))] ring-[hsl(var(--brand))]'
                         : 'ring-gray-200 hover:bg-[hsl(var(--surface-highlight))] hover:ring-[hsl(var(--brand))]'
                     )}
                   >
@@ -220,7 +220,7 @@ export default function OffersSection() {
                     return (
                       <div
                         key={`${product.id}-${index}`}
-                        className="carousel-item group flex w-[220px] flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.25)] sm:w-[240px]"
+                        className="carousel-item group flex w-[220px] flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.25)] sm:w-[240px]"
                       >
                         {/* Imagen */}
                         <div className="relative aspect-square overflow-hidden">
@@ -334,7 +334,7 @@ export default function OffersSection() {
             <div className="mt-8 text-center">
               <Link
                 href="/ofertas"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-[hsl(var(--brand))] px-6 py-3 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-all hover:bg-[hsl(var(--brand))] hover:text-white"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[hsl(var(--brand))] px-6 py-3 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-[background-color,color] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:bg-[hsl(var(--brand))] hover:text-white"
               >
                 Ver todas las ofertas
                 <ChevronRight className="h-4 w-4" />
@@ -422,6 +422,21 @@ export default function OffersSection() {
           }
           .speed-fast-reverse {
             animation-duration: 3s;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .speed-normal,
+          .speed-fast-forward,
+          .speed-fast-reverse {
+            animation: none;
+          }
+          .carousel-track {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+          }
+          .carousel-item {
+            scroll-snap-align: start;
           }
         }
       `}</style>

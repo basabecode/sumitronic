@@ -126,13 +126,15 @@ export default function HeroSection() {
             return (
               <article
                 key={slide.id}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out ${positionClass}`}
+                className={`absolute inset-0 transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${positionClass}`}
                 aria-hidden={!isActive}
                 aria-roledescription="slide"
                 aria-label={`${index + 1} de ${slides.length}`}
               >
                 <div className="grid h-full grid-cols-12 gap-y-6 md:gap-y-10 gap-x-8 pt-6 pb-20 md:py-16">
-                  <div className="order-2 col-span-12 flex flex-col justify-start md:justify-center space-y-4 md:space-y-6 md:order-1 md:col-span-6">
+                  <div
+                    className={`order-2 col-span-12 flex flex-col justify-start md:justify-center space-y-4 md:space-y-6 md:order-1 md:col-span-6 ${isActive ? 'animate-fadeInUp' : ''}`}
+                  >
                     <span className="inline-flex w-fit items-center rounded-full bg-[hsl(var(--surface-highlight))] px-4 py-1 text-[0.8125rem] font-semibold uppercase tracking-[0.04em] text-[hsl(var(--brand-strong))]">
                       {slide.badge}
                     </span>
@@ -272,7 +274,7 @@ export default function HeroSection() {
             onClick={prevSlide}
             onFocus={() => setIsPaused(true)}
             onBlur={() => setIsPaused(false)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-transform hover:scale-105 hover:border-[hsl(var(--brand))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-[border-color,box-shadow] hover:border-[hsl(var(--brand))] active:scale-[0.93] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
             aria-label="Slide anterior"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -303,7 +305,7 @@ export default function HeroSection() {
             onClick={nextSlide}
             onFocus={() => setIsPaused(true)}
             onBlur={() => setIsPaused(false)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-transform hover:scale-105 hover:border-[hsl(var(--brand))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--foreground))] transition-[border-color,box-shadow] hover:border-[hsl(var(--brand))] active:scale-[0.93] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
             aria-label="Slide siguiente"
           >
             <ChevronRight className="h-5 w-5" aria-hidden="true" />

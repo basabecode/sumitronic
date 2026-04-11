@@ -48,19 +48,20 @@ export default function FeaturesSection() {
             return (
               <div
                 key={index}
-                className="group bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                className="group bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 border border-gray-100"
+                style={{ animationDelay: `${index * 60}ms` }}
               >
                 <div
-                  className={`inline-flex items-center justify-center w-12 h-12 ${feature.bgColor} rounded-md mb-3 group-hover:scale-105 transition-transform duration-300`}
+                  className={`inline-flex items-center justify-center w-12 h-12 ${feature.bgColor} rounded-xl mb-4 transition-transform duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.08]`}
                 >
                   <IconComponent className={`w-6 h-6 ${feature.color}`} />
                 </div>
 
-                <h3 className="text-base font-semibold text-[hsl(var(--foreground))] mb-1 group-hover:text-[hsl(var(--brand-strong))] transition-colors">
+                <h3 className="text-base font-semibold text-[hsl(var(--foreground))] mb-1.5 group-hover:text-[hsl(var(--brand-strong))] transition-colors duration-[160ms]">
                   {feature.title}
                 </h3>
 
-                <p className="text-xs text-[hsl(var(--text-muted))] leading-relaxed">
+                <p className="text-sm text-[hsl(var(--text-muted))] leading-relaxed">
                   {feature.description}
                 </p>
               </div>
