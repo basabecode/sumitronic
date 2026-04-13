@@ -8,6 +8,11 @@ const supabaseCloudUrl = 'https://dewijsjzmfohkqasqcrq.supabase.co'
 const connectSrcDev = `'self' ${supabaseLocalUrl} ${supabaseCloudUrl}`
 const connectSrcProd = `'self' ${supabaseCloudUrl}`
 
+// Dominio propio (para CORS y frame-ancestors)
+const siteUrl = isProduction
+  ? process.env.NEXT_PUBLIC_SITE_URL || 'https://sumitronic.vercel.app'
+  : 'http://localhost:3003'
+
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -20,12 +25,21 @@ const securityHeaders = [
     //   podría removerse pero requiere pruebas. TODO: migrar a nonces con next@14.1+.
     // 'unsafe-inline' en style-src: requerido por Radix UI / shadcn que inyectan estilos dinámicos.
     // connect-src: permite llamadas fetch/XHR a Supabase (local en dev, cloud en prod).
-    value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src ${isProduction ? connectSrcProd : connectSrcDev};`,
+    // frame-ancestors: refuerza X-Frame-Options en navegadores modernos.
+    value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src ${isProduction ? connectSrcProd : connectSrcDev}; frame-ancestors 'none';`,
   },
   // HSTS solo en produccion para no interferir con desarrollo local HTTP
   ...(isProduction
     ? [{ key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' }]
     : []),
+]
+
+// Headers CORS para las API routes — solo acepta peticiones del propio dominio
+const corsHeaders = [
+  { key: 'Access-Control-Allow-Origin', value: siteUrl },
+  { key: 'Access-Control-Allow-Methods', value: 'GET, POST, PUT, PATCH, DELETE, OPTIONS' },
+  { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization, x-internal-secret' },
+  { key: 'Access-Control-Allow-Credentials', value: 'true' },
 ]
 
 const nextConfig = {
@@ -110,6 +124,11 @@ const nextConfig = {
       {
         source: '/(.*)',
         headers: securityHeaders,
+      },
+      {
+        // CORS: las API routes solo aceptan peticiones del propio dominio
+        source: '/api/:path*',
+        headers: corsHeaders,
       },
     ]
   },
