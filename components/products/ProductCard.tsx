@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/contexts/CartContext'
+import { getProductImageUrl, getPlaceholderImageUrl } from '@/lib/images'
 
 interface Product {
   id: string
@@ -67,7 +68,6 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   const categoryName = getCategoryName()
 
-  // Robust image extraction - check multiple sources
   const primaryImage = product.product_images?.find(img => img.is_primary)
   const firstImage = product.product_images?.[0]
   const imageUrl =
@@ -76,7 +76,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     primaryImage?.image_url ||
     firstImage?.image_url ||
     product.image_url ||
-    '/placeholder.svg'
+    (product.sku ? getProductImageUrl(product.sku) : getPlaceholderImageUrl())
   const imageAlt = primaryImage?.alt_text || firstImage?.alt_text || product.name
 
   const stockQuantity = product.stock_quantity || product.stock || 0

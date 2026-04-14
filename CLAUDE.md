@@ -5,6 +5,48 @@ Guía de referencia para Claude Code y el equipo de agentes autónomos.
 
 ---
 
+## Escritura humana — skill /humanizalo
+
+Todo texto que generes para SUMITRONIC debe sonar como lo escribió una persona real, no una IA. Eso aplica a descripciones de producto, copy del sitio, emails, posts para redes, respuestas al cliente, entradas de blog, y cualquier documentación dirigida al usuario final.
+
+**Cuándo usar `/humanizalo`:** después de redactar cualquier texto de cara al público. También úsalo si notas que un borrador tuyo suena corporativo, genérico o lleno de frases de plantilla.
+
+**Cuándo NO hace falta:** comentarios de código, mensajes de commit, documentación técnica interna (como este archivo). Eso puede quedar técnico.
+
+### Patrones que debes evitar aunque no uses el skill
+
+Estos son los errores más frecuentes en textos de ecommerce generados por IA — evítalos desde el primer borrador:
+
+- Palabras de relleno IA: `crucial`, `innovador`, `robusto`, `solución integral`, `de alta gama`, `líder del mercado`, `potenciado por`
+- Frases vacías: "con el compromiso de", "brindando la mejor experiencia", "a la vanguardia de la tecnología"
+- Cierres de chatbot: "¡Esperamos que esto te ayude!", "No dudes en contactarnos", "¡Estamos aquí para ti!"
+- Rayas em (—) en cualquier contexto
+- Listas de tres elementos forzadas cuando dos bastan
+- Adjetivos apilados sin respaldo concreto: "avanzado sistema de videovigilancia de última generación"
+
+### Cómo escribir fichas de producto en SUMITRONIC
+
+Las descripciones de producto deben responder preguntas reales del comprador colombiano, no sonar a catálogo de fábrica. Ejemplos:
+
+**Mal:**
+
+> La cámara Hikvision DS-2CD2143G2-I es una solución integral de videovigilancia con tecnología AcuSense de última generación que brinda una experiencia de seguridad inigualable para su hogar o empresa.
+
+**Bien:**
+
+> Detecta personas y vehículos, no mascotas ni ramas. Eso reduce las falsas alarmas a casi nada. La DS-2CD2143G2-I tiene visión nocturna a 60 metros y funciona con cualquier NVR Hikvision desde 2018. Si ya tienes cableado Cat5e, no necesitas cambiar nada.
+
+### Flujo recomendado para contenido
+
+```
+1. Redacta el borrador en español
+2. /humanizalo → pasa el texto por el skill
+3. Revisa que el resultado suene colombiano y natural, no traducido del inglés
+4. Si el texto tiene terminología técnica (nombres de productos, especificaciones), verificar que no se hayan alterado
+```
+
+---
+
 ## Visión del proyecto
 
 **SUMITRONIC** es un ecommerce B2C/B2B especializado en productos de seguridad electrónica para el mercado colombiano.
@@ -436,6 +478,72 @@ Los agentes están definidos en `.claude/agents/`. Úsalos antes de trabajar en 
 4. **No editar `components/ui/`** bajo ninguna circunstancia (salvo las excepciones documentadas)
 5. **No mockear la DB** en tests de integración
 6. **Verificar con `npm run build`** antes de dar una tarea por completada
+
+---
+
+## Skills de marketing (coreyhaines31/marketingskills)
+
+Instalados en `.agents/skills/`. Se invocan con `/nombre-del-skill` en el chat.
+**Contexto obligatorio:** Antes de usar cualquier skill de marketing, ejecuta `/product-marketing-context` para que Claude tenga el contexto completo de SUMITRONIC (producto, audiencia, diferenciadores, competidores). Solo es necesario hacerlo una vez por sesión.
+
+### Flujo de trabajo recomendado
+
+```
+1. /product-marketing-context   → carga el contexto base (siempre primero)
+2. /[skill-de-marketing]        → ejecuta la tarea específica
+```
+
+### Tabla de skills por fase del proyecto
+
+#### Fase 1 — Lanzamiento (hacer primero al cargar productos)
+
+| Skill                      | Cuándo usarlo                                                              | Ejemplo de prompt                                                                                           |
+| -------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `/launch-strategy`         | Planificar la entrada al mercado colombiano contra competidores nacionales | "crea estrategia de lanzamiento para SUMITRONIC atacando instaladores y empresas de vigilancia en Colombia" |
+| `/page-cro`                | Optimizar páginas de producto, categoría, home y checkout para convertir   | "optimiza la página de producto de cámaras Hikvision para aumentar el add-to-cart"                          |
+| `/competitor-alternatives` | Crear páginas que capturen tráfico de quienes buscan la competencia        | "crea página alternativa a [competidor] orientada a cámaras de seguridad en Colombia"                       |
+| `/copywriting`             | Escribir copy de producto, hero, banners y CTAs                            | "escribe el hero de la home y 5 descripciones de producto para cámaras Dahua"                               |
+| `/programmatic-seo`        | Generar páginas SEO a escala: por marca, categoría, ciudad, uso            | "diseña plantilla programmatic-seo para /camaras-[ciudad]-colombia"                                         |
+
+#### Fase 2 — Medición y retención (al tener primeras ventas)
+
+| Skill                   | Cuándo usarlo                                                                | Ejemplo de prompt                                                                        |
+| ----------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `/analytics-tracking`   | Configurar eventos de conversión, funnel y revenue en GA4 / GTM              | "define todos los eventos de ecommerce que debo trackear en SUMITRONIC"                  |
+| `/email-sequence`       | Crear flujos de carrito abandonado, postventa y reactivación                 | "crea secuencia de 4 emails para carrito abandonado en ecommerce de seguridad"           |
+| `/marketing-psychology` | Aplicar principios de urgencia, escasez y prueba social en fichas y checkout | "identifica qué triggers psicológicos aplicar en la página de producto y en el checkout" |
+| `/popup-cro`            | Pop-ups de captura de email, urgencia y exit-intent                          | "diseña popup de exit-intent para visitantes que no compraron"                           |
+
+#### Fase 3 — Escala (al tener tracción)
+
+| Skill                | Cuándo usarlo                                                         | Ejemplo de prompt                                                                  |
+| -------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `/paid-ads`          | Campañas Google Shopping, Search y Meta para Colombia                 | "crea estructura de campaña Google Shopping para categorías de SUMITRONIC"         |
+| `/social-content`    | Contenido para Instagram, Facebook y TikTok                           | "crea calendario de contenido mensual para Instagram de SUMITRONIC"                |
+| `/pricing-strategy`  | Estrategia de precios por segmento (hogar, empresas, instaladores)    | "analiza la estrategia de precios para competir en cámaras Hikvision en Colombia"  |
+| `/content-strategy`  | Blog técnico sobre seguridad electrónica para tráfico orgánico        | "crea estrategia de blog para SUMITRONIC con keywords de instaladores en Colombia" |
+| `/ai-seo`            | Optimizar para aparecer en respuestas de ChatGPT, Gemini y Perplexity | "optimiza el contenido de SUMITRONIC para AI search sobre seguridad electrónica"   |
+| `/customer-research` | Sintetizar feedback de clientes y definir buyer personas              | "crea buyer personas para SUMITRONIC: instalador, empresa de vigilancia, hogar"    |
+
+#### Skills de soporte (usar cuando aplique)
+
+| Skill                | Cuándo usarlo                                                      |
+| -------------------- | ------------------------------------------------------------------ |
+| `/copy-editing`      | Revisar y mejorar copy ya escrito                                  |
+| `/site-architecture` | Revisar estructura de URLs y navegación para SEO                   |
+| `/form-cro`          | Optimizar formularios de contacto y cotización B2B                 |
+| `/marketing-ideas`   | Generar ideas de marketing cuando haya bloqueo creativo            |
+| `/cold-email`        | Outreach B2B hacia empresas de vigilancia e instaladores           |
+| `/sales-enablement`  | Crear materiales para el canal B2B (fichas técnicas, comparativas) |
+| `/lead-magnets`      | Crear guías o herramientas para capturar emails                    |
+
+### Reglas de uso
+
+- **Idioma:** pide siempre los outputs en español y adaptados al mercado colombiano
+- **Precios:** recordar al skill que los precios son en COP y el mercado es Colombia
+- **Competidores de referencia:** MercadoLibre, Linio, distribuidores locales de Hikvision/Dahua
+- **No solapar con agentes existentes:** `/seo-audit` y `/seo-technical` ya están instalados como skills de desarrollo — para estrategia de contenido usar `/content-strategy` y `/programmatic-seo`
+- **`/product-marketing-context`** debe actualizarse cada vez que cambien el catálogo, los precios o la propuesta de valor del negocio
 
 ---
 

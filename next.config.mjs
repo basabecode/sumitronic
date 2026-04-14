@@ -54,6 +54,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'images.sumitronic.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'dewijsjzmfohkqasqcrq.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
