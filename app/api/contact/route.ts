@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 import { brand } from '@/lib/brand'
 import { ratelimit } from '@/lib/ratelimit'
-import { buildContactNotificationEmail } from '@/lib/email-templates'
+import ContactNotificationEmail from '@/emails/contact-notification'
 
 /**
  * POST /api/contact
@@ -26,32 +27,25 @@ export async function POST(request: NextRequest) {
     }
 
     const resendApiKey = process.env.RESEND_API_KEY
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@sumitronic.com'
-    const supportEmail = process.env.RESEND_SUPPORT_EMAIL || brand.supportEmail
-
     if (!resendApiKey) {
       console.log('[contact] Mensaje recibido (sin email configurado):', { nombre, email, asunto })
       return NextResponse.json({ ok: true, skipped: true })
     }
 
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `${brand.name} <${fromEmail}>`,
-        to: [supportEmail],
-        reply_to: email,
-        subject: `Consulta de ${nombre} ${apellido}${asunto ? ` — ${asunto}` : ''}`,
-        html: buildContactNotificationEmail({ nombre, apellido, email, telefono, asunto, mensaje }),
-      }),
+    const resend = new Resend(resendApiKey)
+    const fromEmail = process.env.RESEND_FROM_EMAIL || `noreply@sumitronic.com`
+    const supportEmail = process.env.RESEND_SUPPORT_EMAIL || brand.supportEmail
+
+    const { error } = await resend.emails.send({
+      from: `${brand.name} <${fromEmail}>`,
+      to: [supportEmail],
+      replyTo: email,
+      subject: `Consulta de ${nombre} ${apellido}${asunto ? ` — ${asunto}` : ''}`,
+      react: ContactNotificationEmail({ nombre, apellido, email, telefono, asunto, mensaje }),
     })
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('[contact] Error Resend:', errorText)
+    if (error) {
+      console.error('[contact] Error Resend:', error)
       return NextResponse.json({ error: 'No se pudo enviar el mensaje.' }, { status: 500 })
     }
 

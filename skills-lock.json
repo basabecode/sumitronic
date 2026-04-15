@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "660ef74aba893d23335366c5bcc11faf7701ce9f441d9450bc80ab53dccbf21e"
     },
+    "agent-email-inbox": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "f02d7a584fc11ec8539a78862d93e0b01ebb4a2bb9902a325b92bb23fbf17f73"
+    },
     "ai-seo": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -55,6 +60,11 @@
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "computedHash": "f080ef2f66e3a42581ea4a8eb3188e97334e20eb28314a77e3f006a4d9ee0173"
+    },
+    "email-best-practices": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "0a63c8dedfc49cb106ca4e90dfa14fe50cc22e3cd252e6bbbb4c8a33769c46db"
     },
     "email-sequence": {
       "source": "coreyhaines31/marketingskills",
@@ -136,10 +146,25 @@
       "sourceType": "github",
       "computedHash": "c6384f24bb0203f8aa98b23b55d35b9e6721b94532a0e7965215c340ae96f1e0"
     },
+    "react-email": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "c40606506850fad978240a842c6bbc5cb7a93f91401d66533ce09467ee0f0ad1"
+    },
     "referral-program": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "computedHash": "32d66dac06f00b18f6e9077053ce7de6d2c5a4bee3a7ef50a5eb9dc5c5412746"
+    },
+    "resend": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "f5129ed02c71605544822d42a8c71c9ea1214fd42eb7342c8f1ed8fc36d301f4"
+    },
+    "resend-cli": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "87aee51d2767bdcdce3c27db85c857b85ceaa47af505d71e74163f058e5e0b6e"
     },
     "revops": {
       "source": "coreyhaines31/marketingskills",
