@@ -10,10 +10,43 @@ import { useState } from 'react'
 
 export default function ContactoClient() {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+
+    const form = e.currentTarget
+    const data = {
+      nombre: (form.elements.namedItem('nombre') as HTMLInputElement).value,
+      apellido: (form.elements.namedItem('apellido') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      telefono: (form.elements.namedItem('telefono') as HTMLInputElement).value,
+      asunto: (form.elements.namedItem('asunto') as HTMLInputElement).value,
+      mensaje: (form.elements.namedItem('mensaje') as HTMLTextAreaElement).value,
+    }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!res.ok) {
+        const json = await res.json()
+        setError(json.error || 'No se pudo enviar el mensaje. Intenta de nuevo.')
+        return
+      }
+
+      setSubmitted(true)
+    } catch {
+      setError('Error de conexión. Verifica tu internet e intenta de nuevo.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -169,27 +202,46 @@ export default function ContactoClient() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <Label htmlFor="nombre">Nombre *</Label>
-                      <Input id="nombre" type="text" placeholder="Su nombre" required />
+                      <Input
+                        id="nombre"
+                        name="nombre"
+                        type="text"
+                        placeholder="Su nombre"
+                        required
+                      />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="apellido">Apellido *</Label>
-                      <Input id="apellido" type="text" placeholder="Su apellido" required />
+                      <Input
+                        id="apellido"
+                        name="apellido"
+                        type="text"
+                        placeholder="Su apellido"
+                        required
+                      />
                     </div>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <Label htmlFor="email">Correo *</Label>
-                      <Input id="email" type="email" placeholder="nombre@correo.com" required />
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="nombre@correo.com"
+                        required
+                      />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="telefono">Teléfono</Label>
-                      <Input id="telefono" type="tel" placeholder="300 000 0000" />
+                      <Input id="telefono" name="telefono" type="tel" placeholder="300 000 0000" />
                     </div>
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="asunto">¿Qué necesita?</Label>
                     <Input
                       id="asunto"
+                      name="asunto"
                       type="text"
                       placeholder="Ej: cotización cámaras, soporte técnico, consulta de precio"
                     />
@@ -198,14 +250,24 @@ export default function ContactoClient() {
                     <Label htmlFor="mensaje">Mensaje *</Label>
                     <Textarea
                       id="mensaje"
+                      name="mensaje"
                       placeholder="Cuéntenos con detalle: el equipo que busca, cuántas unidades, para qué uso o qué problema tiene."
                       rows={5}
                       required
                     />
                   </div>
-                  <Button type="submit" className="h-11 w-full rounded-xl text-sm font-semibold">
+
+                  {error && (
+                    <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="h-11 w-full rounded-xl text-sm font-semibold"
+                  >
                     <Send className="mr-2 h-4 w-4" />
-                    Enviar mensaje
+                    {loading ? 'Enviando...' : 'Enviar mensaje'}
                   </Button>
                   <p className="text-center text-xs text-[hsl(var(--text-muted))]">
                     Sus datos son tratados conforme a nuestra{' '}
