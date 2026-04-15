@@ -10,7 +10,7 @@ const connectSrcProd = `'self' ${supabaseCloudUrl}`
 
 // Dominio propio (para CORS y frame-ancestors)
 const siteUrl = isProduction
-  ? process.env.NEXT_PUBLIC_SITE_URL || 'https://sumitronic.vercel.app'
+  ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://sumitronic.com').trim()
   : 'http://localhost:3003'
 
 const securityHeaders = [
