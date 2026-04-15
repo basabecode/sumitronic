@@ -56,6 +56,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.68,
   }))
 
+  // Fecha base para páginas estáticas que no cambian frecuentemente
+  const SITE_LAUNCH = new Date('2025-01-01')
+
   return [
     // Páginas estáticas principales
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
@@ -74,24 +77,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.82 },
     {
       url: `${baseUrl}/contacto`,
-      lastModified: new Date(),
+      lastModified: SITE_LAUNCH,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     { url: `${baseUrl}/help`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.78 },
     {
       url: `${baseUrl}/marcas`,
-      lastModified: new Date(),
+      lastModified: SITE_LAUNCH,
       changeFrequency: 'weekly',
       priority: 0.78,
     },
     {
       url: `${baseUrl}/nosotros`,
-      lastModified: new Date(),
+      lastModified: SITE_LAUNCH,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    // Dinámicas
+    // Dinámicas: categorías, marcas, blog, ayuda, productos
     ...categoryUrls,
     ...brandUrls,
     ...blogUrls,

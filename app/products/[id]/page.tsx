@@ -138,11 +138,12 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     openGraph: {
       title: `${product.name} - ${price} | ${brand.organizationName}`,
       description: product.description.substring(0, 200),
-      images:
-        product.product_images?.map((img: any) => ({
-          url: img.image_url,
-          alt: img.alt_text || product.name,
-        })) || [],
+      images: product.product_images?.map((img: any) => ({
+        url: img.image_url,
+        alt: img.alt_text || product.name,
+        width: 800,
+        height: 800,
+      })) || [{ url: '/og-image.png', width: 1200, height: 630 }],
       locale: 'es_CO',
       type: 'website',
     },
@@ -181,6 +182,40 @@ export default async function ProductPage({ params }: { params: { id: string } }
       availability:
         product.stock_quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: brand.organizationName,
+        url: brand.siteUrl,
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          currency: 'COP',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'CO',
+        },
+      },
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: brand.siteUrl },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Productos',
+          item: `${brand.siteUrl}/products`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: product.name,
+          item: `${brand.siteUrl}/products/${product.id}`,
+        },
+      ],
     },
   }
 

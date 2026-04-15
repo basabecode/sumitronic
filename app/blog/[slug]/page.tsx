@@ -39,7 +39,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug)
   if (!post) notFound()
 
-  const jsonLd = {
+  const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
@@ -60,14 +60,49 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       },
     },
     mainEntityOfPage: `${brand.siteUrl}/blog/${post.slug}`,
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: brand.siteUrl },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${brand.siteUrl}/blog` },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: post.title,
+          item: `${brand.siteUrl}/blog/${post.slug}`,
+        },
+      ],
+    },
   }
+
+  const faqJsonLd =
+    post.faq && post.faq.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: post.faq.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        }
+      : null
 
   return (
     <div className="min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <Header />
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <nav className="mb-8 flex items-center gap-2 text-sm text-[hsl(var(--text-muted))]">

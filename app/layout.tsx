@@ -31,7 +31,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5, // Permitir zoom para accesibilidad
   userScalable: true,
-  themeColor: '#00ABE4', // Primary brand color
+  themeColor: '#00A3BF',
 }
 
 export const metadata: Metadata = {
@@ -112,18 +112,75 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'ElectronicsStore',
   name: brand.organizationName,
+  alternateName: brand.name,
   url: brand.siteUrl,
   logo: brand.logoUrl,
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: `+57-${brand.whatsappDisplay}`,
-    contactType: 'customer service',
-    areaServed: 'CO',
-    availableLanguage: 'es',
+  image: `${brand.siteUrl}/og-image.png`,
+  description: brand.tagline,
+  priceRange: '$$',
+  currenciesAccepted: 'COP',
+  paymentAccepted: 'Cash, Credit Card, Bank Transfer',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: brand.address.street,
+    addressLocality: brand.address.city,
+    addressRegion: brand.address.region,
+    postalCode: brand.address.postalCode,
+    addressCountry: brand.address.country,
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 3.4516,
+    longitude: -76.5319,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: brand.hours.schema.weekdayOpen,
+      closes: brand.hours.schema.weekdayClose,
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: brand.hours.schema.saturdayOpen,
+      closes: brand.hours.schema.saturdayClose,
+    },
+  ],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: `+57${brand.whatsappClean}`,
+      contactType: 'customer service',
+      contactOption: 'TollFree',
+      areaServed: 'CO',
+      availableLanguage: 'es',
+    },
+    {
+      '@type': 'ContactPoint',
+      email: brand.supportEmail,
+      contactType: 'customer support',
+      areaServed: 'CO',
+      availableLanguage: 'es',
+    },
+  ],
   sameAs: brand.socialLinks,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Catálogo SUMITRONIC',
+    itemListElement: [
+      { '@type': 'OfferCatalog', name: 'Cámaras de seguridad' },
+      { '@type': 'OfferCatalog', name: 'Routers y conectividad' },
+      { '@type': 'OfferCatalog', name: 'UPS y energía' },
+      { '@type': 'OfferCatalog', name: 'Repuestos para televisores' },
+    ],
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Colombia',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
