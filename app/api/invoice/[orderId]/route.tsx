@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { brand } from '@/lib/brand'
 import {
   renderToBuffer,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   },
   // Header
   header: {
-    backgroundColor: '#0f172a',
+    backgroundColor: '#003D52',
     padding: '28 36',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -109,17 +110,17 @@ const styles = StyleSheet.create({
   },
   dataCardValue: {
     fontSize: 11,
-    color: '#0f172a',
+    color: '#003D52',
     fontFamily: 'Helvetica-Bold',
   },
   dataCardValueNormal: {
     fontSize: 10,
-    color: '#1e293b',
+    color: '#005068',
   },
   // Tabla de productos
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#0f172a',
+    backgroundColor: '#003D52',
     borderRadius: '4 4 0 0',
     padding: '8 12',
   },
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
   // Total
   totalRow: {
     flexDirection: 'row',
-    backgroundColor: '#0f172a',
+    backgroundColor: '#003D52',
     borderRadius: '0 0 4 4',
     padding: '12 12',
     justifyContent: 'space-between',
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
   },
   totalAmount: {
     fontSize: 18,
-    color: '#4ade80',
+    color: '#7DD3E8',
     fontFamily: 'Helvetica-Bold',
   },
   totalCurrency: {
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
   },
   // Footer
   footer: {
-    backgroundColor: '#1e293b',
+    backgroundColor: '#005068',
     padding: '16 36',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
   },
   footerContact: {
-    color: '#4ade80',
+    color: '#7DD3E8',
     fontSize: 8,
     fontFamily: 'Helvetica-Bold',
     marginTop: 2,
@@ -450,15 +451,38 @@ export async function GET(request: NextRequest, { params }: { params: { orderId:
       return NextResponse.json({ error: 'ID de orden requerido' }, { status: 400 })
     }
 
+    // Verificar sesión activa
+    const serverClient = createClient()
+    const {
+      data: { user },
+    } = await serverClient.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Autenticación requerida' }, { status: 401 })
+    }
+
+    // Obtener rol del usuario
+    const { data: profile } = await serverClient
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+    const isAdmin = profile?.role === 'admin'
+
     const supabase = createAdminClient()
     const { data: order, error } = await supabase
       .from('orders')
-      .select('*')
+      .select(
+        'id, total, payment_method, notes, created_at, customer_info, shipping_address, items, user_id'
+      )
       .eq('id', orderId)
       .single()
 
     if (error || !order) {
       return NextResponse.json({ error: 'Orden no encontrada' }, { status: 404 })
+    }
+
+    if (!isAdmin && order.user_id !== user.id) {
+      return NextResponse.json({ error: 'Sin permiso para esta orden' }, { status: 403 })
     }
 
     const pdfBuffer = await renderToBuffer(<InvoiceDocument order={order} />)

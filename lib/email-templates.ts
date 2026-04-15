@@ -5,16 +5,21 @@
 
 import { brand } from '@/lib/brand'
 
-// ─── Colores de la marca ──────────────────────────────────────────────────────
+// ─── Colores de la marca (paleta oficial — globals.css) ──────────────────────
+// Primario: cian hsl(195,100%,44.7%) ≈ #00A3BF
+// Oscuro:   teal hsl(198.9,100%,18%) ≈ #003D52
+// Éxito:    verde hsl(142,71%,34%)   ≈ #28A745 (solo totales/confirmaciones)
 const C = {
-  navy: '#0f172a',
-  navyMid: '#1e293b',
-  navyLight: '#334155',
-  green: '#16a34a',
-  greenLight: '#dcfce7',
-  greenBorder: '#86efac',
-  blue: '#2563eb',
-  blueLight: '#eff6ff',
+  brand: '#00A3BF', // --brand: cian primario
+  brandStrong: '#00728B', // --brand-strong: cian oscuro hover
+  dark: '#003D52', // --foreground: teal muy oscuro (headers)
+  darkMid: '#005068', // variante intermedia
+  darkLight: '#006B8A', // variante más clara
+  success: '#28A745', // --success: verde solo para confirmaciones/totales
+  successLight: '#D1FAE5',
+  successBorder: '#6EE7B7',
+  orange: '#F97316', // --warning: alertas internas
+  orangeLight: '#FFF7ED',
   white: '#ffffff',
   gray50: '#f8fafc',
   gray100: '#f1f5f9',
@@ -22,8 +27,8 @@ const C = {
   gray500: '#64748b',
   gray700: '#374151',
   gray900: '#111827',
-  orange: '#ea580c',
-  orangeLight: '#fff7ed',
+  brandLight: '#E0F6FA', // fondo suave del brand
+  brandBorder: '#7DD3E8', // borde suave del brand
 } as const
 
 // ─── Layout wrapper común ─────────────────────────────────────────────────────
@@ -60,7 +65,7 @@ function emailWrapper(content: string): string {
 function emailHeader(subtitle?: string): string {
   return `
   <tr>
-    <td style="background:linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%);border-radius:12px 12px 0 0;padding:28px 32px;">
+    <td style="background:linear-gradient(135deg,${C.dark} 0%,${C.darkMid} 100%);border-radius:12px 12px 0 0;padding:28px 32px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td>
@@ -85,7 +90,7 @@ function emailHeader(subtitle?: string): string {
 function emailFooter(): string {
   return `
   <tr>
-    <td style="background-color:${C.navyMid};border-radius:0 0 12px 12px;padding:24px 32px;">
+    <td style="background-color:${C.darkMid};border-radius:0 0 12px 12px;padding:24px 32px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td align="center" style="padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1);">
@@ -126,7 +131,7 @@ function divider(): string {
 }
 
 // =============================================================================
-// TEMPLATE 1: Confirmación de orden al cliente
+// Tipos compartidos
 // =============================================================================
 
 export interface OrderItem {
@@ -153,30 +158,39 @@ export interface OrderData {
   items?: OrderItem[]
 }
 
+// ─── Helper tabla de productos ────────────────────────────────────────────────
+function buildItemsRows(items: OrderItem[], compact = false): string {
+  if (!Array.isArray(items) || items.length === 0) {
+    return `<tr><td colspan="3" style="padding:16px;text-align:center;color:${C.gray500};">Sin detalle de productos</td></tr>`
+  }
+  return items
+    .map(
+      (item, i) => `
+    <tr style="background-color:${i % 2 === 0 ? C.white : C.gray50};">
+      <td style="padding:${compact ? '10' : '12'}px 16px;font-size:${compact ? 13 : 14}px;color:${C.gray900};border-bottom:1px solid ${C.gray200};">
+        ${compact ? item.name : `<strong style="display:block;margin-bottom:2px;">${item.name}</strong>`}
+      </td>
+      <td style="padding:${compact ? '10' : '12'}px 16px;font-size:${compact ? 13 : 14}px;color:${C.gray500};text-align:center;border-bottom:1px solid ${C.gray200};white-space:nowrap;">
+        ${compact ? item.quantity : `× ${item.quantity}`}
+      </td>
+      <td style="padding:${compact ? '10' : '12'}px 16px;font-size:${compact ? 13 : 14}px;font-weight:600;color:${C.gray900};text-align:right;border-bottom:1px solid ${C.gray200};white-space:nowrap;">
+        $${(item.price * item.quantity).toLocaleString('es-CO')}
+      </td>
+    </tr>`
+    )
+    .join('')
+}
+
+// =============================================================================
+// TEMPLATE 1: Confirmación de orden al cliente
+// =============================================================================
+
 export function buildOrderConfirmationEmail(order: OrderData): string {
   const orderId = `#${String(order.id).slice(0, 8).toUpperCase()}`
   const customerName = order.customer_info?.fullName || 'Cliente'
   const total = Number(order.total).toLocaleString('es-CO')
 
-  const itemsRows =
-    Array.isArray(order.items) && order.items.length > 0
-      ? order.items
-          .map(
-            (item, i) => `
-      <tr style="background-color:${i % 2 === 0 ? C.white : C.gray50};">
-        <td style="padding:12px 16px;font-size:14px;color:${C.gray900};border-bottom:1px solid ${C.gray200};">
-          <strong style="display:block;margin-bottom:2px;">${item.name}</strong>
-        </td>
-        <td style="padding:12px 16px;font-size:14px;color:${C.gray500};text-align:center;border-bottom:1px solid ${C.gray200};white-space:nowrap;">
-          × ${item.quantity}
-        </td>
-        <td style="padding:12px 16px;font-size:14px;color:${C.gray900};text-align:right;border-bottom:1px solid ${C.gray200};white-space:nowrap;font-weight:600;">
-          $${(item.price * item.quantity).toLocaleString('es-CO')}
-        </td>
-      </tr>`
-          )
-          .join('')
-      : `<tr><td colspan="3" style="padding:16px;text-align:center;color:${C.gray500};">Sin detalle de productos</td></tr>`
+  const itemsRows = buildItemsRows(order.items ?? [])
 
   const addressLine = order.shipping_address
     ? [
@@ -200,16 +214,16 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
             <!-- Badge número de orden -->
             <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
               <tr>
-                <td style="background-color:${C.greenLight};border:1px solid ${C.greenBorder};border-radius:8px;padding:10px 16px;">
+                <td style="background-color:${C.successLight};border:1px solid ${C.successBorder};border-radius:8px;padding:10px 16px;">
                   <table role="presentation" cellpadding="0" cellspacing="0">
                     <tr>
                       <td style="padding-right:8px;">
-                        <div style="width:20px;height:20px;background-color:${C.green};border-radius:50%;text-align:center;line-height:20px;">
+                        <div style="width:20px;height:20px;background-color:${C.success};border-radius:50%;text-align:center;line-height:20px;">
                           <span style="color:${C.white};font-size:12px;font-weight:700;">✓</span>
                         </div>
                       </td>
                       <td>
-                        <span style="font-size:13px;font-weight:700;color:${C.green};letter-spacing:0.5px;">Orden ${orderId} recibida</span>
+                        <span style="font-size:13px;font-weight:700;color:${C.success};letter-spacing:0.5px;">Orden ${orderId} recibida</span>
                       </td>
                     </tr>
                   </table>
@@ -217,7 +231,7 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
               </tr>
             </table>
 
-            <h1 style="margin:0 0 12px;font-size:22px;font-weight:700;color:${C.navy};line-height:1.3;">
+            <h1 style="margin:0 0 12px;font-size:22px;font-weight:700;color:${C.dark};line-height:1.3;">
               Hola ${customerName},<br/>
               <span style="font-weight:400;color:${C.gray700};">tu pedido está en camino</span>
             </h1>
@@ -235,7 +249,7 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
   <!-- Detalles del pedido -->
   <tr>
     <td style="background-color:${C.white};padding:24px 32px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Detalles del pedido</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Detalles del pedido</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.gray200};border-radius:8px;overflow:hidden;">
         <tr style="background-color:${C.gray50};">
           <td style="padding:8px 16px;font-size:12px;font-weight:700;color:${C.gray500};text-transform:uppercase;letter-spacing:0.5px;width:40%;">Campo</td>
@@ -243,7 +257,7 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
         </tr>
         <tr>
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};border-top:1px solid ${C.gray200};">N.° de orden</td>
-          <td style="padding:10px 16px;font-size:13px;font-weight:700;color:${C.navy};border-top:1px solid ${C.gray200};">${orderId}</td>
+          <td style="padding:10px 16px;font-size:13px;font-weight:700;color:${C.dark};border-top:1px solid ${C.gray200};">${orderId}</td>
         </tr>
         <tr style="background-color:${C.gray50};">
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};">Método de pago</td>
@@ -280,18 +294,18 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
   <!-- Productos -->
   <tr>
     <td style="background-color:${C.white};padding:24px 32px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Productos</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Productos</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.gray200};border-radius:8px;overflow:hidden;">
-        <tr style="background-color:${C.navy};">
+        <tr style="background-color:${C.dark};">
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:left;letter-spacing:0.5px;">Producto</th>
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:center;letter-spacing:0.5px;white-space:nowrap;">Cant.</th>
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:right;letter-spacing:0.5px;white-space:nowrap;">Subtotal</th>
         </tr>
         ${itemsRows}
         <!-- Fila total -->
-        <tr style="background:linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%);">
+        <tr style="background:linear-gradient(135deg,${C.dark} 0%,${C.darkMid} 100%);">
           <td colspan="2" style="padding:14px 16px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.9);">TOTAL A PAGAR</td>
-          <td style="padding:14px 16px;font-size:20px;font-weight:700;color:${C.green};text-align:right;white-space:nowrap;">
+          <td style="padding:14px 16px;font-size:20px;font-weight:700;color:${C.success};text-align:right;white-space:nowrap;">
             $${total} COP
           </td>
         </tr>
@@ -304,10 +318,10 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
   <!-- CTA WhatsApp -->
   <tr>
     <td style="background-color:${C.white};padding:24px 32px 32px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${C.blueLight};border-radius:10px;border-left:4px solid ${C.blue};padding:20px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${C.brandLight};border-radius:10px;border-left:4px solid ${C.brand};padding:20px;">
         <tr>
           <td style="padding:0 0 8px;">
-            <p style="margin:0;font-size:14px;font-weight:700;color:${C.navy};">¿Tienes preguntas sobre tu pedido?</p>
+            <p style="margin:0;font-size:14px;font-weight:700;color:${C.dark};">¿Tienes preguntas sobre tu pedido?</p>
           </td>
         </tr>
         <tr>
@@ -327,7 +341,7 @@ export function buildOrderConfirmationEmail(order: OrderData): string {
                 </td>
                 <td>
                   <a href="mailto:${brand.supportEmail}"
-                    style="display:inline-block;background-color:${C.white};color:${C.blue};text-decoration:none;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;border:1px solid ${C.blue};">
+                    style="display:inline-block;background-color:${C.white};color:${C.brand};text-decoration:none;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;border:1px solid ${C.brand};">
                     Enviar correo
                   </a>
                 </td>
@@ -352,19 +366,7 @@ export function buildAdminOrderAlertEmail(order: OrderData): string {
   const orderId = `#${String(order.id).slice(0, 8).toUpperCase()}`
   const total = Number(order.total).toLocaleString('es-CO')
 
-  const itemsRows =
-    Array.isArray(order.items) && order.items.length > 0
-      ? order.items
-          .map(
-            (item, i) => `
-      <tr style="background-color:${i % 2 === 0 ? C.white : C.gray50};">
-        <td style="padding:10px 16px;font-size:13px;color:${C.gray900};border-bottom:1px solid ${C.gray200};">${item.name}</td>
-        <td style="padding:10px 16px;font-size:13px;color:${C.gray500};text-align:center;border-bottom:1px solid ${C.gray200};">${item.quantity}</td>
-        <td style="padding:10px 16px;font-size:13px;font-weight:600;color:${C.gray900};text-align:right;border-bottom:1px solid ${C.gray200};">$${(item.price * item.quantity).toLocaleString('es-CO')}</td>
-      </tr>`
-          )
-          .join('')
-      : `<tr><td colspan="3" style="padding:16px;text-align:center;color:${C.gray500};">Sin detalle</td></tr>`
+  const itemsRows = buildItemsRows(order.items ?? [], true)
 
   const content = `
   ${emailHeader('Nueva orden')}
@@ -381,7 +383,7 @@ export function buildAdminOrderAlertEmail(order: OrderData): string {
   <!-- Resumen cliente -->
   <tr>
     <td style="background-color:${C.white};padding:28px 32px 20px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Datos del cliente</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Datos del cliente</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.gray200};border-radius:8px;overflow:hidden;">
         ${[
           ['Orden', orderId],
@@ -405,7 +407,7 @@ export function buildAdminOrderAlertEmail(order: OrderData): string {
             ([label, value], i) => `
         <tr style="${i % 2 !== 0 ? `background-color:${C.gray50};` : ''}">
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};width:160px;${i > 0 ? `border-top:1px solid ${C.gray200};` : ''}">${label}</td>
-          <td style="padding:10px 16px;font-size:13px;font-weight:${label === 'Orden' ? '700' : '400'};color:${label === 'Orden' ? C.navy : C.gray900};${i > 0 ? `border-top:1px solid ${C.gray200};` : ''}">${value}</td>
+          <td style="padding:10px 16px;font-size:13px;font-weight:${label === 'Orden' ? '700' : '400'};color:${label === 'Orden' ? C.dark : C.gray900};${i > 0 ? `border-top:1px solid ${C.gray200};` : ''}">${value}</td>
         </tr>`
           )
           .join('')}
@@ -418,17 +420,17 @@ export function buildAdminOrderAlertEmail(order: OrderData): string {
   <!-- Productos -->
   <tr>
     <td style="background-color:${C.white};padding:20px 32px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Productos</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Productos</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.gray200};border-radius:8px;overflow:hidden;">
-        <tr style="background-color:${C.navy};">
+        <tr style="background-color:${C.dark};">
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:left;">Producto</th>
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:center;">Cant.</th>
           <th style="padding:10px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);text-align:right;">Subtotal</th>
         </tr>
         ${itemsRows}
-        <tr style="background:linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%);">
+        <tr style="background:linear-gradient(135deg,${C.dark} 0%,${C.darkMid} 100%);">
           <td colspan="2" style="padding:14px 16px;font-size:14px;font-weight:700;color:rgba(255,255,255,0.9);">TOTAL</td>
-          <td style="padding:14px 16px;font-size:20px;font-weight:700;color:${C.green};text-align:right;">$${total} COP</td>
+          <td style="padding:14px 16px;font-size:20px;font-weight:700;color:${C.success};text-align:right;">$${total} COP</td>
         </tr>
       </table>
     </td>
@@ -440,7 +442,7 @@ export function buildAdminOrderAlertEmail(order: OrderData): string {
   <tr>
     <td style="background-color:${C.white};padding:20px 32px 32px;text-align:center;">
       <a href="${brand.siteUrl}/admin"
-        style="display:inline-block;background:linear-gradient(135deg,${C.navy} 0%,${C.navyMid} 100%);color:${C.white};text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:10px;letter-spacing:0.3px;">
+        style="display:inline-block;background:linear-gradient(135deg,${C.dark} 0%,${C.darkMid} 100%);color:${C.white};text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:10px;letter-spacing:0.3px;">
         Ver en el panel de administración →
       </a>
     </td>
@@ -473,9 +475,9 @@ export function buildContactNotificationEmail(data: ContactData): string {
 
   <!-- Alerta -->
   <tr>
-    <td style="background-color:${C.blueLight};padding:14px 32px;border-left:4px solid ${C.blue};">
-      <p style="margin:0;font-size:14px;font-weight:600;color:${C.blue};">
-        Mensaje de contacto — responde directamente a <a href="mailto:${data.email}" style="color:${C.blue};">${data.email}</a>
+    <td style="background-color:${C.brandLight};padding:14px 32px;border-left:4px solid ${C.brand};">
+      <p style="margin:0;font-size:14px;font-weight:600;color:${C.brand};">
+        Mensaje de contacto — responde directamente a <a href="mailto:${data.email}" style="color:${C.brand};">${data.email}</a>
       </p>
     </td>
   </tr>
@@ -483,16 +485,16 @@ export function buildContactNotificationEmail(data: ContactData): string {
   <!-- Datos del contacto -->
   <tr>
     <td style="background-color:${C.white};padding:28px 32px 20px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Remitente</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Remitente</h2>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.gray200};border-radius:8px;overflow:hidden;">
         <tr>
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};width:120px;">Nombre</td>
-          <td style="padding:10px 16px;font-size:13px;font-weight:700;color:${C.navy};">${fullName}</td>
+          <td style="padding:10px 16px;font-size:13px;font-weight:700;color:${C.dark};">${fullName}</td>
         </tr>
         <tr style="background-color:${C.gray50};">
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};border-top:1px solid ${C.gray200};">Correo</td>
           <td style="padding:10px 16px;font-size:13px;border-top:1px solid ${C.gray200};">
-            <a href="mailto:${data.email}" style="color:${C.blue};font-weight:600;text-decoration:none;">${data.email}</a>
+            <a href="mailto:${data.email}" style="color:${C.brand};font-weight:600;text-decoration:none;">${data.email}</a>
           </td>
         </tr>
         ${
@@ -501,7 +503,7 @@ export function buildContactNotificationEmail(data: ContactData): string {
         <tr>
           <td style="padding:10px 16px;font-size:13px;color:${C.gray500};border-top:1px solid ${C.gray200};">Teléfono</td>
           <td style="padding:10px 16px;font-size:13px;color:${C.gray900};border-top:1px solid ${C.gray200};">
-            <a href="https://wa.me/57${data.telefono.replace(/\D/g, '')}" style="color:${C.green};font-weight:600;text-decoration:none;">${data.telefono}</a>
+            <a href="https://wa.me/57${data.telefono.replace(/\D/g, '')}" style="color:${C.success};font-weight:600;text-decoration:none;">${data.telefono}</a>
           </td>
         </tr>`
             : ''
@@ -519,7 +521,7 @@ export function buildContactNotificationEmail(data: ContactData): string {
   <!-- Mensaje -->
   <tr>
     <td style="background-color:${C.white};padding:20px 32px;">
-      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.navyLight};text-transform:uppercase;letter-spacing:1px;">Mensaje</h2>
+      <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;color:${C.darkLight};text-transform:uppercase;letter-spacing:1px;">Mensaje</h2>
       <div style="background-color:${C.gray50};border-radius:8px;border:1px solid ${C.gray200};padding:20px;">
         <p style="margin:0;font-size:14px;color:${C.gray900};line-height:1.7;white-space:pre-wrap;">${data.mensaje}</p>
       </div>
@@ -532,7 +534,7 @@ export function buildContactNotificationEmail(data: ContactData): string {
   <tr>
     <td style="background-color:${C.white};padding:20px 32px 32px;text-align:center;">
       <a href="mailto:${data.email}?subject=Re: ${encodeURIComponent(subject)} — ${brand.name}&body=Hola ${encodeURIComponent(data.nombre)},%0A%0A"
-        style="display:inline-block;background:linear-gradient(135deg,${C.blue} 0%,#1d4ed8 100%);color:${C.white};text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:10px;letter-spacing:0.3px;">
+        style="display:inline-block;background:linear-gradient(135deg,${C.brand} 0%,#1d4ed8 100%);color:${C.white};text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:10px;letter-spacing:0.3px;">
         Responder a ${fullName} →
       </a>
     </td>

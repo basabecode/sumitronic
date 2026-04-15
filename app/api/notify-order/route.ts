@@ -39,44 +39,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, skipped: true })
     }
 
-    // 1. Alerta al administrador
-    const adminResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: `${brand.name} <${fromEmail}>`,
-        to: [adminEmail],
-        subject: `Nueva orden ${orderId} — ${order.customer_info?.fullName || 'Invitado'} — $${Number(order.total).toLocaleString('es-CO')} COP`,
-        html: buildAdminOrderAlertEmail(order),
-      }),
-    })
-
-    if (!adminResponse.ok) {
-      console.error('[notify-order] Error Resend (admin):', await adminResponse.text())
+    const resendHeaders = {
+      Authorization: `Bearer ${resendApiKey}`,
+      'Content-Type': 'application/json',
     }
 
-    // 2. Confirmación al cliente
-    const customerEmail = order.customer_info?.email
-    if (customerEmail) {
-      const customerResponse = await fetch('https://api.resend.com/emails', {
+    const sends: Promise<Response>[] = [
+      fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
+        headers: resendHeaders,
         body: JSON.stringify({
           from: `${brand.name} <${fromEmail}>`,
-          to: [customerEmail],
-          subject: `Pedido recibido ${orderId} — ${brand.name}`,
-          html: buildOrderConfirmationEmail(order),
+          to: [adminEmail],
+          subject: `Nueva orden ${orderId} — ${order.customer_info?.fullName || 'Invitado'} — $${Number(order.total).toLocaleString('es-CO')} COP`,
+          html: buildAdminOrderAlertEmail(order),
         }),
-      })
+      }),
+    ]
 
-      if (!customerResponse.ok) {
-        console.error('[notify-order] Error Resend (cliente):', await customerResponse.text())
+    const customerEmail = order.customer_info?.email
+    if (customerEmail) {
+      sends.push(
+        fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: resendHeaders,
+          body: JSON.stringify({
+            from: `${brand.name} <${fromEmail}>`,
+            to: [customerEmail],
+            subject: `Pedido recibido ${orderId} — ${brand.name}`,
+            html: buildOrderConfirmationEmail(order),
+          }),
+        })
+      )
+    }
+
+    const results = await Promise.allSettled(sends)
+    for (const result of results) {
+      if (result.status === 'rejected') {
+        console.error('[notify-order] Error Resend:', result.reason)
+      } else if (!result.value.ok) {
+        console.error('[notify-order] Error Resend HTTP:', await result.value.text())
       }
     }
 

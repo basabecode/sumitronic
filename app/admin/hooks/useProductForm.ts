@@ -28,22 +28,12 @@ const DEFAULT_BRANDS = [
 ]
 
 const BRANDS_STORAGE_KEY = 'sumitronic_admin_brands'
-const BRANDS_STORAGE_KEY_LEGACY = 'capishop_admin_brands'
 
 function loadBrandsFromStorage(): string[] {
   if (typeof window === 'undefined') return DEFAULT_BRANDS
   try {
     const stored = localStorage.getItem(BRANDS_STORAGE_KEY)
     if (stored) return JSON.parse(stored)
-
-    // Migración silenciosa desde clave legacy
-    const legacy = localStorage.getItem(BRANDS_STORAGE_KEY_LEGACY)
-    if (legacy) {
-      const parsed = JSON.parse(legacy)
-      localStorage.setItem(BRANDS_STORAGE_KEY, legacy)
-      return parsed
-    }
-
     return DEFAULT_BRANDS
   } catch {
     return DEFAULT_BRANDS
