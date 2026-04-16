@@ -101,14 +101,16 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     return (
       <Card className="group overflow-hidden rounded-2xl border border-[hsl(var(--border-subtle))] bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-md">
         <Link href={`/products/${product.id}`} className="block">
-          <div className="relative aspect-square overflow-hidden bg-slate-50">
-            <Image
-              src={imageUrl}
-              alt={imageAlt}
-              fill
-              className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
-              sizes="(min-width: 1024px) 200px, (min-width: 640px) 25vw, 45vw"
-            />
+          <div className="relative aspect-square overflow-hidden bg-white">
+            <div className="absolute inset-3">
+              <Image
+                src={imageUrl}
+                alt={imageAlt}
+                fill
+                className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+                sizes="(min-width: 1024px) 200px, (min-width: 640px) 25vw, 45vw"
+              />
+            </div>
             {isOutOfStock && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                 <Badge variant="destructive" className="text-xs">
@@ -129,6 +131,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </div>
         </Link>
 
+        {/* ... CardContent remains same ... */}
         <CardContent className="px-3 pb-3 pt-2.5">
           <Link href={`/products/${product.id}`}>
             <h3
@@ -162,14 +165,16 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     return (
       <Card className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-gradient-to-b from-white to-slate-50/30 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(14,165,233,0.32)]">
         <div className="flex flex-col sm:flex-row">
-          <div className="relative aspect-square w-full overflow-hidden bg-slate-50 sm:w-48 sm:flex-shrink-0 sm:border-r border-slate-100">
-            <Image
-              src={imageUrl}
-              alt={imageAlt}
-              fill
-              className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
-              sizes="(min-width: 640px) 192px, 100vw"
-            />
+          <div className="relative aspect-square w-full overflow-hidden bg-white sm:w-48 sm:flex-shrink-0 sm:border-r border-slate-100">
+            <div className="absolute inset-4">
+              <Image
+                src={imageUrl}
+                alt={imageAlt}
+                fill
+                className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+                sizes="(min-width: 640px) 192px, 100vw"
+              />
+            </div>
             {isOutOfStock && (
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                 <Badge variant="destructive">Agotado</Badge>
@@ -240,13 +245,15 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-md">
       {/* Imagen — siempre cuadrada, fondo blanco uniforme */}
       <div className="relative aspect-square w-full flex-shrink-0 overflow-hidden bg-white">
-        <Image
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-          sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
-        />
+        <div className="absolute inset-5">
+          <Image
+            src={imageUrl}
+            alt={imageAlt}
+            fill
+            className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+            sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
+          />
+        </div>
 
         {isOutOfStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40">

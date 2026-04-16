@@ -104,7 +104,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Cómo elegir un UPS o respaldo Forza sin sobredimensionar tu compra',
     excerpt:
       'Guía directa para calcular la capacidad correcta, proteger equipos sensibles y no gastar de más ni quedarse corto en respaldo eléctrico.',
-    image: '/placeholder.svg',
+    image: '/blogs/blog_ups_forza.png',
     author: `Equipo ${brand.name}`,
     date: '30 Mar 2026',
     publishedAt: '2026-03-30',
@@ -124,7 +124,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Kit de cámaras para negocio: qué pedir, qué esperar y cuánto presupuestar',
     excerpt:
       'Lo que le explicamos a cada cliente que llega preguntando por seguridad para su local. Sin tecnicismos, con precios reales y decisiones claras.',
-    image: '/blogs/imou_panel_solar_Z.jpg',
+    image: '/blogs/blog_business_cams.png',
     author: `Equipo ${brand.name}`,
     date: '2 Abr 2026',
     publishedAt: '2026-04-02',
@@ -247,7 +247,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Cerradura inteligente en Colombia: qué modelos instalar y cómo funcionan',
     excerpt:
       'Huella dactilar, PIN, NFC y app desde el celular. Las cerraduras inteligentes ya son una opción real para apartamentos y casas en Colombia. Esto es lo que necesitas saber.',
-    image: '/blogs/imou_ranger_dual_hogar.jpg',
+    image: '/blogs/blog_smart_lock.png',
     author: `Equipo ${brand.name}`,
     date: '12 Abr 2026',
     publishedAt: '2026-04-12',
@@ -290,7 +290,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Cuál router comprar para que tus cámaras WiFi funcionen sin cortes',
     excerpt:
       'El router es la base del smart home. Si falla la señal, fallan las cámaras. Esta guía explica qué buscar en un router para que todo funcione junto.',
-    image: '/blogs/wifi7_tplink.jpg',
+    image: '/blogs/blog_wifi_router.png',
     author: `Equipo ${brand.name}`,
     date: '13 Abr 2026',
     publishedAt: '2026-04-13',

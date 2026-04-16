@@ -175,12 +175,14 @@ export default function ProductDetailsModal({
           {/* Galería de imágenes */}
           <div className="space-y-4">
             <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden aspect-square">
-              <Image
-                src={productImages[selectedImageIndex] || '/placeholder.svg'}
-                alt={product.name}
-                fill
-                className="object-contain"
-              />
+              <div className="absolute inset-4 z-0">
+                <Image
+                  src={productImages[selectedImageIndex] || '/placeholder.svg'}
+                  alt={product.name}
+                  fill
+                  className="object-contain mix-blend-multiply"
+                />
+              </div>
               {product.badge && (
                 <Badge className="absolute top-4 left-4 bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand))]">
                   {product.badge}
@@ -231,12 +233,14 @@ export default function ProductDetailsModal({
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <Image
-                      src={image || '/placeholder.svg'}
-                      alt={`${product.name} ${index + 1}`}
-                      fill
-                      className="object-contain bg-white"
-                    />
+                    <div className="absolute inset-1.5 z-0">
+                      <Image
+                        src={image || '/placeholder.svg'}
+                        alt={`${product.name} ${index + 1}`}
+                        fill
+                        className="object-contain bg-white mix-blend-multiply"
+                      />
+                    </div>
                   </button>
                 ))}
               </div>

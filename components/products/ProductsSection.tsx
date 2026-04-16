@@ -453,14 +453,16 @@ export function ProductsSection({
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.25)]"
       >
         {/* Imagen cuadrada */}
-        <div className="relative aspect-square overflow-hidden">
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-            sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
-          />
+        <div className="relative aspect-square overflow-hidden bg-white">
+          <div className="absolute inset-5">
+            <Image
+              src={image}
+              alt={product.name}
+              fill
+              className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
+              sizes="(min-width: 1280px) 280px, (min-width: 768px) 33vw, 90vw"
+            />
+          </div>
           {/* Badges sobre imagen */}
           <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             {product.featured && (
@@ -573,14 +575,16 @@ export function ProductsSection({
         className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.22)] sm:flex-row"
       >
         {/* Imagen cuadrada */}
-        <div className="relative aspect-square w-full shrink-0 overflow-hidden sm:w-48">
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-            sizes="(min-width: 1024px) 192px, 50vw"
-          />
+        <div className="relative aspect-square w-full shrink-0 overflow-hidden bg-white sm:w-48">
+          <div className="absolute inset-4">
+            <Image
+              src={image}
+              alt={product.name}
+              fill
+              className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
+              sizes="(min-width: 1024px) 192px, 50vw"
+            />
+          </div>
           {hasDiscount && discountPercent !== null && (
             <Badge className="absolute left-3 top-3 bg-rose-500 text-[0.62rem] text-white">
               -{discountPercent}%

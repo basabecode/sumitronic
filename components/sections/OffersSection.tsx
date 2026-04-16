@@ -223,13 +223,13 @@ export default function OffersSection() {
                         className="carousel-item group flex w-[220px] flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-8px_rgba(14,165,233,0.25)] sm:w-[240px]"
                       >
                         {/* Imagen */}
-                        <div className="relative aspect-square overflow-hidden">
-                          <Link href={`/products/${product.id}`} className="absolute inset-0 z-0">
+                        <div className="relative aspect-square overflow-hidden bg-white">
+                          <Link href={`/products/${product.id}`} className="absolute inset-4 z-0">
                             <Image
                               src={image}
                               alt={product.name}
                               fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                              className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-[1.04]"
                               sizes="(min-width: 640px) 240px, 220px"
                             />
                           </Link>

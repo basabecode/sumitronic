@@ -353,7 +353,14 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                         : 'border-[hsl(var(--border-subtle))] hover:border-[hsl(var(--border-strong))]'
                     }`}
                   >
-                    <Image src={image.url} alt={image.alt} fill className="object-contain p-1.5" />
+                    <div className="absolute inset-1.5 z-0">
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        fill
+                        className="object-contain mix-blend-multiply"
+                      />
+                    </div>
                   </button>
                 ))}
               </div>
@@ -377,15 +384,17 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                     </Badge>
                   </div>
 
-                  <div className="relative aspect-square min-h-[240px] sm:min-h-[320px]">
-                    <Image
-                      src={selectedImage}
-                      alt={product.name}
-                      fill
-                      priority
-                      className="object-contain p-4 sm:p-8"
-                      onError={() => setSelectedImage('/placeholder.svg')}
-                    />
+                  <div className="relative aspect-square min-h-[240px] sm:min-h-[320px] bg-white">
+                    <div className="absolute inset-4 sm:inset-8 z-0">
+                      <Image
+                        src={selectedImage}
+                        alt={product.name}
+                        fill
+                        priority
+                        className="object-contain mix-blend-multiply"
+                        onError={() => setSelectedImage('/placeholder.svg')}
+                      />
+                    </div>
                   </div>
 
                   {isOutOfStock && (
