@@ -669,13 +669,13 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
         <section className="mt-10 section-shell p-6">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="eyebrow-label">También te puede interesar</p>
+              <p className="eyebrow-label">Completa tu setup</p>
               <h2 className="mt-2 font-display text-2xl font-semibold text-[hsl(var(--foreground))]">
-                Productos relacionados
+                También te puede interesar
               </h2>
             </div>
             <p className="hidden max-w-sm text-right text-sm text-[hsl(var(--text-muted))] md:block">
-              Productos relacionados para comparar otras opciones similares.
+              Productos compatibles y complementarios para armar tu hogar inteligente.
             </p>
           </div>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

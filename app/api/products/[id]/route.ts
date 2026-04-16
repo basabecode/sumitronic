@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+// Si compras una cámara, necesitas router y respaldo de energía, etc.
+const COMPLEMENTARY: Record<string, string[]> = {
+  'camaras-wifi': [
+    'routers-redes',
+    'energia-respaldo',
+    'timbres-inteligentes',
+    'cerraduras-inteligentes',
+  ],
+  'camaras-solares': ['routers-redes', 'energia-respaldo', 'camaras-wifi'],
+  'timbres-inteligentes': ['cerraduras-inteligentes', 'camaras-wifi', 'routers-redes'],
+  'cerraduras-inteligentes': ['timbres-inteligentes', 'camaras-wifi', 'routers-redes'],
+  'routers-redes': ['camaras-wifi', 'camaras-solares', 'timbres-inteligentes'],
+  'energia-respaldo': ['camaras-wifi', 'camaras-solares'],
+}
+
+const RELATED_SELECT = `
+  *,
+  category:categories!category_id (id, name, slug),
+  product_images (id, image_url, alt_text, is_primary, sort_order)
+`
+
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const supabase = createClient()
@@ -11,24 +32,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       .select(
         `
         *,
-        category:categories!category_id (
-          id,
-          name,
-          slug
-        ),
-        product_images (
-          id,
-          image_url,
-          alt_text,
-          is_primary,
-          sort_order
-        ),
-        inventory (
-          id,
-          quantity_available,
-          reserved_quantity,
-          last_updated
-        )
+        category:categories!category_id (id, name, slug),
+        product_images (id, image_url, alt_text, is_primary, sort_order)
       `
       )
       .eq('id', id)
@@ -39,34 +44,47 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 })
     }
 
-    // Obtener productos relacionados de la misma categoría
-    const { data: relatedProducts } = await supabase
-      .from('products')
-      .select(
-        `
-        *,
-        category:categories!category_id (
-          id,
-          name,
-          slug
-        ),
-        product_images (
-          id,
-          image_url,
-          alt_text,
-          is_primary,
-          sort_order
-        )
-      `
-      )
-      .eq('category_id', product.category_id)
-      .eq('active', true)
-      .neq('id', id)
-      .limit(4)
+    const productCategorySlug = (product.category as { slug?: string } | null)?.slug ?? null
+    const complementarySlugs = productCategorySlug ? (COMPLEMENTARY[productCategorySlug] ?? []) : []
+
+    // Queries 2 y 3 son independientes entre sí — corren en paralelo
+    const [{ data: sameCategoryProducts }, { data: complementaryCategories }] = await Promise.all([
+      product.category_id
+        ? supabase
+            .from('products')
+            .select(RELATED_SELECT)
+            .eq('category_id', product.category_id)
+            .eq('active', true)
+            .neq('id', id)
+            .limit(2)
+        : Promise.resolve({ data: [] as NonNullable<typeof sameCategoryProducts>, error: null }),
+      complementarySlugs.length > 0
+        ? supabase.from('categories').select('id').in('slug', complementarySlugs).eq('active', true)
+        : Promise.resolve({ data: [] as { id: string }[], error: null }),
+    ])
+
+    let complementaryProducts: typeof sameCategoryProducts = []
+    const complementaryCategoryIds = (complementaryCategories ?? []).map(c => c.id)
+
+    if (complementaryCategoryIds.length > 0) {
+      const { data: allComplementary } = await supabase
+        .from('products')
+        .select(RELATED_SELECT)
+        .in('category_id', complementaryCategoryIds)
+        .eq('active', true)
+        .limit(10)
+
+      const excludeIds = new Set([id, ...(sameCategoryProducts ?? []).map(p => p.id)])
+      complementaryProducts = (allComplementary ?? [])
+        .filter(p => !excludeIds.has(p.id))
+        .slice(0, 4)
+    }
+
+    const relatedProducts = [...(sameCategoryProducts ?? []), ...complementaryProducts].slice(0, 6)
 
     return NextResponse.json({
       product,
-      relatedProducts: relatedProducts || [],
+      relatedProducts,
     })
   } catch (error) {
     console.error('Product fetch error:', error)

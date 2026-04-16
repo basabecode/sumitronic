@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { syncProductsFromSheet } from '@/lib/sync-products'
+import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 function getExpectedSecrets() {
-  const secrets = [process.env.CRON_SECRET, process.env.SYNC_SECRET].filter(
-    (value): value is string => Boolean(value)
+  return [process.env.CRON_SECRET, process.env.SYNC_SECRET].filter((value): value is string =>
+    Boolean(value)
   )
-
-  if (secrets.length === 0) {
-    throw new Error('Missing required environment variable: CRON_SECRET or SYNC_SECRET')
-  }
-
-  return secrets
 }
 
 function extractBearerToken(value: string | null) {
@@ -21,7 +17,7 @@ function extractBearerToken(value: string | null) {
   return value.slice('Bearer '.length).trim() || null
 }
 
-function isAuthorized(providedSecret: string | null, expectedSecrets: string[]) {
+function isSecretValid(providedSecret: string | null, expectedSecrets: string[]) {
   return Boolean(providedSecret && expectedSecrets.some(secret => secret === providedSecret))
 }
 
@@ -33,12 +29,38 @@ function getRequestSecret(request: NextRequest) {
   )
 }
 
-async function handleSync(request: NextRequest) {
-  const expectedSecrets = getExpectedSecrets()
-  const providedSecret = getRequestSecret(request)
+async function isAdminSession(): Promise<boolean> {
+  try {
+    const supabase = createClient()
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser()
+    if (error || !user) return false
 
-  if (!isAuthorized(providedSecret, expectedSecrets)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const adminClient = createAdminClient()
+    const { data: profile } = await adminClient
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    return profile?.role === 'admin'
+  } catch {
+    return false
+  }
+}
+
+async function handleSync(request: NextRequest) {
+  const providedSecret = getRequestSecret(request)
+  const expectedSecrets = getExpectedSecrets()
+
+  // Autenticación: secreto válido (cron/scripts) O sesión de admin activa
+  const authorizedBySecret = isSecretValid(providedSecret, expectedSecrets)
+  const authorizedBySession = authorizedBySecret ? false : await isAdminSession()
+
+  if (!authorizedBySecret && !authorizedBySession) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
   const result = await syncProductsFromSheet()
