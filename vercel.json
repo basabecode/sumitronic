@@ -6,5 +6,10 @@
       "path": "/api/sync-products",
       "schedule": "0 6 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "app/api/sync-products/route.ts": {
+      "maxDuration": 300
+    }
+  }
 }

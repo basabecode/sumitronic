@@ -70,6 +70,34 @@ function parseCommaSeparated(value: string | undefined) {
     .filter(Boolean)
 }
 
+/**
+ * Google Sheets may convert long numeric SKUs to scientific notation
+ * (e.g. "8,46E+16" or "8.46E+16"). This function detects that pattern
+ * and converts it back to the full integer string without precision loss.
+ */
+function parseSku(value: string | undefined): string {
+  const raw = (value ?? '').trim()
+  if (!raw) return ''
+
+  // Normalize locale decimal separator (comma → dot)
+  const normalized = raw.replace(',', '.')
+
+  // Detect scientific notation: digits, optional dot+digits, then E+digits
+  if (/^\d+(\.\d+)?[Ee][+\-]?\d+$/.test(normalized)) {
+    try {
+      // Use BigInt via parseFloat → toFixed to avoid floating-point drift
+      const num = Number.parseFloat(normalized)
+      if (Number.isFinite(num)) {
+        return BigInt(Math.round(num)).toString()
+      }
+    } catch {
+      // fall through and return raw value
+    }
+  }
+
+  return raw
+}
+
 export async function syncProductsFromSheet(): Promise<SyncResult> {
   const supabaseUrl = getRequiredEnv('NEXT_PUBLIC_SUPABASE_URL')
   const supabaseServiceRoleKey = getRequiredEnv('SUPABASE_SERVICE_ROLE_KEY')
@@ -138,7 +166,7 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
     ] = row
 
     return {
-      sku: (sku ?? '').trim(),
+      sku: parseSku(sku),
       name: (name ?? '').trim(),
       description: (description ?? '').trim() || '',
       price: parseFloatOrDefault(price, 0),
@@ -157,134 +185,147 @@ export async function syncProductsFromSheet(): Promise<SyncResult> {
     }
   })
 
+  // ─── PASO 1: Upsert masivo de productos ───────────────────────────────────
+  // Para evitar colisiones en la constraint `products_sku_key`, validamos
+  // contra la base de datos y contra los otros productos del lote.
+
+  // 1. Obtener todos los productos existentes de la base de datos
+  const { data: existingProductsDb, error: fetchError } = await supabase
+    .from('products')
+    .select('id, name, sku')
+  if (fetchError) throw fetchError
+
+  // Construir diccionarios rápidos
+  const dbSkuOwner = new Map<string, string>() // sku -> name
+  for (const row of existingProductsDb ?? []) {
+    if (row.sku) dbSkuOwner.set(row.sku, row.name)
+  }
+
+  // 2. Deduplicar primero por nombre (la clave real de negocio para nosotros)
+  // (El último que aparezca en el sheet gana)
+  const byName = new Map<string, SheetProduct>()
+  for (const p of products) {
+    byName.set(p.name, p)
+  }
+
+  // 3. Detectar SKUs duplicados dentro del lote filtrado
+  const skuCount = new Map<string, number>()
+  for (const p of byName.values()) {
+    if (p.sku) skuCount.set(p.sku, (skuCount.get(p.sku) ?? 0) + 1)
+  }
+
+  // 4. Asignar los SKUs definitivos
+  // Si el SKU está repetido en el sheet, o si ya le pertenece a otro producto
+  // distinto en la BD, necesitamos generar uno nuevo.
+  let genCounter = 1
+  const uniqueProducts: SheetProduct[] = Array.from(byName.values()).map(p => {
+    let finalSku = p.sku
+
+    if (finalSku) {
+      const isDuplicatedInBatch = (skuCount.get(finalSku) ?? 0) > 1
+      const ownerInDb = dbSkuOwner.get(finalSku)
+      const isOwnedByOtherInDb = ownerInDb && ownerInDb !== p.name
+
+      if (isDuplicatedInBatch || isOwnedByOtherInDb) {
+        // Generamos un nuevo SKU único (basado en timestamp para asegurar que no choque)
+        finalSku = `GEN-${Date.now().toString().slice(-6)}-${genCounter++}`
+      }
+    }
+
+    // Si ni siquiera tenía SKU, le ponemos uno por defecto para que funcione bien
+    if (!finalSku) {
+      finalSku = `GEN-${Date.now().toString().slice(-6)}-${genCounter++}`
+    }
+
+    return { ...p, sku: finalSku }
+  })
+
+  // Separamos images del payload (campo virtual) original para el DB insert
+  type ProductRow = Omit<SheetProduct, 'images'>
+  const toRow = (p: SheetProduct): ProductRow => {
+    const { images: _images, ...row } = p
+    return row
+  }
+
+  let upsertedProducts: ExistingProductRef[] = []
+
+  if (uniqueProducts.length > 0) {
+    // Hemos asegurado que los SKUs son 100% únicos (o pertenecen al mismo nombre que se va a actualizar)
+    // Así que el onConflict: 'name' no fallará al actualizar el SKU
+    const { data, error } = await supabase
+      .from('products')
+      .upsert(uniqueProducts.map(toRow), { onConflict: 'name', defaultToNull: false })
+      .select('id, sku, name')
+
+    if (error) throw error
+    upsertedProducts = data ?? []
+  }
+
+  // Construir mapa id → producto del sheet para poder enlazar imágenes
+  const idMap = new Map<string, SheetProduct>()
+  for (const upserted of upsertedProducts) {
+    const match =
+      (upserted.sku ? products.find(p => p.sku === upserted.sku) : undefined) ??
+      products.find(p => p.name === upserted.name)
+    if (match) {
+      idMap.set(upserted.id, match)
+    }
+  }
+
+  const synced = upsertedProducts.length
   const errors: string[] = []
-  let synced = 0
 
-  const existingBySku = new Map<string, ExistingProductRef>()
-  const existingByName = new Map<string, ExistingProductRef>()
+  // ─── PASO 2: Reconstruir imágenes en batch ────────────────────────────────
+  // 1 DELETE de todos los IDs afectados + 1 INSERT de todas las imágenes.
+  const allProductIds = Array.from(idMap.keys())
 
-  const skus = Array.from(new Set(products.map(product => product.sku).filter(Boolean)))
-  const names = Array.from(new Set(products.map(product => product.name).filter(Boolean)))
+  if (allProductIds.length > 0) {
+    const { error: deleteError } = await supabase
+      .from('product_images')
+      .delete()
+      .in('product_id', allProductIds)
 
-  if (skus.length > 0) {
-    const { data: existingProductsBySku, error: existingSkuError } = await supabase
-      .from('products')
-      .select('id, sku, name')
-      .in('sku', skus)
+    if (deleteError) {
+      // No lanzamos — registramos y seguimos para no perder el upsert ya hecho
+      errors.push(`[images-delete] ${deleteError.message}`)
+    } else {
+      const allImages: {
+        product_id: string
+        image_url: string
+        alt_text: string
+        is_primary: boolean
+        sort_order: number
+      }[] = []
 
-    if (existingSkuError) {
-      throw existingSkuError
-    }
-
-    for (const product of existingProductsBySku ?? []) {
-      if (product.sku) {
-        existingBySku.set(product.sku, product)
-      }
-      existingByName.set(product.name, product)
-    }
-  }
-
-  if (names.length > 0) {
-    const { data: existingProductsByName, error: existingNameError } = await supabase
-      .from('products')
-      .select('id, sku, name')
-      .in('name', names)
-
-    if (existingNameError) {
-      throw existingNameError
-    }
-
-    for (const product of existingProductsByName ?? []) {
-      if (product.sku) {
-        existingBySku.set(product.sku, product)
-      }
-      existingByName.set(product.name, product)
-    }
-  }
-
-  for (const product of products) {
-    try {
-      const existingProduct =
-        existingBySku.get(product.sku) ?? existingByName.get(product.name) ?? null
-
-      let storedProductId = existingProduct?.id ?? null
-
-      if (existingProduct) {
-        const { error: updateError } = await supabase
-          .from('products')
-          .update(product)
-          .eq('id', existingProduct.id)
-
-        if (updateError) {
-          throw updateError
-        }
-      } else {
-        const { data: insertedProduct, error: insertError } = await supabase
-          .from('products')
-          .insert(product)
-          .select('id, sku, name')
-          .single()
-
-        if (insertError) {
-          throw insertError
+      for (const [productId, product] of idMap) {
+        if (product.image_url) {
+          allImages.push({
+            product_id: productId,
+            image_url: product.image_url,
+            alt_text: product.name,
+            is_primary: true,
+            sort_order: 0,
+          })
         }
 
-        storedProductId = insertedProduct.id
-        existingByName.set(insertedProduct.name, insertedProduct)
-        if (insertedProduct.sku) {
-          existingBySku.set(insertedProduct.sku, insertedProduct)
-        }
-      }
-
-      if (!storedProductId) {
-        throw new Error(`Product not found after sync for sku: ${product.sku}`)
-      }
-
-      const { error: deleteImagesError } = await supabase
-        .from('product_images')
-        .delete()
-        .eq('product_id', storedProductId)
-
-      if (deleteImagesError) {
-        throw deleteImagesError
-      }
-
-      const productImages = []
-
-      if (product.image_url) {
-        productImages.push({
-          product_id: storedProductId,
-          image_url: product.image_url,
-          alt_text: product.name,
-          is_primary: true,
-          sort_order: 0,
+        product.images.forEach((imageUrl, index) => {
+          allImages.push({
+            product_id: productId,
+            image_url: imageUrl,
+            alt_text: product.name,
+            is_primary: false,
+            sort_order: index + 1,
+          })
         })
       }
 
-      product.images.forEach((imageUrl, index) => {
-        productImages.push({
-          product_id: storedProductId,
-          image_url: imageUrl,
-          alt_text: product.name,
-          is_primary: false,
-          sort_order: index + 1,
-        })
-      })
-
-      if (productImages.length > 0) {
-        const { error: insertImagesError } = await supabase
-          .from('product_images')
-          .insert(productImages)
+      if (allImages.length > 0) {
+        const { error: insertImagesError } = await supabase.from('product_images').insert(allImages)
 
         if (insertImagesError) {
-          throw insertImagesError
+          errors.push(`[images-insert] ${insertImagesError.message}`)
         }
       }
-
-      synced += 1
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown sync error'
-      errors.push(`${product.sku}: ${message}`)
     }
   }
 

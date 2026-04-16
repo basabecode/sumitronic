@@ -70,7 +70,16 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'dcdn-us.mitiendanube.com',
-        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'acdn-us.mitiendanube.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.mitiendanube.com',
         pathname: '/**',
       },
       // Patrones locales solo en desarrollo

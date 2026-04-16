@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
   try {
     return await handleSync(request)
   } catch (error) {
+    console.error('[sync-products] Error:', error)
     const message = error instanceof Error ? error.message : 'Error interno del servidor'
     return NextResponse.json({ error: message }, { status: 500 })
   }
@@ -80,6 +81,7 @@ export async function GET(request: NextRequest) {
   try {
     return await handleSync(request)
   } catch (error) {
+    console.error('[sync-products] Error:', error)
     const message = error instanceof Error ? error.message : 'Error interno del servidor'
     return NextResponse.json({ error: message }, { status: 500 })
   }
