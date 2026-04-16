@@ -25,7 +25,10 @@
     "db:migrate:products": "tsx scripts/migrate-products.ts",
     "test:db-simple": "node scripts/simple-db-test.js",
     "db:restore:local": "powershell -ExecutionPolicy Bypass -File scripts/restore-local-postgres.ps1",
-    "upload:images": "tsx scripts/upload-images-to-r2.ts"
+    "upload:images": "tsx scripts/upload-images-to-r2.ts",
+    "scrape:proveedor": "tsx scripts/scrape-proveedor.ts",
+    "scrape:smart-home": "tsx scripts/scrape-proveedor.ts --solo-smart-home",
+    "catalogo:limpiar": "node scripts/clean-catalogo.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

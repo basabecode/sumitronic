@@ -919,9 +919,9 @@ export function ProductsSection({
 
             <div
               className={cn(
-                'grid gap-6',
+                'grid gap-4',
                 viewMode === 'grid'
-                  ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-equal-rows'
+                  ? 'grid-cols-2 items-stretch sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                   : 'grid-cols-1'
               )}
             >

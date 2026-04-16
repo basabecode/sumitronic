@@ -43,3 +43,6 @@ supabase/.temp/
 .claude/logs/
 
 .vercel
+
+# Scraper outputs — CSVs generados localmente, no van al repo
+scripts/output/

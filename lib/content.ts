@@ -156,6 +156,221 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'armar-smart-home-colombia-sin-ser-tecnico',
+    title: 'Cómo armar tu primer sistema smart home en Colombia sin ser técnico',
+    excerpt:
+      'Guía paso a paso para instalar cámaras WiFi, timbre inteligente y cerradura desde el celular. Sin cableado complicado ni conocimientos técnicos.',
+    image: '/blogs/imou_ranger_dual_hogar.jpg',
+    author: `Equipo ${brand.name}`,
+    date: '10 Abr 2026',
+    publishedAt: '2026-04-10',
+    category: 'Smart Home',
+    pillar: 'Smart home para todos',
+    readTime: '6 min',
+    keywords: [
+      'smart home colombia',
+      'hogar inteligente colombia',
+      'instalar camaras wifi sin tecnico',
+      'como armar smart home',
+    ],
+    content: [
+      'Un sistema smart home no requiere derribar paredes ni contratar un técnico para cada paso. La mayoría de los dispositivos actuales se instalan en menos de 30 minutos y se configuran desde el celular con la app del fabricante.',
+      'El punto de partida es el WiFi. Si tu router no llega con buena señal a los puntos donde vas a instalar las cámaras o el timbre, todo lo demás falla. Antes de comprar cualquier dispositivo, revisa la cobertura en cada rincón donde lo vas a poner. Un router de doble banda con buena cobertura es la base del sistema.',
+      'El segundo paso es elegir el ecosistema. IMOU, por ejemplo, maneja todo desde una sola app: cámaras interiores, exteriores, timbres y cerraduras. Eso simplifica mucho porque no terminas con cuatro apps distintas para cuatro dispositivos distintos.',
+      'El orden que recomendamos para armar el sistema desde cero: primero la cámara de entrada o sala, luego el timbre inteligente en la puerta principal, y si quieres dar el siguiente paso, la cerradura inteligente. Cada uno funciona solo, pero juntos forman un sistema que tiene lógica.',
+      'Lo que más nos consultan es si se necesita un técnico para instalarlo. La respuesta honesta: para los dispositivos WiFi que vendemos, no. El montaje es básico, la configuración es por app y el soporte lo resolvemos por WhatsApp si algo no queda claro.',
+    ],
+    faq: [
+      {
+        question: '¿Qué necesito tener antes de comprar el primer dispositivo smart home?',
+        answer:
+          'Una red WiFi estable que llegue al punto donde lo vas a instalar. Sin eso, ningún dispositivo inalámbrico funciona bien. Si tienes dudas de cobertura, antes de las cámaras puede valer la pena revisar el router.',
+      },
+      {
+        question: '¿Los dispositivos IMOU son compatibles entre sí?',
+        answer:
+          'Sí. Cámaras, timbres y cerraduras IMOU se gestionan desde la misma app. No necesitas aprender varias plataformas.',
+      },
+      {
+        question: '¿Puedo instalar todo yo mismo o necesito ayuda?',
+        answer:
+          'Para los dispositivos WiFi, la instalación física es sencilla y la configuración es por app. Si en algún paso tienes dudas, nos escribes por WhatsApp y te ayudamos.',
+      },
+    ],
+  },
+  {
+    slug: 'camara-solar-imou-sin-cables-colombia',
+    title: 'Cámara solar IMOU: vigilancia sin cables ni facturas eléctricas altas',
+    excerpt:
+      'Las cámaras solares IMOU funcionan con panel solar y batería. No necesitan tomacorriente ni instalación eléctrica. Esto es lo que debes saber antes de comprar.',
+    image: '/blogs/imou_solar_bala.jpg',
+    author: `Equipo ${brand.name}`,
+    date: '11 Abr 2026',
+    publishedAt: '2026-04-11',
+    category: 'Smart Home',
+    pillar: 'Cámaras y vigilancia',
+    readTime: '5 min',
+    keywords: [
+      'camara solar colombia',
+      'camara imou solar',
+      'camara sin cables exterior',
+      'camara bateria solar hogar',
+    ],
+    content: [
+      'La cámara solar resuelve el problema que más frena la instalación de cámaras exteriores en Colombia: no hay tomacorriente cerca. En jardines, garajes, fachadas y zonas sin electricidad, una cámara con panel solar y batería integrada se instala en minutos y no genera costo eléctrico adicional.',
+      'Los modelos IMOU con panel solar usan la batería para funcionar de noche y los días nublados, y se recargan con luz natural durante el día. En ciudades colombianas con buen nivel de sol como Cali, Medellín y Barranquilla, la autonomía es muy buena. En zonas más lluviosas o con poca luz directa hay que revisar la exposición del panel.',
+      'La instalación es la parte más fácil: un tornillo en la pared, el panel orientado hacia donde caiga más sol, y la cámara conectada a tu WiFi por app. Sin electricista, sin cableado, sin obra.',
+      'Algo importante que aclaramos siempre: estas cámaras graban por movimiento o evento, no de forma continua 24/7. Eso alarga la duración de la batería y reduce el almacenamiento necesario, pero si necesitas grabación continua, una cámara con cable eléctrico es más adecuada.',
+      'Para quién es ideal: casas con jardín o patio sin toma eléctrica cercana, fachadas, zonas de parqueo y cualquier punto exterior donde no quieras hacer obra para pasar un cable.',
+    ],
+    faq: [
+      {
+        question: '¿La cámara solar funciona de noche?',
+        answer:
+          'Sí. Tiene batería integrada que se carga durante el día. De noche funciona con la batería y activa visión nocturna automáticamente.',
+      },
+      {
+        question: '¿Cuánto sol necesita al día para funcionar bien?',
+        answer:
+          'Con 3 a 4 horas de luz solar directa la batería se mantiene. En días muy nublados puede bajar el nivel, pero los modelos IMOU están optimizados para climas variables.',
+      },
+      {
+        question: '¿Se puede robar fácilmente al no tener cables?',
+        answer:
+          'Se instala con tornillos en la pared. No es más fácil de robar que una cámara con cable. Además, si alguien la intenta bajar, ya grabó el intento.',
+      },
+    ],
+  },
+  {
+    slug: 'cerradura-inteligente-colombia-guia-compra',
+    title: 'Cerradura inteligente en Colombia: qué modelos instalar y cómo funcionan',
+    excerpt:
+      'Huella dactilar, PIN, NFC y app desde el celular. Las cerraduras inteligentes ya son una opción real para apartamentos y casas en Colombia. Esto es lo que necesitas saber.',
+    image: '/blogs/imou_ranger_dual_hogar.jpg',
+    author: `Equipo ${brand.name}`,
+    date: '12 Abr 2026',
+    publishedAt: '2026-04-12',
+    category: 'Smart Home',
+    pillar: 'Acceso y seguridad',
+    readTime: '5 min',
+    keywords: [
+      'cerradura inteligente colombia',
+      'cerradura huella digital colombia',
+      'cerradura wifi apartamento',
+      'imou cerradura smart',
+    ],
+    content: [
+      'Una cerradura inteligente reemplaza la llave física por huella dactilar, código PIN, tarjeta NFC o el celular. No necesitas cambiar toda la cerradura del apartamento: se instala sobre el cilindro existente en muchos casos, o con un reemplazo estándar en otros.',
+      'En Colombia el caso de uso más común es el apartamento: llaves que se pierden, visitas que necesitan acceso temporal, empleados del hogar con horario definido. Una cerradura inteligente resuelve todo eso sin duplicar llaves ni cambiar cerraduras completas.',
+      'La IMOU CUBO1 que manejamos tiene huella dactilar, NFC y PIN. Se conecta al WiFi y desde la app puedes dar acceso temporal a quien necesites, ver quién entró y a qué hora, y bloquear el acceso de alguien sin llamarle. También funciona sin internet si la red cae.',
+      'Algo que pregunta mucha gente: ¿qué pasa si se va la luz o se descarga la batería? Las cerraduras inteligentes tienen batería propia que dura meses, y la mayoría tienen puerto de emergencia para cargar externamente si llega al límite.',
+      'La instalación para alguien con destornillador y 20 minutos libres es totalmente manejable. El cilindro estándar encaja en la mayoría de puertas de apartamento en Colombia. Si tienes dudas sobre compatibilidad con tu cerradura actual, nos escribes antes de comprar.',
+    ],
+    faq: [
+      {
+        question: '¿Funciona si se va el internet?',
+        answer:
+          'Sí. La huella, el PIN y el NFC funcionan sin conexión a internet. El WiFi solo se necesita para las funciones remotas desde la app.',
+      },
+      {
+        question: '¿Puedo instalarla yo mismo?',
+        answer:
+          'En la mayoría de puertas de apartamento sí. Se necesita un destornillador y seguir las instrucciones de la app. Si tienes dudas con tu puerta específica, nos escribes y te orientamos.',
+      },
+      {
+        question: '¿Puedo dar acceso temporal a alguien?',
+        answer:
+          'Sí. Desde la app puedes crear usuarios con acceso limitado por fecha y hora. Ideal para empleados del hogar, visitantes o inquilinos temporales.',
+      },
+    ],
+  },
+  {
+    slug: 'cual-router-para-camaras-wifi-hogar',
+    title: 'Cuál router comprar para que tus cámaras WiFi funcionen sin cortes',
+    excerpt:
+      'El router es la base del smart home. Si falla la señal, fallan las cámaras. Esta guía explica qué buscar en un router para que todo funcione junto.',
+    image: '/blogs/wifi7_tplink.jpg',
+    author: `Equipo ${brand.name}`,
+    date: '13 Abr 2026',
+    publishedAt: '2026-04-13',
+    category: 'Conectividad',
+    pillar: 'Redes y conectividad',
+    readTime: '5 min',
+    keywords: [
+      'router para camaras wifi colombia',
+      'mejor router hogar inteligente',
+      'mercusys router colombia',
+      'router tenda colombia',
+    ],
+    content: [
+      'Muchas personas compran cámaras WiFi excelentes y después se quejan de que se desconectan, graban con retraso o no mandan notificaciones a tiempo. El problema casi nunca es la cámara: es el router.',
+      'Una cámara WiFi transmite video en tiempo real. Eso requiere una señal estable, no solo una señal que llegue. Un router de entrada de gama con muchos dispositivos conectados puede saturarse y empezar a soltar conexiones, especialmente en las horas de más tráfico.',
+      'Lo que buscamos en un router para smart home: doble banda (2.4 GHz para las cámaras, 5 GHz para los dispositivos que necesitan más velocidad), buena cobertura para que llegue a los rincones donde van las cámaras, y capacidad para manejar varios dispositivos activos al mismo tiempo.',
+      'Mercusys y Tenda ofrecen routers con esas características a precios razonables para el mercado colombiano. No es necesario comprar el router más caro del mercado para que funcionen 4 cámaras y un timbre inteligente.',
+      'Un dato práctico: las cámaras IMOU funcionan en la banda de 2.4 GHz. Si tu router solo emite en 5 GHz o mezcla ambas bandas con el mismo nombre, puede haber problemas de conexión. Asegúrate de que la red de 2.4 GHz esté activa y con un nombre separado.',
+    ],
+    faq: [
+      {
+        question: '¿Cuántas cámaras puede manejar un router doméstico?',
+        answer:
+          'Un router de calidad media puede manejar cómodamente entre 4 y 8 cámaras junto con otros dispositivos del hogar. Si tienes más, vale la pena un router con mayor capacidad de conexiones simultáneas.',
+      },
+      {
+        question: '¿Las cámaras IMOU funcionan con cualquier router?',
+        answer:
+          'Sí, siempre que el router emita en 2.4 GHz. La mayoría de routers modernos lo hacen, pero algunos equipos del operador de internet tienen configuraciones que lo limitan.',
+      },
+      {
+        question: '¿Qué hago si la señal no llega al punto donde quiero instalar la cámara?',
+        answer:
+          'Un extensor de señal o un segundo router en modo repetidor suele resolver eso sin cambiar todo el sistema. También tenemos opciones de cámara con conexión 4G para zonas sin WiFi.',
+      },
+    ],
+  },
+  {
+    slug: 'timbre-camara-apartamento-colombia',
+    title: 'Timbre con cámara: sabe quién llega sin abrir la puerta',
+    excerpt:
+      'El video timbre reemplaza el citófono viejo y le da control real sobre quién entra. Sin instalación eléctrica complicada y con acceso desde el celular estés donde estés.',
+    image: '/blogs/imou_solar_bala_2.jpg',
+    author: `Equipo ${brand.name}`,
+    date: '14 Abr 2026',
+    publishedAt: '2026-04-14',
+    category: 'Smart Home',
+    pillar: 'Acceso y seguridad',
+    readTime: '4 min',
+    keywords: [
+      'timbre con camara colombia',
+      'video timbre apartamento',
+      'imou doorbell colombia',
+      'timbre inteligente sin citofono',
+    ],
+    content: [
+      'Un video timbre resuelve algo concreto: saber quién toca sin levantarse, hablarle desde el celular aunque no estés en casa, y grabar quién llegó cuando no había nadie. Eso vale en un apartamento, en una casa o en cualquier entrada donde hoy dependen de un citófono que solo suena.',
+      'El IMOU Doorbell 2S funciona con WiFi y batería recargable. No necesita cableado eléctrico especial: se monta con dos tornillos, se conecta a tu red y en 10 minutos ya está funcionando. Desde la app ves en tiempo real quién está en la puerta y hablas con ellos aunque estés en otro ciudad.',
+      'Lo que más sorprende a quien lo instala por primera vez es la detección de movimiento. El timbre avisa cuando alguien se acerca a la puerta, no solo cuando toca. Eso permite ver a quien merodeó o dejó un paquete sin tocar.',
+      'El almacenamiento es en tarjeta SD o en la nube de IMOU con plan opcional. Sin mensualidad, las grabaciones se guardan en la tarjeta que insertas tú. Con el plan de nube puedes acceder al historial desde cualquier lugar.',
+      'Para apartamentos en conjunto cerrado donde el portero controla la entrada, el video timbre complementa ese sistema: sirve para la puerta del propio apartamento, no la del conjunto. Muchos usuarios lo instalan junto con la cerradura inteligente para tener el control completo de su puerta.',
+    ],
+    faq: [
+      {
+        question: '¿Funciona si no estoy en casa?',
+        answer:
+          'Sí. Mientras tu celular tenga internet, puedes ver la imagen en vivo, hablar con quien toca y recibir alertas de movimiento desde cualquier parte.',
+      },
+      {
+        question: '¿Necesita cableado eléctrico para instalarlo?',
+        answer:
+          'No. El IMOU Doorbell 2S tiene batería recargable. Se monta con tornillos y se conecta a tu WiFi. Sin electricista ni obra.',
+      },
+      {
+        question: '¿Graba todo el tiempo o solo cuando toca el timbre?',
+        answer:
+          'Graba por eventos: cuando alguien toca o cuando detecta movimiento. Eso ahorra batería y almacenamiento. También puedes revisar el historial de grabaciones desde la app.',
+      },
+    ],
+  },
 ]
 
 export const helpArticles: HelpArticle[] = [

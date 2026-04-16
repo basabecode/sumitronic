@@ -5,18 +5,21 @@ import { Button } from '@/components/ui/button'
 
 type SyncState = 'idle' | 'loading' | 'success' | 'error'
 
+const STATIC_LABELS: Record<'idle' | 'loading', string> = {
+  idle: 'Sincronizar catálogo desde Sheets',
+  loading: 'Sincronizando...',
+}
+
 export default function SyncProductsButton() {
   const [status, setStatus] = useState<SyncState>('idle')
-  const [message, setMessage] = useState('Sincronizar catálogo desde Sheets')
+  const [detail, setDetail] = useState('')
 
   useEffect(() => {
-    if (status !== 'success' && status !== 'error') {
-      return
-    }
+    if (status !== 'success' && status !== 'error') return
 
     const timeout = window.setTimeout(() => {
       setStatus('idle')
-      setMessage('Sincronizar catálogo desde Sheets')
+      setDetail('')
     }, 4000)
 
     return () => window.clearTimeout(timeout)
@@ -25,30 +28,21 @@ export default function SyncProductsButton() {
   const handleSync = async () => {
     try {
       setStatus('loading')
-      setMessage('Sincronizando...')
 
-      const response = await fetch('/api/sync-products', {
-        method: 'POST',
-        headers: {
-          'x-sync-secret': process.env.NEXT_PUBLIC_SYNC_SECRET ?? '',
-        },
-      })
-
+      const response = await fetch('/api/sync-products', { method: 'POST' })
       const data = await response.json()
 
-      if (!response.ok) {
-        throw new Error(data.error ?? 'Error al sincronizar')
-      }
+      if (!response.ok) throw new Error(data.error ?? 'Error al sincronizar')
 
       setStatus('success')
-      setMessage(`Sincronizados ${data.synced} productos`)
+      setDetail(`Sincronizados ${data.synced} productos`)
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Error al sincronizar'
-
       setStatus('error')
-      setMessage(message)
+      setDetail(error instanceof Error ? error.message : 'Error al sincronizar')
     }
   }
+
+  const label = status === 'idle' || status === 'loading' ? STATIC_LABELS[status] : detail
 
   return (
     <Button
@@ -63,7 +57,7 @@ export default function SyncProductsButton() {
             : ''
       }
     >
-      {message}
+      {label}
     </Button>
   )
 }

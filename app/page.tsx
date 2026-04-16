@@ -28,7 +28,8 @@ export default function Home() {
       <Header />
       <main>
         <h1 className="sr-only">
-          {brand.organizationName} - Seguridad electronica, conectividad y repuestos
+          {brand.organizationName} - Smart home de calidad para Colombia: cámaras WiFi, timbres
+          inteligentes y respaldo de energía
         </h1>
         <HeroSection />
         <SectionErrorBoundary title="Error al cargar los productos">

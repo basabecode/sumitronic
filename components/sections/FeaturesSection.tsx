@@ -5,25 +5,25 @@ export default function FeaturesSection() {
   const features = [
     {
       icon: Shield,
-      title: 'Garantia y respaldo',
+      title: 'Productos que se instalan solos',
       description:
-        'Trabajamos con productos originales y te ayudamos a validar garantia, compatibilidad y condiciones de compra.',
+        'Todo lo que vendemos lo puedes configurar tú mismo desde el celular. Sin técnico, sin cables difíciles, sin llamadas de soporte interminables.',
       color: 'text-[hsl(var(--brand-strong))]',
       bgColor: 'bg-[hsl(var(--surface-highlight))]',
     },
     {
       icon: Clock,
-      title: 'Compra sin enredos',
+      title: 'Todo funciona junto',
       description:
-        'Te atendemos por WhatsApp para cotizar, resolver dudas y confirmar lo que realmente te sirve.',
+        'Cámaras, timbres, cerraduras y routers que hemos verificado que son compatibles entre sí. Compras una vez y armas tu sistema completo.',
       color: 'text-sky-700',
       bgColor: 'bg-sky-50',
     },
     {
       icon: Award,
-      title: 'Asesoria util',
+      title: 'Asesoría real por WhatsApp',
       description:
-        'En varias referencias te orientamos con instalacion, uso basico y recomendaciones segun tu necesidad.',
+        'Si tienes dudas antes de comprar o al instalar, te respondemos nosotros, no un bot. Con contexto de tu caso, no respuestas genéricas.',
       color: 'text-cyan-700',
       bgColor: 'bg-cyan-50',
     },
@@ -34,11 +34,11 @@ export default function FeaturesSection() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl font-bold text-[hsl(var(--foreground))] md:text-4xl mb-4">
-            ¿Por qué elegir {brand.name}?
+            Smart home sin complicaciones
           </h2>
           <p className="text-xl text-[hsl(var(--text-muted))] max-w-3xl mx-auto">
-            No somos un marketplace gigante. Somos un equipo pequeño con respaldo local, atención
-            directa y productos que conocemos bien.
+            No vendemos de todo. Vendemos lo que funciona, lo que se instala fácil y lo que tiene
+            soporte real si algo no queda claro.
           </p>
         </div>
 
