@@ -116,15 +116,43 @@ export default async function CategoryPage({ params }: { params: { slug: string 
         </nav>
 
         <header className="section-shell mb-8 overflow-hidden p-6 md:p-8">
-          <p className="eyebrow-label">Categoría</p>
-          <h1 className="font-display mt-2 text-4xl font-semibold text-[hsl(var(--foreground))]">
-            {data.category.name}
-          </h1>
-          <p className="mt-4 max-w-3xl text-lg text-[hsl(var(--text-muted))]">
-            {data.products.length > 0
-              ? `${data.products.length} referencias con inventario activo, soporte técnico local y despacho a todo Colombia.`
-              : `Catálogo en actualización. Escríbenos para saber qué hay disponible.`}
-          </p>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div>
+              <p className="eyebrow-label">Categoría</p>
+              <h1 className="font-display mt-2 text-4xl font-semibold text-[hsl(var(--foreground))]">
+                {data.category.name}
+              </h1>
+              <p className="mt-4 max-w-3xl text-lg text-[hsl(var(--text-muted))]">
+                {data.products.length > 0
+                  ? `${data.products.length} referencias con inventario activo, soporte técnico local y despacho a todo Colombia.`
+                  : `Catálogo en actualización. Escríbenos para saber qué hay disponible.`}
+              </p>
+            </div>
+
+            {/* Dynamic Buying Guide Tip */}
+            {(params.slug === 'camaras-de-seguridad' ||
+              params.slug === 'ups' ||
+              params.slug === 'redes-e-internet') && (
+              <div className="bg-[hsl(var(--surface-muted))] border border-[hsl(var(--border-subtle))] p-4 rounded-xl max-w-sm shrink-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                    💡
+                  </span>
+                  <h3 className="font-semibold text-[hsl(var(--foreground))] text-sm">
+                    Consejo Sumitronic
+                  </h3>
+                </div>
+                <p className="text-sm text-[hsl(var(--text-muted))]">
+                  {params.slug === 'camaras-de-seguridad' &&
+                    'Fíjate en los Megapíxeles (2MP es HD, 4MP es 2K). Si es para exteriores, verifica que sea certificación IP67. ¿Dudas? Tienes soporte gratis al comprar aquí.'}
+                  {params.slug === 'ups' &&
+                    'Verifica los VA (Voltiamperios). Una UPS de 500VA protege un PC básico o un módem por 20min. Para servidores o equipos gamers, busca 1000VA o superior.'}
+                  {params.slug === 'redes-e-internet' &&
+                    'Si tu internet se cae en los cuartos del fondo, un extensor básico ayuda, pero un sistema MESH (malla) resuelve el problema de raíz sin perder velocidad.'}
+                </p>
+              </div>
+            )}
+          </div>
         </header>
 
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

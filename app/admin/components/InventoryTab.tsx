@@ -1,8 +1,24 @@
 'use client'
 
+import { useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { Package, Search, Filter, Plus, Eye, Edit, Trash2, Loader2, Download } from 'lucide-react'
+import {
+  Package,
+  Search,
+  Filter,
+  Plus,
+  Eye,
+  Edit,
+  Trash2,
+  Loader2,
+  Download,
+  Play,
+  Pause,
+  X,
+  ChevronDown,
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -42,16 +58,27 @@ interface InventoryTabProps {
   searchQuery: string
   categoryFilter: string
   categories: string[]
+  priceOp: 'gt' | 'lt'
+  priceValue: string
+  stockOp: 'gt' | 'lt'
+  stockValue: string
+  statusFilter: 'all' | 'active' | 'inactive'
   deleteDialog: { open: boolean; product: Product | null }
   onPageChange: (page: number) => void
   onSearchChange: (query: string) => void
   onCategoryChange: (category: string) => void
+  onPriceOpChange: (op: 'gt' | 'lt') => void
+  onPriceValueChange: (val: string) => void
+  onStockOpChange: (op: 'gt' | 'lt') => void
+  onStockValueChange: (val: string) => void
+  onStatusFilterChange: (s: 'all' | 'active' | 'inactive') => void
   onEdit: (product: Product) => void
   onAdd: () => void
   onDeleteRequest: (product: Product) => void
   onDeleteConfirm: (product: Product) => void
   onDeleteCancel: () => void
   onExportCSV: () => void
+  onToggleActive: (product: Product) => void
   exportingCSV?: boolean
 }
 
@@ -65,19 +92,44 @@ export default function InventoryTab({
   searchQuery,
   categoryFilter,
   categories,
+  priceOp,
+  priceValue,
+  stockOp,
+  stockValue,
+  statusFilter,
   deleteDialog,
   onPageChange,
   onSearchChange,
   onCategoryChange,
+  onPriceOpChange,
+  onPriceValueChange,
+  onStockOpChange,
+  onStockValueChange,
+  onStatusFilterChange,
   onEdit,
   onAdd,
   onDeleteRequest,
   onDeleteConfirm,
   onDeleteCancel,
   onExportCSV,
+  onToggleActive,
   exportingCSV = false,
 }: InventoryTabProps) {
-  const activeFilters = (searchQuery ? 1 : 0) + (categoryFilter !== 'all' ? 1 : 0)
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
+  const activeFilters =
+    (searchQuery ? 1 : 0) +
+    (categoryFilter !== 'all' ? 1 : 0) +
+    (priceValue !== '' ? 1 : 0) +
+    (stockValue !== '' ? 1 : 0) +
+    (statusFilter !== 'all' ? 1 : 0)
+
+  const clearAllFilters = () => {
+    onCategoryChange('all')
+    onPriceValueChange('')
+    onStockValueChange('')
+    onStatusFilterChange('all')
+  }
 
   return (
     <>
@@ -139,7 +191,8 @@ export default function InventoryTab({
         {/* Filters */}
         <Card>
           <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
+            {/* Top row: search + filter toggle + actions */}
+            <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1 relative">
                 {isSearching ? (
                   <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 h-4 w-4 animate-spin" />
@@ -153,20 +206,30 @@ export default function InventoryTab({
                   className="pl-10"
                 />
               </div>
-              <Select value={categoryFilter} onValueChange={onCategoryChange}>
-                <SelectTrigger className="w-full md:w-[200px]">
-                  <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Filtrar por categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas las categorías</SelectItem>
-                  {categories.map(cat => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+
+              {/* Filter toggle button with badge */}
+              <button
+                onClick={() => setFiltersOpen(prev => !prev)}
+                className={`inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                  filtersOpen || activeFilters > 0
+                    ? 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
+                    : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <Filter className="h-4 w-4" />
+                Filtros
+                {activeFilters > 0 && (
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                    {activeFilters}
+                  </span>
+                )}
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                    filtersOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
               <Button onClick={onAdd}>
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar
@@ -185,6 +248,142 @@ export default function InventoryTab({
                 {exportingCSV ? 'Exportando...' : 'Exportar CSV'}
               </Button>
             </div>
+
+            {/* Collapsible filter panel */}
+            {filtersOpen && (
+              <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-sm font-semibold text-gray-700">Filtros avanzados</p>
+                  {activeFilters > 0 && (
+                    <button
+                      onClick={clearAllFilters}
+                      className="inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700"
+                    >
+                      <X className="h-3 w-3" />
+                      Limpiar filtros
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  {/* Categoría */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Categoría
+                    </label>
+                    <Select value={categoryFilter} onValueChange={onCategoryChange}>
+                      <SelectTrigger className="h-9 bg-white">
+                        <SelectValue placeholder="Todas" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas las categorías</SelectItem>
+                        {categories.map(cat => (
+                          <SelectItem key={cat} value={cat}>
+                            {cat}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Precio */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Precio
+                    </label>
+                    <div className="flex gap-1.5">
+                      <Select
+                        value={priceOp}
+                        onValueChange={v => onPriceOpChange(v as 'gt' | 'lt')}
+                      >
+                        <SelectTrigger className="h-9 w-[120px] shrink-0 bg-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="lt">Menor que</SelectItem>
+                          <SelectItem value="gt">Mayor que</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={priceValue}
+                        onChange={e => onPriceValueChange(e.target.value)}
+                        className="h-9 bg-white"
+                        min={0}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Stock */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Stock
+                    </label>
+                    <div className="flex gap-1.5">
+                      <Select
+                        value={stockOp}
+                        onValueChange={v => onStockOpChange(v as 'gt' | 'lt')}
+                      >
+                        <SelectTrigger className="h-9 w-[120px] shrink-0 bg-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gt">Mayor que</SelectItem>
+                          <SelectItem value="lt">Menor que</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="number"
+                        placeholder="0"
+                        value={stockValue}
+                        onChange={e => onStockValueChange(e.target.value)}
+                        className="h-9 bg-white"
+                        min={0}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Estado */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Estado
+                    </label>
+                    <div className="flex gap-1.5">
+                      {(['all', 'active', 'inactive'] as const).map(s => (
+                        <button
+                          key={s}
+                          onClick={() => onStatusFilterChange(s)}
+                          className={`flex-1 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors ${
+                            statusFilter === s
+                              ? s === 'active'
+                                ? 'border-emerald-400 bg-emerald-100 text-emerald-700'
+                                : s === 'inactive'
+                                  ? 'border-amber-400 bg-amber-100 text-amber-700'
+                                  : 'border-blue-400 bg-blue-100 text-blue-700'
+                              : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {s === 'all' ? (
+                            'Todos'
+                          ) : s === 'active' ? (
+                            <span className="flex items-center justify-center gap-1">
+                              <Play className="h-3 w-3 fill-emerald-600 text-emerald-600" />
+                              Publicado
+                            </span>
+                          ) : (
+                            <span className="flex items-center justify-center gap-1">
+                              <Pause className="h-3 w-3 fill-amber-600 text-amber-600" />
+                              Pausado
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -300,7 +499,33 @@ export default function InventoryTab({
                         </div>
                       </div>
 
-                      <div className="mt-4 flex items-center gap-2">
+                      <div className="mt-3 flex items-center gap-1.5">
+                        {/* Estado toggle */}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onToggleActive(product)}
+                          title={
+                            product.active ? 'Pausar (ocultar de tienda)' : 'Publicar en tienda'
+                          }
+                          className={`h-10 px-3 font-medium text-xs ${
+                            product.active
+                              ? 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800'
+                              : 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 hover:text-amber-800'
+                          }`}
+                        >
+                          {product.active ? (
+                            <>
+                              <Pause className="h-3.5 w-3.5 mr-1" />
+                              Pausar
+                            </>
+                          ) : (
+                            <>
+                              <Play className="h-3.5 w-3.5 mr-1" />
+                              Publicar
+                            </>
+                          )}
+                        </Button>
                         <Button variant="outline" size="sm" asChild className="h-10 flex-1">
                           <Link href={`/products/${product.id}`} target="_blank">
                             <Eye className="mr-2 h-4 w-4" />
@@ -383,20 +608,49 @@ export default function InventoryTab({
                             </div>
                           </TableCell>
                           <TableCell>
-                            {product.featured && (
-                              <Badge variant="default" className="text-xs">
-                                Destacado
-                              </Badge>
-                            )}
+                            <div className="flex flex-col gap-1.5">
+                              {/* Publicación toggle */}
+                              <button
+                                onClick={() => onToggleActive(product)}
+                                title={product.active ? 'Pausar publicación' : 'Publicar en tienda'}
+                                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+                                  product.active
+                                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                                    : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                                }`}
+                              >
+                                {product.active ? (
+                                  <>
+                                    <Play className="h-3 w-3 fill-emerald-600 text-emerald-600" />
+                                    Publicado
+                                  </>
+                                ) : (
+                                  <>
+                                    <Pause className="h-3 w-3 fill-amber-600 text-amber-600" />
+                                    Pausado
+                                  </>
+                                )}
+                              </button>
+                              {product.featured && (
+                                <Badge variant="default" className="text-xs w-fit">
+                                  Destacado
+                                </Badge>
+                              )}
+                            </div>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Button variant="ghost" size="sm" asChild>
+                            <div className="flex items-center justify-end gap-1">
+                              <Button variant="ghost" size="sm" asChild title="Ver producto">
                                 <Link href={`/products/${product.id}`} target="_blank">
                                   <Eye className="w-4 h-4" />
                                 </Link>
                               </Button>
-                              <Button variant="ghost" size="sm" onClick={() => onEdit(product)}>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onEdit(product)}
+                                title="Editar"
+                              >
                                 <Edit className="w-4 h-4" />
                               </Button>
                               <Button
@@ -404,6 +658,7 @@ export default function InventoryTab({
                                 size="sm"
                                 onClick={() => onDeleteRequest(product)}
                                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                title="Eliminar"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </Button>

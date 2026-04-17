@@ -46,6 +46,12 @@ export function DynamicBreadcrumbs() {
               let cleanPath = decodeURIComponent(path)
               // Reemplazar guiones
               cleanPath = cleanPath.replace(/-/g, ' ')
+
+              // Excepción específica para mostrar "Combos" en lugar de "Kits"
+              if (cleanPath.toLowerCase() === 'kits') {
+                cleanPath = 'Combos'
+              }
+
               const title = cleanPath.charAt(0).toUpperCase() + cleanPath.slice(1)
 
               return (

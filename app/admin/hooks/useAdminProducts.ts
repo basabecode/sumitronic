@@ -23,6 +23,11 @@ export function useAdminProducts() {
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
+  const [priceOp, setPriceOp] = useState<'gt' | 'lt'>('lt')
+  const [priceValue, setPriceValue] = useState<string>('')
+  const [stockOp, setStockOp] = useState<'gt' | 'lt'>('gt')
+  const [stockValue, setStockValue] = useState<string>('')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalProducts, setTotalProducts] = useState(0)
   const [totalPages, setTotalPages] = useState(1)
@@ -47,24 +52,21 @@ export function useAdminProducts() {
     return () => clearTimeout(timer)
   }, [searchQuery, debouncedSearchQuery])
 
-  // Reset page on filter change
+  // Reset page on any filter change
   useEffect(() => {
     if (currentPage !== 1) setCurrentPage(1)
-  }, [debouncedSearchQuery, categoryFilter])
+  }, [debouncedSearchQuery, categoryFilter, priceOp, priceValue, stockOp, stockValue, statusFilter])
 
   const fetchProducts = async () => {
     setLoadingProducts(true)
     try {
-      let query = supabase
-        .from('products')
-        .select(
-          `*,
+      let query = supabase.from('products').select(
+        `*,
           category:categories!category_id (id, name, slug),
           product_images (id, image_url, alt_text, is_primary, sort_order),
           inventory (id, quantity_available, reserved_quantity, last_updated)`,
-          { count: 'exact' }
-        )
-        .eq('active', true)
+        { count: 'exact' }
+      )
 
       if (debouncedSearchQuery.trim()) {
         query = query.or(
@@ -72,7 +74,7 @@ export function useAdminProducts() {
         )
       }
 
-      // Fix: filter by category_id, not by joined table name
+      // Category filter
       if (categoryFilter !== 'all') {
         const { data: catData } = await supabase
           .from('categories')
@@ -83,6 +85,28 @@ export function useAdminProducts() {
         if (catData) {
           query = query.eq('category_id', catData.id)
         }
+      }
+
+      // Price filter
+      const parsedPrice = parseFloat(priceValue)
+      if (priceValue !== '' && !isNaN(parsedPrice)) {
+        query = priceOp === 'gt' ? query.gt('price', parsedPrice) : query.lt('price', parsedPrice)
+      }
+
+      // Stock filter
+      const parsedStock = parseInt(stockValue, 10)
+      if (stockValue !== '' && !isNaN(parsedStock)) {
+        query =
+          stockOp === 'gt'
+            ? query.gt('stock_quantity', parsedStock)
+            : query.lt('stock_quantity', parsedStock)
+      }
+
+      // Status filter
+      if (statusFilter === 'active') {
+        query = query.eq('active', true)
+      } else if (statusFilter === 'inactive') {
+        query = query.eq('active', false)
       }
 
       const from = (currentPage - 1) * ITEMS_PER_PAGE
@@ -161,6 +185,31 @@ export function useAdminProducts() {
     }
   }
 
+  const handleToggleActive = async (product: Product) => {
+    const newActive = !product.active
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ active: newActive })
+        .eq('id', product.id)
+
+      if (error) {
+        console.error('Error toggling product active:', error)
+        toast.error('Error al cambiar el estado del producto')
+        return
+      }
+
+      // Update local state immediately without full refetch
+      setProducts(prev => prev.map(p => (p.id === product.id ? { ...p, active: newActive } : p)))
+      toast.success(
+        newActive ? 'Producto publicado en la tienda' : 'Producto pausado (oculto de la tienda)'
+      )
+    } catch (error) {
+      console.error('Error toggling product active:', error)
+      toast.error('Error al cambiar el estado del producto')
+    }
+  }
+
   return {
     products,
     loadingProducts,
@@ -170,6 +219,16 @@ export function useAdminProducts() {
     debouncedSearchQuery,
     categoryFilter,
     setCategoryFilter,
+    priceOp,
+    setPriceOp,
+    priceValue,
+    setPriceValue,
+    stockOp,
+    setStockOp,
+    stockValue,
+    setStockValue,
+    statusFilter,
+    setStatusFilter,
     currentPage,
     setCurrentPage,
     totalProducts,
@@ -180,5 +239,6 @@ export function useAdminProducts() {
     fetchProducts,
     fetchDashboardStats,
     handleDeleteProduct,
+    handleToggleActive,
   }
 }

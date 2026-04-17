@@ -150,16 +150,23 @@ export default function Header() {
             {/* Desktop Row 2 */}
             <div className="hidden md:flex items-center justify-between py-1.5">
               <nav className="flex items-center gap-6 shrink-0">
-                {primaryNavLinks.map(link => (
-                  <Link
-                    key={link.label}
-                    href={isHome ? link.href : `/${link.href}`}
-                    onClick={() => navigateToSection(link.sectionId)}
-                    className="text-sm font-medium text-white/90 transition-colors hover:text-white whitespace-nowrap"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {primaryNavLinks.map(link => {
+                  const resolvedHref = link.href.startsWith('/')
+                    ? link.href
+                    : isHome
+                      ? link.href
+                      : `/${link.href}`
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolvedHref}
+                      onClick={() => navigateToSection(link.sectionId)}
+                      className="text-base font-bold text-white/90 transition-colors hover:text-white whitespace-nowrap"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                })}
               </nav>
 
               <div className="shrink-0 flex items-center">
@@ -179,16 +186,23 @@ export default function Header() {
             {/* Mobile View Bottom - Nav Links */}
             <div className="md:hidden overflow-x-auto pb-2.5 pt-2">
               <div className="flex items-center gap-2">
-                {primaryNavLinks.map(link => (
-                  <Link
-                    key={link.label}
-                    href={isHome ? link.href : `/${link.href}`}
-                    onClick={() => navigateToSection(link.sectionId)}
-                    className="rounded-full bg-black/10 border border-white/20 px-4 py-1.5 text-xs font-medium text-white whitespace-nowrap backdrop-blur-sm transition-colors hover:bg-black/20"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {primaryNavLinks.map(link => {
+                  const resolvedHref = link.href.startsWith('/')
+                    ? link.href
+                    : isHome
+                      ? link.href
+                      : `/${link.href}`
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolvedHref}
+                      onClick={() => navigateToSection(link.sectionId)}
+                      className="rounded-full bg-black/20 border border-white/20 px-4 py-1.5 text-sm font-bold text-white whitespace-nowrap backdrop-blur-sm transition-colors hover:bg-black/30"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                })}
               </div>
             </div>
           </div>

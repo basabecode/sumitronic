@@ -63,7 +63,7 @@ export function ProductsSection({
   const { addItem, openCart, formatCurrency } = useCart()
   const { addItem: addToFavorites, removeItem: removeFromFavorites, isFavorite } = useFavorites()
   const { categories, brands, isLoadingCategories, isLoadingBrands } = useSharedData()
-  const [sortBy, setSortBy] = useState('featured')
+  const [sortBy, setSortBy] = useState('random')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -88,7 +88,7 @@ export function ProductsSection({
     const params = new URLSearchParams({
       page: currentPage.toString(),
       limit: limit.toString(),
-      sortBy: sortBy === 'featured' ? 'featured' : sortBy,
+      sortBy: sortBy,
       sortOrder: sortBy === 'price' ? 'asc' : 'desc',
     })
 
@@ -740,10 +740,11 @@ export function ProductsSection({
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent align="end">
+                  <SelectItem value="random">Aleatorio</SelectItem>
                   <SelectItem value="featured">Destacados</SelectItem>
                   <SelectItem value="name">Nombre A-Z</SelectItem>
                   <SelectItem value="price">Precio: menor a mayor</SelectItem>
-                  <SelectItem value="created_at">Mas recientes</SelectItem>
+                  <SelectItem value="created_at">Más recientes</SelectItem>
                 </SelectContent>
               </Select>
 

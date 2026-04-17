@@ -16,6 +16,7 @@ import {
   RotateCcw,
   Share2,
   Shield,
+  MessageCircle,
   ShoppingCart,
   Sparkles,
   Star,
@@ -623,27 +624,50 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                 )}
               </div>
 
-              <div className="border-t border-[hsl(var(--border-subtle))] px-5 py-4">
-                <div className="space-y-2.5">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
-                    <p className="text-sm text-[hsl(var(--foreground))]">
-                      {isOutOfStock
-                        ? 'Podemos ayudarte cuando el producto vuelva a estar disponible.'
-                        : 'Inventario disponible para compra y despacho.'}
-                    </p>
+              <div className="border-t border-[hsl(var(--border-subtle))] px-5 py-5 bg-[hsl(var(--surface-muted))]">
+                <p className="mb-3 text-xs font-semibold text-[hsl(var(--text-muted))] uppercase tracking-wider">
+                  Respaldado por Sumitronic
+                </p>
+                <div className="space-y-3.5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-sm flex-shrink-0">
+                      <Shield className="h-3.5 w-3.5 text-[hsl(var(--success))]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[hsl(var(--foreground))]">
+                        Garantía local gestionada desde Cali
+                      </p>
+                      <p className="text-xs text-[hsl(var(--text-muted))]">
+                        Sin bots. Si falla, nos escribes y lo solucionamos nosotros mismos.
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
-                    <p className="text-sm text-[hsl(var(--foreground))]">
-                      Atención para resolver dudas de compatibilidad o uso.
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-sm flex-shrink-0">
+                      <Zap className="h-3.5 w-3.5 text-amber-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[hsl(var(--foreground))]">
+                        En stock real (No somos intermediarios)
+                      </p>
+                      <p className="text-xs text-[hsl(var(--text-muted))]">
+                        Disponible para despacho hoy mismo a todo Colombia.
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[hsl(var(--success))]" />
-                    <p className="text-sm text-[hsl(var(--foreground))]">
-                      Información visible para comprar con mayor tranquilidad.
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white shadow-sm flex-shrink-0">
+                      <MessageCircle className="h-3.5 w-3.5 text-[hsl(var(--brand))]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[hsl(var(--foreground))]">
+                        Soporte por WhatsApp con especialistas
+                      </p>
+                      <p className="text-xs text-[hsl(var(--text-muted))]">
+                        ¿No sabes si te sirve? Escríbenos y un experto te confirma la compatibilidad
+                        ahora mismo.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

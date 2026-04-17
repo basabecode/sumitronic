@@ -150,7 +150,17 @@ export default function AdminDashboard() {
       form.fetchCategories()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, products.currentPage, products.debouncedSearchQuery, products.categoryFilter])
+  }, [
+    activeTab,
+    products.currentPage,
+    products.debouncedSearchQuery,
+    products.categoryFilter,
+    products.priceOp,
+    products.priceValue,
+    products.stockOp,
+    products.stockValue,
+    products.statusFilter,
+  ])
 
   const handleEditProduct = (product: Parameters<typeof form.loadProductForEdit>[0]) => {
     form.loadProductForEdit(product)
@@ -281,16 +291,27 @@ export default function AdminDashboard() {
               searchQuery={products.searchQuery}
               categoryFilter={products.categoryFilter}
               categories={form.categories}
+              priceOp={products.priceOp}
+              priceValue={products.priceValue}
+              stockOp={products.stockOp}
+              stockValue={products.stockValue}
+              statusFilter={products.statusFilter}
               deleteDialog={products.deleteDialog}
               onPageChange={products.setCurrentPage}
               onSearchChange={products.setSearchQuery}
               onCategoryChange={products.setCategoryFilter}
+              onPriceOpChange={products.setPriceOp}
+              onPriceValueChange={products.setPriceValue}
+              onStockOpChange={products.setStockOp}
+              onStockValueChange={products.setStockValue}
+              onStatusFilterChange={products.setStatusFilter}
               onEdit={handleEditProduct}
               onAdd={handleAddProduct}
               onDeleteRequest={p => products.setDeleteDialog({ open: true, product: p })}
               onDeleteConfirm={products.handleDeleteProduct}
               onDeleteCancel={() => products.setDeleteDialog({ open: false, product: null })}
               onExportCSV={handleExportCSV}
+              onToggleActive={products.handleToggleActive}
               exportingCSV={exportingCSV}
             />
           )}

@@ -48,6 +48,74 @@ export type HelpArticle = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'comprar-seguridad-sumitronic-vs-mercadolibre',
+    title: 'Comprar cámaras en Sumitronic vs Grandes Plataformas: ¿Vale la pena ahorrar $20.000?',
+    excerpt:
+      'Si una cámara no configura, ¿a quién llamas? Descubre por qué comprar seguridad en sitios como MercadoLibre o Amazon puede salir caro, y cuál es el valor real del respaldo local en Colombia.',
+    image: '/blogs/blog_comparativa_tiendas.png',
+    author: `Equipo ${brand.name}`,
+    date: '16 Abr 2026',
+    publishedAt: '2026-04-16',
+    category: 'Comparativas',
+    pillar: 'Conocimiento experto',
+    readTime: '6 min',
+    keywords: [
+      'sumitronic vs mercadolibre',
+      'comprar camaras de seguridad',
+      'opiniones sumitronic colombia',
+      'alternativa mercadolibre electronica',
+    ],
+    content: [
+      'Las plataformas genéricas como MercadoLibre o Amazon son excelentes para comprar zapatos o forros de celular. Pero cuando compras seguridad electrónica, redes o repuestos especializados, el panorama cambia drásticamente. El problema rara vez está en el tiempo de envío; el problema explota cuando abres la caja y te enfrentas a la instalación.',
+      'En plataformas grandes, estás comprándole a un "cajamoviente": alguien que importa 5 contenedores de tecnología surtida, las carga en la web con descripciones automáticas y nunca en su vida ha empalmado un cable UTP o configurado una IP en un NVR.',
+      'En Sumitronic, vendemos exactamente lo mismo, pero cambiamos radicalmente la postventa. Nuestro modelo de negocio no depende de que el empaque llegue bonito, depende de que **el equipo quede funcionando en tu casa o negocio**.',
+      '## 1. El gran problema: Configuración y Soporte',
+      '¿Qué pasa cuando la cámara Imou no genera el código QR? En un marketplace tradicional debes iniciar una disputa engorrosa que bloquea tu dinero, o ver horas de tutoriales de YouTube desactualizados. En Sumitronic nos escribes al WhatsApp; nosotros simulamos la falla aquí en nuestros escritorios en Cali y te enviamos la solución exacta paso a paso.',
+      '## 2. Garantía local real',
+      'Las garantías de 3 a 6 meses de los importadores masivos suelen estar condicionadas a procesos absurdos. Nosotros manejamos garantía oficial de 12 meses. Si la tarjeta para TV que nos compraste llega frita o no encaja porque tu modelo tenía una variable oculta, te respondemos sin enviar tus datos a un ticket automatizado en el extranjero.',
+      'No somos una bodega anónima de internet. Somos tu aliado técnico en Colombia. Comprar aquí significa tener línea directa con ingenieros y especialistas que ya han instalado y probado cada referencia que te vendemos.',
+    ],
+    faq: [
+      {
+        question: '¿Los precios de Sumitronic incluyen asesoría?',
+        answer:
+          'Sí, totalmente gratis. Al confirmar tu compra, se activa nuestro soporte postventa por WhatsApp para ayudarte con cualquier traba durante el encendido o uso regular del equipo.',
+      },
+      {
+        question: '¿Despachan tan rápido como MercadoLibre?',
+        answer:
+          'Para compras confirmadas antes del mediodía en día hábil, el despacho sale en la tarde del mismo día con transportadoras nacionales express (Interrapidisimo, Servientrega).',
+      },
+    ],
+  },
+  {
+    slug: 'camaras-originales-vs-replicas-genericas-wifi',
+    title: 'Cámaras Originales vs Réplicas Genéricas WiFi: Lo barato sale caro',
+    excerpt:
+      'Ese kit de 4 cámaras WiFi por el precio de una suena perfecto... hasta que te das cuenta de los servidores inseguros, fallos de señal y falta total de marca. Aprende a detectarlas.',
+    image: '/blogs/blog_original_vs_fake.png',
+    author: 'Mesa Técnica',
+    date: '15 Abr 2026',
+    publishedAt: '2026-04-15',
+    category: 'Comparativas',
+    pillar: 'Conocimiento experto',
+    readTime: '5 min',
+    keywords: [
+      'camaras wifi originales vs falsas',
+      'camara generica v380',
+      'como saber si una camara dahua es original',
+      'riesgos camaras genericas',
+    ],
+    content: [
+      'Si entras a internet a buscar "cámara WiFi", te inundarán miles de ofertas con forma de antenitas blancas. El empaque promete 4K, visión a colores en la noche y seguimiento rotundo por costos equivalentes a lo que cuesta una cena. Pero hay una razón real por la que marcas como Dahua, Imou o TP-Link cuestan más: software y seguridad.',
+      '## Servidores huérfanos y apps inestables',
+      'Las cámaras genéricas baratas te obligan a descargar aplicaciones de terceros (usualmente chinas sin auditoría). Estas aplicaciones tienen servidores inestables; en el momento exacto en que alguien entre a tu casa y necesites revisar la grabación de emergencia en el celular, la app dirá "Conectando al servidor..." y nunca cargará.',
+      '## Seguridad y vulnerabilidad extrema',
+      'Una cámara original de una marca respaldada utiliza encriptación de datos, protocolos SSL y obliga a crear contraseñas fuertes. Una cámara que cuesta $50.000 COP importada suele conectarse mediante P2P sin encriptar. Literalmente, podrías estar subiendo el video de tu sala de estar a ojos desconocidos sin saberlo.',
+      'En conclusión: la seguridad no es un lugar para ahorrar dinero comprando copias sin marca. Con referencias desde los $120.000 COP en la línea Imou en Sumitronic, obtienes servidores alojados en AWS, autenticación de dos pasos, actualizaciones de firmware recurrentes y tranquilidad absoluta de quién ve tus datos.',
+    ],
+  },
+  {
     slug: 'camaras-imou-ia-hogar-negocio',
     title: 'Cámaras Imou con IA: qué revisar antes de comprar para hogar o negocio',
     excerpt:

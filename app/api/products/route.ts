@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
   const search = searchParams.get('search')
   const minPrice = searchParams.get('minPrice')
   const maxPrice = searchParams.get('maxPrice')
-  const sortBy = searchParams.get('sortBy') || 'created_at'
+  const sortBy = searchParams.get('sortBy') || 'random'
+  const isRandom = sortBy === 'random'
   const safeSortBy = ALLOWED_SORT_FIELDS.includes(sortBy) ? sortBy : 'created_at'
   const sortOrder = searchParams.get('sortOrder') || 'desc'
   const featured = searchParams.get('featured')
@@ -98,7 +99,88 @@ export async function GET(request: NextRequest) {
       query = query.not('compare_price', 'is', null).gt('compare_price', 0)
     }
 
-    // Ordenamiento
+    // Ordenamiento y paginación
+    if (isRandom) {
+      // PostgREST no soporta ORDER BY random().
+      // Solución: traer todos los IDs filtrados, mezclar en JS con Fisher-Yates, paginar manualmente.
+      // Primero obtenemos sólo los IDs para minimizar payload
+      const { data: allIds, error: idsError } = await (query as any).select('id')
+
+      if (idsError) {
+        console.error('Error fetching product IDs:', idsError)
+        return NextResponse.json({ error: 'Error al obtener productos' }, { status: 503 })
+      }
+
+      // Fisher-Yates shuffle
+      const ids: string[] = (allIds || []).map((r: { id: string }) => r.id)
+      for (let i = ids.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[ids[i], ids[j]] = [ids[j], ids[i]]
+      }
+
+      const total = ids.length
+      const from = (page - 1) * limit
+      const pageIds = ids.slice(from, from + limit)
+
+      if (pageIds.length === 0) {
+        return NextResponse.json(
+          {
+            products: [],
+            pagination: {
+              page,
+              limit,
+              total,
+              totalPages: Math.ceil(total / limit),
+              hasNext: false,
+              hasPrev: page > 1,
+            },
+          },
+          { headers: { 'Cache-Control': 'no-store' } }
+        )
+      }
+
+      // Traer los productos de esta página del pool mezclado con todas las relaciones
+      const { data: pageProducts, error: pageError } = await supabase
+        .from('products')
+        .select(
+          `
+          *,
+          category:categories!category_id (id, name, slug),
+          product_images (id, image_url, alt_text, is_primary, sort_order),
+          inventory (id, quantity_available, reserved_quantity, last_updated)
+        `
+        )
+        .in('id', pageIds)
+
+      if (pageError) {
+        console.error('Error fetching page products:', pageError)
+        return NextResponse.json({ error: 'Error al obtener productos' }, { status: 503 })
+      }
+
+      // Reordenar en el mismo orden del shuffle (el .in no garantiza orden)
+      const idOrder = new Map(pageIds.map((id, i) => [id, i]))
+      const sortedPageProducts = (pageProducts || []).sort(
+        (a: any, b: any) => (idOrder.get(a.id) ?? 0) - (idOrder.get(b.id) ?? 0)
+      )
+
+      const totalPages = Math.ceil(total / limit)
+      return NextResponse.json(
+        {
+          products: sortedPageProducts,
+          pagination: {
+            page,
+            limit,
+            total,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1,
+          },
+        },
+        { headers: { 'Cache-Control': 'no-store' } }
+      )
+    }
+
+    // Ordenamiento determinístico
     query = query.order(safeSortBy, { ascending: sortOrder === 'asc' })
 
     // Paginación
@@ -136,7 +218,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        // Sin caché para orden aleatorio; caché corta para orden determinístico
+        'Cache-Control': isRandom ? 'no-store' : 'public, s-maxage=60, stale-while-revalidate=120',
       },
     })
   } catch (error) {
