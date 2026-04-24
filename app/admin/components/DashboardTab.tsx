@@ -1,7 +1,6 @@
 'use client'
 
-import { Package, Users, Settings, Loader2 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Package, Star, TrendingDown, BarChart3, Loader2, Plus, List } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DashboardStats } from '../hooks/useAdminProducts'
 
@@ -22,117 +21,92 @@ export default function DashboardTab({
     {
       label: 'Total Productos',
       value: dashboardStats.totalProducts,
-      color: 'text-[hsl(var(--brand))]',
-      icon: <Package className="h-8 w-8 text-[hsl(var(--brand))]" />,
+      icon: Package,
+      iconBg: 'bg-[hsl(var(--surface-highlight))]',
+      iconColor: 'text-[hsl(var(--brand-strong))]',
+      valueColor: 'text-[hsl(var(--foreground))]',
     },
     {
       label: 'En Stock',
       value: dashboardStats.inStock,
-      color: 'text-green-600',
-      icon: (
-        <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-          <div className="h-4 w-4 bg-green-600 rounded-full" />
-        </div>
-      ),
+      icon: BarChart3,
+      iconBg: 'bg-emerald-50',
+      iconColor: 'text-emerald-600',
+      valueColor: 'text-emerald-700',
     },
     {
       label: 'Sin Stock',
       value: dashboardStats.outOfStock,
-      color: 'text-red-600',
-      icon: (
-        <div className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center">
-          <div className="h-4 w-4 bg-red-600 rounded-full" />
-        </div>
-      ),
+      icon: TrendingDown,
+      iconBg: 'bg-red-50',
+      iconColor: 'text-red-500',
+      valueColor: 'text-red-600',
     },
     {
       label: 'Destacados',
       value: dashboardStats.featured,
-      color: 'text-yellow-600',
-      icon: (
-        <div className="h-8 w-8 bg-yellow-100 rounded-full flex items-center justify-center">
-          <div className="h-4 w-4 bg-yellow-600 rounded-full" />
-        </div>
-      ),
+      icon: Star,
+      iconBg: 'bg-amber-50',
+      iconColor: 'text-amber-500',
+      valueColor: 'text-amber-700',
     },
   ]
 
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {stats.map(stat => (
-          <Card key={stat.label}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                  {loadingProducts ? (
-                    <Loader2 className={`h-6 w-6 animate-spin ${stat.color} mt-2`} />
-                  ) : (
-                    <p className="text-2xl md:text-3xl font-bold mt-1 text-gray-900">
-                      {stat.value}
-                    </p>
-                  )}
-                </div>
-                {stat.icon}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 md:gap-4">
+        {stats.map(({ label, value, icon: Icon, iconBg, iconColor, valueColor }) => (
+          <div
+            key={label}
+            className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-5 shadow-sm"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
+                  {label}
+                </p>
+                {loadingProducts ? (
+                  <Loader2 className={`mt-2 h-5 w-5 animate-spin ${iconColor}`} />
+                ) : (
+                  <p className={`mt-1 font-display text-3xl font-bold ${valueColor}`}>{value}</p>
+                )}
               </div>
-            </CardContent>
-          </Card>
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconBg}`}
+              >
+                <Icon className={`h-5 w-5 ${iconColor}`} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Package className="h-5 w-5 text-[hsl(var(--brand))]" />
-              Gestión de Productos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600 mb-4">Administra tu catálogo de productos</p>
-            <div className="space-y-2">
-              <Button onClick={onNavigateToInventory} className="w-full">
-                Ver Inventario
-              </Button>
-              <Button onClick={onNavigateToAddProduct} variant="outline" className="w-full">
-                Agregar Producto
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-green-600" />
-              Usuarios
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600 mb-4">Administra usuarios del sistema</p>
-            <Button variant="outline" className="w-full" disabled>
-              Próximamente
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5 text-purple-600" />
-              Configuración
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600 mb-4">Configuración del sistema</p>
-            <Button variant="outline" className="w-full" disabled>
-              Próximamente
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-6 shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <Package className="h-5 w-5 text-[hsl(var(--brand))]" aria-hidden="true" />
+          <h3 className="text-base font-semibold text-[hsl(var(--foreground))]">
+            Acciones rápidas
+          </h3>
+        </div>
+        <p className="text-sm text-[hsl(var(--text-muted))] mb-5">
+          Gestiona el catálogo de productos desde aquí.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button onClick={onNavigateToInventory} className="flex-1 gap-2 rounded-xl">
+            <List className="h-4 w-4" aria-hidden="true" />
+            Ver Inventario
+          </Button>
+          <Button
+            onClick={onNavigateToAddProduct}
+            variant="outline"
+            className="flex-1 gap-2 rounded-xl border-[hsl(var(--brand))] text-[hsl(var(--brand-strong))] hover:bg-[hsl(var(--surface-highlight))]"
+          >
+            <Plus className="h-4 w-4" aria-hidden="true" />
+            Agregar Producto
+          </Button>
+        </div>
       </div>
     </div>
   )

@@ -318,16 +318,6 @@ export default function OffersSection() {
                   })}
                 </div>
               </div>
-
-              {/* Dots mobile */}
-              <div className="mt-6 flex justify-center gap-2 lg:hidden">
-                {products.slice(0, Math.min(6, products.length)).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-2 w-2 animate-pulse rounded-full bg-[hsl(var(--brand))]"
-                  />
-                ))}
-              </div>
             </div>
 
             {/* Link a página de ofertas */}

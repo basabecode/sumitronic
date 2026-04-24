@@ -693,9 +693,9 @@ export function ProductsSection({
           </p>
         </header>
 
-        <div className="sticky top-[72px] z-30 space-y-3 rounded-2xl border border-gray-100 bg-white/95 px-4 py-4 shadow-sm backdrop-blur">
+        <div className="sticky top-[72px] z-30 space-y-3 rounded-2xl border border-[hsl(var(--border-subtle))] bg-white/95 px-4 py-3 shadow-sm backdrop-blur-md">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-[hsl(var(--text-muted))]">
               {totalProducts === 0
                 ? '0 productos'
                 : `Mostrando ${showingFrom}-${showingTo} de ${totalProducts} productos`}
@@ -707,10 +707,10 @@ export function ProductsSection({
                   value={searchQuery}
                   onChange={event => handleSearchInput(event.target.value)}
                   placeholder="Buscar productos..."
-                  className="h-11 rounded-full border-gray-200 pl-11 text-sm focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
+                  className="h-11 rounded-full border-[hsl(var(--border-subtle))] pl-11 text-sm focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))]"
                 />
                 <Search
-                  className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                  className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[hsl(var(--border-strong))]"
                   aria-hidden="true"
                 />
               </div>
@@ -719,10 +719,10 @@ export function ProductsSection({
                 variant="outline"
                 onClick={() => setShowFilters(prev => !prev)}
                 className={cn(
-                  'flex items-center gap-2 rounded-full border-gray-200 px-4 py-2 text-sm font-semibold transition',
+                  'flex items-center gap-2 rounded-full border-[hsl(var(--border-subtle))] px-4 py-2 text-sm font-semibold transition',
                   showFilters
                     ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))] text-[hsl(var(--brand-strong))]'
-                    : 'text-gray-700 hover:border-[hsl(var(--border-strong))] hover:text-[hsl(var(--brand-strong))]'
+                    : 'text-[hsl(var(--text-muted))] hover:border-[hsl(var(--border-strong))] hover:text-[hsl(var(--brand-strong))]'
                 )}
                 aria-pressed={showFilters}
               >
@@ -736,7 +736,7 @@ export function ProductsSection({
               </Button>
 
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="h-11 w-full rounded-full border-gray-200 bg-white text-sm font-semibold focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))] sm:w-[180px]">
+                <SelectTrigger className="h-11 w-full rounded-full border-[hsl(var(--border-subtle))] bg-white text-sm font-semibold focus:border-[hsl(var(--brand))] focus:ring-[hsl(var(--brand))] sm:w-[180px]">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent align="end">
@@ -748,7 +748,7 @@ export function ProductsSection({
                 </SelectContent>
               </Select>
 
-              <div className="flex items-center rounded-full border border-gray-200 bg-white p-1">
+              <div className="flex items-center rounded-full border border-[hsl(var(--border-subtle))] bg-white p-1">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'ghost'}
                   size="icon"
@@ -758,7 +758,7 @@ export function ProductsSection({
                     'h-9 w-9 rounded-full',
                     viewMode === 'grid'
                       ? 'bg-[hsl(var(--brand))] text-white hover:bg-[hsl(var(--brand-strong))]'
-                      : 'text-gray-600 hover:text-[hsl(var(--brand-strong))]'
+                      : 'text-[hsl(var(--text-muted))] hover:text-[hsl(var(--brand-strong))]'
                   )}
                 >
                   <Grid className="h-4 w-4" />
@@ -772,7 +772,7 @@ export function ProductsSection({
                     'h-9 w-9 rounded-full',
                     viewMode === 'list'
                       ? 'bg-[hsl(var(--brand))] text-white hover:bg-[hsl(var(--brand-strong))]'
-                      : 'text-gray-600 hover:text-[hsl(var(--brand-strong))]'
+                      : 'text-[hsl(var(--text-muted))] hover:text-[hsl(var(--brand-strong))]'
                   )}
                 >
                   <List className="h-4 w-4" />
@@ -788,7 +788,7 @@ export function ProductsSection({
                   key={chip.key}
                   type="button"
                   onClick={chip.onRemove}
-                  className="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600 transition hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
+                  className="flex items-center gap-2 rounded-full border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] px-3 py-1 text-xs font-semibold text-[hsl(var(--text-muted))] transition hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--brand))] focus-visible:ring-offset-2"
                 >
                   <span>{chip.label}</span>
                   <XCircle className="h-3.5 w-3.5" />
@@ -814,15 +814,17 @@ export function ProductsSection({
             )}
             aria-label="Filtros"
           >
-            <Card className="border border-gray-100 shadow-sm">
+            <Card className="border border-[hsl(var(--border-subtle))] shadow-sm">
               <CardContent className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-gray-900">Filtrar por</h3>
+                  <h3 className="text-base font-semibold text-[hsl(var(--foreground))]">
+                    Filtrar por
+                  </h3>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={clearFilters}
-                    className="text-sm text-gray-600 hover:text-[hsl(var(--brand-strong))]"
+                    className="text-sm text-[hsl(var(--text-muted))] hover:text-[hsl(var(--brand-strong))]"
                   >
                     <XCircle className="mr-2 h-4 w-4" />
                     Limpiar
@@ -831,12 +833,14 @@ export function ProductsSection({
 
                 <div className="space-y-5">
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">Categorias</h4>
+                    <h4 className="text-sm font-semibold text-[hsl(var(--text-muted))]">
+                      Categorias
+                    </h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {categories.map(category => (
                         <label
                           key={category.id}
-                          className="flex items-center gap-3 text-sm text-gray-700"
+                          className="flex items-center gap-3 text-sm text-[hsl(var(--text-muted))]"
                         >
                           <Checkbox
                             id={`category-${category.id}`}
@@ -852,12 +856,12 @@ export function ProductsSection({
                   </div>
 
                   <div className="space-y-3">
-                    <h4 className="text-sm font-semibold text-gray-700">Marcas</h4>
+                    <h4 className="text-sm font-semibold text-[hsl(var(--text-muted))]">Marcas</h4>
                     <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
                       {brands.map(brand => (
                         <label
                           key={brand.id}
-                          className="flex items-center gap-3 text-sm text-gray-700"
+                          className="flex items-center gap-3 text-sm text-[hsl(var(--text-muted))]"
                         >
                           <Checkbox
                             id={`brand-${brand.id}`}
@@ -873,7 +877,7 @@ export function ProductsSection({
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm font-semibold text-gray-700">
+                    <div className="flex items-center justify-between text-sm font-semibold text-[hsl(var(--text-muted))]">
                       <span>Rango de precios</span>
                       <span className="text-xs text-gray-500">COP</span>
                     </div>
@@ -885,14 +889,14 @@ export function ProductsSection({
                       step={10000}
                       className="w-full"
                     />
-                    <div className="flex items-center justify-between text-sm font-semibold text-gray-700">
+                    <div className="flex items-center justify-between text-sm font-semibold text-[hsl(var(--text-muted))]">
                       <span>{formatCurrency(priceRange[0])}</span>
                       <span>{formatCurrency(priceRange[1])}</span>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className="flex items-center gap-3 text-sm text-gray-700">
+                    <label className="flex items-center gap-3 text-sm text-[hsl(var(--text-muted))]">
                       <Checkbox
                         id="in-stock"
                         checked={inStockOnly}
@@ -900,7 +904,7 @@ export function ProductsSection({
                       />
                       <span>Solo productos en stock</span>
                     </label>
-                    <label className="flex items-center gap-3 text-sm text-gray-700">
+                    <label className="flex items-center gap-3 text-sm text-[hsl(var(--text-muted))]">
                       <Checkbox
                         id="featured"
                         checked={featuredOnly}
@@ -934,7 +938,7 @@ export function ProductsSection({
                 ? Array.from({ length: viewMode === 'grid' ? 8 : 4 }, (_, index) => (
                     <div
                       key={`skeleton-${index}`}
-                      className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-5"
+                      className="flex h-full flex-col rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-5"
                     >
                       <div className="skeleton mb-5 aspect-square w-full rounded-2xl" />
                       <div className="skeleton h-4 w-24 rounded-full" />
@@ -952,11 +956,11 @@ export function ProductsSection({
             </div>
 
             {!loading && products.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-gray-200 bg-white p-12 text-center">
-                <p className="text-lg font-semibold text-gray-800">
+              <div className="rounded-3xl border border-dashed border-[hsl(var(--border-subtle))] bg-white p-12 text-center">
+                <p className="text-lg font-semibold text-[hsl(var(--foreground))]">
                   No encontramos resultados con esos filtros
                 </p>
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="mt-2 text-sm text-[hsl(var(--text-muted))]">
                   Prueba con otra busqueda o limpia los filtros para volver a ver todo el catalogo.
                 </p>
                 <Button
@@ -971,10 +975,10 @@ export function ProductsSection({
 
             {totalPages > 1 && (
               <nav
-                className="flex flex-col items-center justify-between gap-3 border-t border-gray-100 pt-6 sm:flex-row"
+                className="flex flex-col items-center justify-between gap-3 border-t border-[hsl(var(--border-subtle))] pt-6 sm:flex-row"
                 aria-label="Paginacion"
               >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-[hsl(var(--text-muted))]">
                   Pagina {currentPage} de {totalPages}
                 </p>
                 <div className="flex items-center gap-3">

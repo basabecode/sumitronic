@@ -211,8 +211,10 @@ export default function ProfilePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Mi Perfil</h1>
-        <p className="mt-2 text-gray-600">
+        <h1 className="font-display text-3xl font-semibold text-[hsl(var(--foreground))]">
+          Mi Perfil
+        </h1>
+        <p className="mt-1.5 text-[hsl(var(--text-muted))]">
           Gestiona tu información personal y direcciones de envío
         </p>
       </div>
@@ -237,8 +239,10 @@ export default function ProfilePage() {
               </div>
 
               <div className="text-center">
-                <h3 className="text-lg font-semibold">{profile?.full_name || 'Usuario'}</h3>
-                <p className="text-sm text-gray-500">{user?.email}</p>
+                <h3 className="text-base font-semibold text-[hsl(var(--foreground))]">
+                  {profile?.full_name || 'Usuario'}
+                </h3>
+                <p className="text-sm text-[hsl(var(--text-muted))]">{user?.email}</p>
                 <div className="mt-2">
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -312,9 +316,11 @@ export default function ProfilePage() {
                     type="email"
                     value={user?.email || ''}
                     disabled
-                    className="bg-gray-50"
+                    className="bg-[hsl(var(--surface-muted))]"
                   />
-                  <p className="text-sm text-gray-500">El email no se puede cambiar</p>
+                  <p className="text-sm text-[hsl(var(--text-muted))]">
+                    El email no se puede cambiar
+                  </p>
                 </div>
 
                 <div className="flex justify-end">
@@ -339,42 +345,56 @@ export default function ProfilePage() {
             <CardContent>
               <div className="space-y-4">
                 {addresses.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p>No tienes direcciones de envío registradas</p>
-                    <p className="text-sm">Agrega una dirección para realizar pedidos</p>
+                  <div className="rounded-xl border border-dashed border-[hsl(var(--border-subtle))] py-10 text-center text-[hsl(var(--text-muted))]">
+                    <MapPin
+                      className="mx-auto mb-3 h-10 w-10 text-[hsl(var(--border-strong))]"
+                      aria-hidden="true"
+                    />
+                    <p className="text-sm font-medium">Sin direcciones guardadas</p>
+                    <p className="mt-0.5 text-xs">Agrega una para agilizar tus pedidos</p>
                   </div>
                 ) : (
                   addresses.map((address, index) => (
-                    <div key={index} className="border rounded-lg p-4 space-y-2">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="font-medium">{address.street}</h4>
-                          <p className="text-sm text-gray-600">
+                    <div
+                      key={index}
+                      className="rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-0.5">
+                          <h4 className="text-sm font-semibold text-[hsl(var(--foreground))]">
+                            {address.street}
+                          </h4>
+                          <p className="text-sm text-[hsl(var(--text-muted))]">
                             {address.neighborhood && `${address.neighborhood}, `}
                             {address.city}, {address.department}
                           </p>
-                          <p className="text-sm text-gray-600">
-                            Código postal: {address.postal_code}
+                          <p className="text-xs text-[hsl(var(--text-muted))]">
+                            CP {address.postal_code}
                           </p>
                           {address.additional_info && (
-                            <p className="text-sm text-gray-500">{address.additional_info}</p>
+                            <p className="text-xs text-[hsl(var(--text-muted))]">
+                              {address.additional_info}
+                            </p>
                           )}
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex shrink-0 gap-1.5">
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
+                            className="h-8 w-8 rounded-lg text-[hsl(var(--text-muted))] hover:text-[hsl(var(--foreground))]"
                             onClick={() => handleEditAddress(index)}
+                            aria-label="Editar dirección"
                           >
-                            <Edit className="w-4 h-4" />
+                            <Edit className="h-3.5 w-3.5" />
                           </Button>
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
+                            className="h-8 w-8 rounded-lg text-[hsl(var(--text-muted))] hover:text-red-500"
                             onClick={() => handleDeleteAddress(index)}
+                            aria-label="Eliminar dirección"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="h-3.5 w-3.5" />
                           </Button>
                         </div>
                       </div>

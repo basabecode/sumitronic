@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, Package, Truck, Calendar } from 'lucide-react'
+import { CheckCircle2, Package, Truck, MessageCircle, Mail, Copy, Check } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { brand } from '@/lib/brand'
 
@@ -17,202 +16,212 @@ interface OrderDetails {
 }
 
 const SuccessPageContent: React.FC = () => {
-  const { clearCart } = useCart()
+  const { clearCart, formatCurrency } = useCart()
   const searchParams = useSearchParams()
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    // Obtener detalles del pedido de los parámetros de búsqueda
-    const orderNumber = searchParams.get('orderNumber') || `CAP-${Date.now()}`
-    const email = searchParams.get('email') || 'cliente@ejemplo.com'
+    const orderNumber =
+      searchParams.get('orderNumber') || `SMT-${Date.now().toString(36).toUpperCase()}`
+    const email = searchParams.get('email') || ''
     const total = parseFloat(searchParams.get('total') || '0')
 
-    // Calcular fecha estimada de entrega (5-7 días hábiles)
     const deliveryDate = new Date()
     deliveryDate.setDate(deliveryDate.getDate() + 7)
-    const estimatedDelivery = deliveryDate.toLocaleDateString('es-ES', {
+    const estimatedDelivery = deliveryDate.toLocaleDateString('es-CO', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     })
 
-    setOrderDetails({
-      orderNumber,
-      estimatedDelivery,
-      email,
-      total,
-    })
-
-    // Limpiar el carrito después de una compra exitosa
+    setOrderDetails({ orderNumber, estimatedDelivery, email, total })
     clearCart()
   }, [searchParams, clearCart])
 
+  const handleCopyOrder = async () => {
+    if (!orderDetails) return
+    await navigator.clipboard.writeText(orderDetails.orderNumber)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   if (!orderDetails) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center">
-          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-[hsl(var(--brand))]" />
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-[hsl(var(--background))]">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[hsl(var(--brand))] border-t-transparent" />
       </div>
     )
   }
 
+  const steps = [
+    {
+      icon: Mail,
+      title: 'Confirmación por email',
+      description:
+        'Te enviaremos los detalles del pedido a ' +
+        (orderDetails.email || 'tu correo registrado') +
+        '.',
+      done: false,
+    },
+    {
+      icon: Package,
+      title: 'Preparación del envío',
+      description: 'Nuestro equipo alista tu pedido para despacho.',
+      done: false,
+    },
+    {
+      icon: Truck,
+      title: 'Seguimiento disponible',
+      description: 'Recibirás el código de guía cuando salga de bodega.',
+      done: false,
+    },
+    {
+      icon: CheckCircle2,
+      title: 'Entrega',
+      description: `Llegará aproximadamente el ${orderDetails.estimatedDelivery}.`,
+      done: true,
+    },
+  ]
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Encabezado de éxito */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-green-100 rounded-full p-4">
-              <CheckCircle className="h-16 w-16 text-green-600" />
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--surface-highlight))] via-white to-[hsl(var(--background))]">
+      <div className="container py-12">
+        <div className="mx-auto max-w-xl space-y-6">
+          {/* Header */}
+          <div className="text-center">
+            <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100">
+              <CheckCircle2 className="h-10 w-10 text-emerald-600" />
+            </div>
+            <h1 className="font-display text-3xl font-semibold text-[hsl(var(--foreground))]">
+              Pedido recibido
+            </h1>
+            <p className="mt-2 text-[hsl(var(--text-muted))]">
+              Lo tenemos. Te contactaremos para coordinar el pago y el despacho.
+            </p>
+          </div>
+
+          {/* Detalles del pedido */}
+          <div className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-[hsl(var(--text-muted))]">
+              Detalles del pedido
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-[hsl(var(--text-muted))]">N° de pedido</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <p className="font-display text-lg font-bold text-[hsl(var(--foreground))]">
+                    {orderDetails.orderNumber}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleCopyOrder}
+                    className="rounded-md p-1 text-[hsl(var(--text-muted))] hover:text-[hsl(var(--brand-strong))] transition-colors"
+                    aria-label="Copiar número de pedido"
+                  >
+                    {copied ? (
+                      <Check className="h-3.5 w-3.5 text-emerald-500" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              {orderDetails.total > 0 && (
+                <div>
+                  <p className="text-xs text-[hsl(var(--text-muted))]">Total del pedido</p>
+                  <p className="mt-1 font-display text-lg font-bold text-emerald-600">
+                    {formatCurrency(orderDetails.total)}
+                  </p>
+                </div>
+              )}
+              {orderDetails.email && (
+                <div className="col-span-2">
+                  <p className="text-xs text-[hsl(var(--text-muted))]">Confirmación enviada a</p>
+                  <p className="mt-1 text-sm font-medium text-[hsl(var(--foreground))]">
+                    {orderDetails.email}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">¡Compra Realizada con Éxito!</h1>
-          <p className="text-gray-600">
-            Gracias por tu compra. Hemos recibido tu pedido y lo procesaremos pronto.
-          </p>
-        </div>
 
-        {/* Detalles del pedido */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Package className="h-5 w-5" />
-              Detalles del Pedido
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-500">Número de Pedido</label>
-                <p className="text-lg font-semibold">{orderDetails.orderNumber}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Total Pagado</label>
-                <p className="text-lg font-semibold text-green-600">
-                  ${orderDetails.total.toLocaleString('es-CO')}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500">Email de Confirmación</label>
-                <p className="text-lg">{orderDetails.email}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  Entrega Estimada
-                </label>
-                <p className="text-lg">{orderDetails.estimatedDelivery}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Próximos pasos */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Truck className="h-5 w-5" />
+          {/* Pasos */}
+          <div className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-6 shadow-sm">
+            <h2 className="mb-5 text-sm font-semibold uppercase tracking-wide text-[hsl(var(--text-muted))]">
               ¿Qué sigue?
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
-                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]" />
+            </h2>
+            <div className="space-y-4">
+              {steps.map(({ icon: Icon, title, description, done }) => (
+                <div key={title} className="flex items-start gap-3">
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${done ? 'bg-emerald-100' : 'bg-[hsl(var(--surface-highlight))]'}`}
+                  >
+                    <Icon
+                      className={`h-4 w-4 ${done ? 'text-emerald-600' : 'text-[hsl(var(--brand))]'}`}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[hsl(var(--foreground))]">{title}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-[hsl(var(--text-muted))]">
+                      {description}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium">Confirmación por email</p>
-                  <p className="text-sm text-gray-600">
-                    Te enviaremos un email de confirmación con todos los detalles de tu pedido.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
-                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]" />
-                </div>
-                <div>
-                  <p className="font-medium">Preparación del pedido</p>
-                  <p className="text-sm text-gray-600">
-                    Nuestro equipo preparará tu pedido cuidadosamente para el envío.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 rounded-full bg-[hsl(var(--surface-highlight))] p-1">
-                  <div className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]" />
-                </div>
-                <div>
-                  <p className="font-medium">Información de seguimiento</p>
-                  <p className="text-sm text-gray-600">
-                    Recibirás un código de seguimiento cuando tu pedido sea despachado.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="bg-green-100 rounded-full p-1 mt-0.5">
-                  <div className="h-2 w-2 bg-green-600 rounded-full" />
-                </div>
-                <div>
-                  <p className="font-medium">Entrega</p>
-                  <p className="text-sm text-gray-600">
-                    Tu pedido llegará en la fecha estimada. ¡Disfrútalo!
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Información de soporte */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <h3 className="font-semibold mb-2">¿Necesitas ayuda?</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                <a
-                  href={`https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent('Hola, tengo una consulta sobre mi pedido')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button variant="outline" size="sm">
-                    WhatsApp: +57 {brand.whatsappDisplay}
-                  </Button>
-                </a>
-                <a href={`mailto:${brand.supportEmail}`}>
-                  <Button variant="outline" size="sm">
-                    {brand.supportEmail}
-                  </Button>
-                </a>
-              </div>
+          {/* Soporte */}
+          <div className="rounded-2xl border border-[hsl(var(--surface-highlight))] bg-[hsl(var(--surface-highlight))] p-5">
+            <p className="text-sm font-semibold text-[hsl(var(--brand-strong))]">
+              ¿Tienes una duda sobre tu pedido?
+            </p>
+            <p className="mt-1 text-sm text-[hsl(var(--text-muted))]">
+              Escríbenos por WhatsApp con tu número de pedido y lo resolvemos en el acto.
+            </p>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <a
+                href={`https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(`Hola, tengo una consulta sobre mi pedido ${orderDetails.orderNumber}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp {brand.whatsappDisplay}
+              </a>
+              <a
+                href={`mailto:${brand.supportEmail}?subject=Consulta pedido ${orderDetails.orderNumber}`}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[hsl(var(--border-subtle))] bg-white px-4 py-2.5 text-sm font-semibold text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--surface-muted))]"
+              >
+                <Mail className="h-4 w-4" />
+                {brand.supportEmail}
+              </a>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Botones de acción */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild className="w-full sm:w-auto">
-            <Link href="/products">Continuar Comprando</Link>
-          </Button>
-          <Button variant="outline" asChild className="w-full sm:w-auto">
-            <Link href="/">Volver al Inicio</Link>
-          </Button>
-        </div>
+          {/* CTAs */}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link href="/products" className="flex-1">
+              <Button size="lg" className="h-12 w-full rounded-xl">
+                Seguir comprando
+              </Button>
+            </Link>
+            <Link href="/" className="flex-1">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-12 w-full rounded-xl border-[hsl(var(--border-subtle))]"
+              >
+                Volver al inicio
+              </Button>
+            </Link>
+          </div>
 
-        {/* Mensaje de agradecimiento */}
-        <div className="text-center mt-8 p-6 bg-gray-50 rounded-lg">
-          <p className="text-lg font-medium text-gray-900 mb-2">
-            ¡Gracias por confiar en {brand.name}!
-          </p>
-          <p className="text-gray-600">
-            Tu satisfacción es nuestra prioridad. Esperamos que disfrutes tu compra y vuelvas
-            pronto.
+          <p className="text-center text-sm text-[hsl(var(--text-muted))]">
+            Gracias por comprar en {brand.name}. Te respondemos en horario Lun–Vie.
           </p>
         </div>
       </div>

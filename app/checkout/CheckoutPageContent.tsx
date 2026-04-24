@@ -244,15 +244,15 @@ export default function CheckoutPageContent() {
 
   if (state.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[hsl(var(--background))]">
         <Header />
 
         <main className="container mx-auto px-4 py-8">
           <div className="text-center py-16">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl font-bold text-[hsl(var(--foreground))] mb-4">
               No hay productos en tu carrito
             </h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-lg text-[hsl(var(--text-muted))] mb-8">
               Agrega algunos productos antes de proceder al checkout
             </p>
             <Link href="/products">
@@ -272,27 +272,32 @@ export default function CheckoutPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[hsl(var(--background))]">
       <Header />
 
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-[hsl(var(--brand-strong))]">
+        <nav
+          className="mb-6 flex items-center gap-2 text-sm text-[hsl(var(--text-muted))]"
+          aria-label="Breadcrumb"
+        >
+          <Link href="/" className="hover:text-[hsl(var(--brand-strong))] transition-colors">
             Inicio
           </Link>
           <span>/</span>
-          <Link href="/cart" className="hover:text-[hsl(var(--brand-strong))]">
+          <Link href="/cart" className="hover:text-[hsl(var(--brand-strong))] transition-colors">
             Carrito
           </Link>
           <span>/</span>
-          <span className="text-gray-900">Checkout</span>
-        </div>
+          <span className="font-medium text-[hsl(var(--foreground))]">Checkout</span>
+        </nav>
 
         {/* Título */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Finalizar Compra</h1>
-          <div className="flex items-center text-sm text-gray-600">
+          <h1 className="font-display text-2xl font-semibold text-[hsl(var(--foreground))] sm:text-3xl">
+            Finalizar compra
+          </h1>
+          <div className="flex items-center text-sm text-[hsl(var(--text-muted))]">
             <Lock className="w-4 h-4 mr-2" />
             Compra Segura
           </div>
@@ -417,7 +422,7 @@ export default function CheckoutPageContent() {
                         {savedAddresses.map((addr, idx) => (
                           <div
                             key={idx}
-                            className={`flex items-start space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === idx.toString() ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
+                            className={`flex items-start space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === idx.toString() ? 'border-primary bg-primary/5' : 'border-[hsl(var(--border-subtle))]'}`}
                           >
                             <RadioGroupItem
                               value={idx.toString()}
@@ -428,13 +433,15 @@ export default function CheckoutPageContent() {
                               htmlFor={`addr-${idx}`}
                               className="font-normal cursor-pointer flex-1"
                             >
-                              <div className="font-medium text-gray-900">{addr.street}</div>
-                              <div className="text-sm text-gray-500">
+                              <div className="font-medium text-[hsl(var(--foreground))]">
+                                {addr.street}
+                              </div>
+                              <div className="text-sm text-[hsl(var(--text-muted))]">
                                 {addr.neighborhood ? `${addr.neighborhood}, ` : ''}
                                 {addr.city}, {addr.department}
                               </div>
                               {addr.additional_info && (
-                                <div className="text-xs text-gray-400 mt-1">
+                                <div className="text-xs text-[hsl(var(--text-muted))] mt-1">
                                   {addr.additional_info}
                                 </div>
                               )}
@@ -442,12 +449,12 @@ export default function CheckoutPageContent() {
                           </div>
                         ))}
                         <div
-                          className={`flex items-center space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === 'new' ? 'border-primary bg-primary/5' : 'border-gray-200'}`}
+                          className={`flex items-center space-x-3 border p-3 rounded-lg transition-colors ${selectedAddressIndex === 'new' ? 'border-primary bg-primary/5' : 'border-[hsl(var(--border-subtle))]'}`}
                         >
                           <RadioGroupItem value="new" id="addr-new" />
                           <Label
                             htmlFor="addr-new"
-                            className="font-medium cursor-pointer text-gray-900"
+                            className="font-medium cursor-pointer text-[hsl(var(--foreground))]"
                           >
                             Usar una nueva dirección
                           </Label>
@@ -661,20 +668,25 @@ export default function CheckoutPageContent() {
                   {/* Productos */}
                   <div className="space-y-3">
                     {state.items.map(item => (
-                      <div key={item.id} className="flex items-center space-x-3">
-                        <div className="relative w-12 h-12 flex-shrink-0">
-                          <Image
-                            src={item.image_url || '/placeholder.svg'}
-                            alt={item.name}
-                            fill
-                            className="object-cover rounded"
-                          />
+                      <div key={item.id} className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-[hsl(var(--border-subtle))] bg-white">
+                          <div className="absolute inset-1">
+                            <Image
+                              src={item.image_url || '/placeholder.svg'}
+                              alt={item.name}
+                              fill
+                              className="object-contain mix-blend-multiply"
+                              sizes="48px"
+                            />
+                          </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium line-clamp-1">{item.name}</p>
-                          <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
+                          <p className="text-sm font-medium text-[hsl(var(--foreground))] line-clamp-1">
+                            {item.name}
+                          </p>
+                          <p className="text-xs text-[hsl(var(--text-muted))]">× {item.quantity}</p>
                         </div>
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-semibold text-[hsl(var(--foreground))]">
                           {formatCurrency(item.price * item.quantity)}
                         </span>
                       </div>
@@ -695,7 +707,7 @@ export default function CheckoutPageContent() {
                       <span>Total:</span>
                       <span>{formatCurrency(state.total)}</span>
                     </div>
-                    <p className="text-xs text-gray-500 text-right">Incluye IVA</p>
+                    <p className="text-xs text-[hsl(var(--text-muted))] text-right">Incluye IVA</p>
                   </div>
                 </CardContent>
               </Card>
@@ -733,7 +745,9 @@ export default function CheckoutPageContent() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <p className="text-sm text-gray-600 mb-4">Métodos de pago aceptados</p>
+                    <p className="text-sm text-[hsl(var(--text-muted))] mb-4">
+                      Métodos de pago aceptados
+                    </p>
                     <div className="flex justify-center flex-wrap gap-3">
                       {[
                         { src: '/bancos/nequi_1.png', alt: 'Nequi' },
@@ -744,7 +758,7 @@ export default function CheckoutPageContent() {
                       ].map(bank => (
                         <div
                           key={bank.alt}
-                          className="relative h-16 w-24 rounded-lg border-2 border-gray-200 bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md"
+                          className="relative h-16 w-24 rounded-lg border-2 border-[hsl(var(--border-subtle))] bg-white p-2 transition-all duration-300 hover:scale-110 hover:border-[hsl(var(--brand))] hover:shadow-md"
                         >
                           <Image
                             src={bank.src}

@@ -307,11 +307,11 @@ function OrderDetailModal({
 
   const paymentStatus = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
     label: order.payment_status,
-    className: 'bg-gray-100 text-gray-800',
+    className: 'bg-[hsl(var(--surface-muted))] text-[hsl(var(--text-muted))]',
   }
   const orderStatus = ORDER_STATUS_LABELS[order.status] ?? {
     label: order.status,
-    className: 'bg-gray-100 text-gray-800',
+    className: 'bg-[hsl(var(--surface-muted))] text-[hsl(var(--text-muted))]',
   }
 
   return (
@@ -321,7 +321,7 @@ function OrderDetailModal({
           <DialogTitle className="flex items-center gap-3 text-lg">
             <Package className="h-5 w-5 text-[hsl(var(--brand))]" />
             Pedido #{order.id.slice(0, 8).toUpperCase()}
-            <span className="text-sm font-normal text-gray-500">
+            <span className="text-sm font-normal text-[hsl(var(--text-muted))]">
               {format(new Date(order.created_at), 'd MMM yyyy, hh:mm a', { locale: es })}
             </span>
           </DialogTitle>
@@ -376,15 +376,15 @@ function OrderDetailModal({
 
         <div className="space-y-5 pt-1">
           {/* ── Datos del cliente ── */}
-          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-gray-50 p-4">
+          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-4">
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--text-muted))]">
               Datos del cliente
             </h3>
             <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2 font-semibold text-gray-900 text-base">
+              <div className="flex items-center gap-2 font-semibold text-[hsl(var(--foreground))] text-base">
                 {getCustomerName(order)}
               </div>
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-[hsl(var(--text-muted))]">
                 <Mail className="h-4 w-4 shrink-0 text-[hsl(var(--brand))]" />
                 <a
                   href={`mailto:${order.customer_info?.email || order.user?.email}`}
@@ -393,7 +393,7 @@ function OrderDetailModal({
                   {order.customer_info?.email || order.user?.email || '—'}
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-[hsl(var(--text-muted))]">
                 <Phone className="h-4 w-4 shrink-0 text-[hsl(var(--brand))]" />
                 <a
                   href={`https://wa.me/57${(order.customer_info?.phone || '').replace(/\D/g, '')}`}
@@ -408,15 +408,15 @@ function OrderDetailModal({
           </section>
 
           {/* ── Dirección de envío ── */}
-          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-gray-50 p-4">
+          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-4">
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--text-muted))]">
               Dirección de envío
             </h3>
-            <div className="flex items-start gap-2 text-sm text-gray-700">
+            <div className="flex items-start gap-2 text-sm text-[hsl(var(--text-muted))]">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(var(--brand))]" />
               <div>
                 <p>{order.shipping_address?.address || order.shipping_address?.street || '—'}</p>
-                <p className="text-gray-500">
+                <p className="text-[hsl(var(--text-muted))]">
                   {order.shipping_address?.city}
                   {order.shipping_address?.department || order.shipping_address?.state
                     ? `, ${order.shipping_address.department || order.shipping_address.state}`
@@ -426,7 +426,9 @@ function OrderDetailModal({
                     : ''}
                 </p>
                 {order.shipping_address?.country && (
-                  <p className="text-gray-400 text-xs">{order.shipping_address.country}</p>
+                  <p className="text-[hsl(var(--border-strong))] text-xs">
+                    {order.shipping_address.country}
+                  </p>
                 )}
               </div>
             </div>
@@ -444,32 +446,36 @@ function OrderDetailModal({
                   return (
                     <div
                       key={i}
-                      className="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-3 py-2 text-sm"
+                      className="flex items-center justify-between gap-3 rounded-lg bg-[hsl(var(--surface-muted))] px-3 py-2 text-sm"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 truncate">{item.name}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="font-medium text-[hsl(var(--foreground))] truncate">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-[hsl(var(--text-muted))]">
                           {formatCurrency(itemPrice)} × {item.quantity}
                         </p>
                       </div>
-                      <span className="shrink-0 font-semibold text-gray-900">
+                      <span className="shrink-0 font-semibold text-[hsl(var(--foreground))]">
                         {formatCurrency(itemPrice * item.quantity)}
                       </span>
                     </div>
                   )
                 })
               ) : (
-                <p className="text-sm text-gray-400 italic">Sin detalle de productos</p>
+                <p className="text-sm text-[hsl(var(--border-strong))] italic">
+                  Sin detalle de productos
+                </p>
               )}
             </div>
 
             <Separator className="my-3" />
-            <div className="flex justify-between text-sm text-gray-600">
+            <div className="flex justify-between text-sm text-[hsl(var(--text-muted))]">
               <span>Subtotal</span>
               <span>{formatCurrency(order.subtotal || 0)}</span>
             </div>
             {(order.shipping ?? 0) > 0 && (
-              <div className="flex justify-between text-sm text-gray-600 mt-1">
+              <div className="flex justify-between text-sm text-[hsl(var(--text-muted))] mt-1">
                 <span>Envío</span>
                 <span>{formatCurrency(order.shipping)}</span>
               </div>
@@ -481,18 +487,18 @@ function OrderDetailModal({
           </section>
 
           {/* ── Información de pago ── */}
-          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-gray-50 p-4">
+          <section className="rounded-xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-4">
             <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--text-muted))]">
               Información de pago
             </h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-gray-500">Método</span>
+                <span className="text-[hsl(var(--text-muted))]">Método</span>
                 <span className="font-medium">{order.payment_method || '—'}</span>
               </div>
               {order.notes && (
-                <div className="rounded-lg bg-white border border-[hsl(var(--border-subtle))] p-3 text-xs text-gray-700 space-y-1">
-                  <p className="font-semibold text-gray-900 text-sm mb-1">
+                <div className="rounded-lg bg-white border border-[hsl(var(--border-subtle))] p-3 text-xs text-[hsl(var(--text-muted))] space-y-1">
+                  <p className="font-semibold text-[hsl(var(--foreground))] text-sm mb-1">
                     Referencia del cliente:
                   </p>
                   {order.notes.split('|').map((part, i) => (
@@ -512,11 +518,11 @@ function OrderDetailModal({
                 </a>
               )}
               <div className="flex items-center justify-between pt-1">
-                <span className="text-gray-500">Estado pago</span>
+                <span className="text-[hsl(var(--text-muted))]">Estado pago</span>
                 <Badge className={paymentStatus.className}>{paymentStatus.label}</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-500">Estado pedido</span>
+                <span className="text-[hsl(var(--text-muted))]">Estado pedido</span>
                 <Badge className={orderStatus.className}>{orderStatus.label}</Badge>
               </div>
             </div>
@@ -613,7 +619,7 @@ function OrderDetailModal({
             </div>
 
             {order.tracking_number && (
-              <p className="mt-3 text-sm text-gray-600">
+              <p className="mt-3 text-sm text-[hsl(var(--text-muted))]">
                 <span className="font-medium">Número de seguimiento:</span> {order.tracking_number}
               </p>
             )}
@@ -761,7 +767,7 @@ export default function SalesTab() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4 text-center">
         <AlertCircle className="h-10 w-10 text-red-500" />
-        <p className="text-gray-700 font-medium">{error}</p>
+        <p className="text-[hsl(var(--text-muted))] font-medium">{error}</p>
         <Button variant="outline" onClick={fetchOrders}>
           Reintentar
         </Button>
@@ -775,18 +781,22 @@ export default function SalesTab() {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Ventas Totales</CardTitle>
+            <CardTitle className="text-sm font-medium text-[hsl(var(--text-muted))]">
+              Ventas Totales
+            </CardTitle>
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.totalSales)}</div>
-            <p className="text-xs text-gray-500 mt-1">Ingresos acumulados</p>
+            <p className="text-xs text-[hsl(var(--text-muted))] mt-1">Ingresos acumulados</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Ventas del Mes</CardTitle>
+            <CardTitle className="text-sm font-medium text-[hsl(var(--text-muted))]">
+              Ventas del Mes
+            </CardTitle>
             <TrendingUp
               className={`h-4 w-4 ${Number(stats.growth) >= 0 ? 'text-green-600' : 'text-red-600'}`}
             />
@@ -803,12 +813,14 @@ export default function SalesTab() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Ventas Hoy</CardTitle>
+            <CardTitle className="text-sm font-medium text-[hsl(var(--text-muted))]">
+              Ventas Hoy
+            </CardTitle>
             <Calendar className="h-4 w-4 text-[hsl(var(--brand))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.dailySales)}</div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-[hsl(var(--text-muted))] mt-1">
               {new Date().toLocaleDateString('es-CO', {
                 weekday: 'long',
                 day: 'numeric',
@@ -820,12 +832,16 @@ export default function SalesTab() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500">Por Confirmar</CardTitle>
+            <CardTitle className="text-sm font-medium text-[hsl(var(--text-muted))]">
+              Por Confirmar
+            </CardTitle>
             <Clock className="h-4 w-4 text-yellow-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.pendingCount}</div>
-            <p className="text-xs text-gray-500 mt-1">Pagos pendientes de revisión</p>
+            <p className="text-xs text-[hsl(var(--text-muted))] mt-1">
+              Pagos pendientes de revisión
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -836,12 +852,12 @@ export default function SalesTab() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <CardTitle>Historial de Pedidos</CardTitle>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-[hsl(var(--text-muted))] mt-1">
                 Haz clic en un pedido para ver detalles y gestionar el estado
               </p>
             </div>
             <div className="relative w-full md:w-64">
-              <Search className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
+              <Search className="absolute left-2.5 top-3 h-4 w-4 text-[hsl(var(--text-muted))]" />
               <Input
                 placeholder="Buscar por cliente, ID, ciudad..."
                 className="pl-8 h-11 md:h-10"
@@ -855,39 +871,41 @@ export default function SalesTab() {
           {/* Mobile */}
           <div className="space-y-3 md:hidden">
             {filteredOrders.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+              <div className="rounded-xl border border-dashed border-[hsl(var(--border-subtle))] p-6 text-center text-sm text-[hsl(var(--text-muted))]">
                 {searchQuery ? 'No se encontraron pedidos' : 'Aún no hay pedidos registrados'}
               </div>
             ) : (
               filteredOrders.map(order => {
                 const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
                   label: order.payment_status,
-                  className: 'bg-gray-100 text-gray-800',
+                  className: 'bg-[hsl(var(--surface-muted))] text-[hsl(var(--text-muted))]',
                 }
                 return (
                   <button
                     key={`mobile-${order.id}`}
                     onClick={() => setSelectedOrder(order)}
-                    className="w-full text-left rounded-xl border border-gray-200 bg-white p-4 shadow-sm hover:border-[hsl(var(--brand))] hover:shadow-md transition-all"
+                    className="w-full text-left rounded-xl border border-[hsl(var(--border-subtle))] bg-white p-4 shadow-sm hover:border-[hsl(var(--brand))] hover:shadow-md transition-all"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-[hsl(var(--foreground))] truncate">
                           {getCustomerName(order)}
                         </p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <p className="text-sm text-[hsl(var(--text-muted))] truncate">
                           {order.customer_info?.email || order.user?.email}
                         </p>
-                        <p className="text-xs text-gray-400 mt-0.5">{order.customer_info?.phone}</p>
+                        <p className="text-xs text-[hsl(var(--border-strong))] mt-0.5">
+                          {order.customer_info?.phone}
+                        </p>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-[hsl(var(--foreground))]">
                           {formatCurrency(Number(order.total))}
                         </p>
                         <Badge className={`mt-1 text-xs ${ps.className}`}>{ps.label}</Badge>
                       </div>
                     </div>
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="mt-2 text-xs text-[hsl(var(--border-strong))]">
                       {format(new Date(order.created_at), 'd MMM yyyy, hh:mm a', { locale: es })}
                       {' — '}
                       {order.shipping_address?.city}
@@ -915,7 +933,10 @@ export default function SalesTab() {
               <TableBody>
                 {filteredOrders.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                    <TableCell
+                      colSpan={7}
+                      className="text-center py-8 text-[hsl(var(--text-muted))]"
+                    >
                       {searchQuery ? 'No se encontraron pedidos' : 'Aún no hay pedidos registrados'}
                     </TableCell>
                   </TableRow>
@@ -923,11 +944,11 @@ export default function SalesTab() {
                   filteredOrders.map(order => {
                     const ps = PAYMENT_STATUS_LABELS[order.payment_status] ?? {
                       label: order.payment_status,
-                      className: 'bg-gray-100 text-gray-800',
+                      className: 'bg-[hsl(var(--surface-muted))] text-[hsl(var(--text-muted))]',
                     }
                     const os = ORDER_STATUS_LABELS[order.status] ?? {
                       label: order.status,
-                      className: 'bg-gray-100 text-gray-800',
+                      className: 'bg-[hsl(var(--surface-muted))] text-[hsl(var(--text-muted))]',
                     }
                     return (
                       <TableRow
@@ -940,7 +961,7 @@ export default function SalesTab() {
                             <span className="font-medium text-sm">
                               {format(new Date(order.created_at), 'dd MMM yyyy', { locale: es })}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-[hsl(var(--text-muted))]">
                               {format(new Date(order.created_at), 'hh:mm a')}
                             </span>
                           </div>
@@ -948,18 +969,18 @@ export default function SalesTab() {
                         <TableCell>
                           <div className="flex flex-col">
                             <span className="font-medium text-sm">{getCustomerName(order)}</span>
-                            <span className="text-xs text-gray-500 truncate max-w-[160px]">
+                            <span className="text-xs text-[hsl(var(--text-muted))] truncate max-w-[160px]">
                               {order.shipping_address?.city},{' '}
                               {order.shipping_address?.department || order.shipping_address?.state}
                             </span>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className="flex flex-col gap-0.5 text-xs text-gray-600">
+                          <div className="flex flex-col gap-0.5 text-xs text-[hsl(var(--text-muted))]">
                             <span className="truncate max-w-[150px]">
                               {order.customer_info?.email || order.user?.email || '—'}
                             </span>
-                            <span className="text-gray-400">
+                            <span className="text-[hsl(var(--border-strong))]">
                               {order.customer_info?.phone || '—'}
                             </span>
                           </div>

@@ -114,10 +114,10 @@ export default function ProductFormTab({
           Volver
         </Button>
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
+          <h2 className="text-xl sm:text-2xl font-bold text-[hsl(var(--foreground))] leading-tight">
             {editingProduct ? 'Editar Producto' : 'Agregar Nuevo Producto'}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-[hsl(var(--text-muted))] mt-1">
             {editingProduct
               ? 'Modifica los datos del producto'
               : 'Completa los datos del nuevo producto'}
@@ -307,7 +307,9 @@ export default function ProductFormTab({
                     }
                     placeholder="350000"
                   />
-                  <p className="text-xs text-gray-500">Deja en blanco si no hay descuento</p>
+                  <p className="text-xs text-[hsl(var(--text-muted))]">
+                    Deja en blanco si no hay descuento
+                  </p>
                   {discountPct !== null && (
                     <p className="text-xs font-medium text-emerald-600">
                       Descuento: {discountPct}%
@@ -372,19 +374,19 @@ export default function ProductFormTab({
                     className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                       isDragging
                         ? 'border-[hsl(var(--brand))] bg-[hsl(var(--surface-highlight))]'
-                        : 'border-gray-300 bg-transparent'
+                        : 'border-[hsl(var(--border-subtle))] bg-transparent'
                     }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                   >
                     <Upload
-                      className={`mx-auto mb-4 h-12 w-12 ${isDragging ? 'text-[hsl(var(--brand))]' : 'text-gray-400'}`}
+                      className={`mx-auto mb-4 h-12 w-12 ${isDragging ? 'text-[hsl(var(--brand))]' : 'text-[hsl(var(--border-strong))]'}`}
                     />
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-[hsl(var(--text-muted))]">
                       Arrastra las imágenes aquí o haz clic para seleccionar
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-[hsl(var(--text-muted))] mt-1">
                       Máximo {5 - formData.images.length} imágenes más
                     </p>
                     <input

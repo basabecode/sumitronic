@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -12,21 +11,17 @@ import {
   CreditCard,
   Truck,
   Shield,
+  MessageCircle,
+  ShoppingBag,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/contexts/CartContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
 export default function CartPageContent() {
   const { state, removeItem, updateQuantity, clearCart, formatCurrency } = useCart()
-  const [promoCode, setPromoCode] = useState('')
-  const [isPromoApplied, setIsPromoApplied] = useState(false)
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -36,252 +31,240 @@ export default function CartPageContent() {
     }
   }
 
-  const applyPromoCode = () => {
-    // Lógica para aplicar código promocional
-    if (promoCode.toLowerCase() === 'descuento10') {
-      setIsPromoApplied(true)
-    }
-  }
-
   if (state.items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[hsl(var(--background))]">
         <Header />
-
-        <main className="container mx-auto px-4 py-8">
-          <div className="text-center py-16">
-            <ShoppingCart className="w-24 h-24 mx-auto text-gray-400 mb-6" />
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Tu carrito está vacío</h1>
-            <p className="text-lg text-gray-600 mb-8">
-              Agrega algunos productos increíbles a tu carrito
+        <main className="container py-16">
+          <div className="mx-auto max-w-md py-16 text-center">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[hsl(var(--surface-highlight))]">
+              <ShoppingCart className="h-10 w-10 text-[hsl(var(--brand))]" aria-hidden="true" />
+            </div>
+            <h1 className="font-display text-2xl font-semibold text-[hsl(var(--foreground))]">
+              Tu carrito está vacío
+            </h1>
+            <p className="mt-2 text-[hsl(var(--text-muted))]">
+              Aún no agregaste ningún producto. Revisa el catálogo y encuentra lo que necesitas.
             </p>
-            <Link href="/products">
-              <Button
-                size="lg"
-                className="bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
-              >
-                Explorar Productos
+            <Link href="/products" className="mt-8 inline-block">
+              <Button size="lg" className="h-12 rounded-xl gap-2">
+                <ShoppingBag className="h-5 w-5" />
+                Ver catálogo
               </Button>
             </Link>
           </div>
         </main>
-
         <Footer />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[hsl(var(--background))]">
       <Header />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-[hsl(var(--brand-strong))]">
+        <nav
+          className="mb-6 flex items-center gap-2 text-sm text-[hsl(var(--text-muted))]"
+          aria-label="Breadcrumb"
+        >
+          <Link href="/" className="hover:text-[hsl(var(--brand-strong))] transition-colors">
             Inicio
           </Link>
           <span>/</span>
-          <span className="text-gray-900">Carrito</span>
+          <span className="font-medium text-[hsl(var(--foreground))]">Carrito</span>
+        </nav>
+
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="font-display text-2xl font-semibold text-[hsl(var(--foreground))] sm:text-3xl">
+            Carrito
+            <span className="ml-2 text-base font-normal text-[hsl(var(--text-muted))]">
+              ({state.itemCount} {state.itemCount === 1 ? 'producto' : 'productos'})
+            </span>
+          </h1>
+          <button
+            type="button"
+            onClick={clearCart}
+            className="text-sm font-medium text-[hsl(var(--text-muted))] hover:text-red-500 transition-colors"
+          >
+            Vaciar carrito
+          </button>
         </div>
 
-        {/* Título */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Carrito de Compras</h1>
-          <Badge variant="secondary" className="text-lg px-3 py-1">
-            {state.itemCount} {state.itemCount === 1 ? 'producto' : 'productos'}
-          </Badge>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
           {/* Lista de productos */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Productos</CardTitle>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={clearCart}
-                  className="text-red-600 hover:text-red-700"
+          <div className="space-y-3">
+            {state.items.map(item => (
+              <div
+                key={item.id}
+                className="flex gap-4 rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-4 shadow-sm"
+              >
+                {/* Imagen */}
+                <Link
+                  href={`/products/${item.id}`}
+                  className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-[hsl(var(--border-subtle))] bg-white sm:h-24 sm:w-24"
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Vaciar carrito
-                </Button>
-              </CardHeader>
+                  <div className="absolute inset-2">
+                    <Image
+                      src={item.image_url || item.image || '/placeholder.svg'}
+                      alt={item.name}
+                      fill
+                      className="object-contain mix-blend-multiply"
+                      sizes="96px"
+                    />
+                  </div>
+                </Link>
 
-              <CardContent className="space-y-4">
-                {state.items.map(item => (
-                  <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                    {/* Imagen del producto */}
-                    <div className="relative w-20 h-20 flex-shrink-0">
-                      <Image
-                        src={item.image_url || '/placeholder.svg'}
-                        alt={item.name}
-                        fill
-                        className="object-cover rounded-md"
-                      />
-                    </div>
-
-                    {/* Información del producto */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 line-clamp-1">{item.name}</h3>
-                      {item.brand && <p className="text-sm text-gray-600">{item.brand}</p>}
-                      {item.category && (
-                        <Badge variant="outline" className="mt-1">
-                          {item.category}
-                        </Badge>
+                {/* Info + controles */}
+                <div className="flex flex-1 flex-col gap-2 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      {item.brand && (
+                        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--brand-strong))]">
+                          {item.brand}
+                        </span>
                       )}
+                      <Link href={`/products/${item.id}`}>
+                        <h3 className="mt-0.5 text-sm font-semibold leading-snug text-[hsl(var(--foreground))] line-clamp-2 hover:text-[hsl(var(--brand-strong))] transition-colors">
+                          {item.name}
+                        </h3>
+                      </Link>
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.id)}
+                      className="shrink-0 rounded-lg p-1 text-[hsl(var(--text-muted))] transition-colors hover:text-red-500"
+                      aria-label={`Eliminar ${item.name}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
 
-                    {/* Controles de cantidad */}
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
+                  <div className="mt-auto flex items-center justify-between gap-3">
+                    {/* Controles cantidad */}
+                    <div className="flex items-center rounded-full border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-0.5">
+                      <button
+                        type="button"
                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                        className="flex h-7 w-7 items-center justify-center rounded-full text-[hsl(var(--foreground))] transition-colors hover:bg-white disabled:opacity-40"
                         disabled={item.quantity <= 1}
+                        aria-label="Reducir cantidad"
                       >
-                        <Minus className="w-4 h-4" />
-                      </Button>
-
-                      <Input
-                        type="number"
-                        value={item.quantity}
-                        onChange={e => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
-                        className="w-16 text-center"
-                        min="1"
-                        max={item.stock}
-                      />
-
-                      <Button
-                        variant="outline"
-                        size="sm"
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="min-w-[2rem] text-center text-sm font-semibold text-[hsl(var(--foreground))]">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        disabled={item.quantity >= (item.stock || 0)}
+                        className="flex h-7 w-7 items-center justify-center rounded-full text-[hsl(var(--foreground))] transition-colors hover:bg-white disabled:opacity-40"
+                        disabled={item.quantity >= (item.stock || item.stockCount || 99)}
+                        aria-label="Aumentar cantidad"
                       >
-                        <Plus className="w-4 h-4" />
-                      </Button>
+                        <Plus className="h-3 w-3" />
+                      </button>
                     </div>
 
                     {/* Precio */}
                     <div className="text-right">
-                      <p className="font-semibold text-lg">
+                      <p className="font-display text-base font-bold leading-none text-[hsl(var(--foreground))]">
                         {formatCurrency(item.price * item.quantity)}
                       </p>
-                      <p className="text-sm text-gray-600">{formatCurrency(item.price)} c/u</p>
+                      {item.quantity > 1 && (
+                        <p className="mt-0.5 text-xs text-[hsl(var(--text-muted))]">
+                          {formatCurrency(item.price)} c/u
+                        </p>
+                      )}
                     </div>
-
-                    {/* Botón eliminar */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeItem(item.id)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                </div>
+              </div>
+            ))}
+
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[hsl(var(--text-muted))] hover:text-[hsl(var(--brand-strong))] transition-colors mt-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Seguir comprando
+            </Link>
           </div>
 
-          {/* Resumen del pedido */}
-          <div className="space-y-6">
-            {/* Código promocional */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Código Promocional</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex space-x-2">
-                  <Input
-                    placeholder="Ingresa tu código"
-                    value={promoCode}
-                    onChange={e => setPromoCode(e.target.value)}
-                    disabled={isPromoApplied}
-                  />
-                  <Button
-                    onClick={applyPromoCode}
-                    disabled={!promoCode || isPromoApplied}
-                    variant="outline"
-                  >
-                    Aplicar
-                  </Button>
-                </div>
-                {isPromoApplied && (
-                  <div className="text-green-600 text-sm">✓ Código aplicado: 10% de descuento</div>
-                )}
-              </CardContent>
-            </Card>
+          {/* Sidebar — resumen */}
+          <aside className="space-y-4">
+            {/* Resumen del pedido */}
+            <div className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-base font-semibold text-[hsl(var(--foreground))]">
+                Resumen del pedido
+              </h2>
 
-            {/* Resumen de costos */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Resumen del Pedido</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {isPromoApplied && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Descuento (10%):</span>
-                    <span>-{formatCurrency(state.subtotal * 0.1)}</span>
-                  </div>
-                )}
-
-                <Separator />
-
-                <div className="flex justify-between text-lg font-semibold">
-                  <span>Total:</span>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center justify-between text-[hsl(var(--text-muted))]">
                   <span>
-                    {formatCurrency(
-                      isPromoApplied ? state.total - state.subtotal * 0.1 : state.total
-                    )}
+                    Subtotal ({state.itemCount} {state.itemCount === 1 ? 'producto' : 'productos'})
                   </span>
+                  <span>{formatCurrency(state.subtotal)}</span>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Beneficios */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3 text-sm">
-                    <Truck className="w-4 h-4 text-green-600" />
-                    <span>Envío a todo el país</span>
-                  </div>
-                  <div className="flex items-center space-x-3 text-sm">
-                    <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
-                    <span>Compra 100% segura</span>
-                  </div>
-                  <div className="flex items-center space-x-3 text-sm">
-                    <CreditCard className="w-4 h-4 text-purple-600" />
-                    <span>Múltiples métodos de pago</span>
-                  </div>
+                <div className="flex items-center justify-between text-[hsl(var(--text-muted))]">
+                  <span>Envío</span>
+                  <span className="text-emerald-600 font-medium">Por confirmar</span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Botones de acción */}
-            <div className="space-y-4">
-              <Link href="/checkout">
-                <Button
-                  size="lg"
-                  className="w-full bg-[hsl(var(--brand))] hover:bg-[hsl(var(--brand-strong))]"
-                >
-                  <CreditCard className="w-5 h-5 mr-2" />
-                  Proceder al Checkout
-                </Button>
-              </Link>
+              <Separator className="my-4" />
 
-              <Link href="/products">
-                <Button variant="outline" size="lg" className="w-full">
-                  <ArrowLeft className="w-5 h-5 mr-2" />
-                  Continuar Comprando
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-[hsl(var(--foreground))]">Total</span>
+                <span className="font-display text-xl font-bold text-[hsl(var(--foreground))]">
+                  {formatCurrency(state.total)}
+                </span>
+              </div>
+
+              <p className="mt-1 text-xs text-[hsl(var(--text-muted))]">Precio con IVA incluido</p>
+
+              <Link href="/checkout" className="mt-5 block">
+                <Button size="lg" className="h-12 w-full rounded-xl gap-2 text-base font-semibold">
+                  <CreditCard className="h-5 w-5" />
+                  Proceder al pago
                 </Button>
               </Link>
             </div>
-          </div>
+
+            {/* Beneficios */}
+            <div className="rounded-2xl border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-5 space-y-3">
+              {[
+                {
+                  icon: Truck,
+                  color: 'text-emerald-600',
+                  bg: 'bg-emerald-50',
+                  text: 'Envío a toda Colombia',
+                },
+                {
+                  icon: Shield,
+                  color: 'text-[hsl(var(--brand-strong))]',
+                  bg: 'bg-[hsl(var(--surface-highlight))]',
+                  text: 'Compra respaldada por SUMITRONIC',
+                },
+                {
+                  icon: MessageCircle,
+                  color: 'text-violet-600',
+                  bg: 'bg-violet-50',
+                  text: 'Soporte por WhatsApp — sin bot',
+                },
+              ].map(({ icon: Icon, color, bg, text }) => (
+                <div key={text} className="flex items-center gap-3 text-sm">
+                  <div
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${bg}`}
+                  >
+                    <Icon className={`h-3.5 w-3.5 ${color}`} aria-hidden="true" />
+                  </div>
+                  <span className="text-[hsl(var(--text-muted))]">{text}</span>
+                </div>
+              ))}
+            </div>
+          </aside>
         </div>
       </main>
 

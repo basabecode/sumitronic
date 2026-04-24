@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ChevronLeft, ChevronRight, ShoppingBag, Star } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  ShoppingBag,
+  Star,
+  Truck,
+  ShieldCheck,
+  Headphones,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/contexts/CartContext'
 import ProductDetailsModal from '@/components/products/ProductDetailsModal'
@@ -112,7 +120,7 @@ export default function HeroSection() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container min-h-[780px] sm:min-h-[700px] md:min-h-[640px] xl:min-h-[680px]">
+      <div className="container min-h-[580px] sm:min-h-[620px] md:min-h-[600px] xl:min-h-[660px]">
         <div className="relative flex h-full" aria-live="polite" aria-roledescription="carousel">
           {slides.map((slide, index) => {
             const isActive = index === currentSlide
@@ -223,21 +231,33 @@ export default function HeroSection() {
                       </Button>
                     </div>
 
-                    <dl className="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-3">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />
-                        <span>Envio a toda Colombia</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="h-2 w-2 rounded-full bg-[hsl(var(--brand))]"
+                    <dl className="flex flex-wrap items-center gap-x-4 gap-y-2.5 text-sm text-[hsl(var(--text-muted))]">
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100"
                           aria-hidden="true"
-                        />
-                        <span>Garantia y respaldo</span>
+                        >
+                          <Truck className="h-3.5 w-3.5 text-emerald-700" />
+                        </div>
+                        <span>Envío a toda Colombia</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-purple-500" aria-hidden="true" />
-                        <span>Atencion Lun-Vie</span>
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[hsl(var(--surface-highlight))]"
+                          aria-hidden="true"
+                        >
+                          <ShieldCheck className="h-3.5 w-3.5 text-[hsl(var(--brand-strong))]" />
+                        </div>
+                        <span>Garantía y respaldo</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-100"
+                          aria-hidden="true"
+                        >
+                          <Headphones className="h-3.5 w-3.5 text-violet-700" />
+                        </div>
+                        <span>Atención Lun–Vie</span>
                       </div>
                     </dl>
                   </div>

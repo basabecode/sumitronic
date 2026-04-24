@@ -140,7 +140,9 @@ export default function InventoryTab({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Productos</p>
+                  <p className="text-sm font-medium text-[hsl(var(--text-muted))]">
+                    Total Productos
+                  </p>
                   <p className="text-2xl font-bold">{totalProducts}</p>
                 </div>
                 <Package className="h-8 w-8 text-blue-500" />
@@ -151,7 +153,7 @@ export default function InventoryTab({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Página Actual</p>
+                  <p className="text-sm font-medium text-[hsl(var(--text-muted))]">Página Actual</p>
                   <p className="text-2xl font-bold">
                     {currentPage} / {totalPages}
                   </p>
@@ -164,7 +166,9 @@ export default function InventoryTab({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Filtros Activos</p>
+                  <p className="text-sm font-medium text-[hsl(var(--text-muted))]">
+                    Filtros Activos
+                  </p>
                   <p className="text-2xl font-bold">{activeFilters}</p>
                 </div>
                 <Filter className="h-8 w-8 text-[hsl(var(--brand))]" />
@@ -175,7 +179,7 @@ export default function InventoryTab({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Estado</p>
+                  <p className="text-sm font-medium text-[hsl(var(--text-muted))]">Estado</p>
                   <p className="text-lg font-bold text-green-600">
                     {loadingProducts ? 'Cargando...' : 'Optimizado'}
                   </p>
@@ -197,7 +201,7 @@ export default function InventoryTab({
                 {isSearching ? (
                   <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 h-4 w-4 animate-spin" />
                 ) : (
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border-strong))] h-4 w-4" />
                 )}
                 <Input
                   placeholder="Buscar por nombre o marca..."
@@ -213,7 +217,7 @@ export default function InventoryTab({
                 className={`inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                   filtersOpen || activeFilters > 0
                     ? 'border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100'
-                    : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                    : 'border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--text-muted))] hover:bg-[hsl(var(--surface-muted))]'
                 }`}
               >
                 <Filter className="h-4 w-4" />
@@ -251,9 +255,11 @@ export default function InventoryTab({
 
             {/* Collapsible filter panel */}
             {filtersOpen && (
-              <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <div className="mt-4 rounded-lg border border-[hsl(var(--border-subtle))] bg-[hsl(var(--surface-muted))] p-4">
                 <div className="mb-3 flex items-center justify-between">
-                  <p className="text-sm font-semibold text-gray-700">Filtros avanzados</p>
+                  <p className="text-sm font-semibold text-[hsl(var(--text-muted))]">
+                    Filtros avanzados
+                  </p>
                   {activeFilters > 0 && (
                     <button
                       onClick={clearAllFilters}
@@ -268,7 +274,7 @@ export default function InventoryTab({
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                   {/* Categoría */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
                       Categoría
                     </label>
                     <Select value={categoryFilter} onValueChange={onCategoryChange}>
@@ -288,7 +294,7 @@ export default function InventoryTab({
 
                   {/* Precio */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
                       Precio
                     </label>
                     <div className="flex gap-1.5">
@@ -317,7 +323,7 @@ export default function InventoryTab({
 
                   {/* Stock */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
                       Stock
                     </label>
                     <div className="flex gap-1.5">
@@ -346,7 +352,7 @@ export default function InventoryTab({
 
                   {/* Estado */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
                       Estado
                     </label>
                     <div className="flex gap-1.5">
@@ -361,7 +367,7 @@ export default function InventoryTab({
                                 : s === 'inactive'
                                   ? 'border-amber-400 bg-amber-100 text-amber-700'
                                   : 'border-blue-400 bg-blue-100 text-blue-700'
-                              : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-100'
+                              : 'border-[hsl(var(--border-subtle))] bg-white text-[hsl(var(--text-muted))] hover:bg-[hsl(var(--surface-muted))]'
                           }`}
                         >
                           {s === 'all' ? (
@@ -392,10 +398,10 @@ export default function InventoryTab({
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 space-y-0 pb-4">
             <CardTitle className="text-lg sm:text-xl">
               Productos{' '}
-              <span className="text-sm font-normal text-gray-500 hidden sm:inline-block">
+              <span className="text-sm font-normal text-[hsl(var(--text-muted))] hidden sm:inline-block">
                 ({totalProducts} total — Página {currentPage} de {totalPages})
               </span>
-              <span className="text-sm font-normal text-gray-500 block sm:hidden">
+              <span className="text-sm font-normal text-[hsl(var(--text-muted))] block sm:hidden">
                 Total: {totalProducts}
               </span>
             </CardTitle>
@@ -409,7 +415,7 @@ export default function InventoryTab({
               >
                 Anterior
               </Button>
-              <span className="text-sm text-gray-600 whitespace-nowrap px-2">
+              <span className="text-sm text-[hsl(var(--text-muted))] whitespace-nowrap px-2">
                 {currentPage} / {totalPages}
               </span>
               <Button
@@ -427,12 +433,12 @@ export default function InventoryTab({
             {loadingProducts ? (
               <div className="text-center py-12">
                 <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin text-[hsl(var(--brand))]" />
-                <p className="text-gray-600">Cargando productos...</p>
+                <p className="text-[hsl(var(--text-muted))]">Cargando productos...</p>
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-12">
-                <Package className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600 mb-4">
+                <Package className="h-12 w-12 mx-auto mb-4 text-[hsl(var(--border-strong))]" />
+                <p className="text-[hsl(var(--text-muted))] mb-4">
                   {searchQuery || categoryFilter !== 'all'
                     ? 'No se encontraron productos'
                     : 'No hay productos en el inventario'}
@@ -448,10 +454,10 @@ export default function InventoryTab({
                   {products.map(product => (
                     <div
                       key={`mobile-${product.id}`}
-                      className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                      className="rounded-xl border border-[hsl(var(--border-subtle))] bg-white p-4 shadow-sm"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[hsl(var(--surface-muted))]">
                           <Image
                             src={product.image_url || '/placeholder.svg'}
                             alt={product.name}
@@ -460,8 +466,12 @@ export default function InventoryTab({
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="line-clamp-2 font-medium text-gray-900">{product.name}</p>
-                          <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
+                          <p className="line-clamp-2 font-medium text-[hsl(var(--foreground))]">
+                            {product.name}
+                          </p>
+                          <p className="mt-1 text-sm text-[hsl(var(--text-muted))]">
+                            {product.brand}
+                          </p>
                           <div className="mt-2 flex flex-wrap items-center gap-2">
                             <Badge variant="secondary">
                               {product.category?.name || 'Sin categoría'}
@@ -477,14 +487,14 @@ export default function InventoryTab({
 
                       <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <p className="text-gray-500">Precio</p>
-                          <p className="font-semibold text-gray-900">
+                          <p className="text-[hsl(var(--text-muted))]">Precio</p>
+                          <p className="font-semibold text-[hsl(var(--foreground))]">
                             {formatPrice(product.price)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-gray-500">Stock</p>
-                          <div className="flex items-center gap-2 font-medium text-gray-900">
+                          <p className="text-[hsl(var(--text-muted))]">Stock</p>
+                          <div className="flex items-center gap-2 font-medium text-[hsl(var(--foreground))]">
                             <span
                               className={`inline-block h-2 w-2 rounded-full ${
                                 product.stock_quantity > 10
@@ -571,7 +581,7 @@ export default function InventoryTab({
                         <TableRow key={product.id}>
                           <TableCell>
                             <div className="flex items-center gap-3">
-                              <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-gray-100">
+                              <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-[hsl(var(--surface-muted))]">
                                 <Image
                                   src={product.image_url || '/placeholder.svg'}
                                   alt={product.name}
@@ -580,8 +590,12 @@ export default function InventoryTab({
                                 />
                               </div>
                               <div>
-                                <p className="font-medium text-gray-900">{product.name}</p>
-                                <p className="text-sm text-gray-500">{product.brand}</p>
+                                <p className="font-medium text-[hsl(var(--foreground))]">
+                                  {product.name}
+                                </p>
+                                <p className="text-sm text-[hsl(var(--text-muted))]">
+                                  {product.brand}
+                                </p>
                               </div>
                             </div>
                           </TableCell>

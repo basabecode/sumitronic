@@ -177,7 +177,7 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-[hsl(var(--brand))]" />
-          <p className="text-gray-600">Verificando autenticación...</p>
+          <p className="text-[hsl(var(--text-muted))]">Verificando autenticación...</p>
         </div>
       </div>
     )
@@ -189,7 +189,7 @@ export default function AdminDashboard() {
         <Card className="max-w-lg mx-auto">
           <CardContent className="pt-6 text-center">
             <h2 className="text-2xl font-bold mb-4 text-red-600">Acceso Denegado</h2>
-            <p className="text-gray-600 mb-4">
+            <p className="text-[hsl(var(--text-muted))] mb-4">
               Necesitas permisos de administrador para acceder a esta página.
             </p>
             <div className="space-y-2">
@@ -211,8 +211,10 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Panel de Administración</h1>
-          <p className="text-sm md:text-base text-gray-600">Bienvenido, {user.email}</p>
+          <h1 className="font-display text-2xl font-semibold text-[hsl(var(--foreground))] md:text-3xl">
+            Panel de Administración
+          </h1>
+          <p className="text-sm text-[hsl(var(--text-muted))] md:text-base">{user.email}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           <Button

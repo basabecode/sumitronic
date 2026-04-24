@@ -55,20 +55,16 @@ export default function BrandsSection() {
         <div className="mb-8 text-center md:mb-10">
           <p className="eyebrow-label">Marcas destacadas</p>
           <h2 className="mt-3 font-display text-3xl font-semibold text-[hsl(var(--foreground))] md:text-4xl">
-            Referencias que el cliente reconoce y vuelve a buscar
+            Marcas con respaldo real
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
-            Seguridad, redes, energia y accesorios con marcas que suelen tener buena salida por
-            respaldo, disponibilidad y facilidad para recomendar segun la necesidad.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[hsl(var(--text-muted))] md:text-lg">
+            Hikvision, Dahua, Hanwha, Forza e IMOU. Distribución verificada y soporte en Colombia.
           </p>
         </div>
 
-        <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="mb-3 flex items-center justify-start gap-3">
           <span className="inline-flex rounded-full bg-[hsl(var(--surface-highlight))] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[hsl(var(--brand-strong))]">
             Explora por marca
-          </span>
-          <span className="hidden text-sm text-[hsl(var(--text-muted))] sm:inline">
-            Pasa el cursor o toca un logo para ver su linea
           </span>
         </div>
 
@@ -159,18 +155,12 @@ export default function BrandsSection() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-[hsl(var(--text-muted))]">
-                  <span className="font-semibold text-[hsl(var(--foreground))]">
-                    Proxima publicacion:
-                  </span>{' '}
-                  {featuredRotation.nextChangeLabel}
-                </p>
+              <div className="flex items-center justify-end border-t border-[hsl(var(--border-subtle))] pt-4">
                 <Link
                   href={`/marcas/${featuredBrand.slug}`}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-opacity hover:opacity-80"
                 >
-                  Ver linea {featuredBrand.name}
+                  Ver línea {featuredBrand.name}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -228,18 +218,12 @@ export default function BrandsSection() {
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-4 border-t border-[hsl(var(--border-subtle))] pt-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[hsl(var(--text-muted))]">
-                <span className="font-semibold text-[hsl(var(--foreground))]">
-                  Proxima publicacion:
-                </span>{' '}
-                {noveltyRotation.nextChangeLabel}
-              </p>
+            <div className="flex items-center justify-end border-t border-[hsl(var(--border-subtle))] mt-6 pt-4">
               <Link
                 href={`/marcas/${noveltyBrand.slug}`}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(var(--brand-strong))] transition-opacity hover:opacity-80"
               >
-                Ver linea {noveltyBrand.name}
+                Ver línea {noveltyBrand.name}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
