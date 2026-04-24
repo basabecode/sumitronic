@@ -24,7 +24,6 @@ import {
   GraduationCap,
   Package2,
   Shield,
-  Truck,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -665,11 +664,6 @@ function KitBuilderStep({
                   <span className="text-slate-300 font-medium">Total</span>
                   <span className="text-2xl font-black text-white">{formatCurrency(subtotal)}</span>
                 </div>
-                {subtotal > 100000 && (
-                  <p className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
-                    <Truck className="h-3.5 w-3.5" /> Envío nacional sin costo
-                  </p>
-                )}
               </div>
 
               <div className="pt-2 space-y-3">

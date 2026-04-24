@@ -20,6 +20,36 @@ function createStaticSupabaseClient() {
   return createSupabaseClient(supabaseUrl, supabaseAnonKey)
 }
 
+function toAbsoluteUrl(url?: string | null) {
+  if (!url) return null
+
+  if (url.startsWith('//')) {
+    return `https:${url}`
+  }
+
+  try {
+    return new URL(url, brand.siteUrl).toString()
+  } catch {
+    return null
+  }
+}
+
+function getProductImageUrls(product: any) {
+  const galleryImages = [...(product.product_images ?? [])]
+    .sort((a: any, b: any) => {
+      if (a.is_primary && !b.is_primary) return -1
+      if (!a.is_primary && b.is_primary) return 1
+      return (a.sort_order ?? 0) - (b.sort_order ?? 0)
+    })
+    .map((image: any) => image.image_url)
+
+  const candidates = [product.image_url, ...(product.images ?? []), ...galleryImages]
+    .map(toAbsoluteUrl)
+    .filter(Boolean) as string[]
+
+  return Array.from(new Set(candidates))
+}
+
 // Generate static params for popular products
 export async function generateStaticParams() {
   try {
@@ -162,14 +192,19 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   const { product, relatedProducts } = data
 
-  // JSON-LD Structured Data for Product
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  const productImages = getProductImageUrls(product)
+  const categoryName = product.category?.name
+  const productUrl = `${brand.siteUrl}/products/${product.id}`
+
+  const productJsonLd = {
     '@type': 'Product',
+    '@id': `${productUrl}#product`,
     name: product.name,
-    image: product.product_images?.map((img: any) => img.image_url) || [],
+    url: productUrl,
+    image: productImages,
     description: product.description,
     sku: product.sku,
+    category: categoryName,
     brand: {
       '@type': 'Brand',
       name: product.brand || 'Genérico',
@@ -187,36 +222,40 @@ export default async function ProductPage({ params }: { params: { id: string } }
         name: brand.organizationName,
         url: brand.siteUrl,
       },
-      shippingDetails: {
-        '@type': 'OfferShippingDetails',
-        shippingRate: {
-          '@type': 'MonetaryAmount',
-          currency: 'COP',
-        },
-        shippingDestination: {
-          '@type': 'DefinedRegion',
-          addressCountry: 'CO',
-        },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'CO',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 5,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
       },
     },
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Inicio', item: brand.siteUrl },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: 'Productos',
-          item: `${brand.siteUrl}/products`,
-        },
-        {
-          '@type': 'ListItem',
-          position: 3,
-          name: product.name,
-          item: `${brand.siteUrl}/products/${product.id}`,
-        },
-      ],
-    },
+  }
+
+  const breadcrumbJsonLd = {
+    '@type': 'BreadcrumbList',
+    '@id': `${productUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: brand.siteUrl },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Productos',
+        item: `${brand.siteUrl}/products`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: product.name,
+        item: productUrl,
+      },
+    ],
+  }
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [productJsonLd, breadcrumbJsonLd],
   }
 
   return (

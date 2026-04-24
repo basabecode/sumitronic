@@ -352,10 +352,12 @@ export default function OrdersPage() {
                               <span>Subtotal</span>
                               <span>{fmt(order.subtotal ?? order.total)}</span>
                             </div>
-                            <div className="flex justify-between text-gray-600">
-                              <span>Envío</span>
-                              <span>{order.shipping > 0 ? fmt(order.shipping) : 'Gratis'}</span>
-                            </div>
+                            {order.shipping > 0 && (
+                              <div className="flex justify-between text-gray-600">
+                                <span>Envío</span>
+                                <span>{fmt(order.shipping)}</span>
+                              </div>
+                            )}
                             {order.tax > 0 && (
                               <div className="flex justify-between text-gray-600">
                                 <span>IVA</span>

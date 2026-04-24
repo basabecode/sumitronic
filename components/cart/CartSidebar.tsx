@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { X, Plus, Minus, Trash2, CreditCard, Truck, Shield, ShoppingBag } from 'lucide-react'
+import { Plus, Minus, Trash2, CreditCard, Shield, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Badge } from '@/components/ui/badge'
@@ -33,17 +33,6 @@ export default function CartSidebar() {
 
   const formatPrice = (price: number) => {
     return `$${price.toLocaleString('es-CO')}`
-  }
-
-  const estimatedDelivery = () => {
-    const date = new Date()
-    date.setDate(date.getDate() + 3)
-    return date.toLocaleDateString('es-CO', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
   }
 
   return (
@@ -165,19 +154,6 @@ export default function CartSidebar() {
 
               <Separator />
 
-              {/* Información de envío */}
-              <div className="space-y-3 rounded-lg bg-[hsl(var(--surface-highlight))] p-4">
-                <div className="flex items-center space-x-2">
-                  <Truck className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
-                  <span className="text-sm font-medium text-[hsl(var(--brand-strong))]">
-                    Envío a todo el país
-                  </span>
-                </div>
-                <p className="text-xs text-[hsl(var(--brand-strong))]">
-                  Entrega estimada: {estimatedDelivery()}
-                </p>
-              </div>
-
               {/* Garantía */}
               <div className="space-y-3 p-4 bg-green-50 rounded-lg">
                 <div className="flex items-center space-x-2">
@@ -200,16 +176,6 @@ export default function CartSidebar() {
               <div className="flex justify-between text-sm">
                 <span>Subtotal</span>
                 <span>{formatPrice(state.subtotal)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Envío</span>
-                <span
-                  className={`font-medium ${
-                    state.shipping === 0 ? 'text-green-600' : 'text-gray-900'
-                  }`}
-                >
-                  {state.shipping === 0 ? 'Calculado en checkout' : formatPrice(state.shipping)}
-                </span>
               </div>
               <Separator />
               <div className="flex justify-between text-lg font-bold">

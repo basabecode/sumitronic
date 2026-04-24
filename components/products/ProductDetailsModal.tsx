@@ -10,7 +10,6 @@ import {
   ShoppingCart,
   Package,
   Shield,
-  Truck,
   CreditCard,
   Check,
   AlertCircle,
@@ -100,7 +99,6 @@ export default function ProductDetailsModal({
       { name: 'Marca', value: brand },
       { name: 'Garantía', value: '12 meses' },
       { name: 'Origen', value: 'Original' },
-      { name: 'Envío', value: 'Gratis a nivel nacional' },
     ]
 
     const categoryFeatures = {
@@ -343,10 +341,6 @@ export default function ProductDetailsModal({
             {/* Beneficios */}
             <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center space-x-2">
-                <Truck className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium">Envío a todo el país</span>
-              </div>
-              <div className="flex items-center space-x-2">
                 <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
                 <span className="text-sm font-medium">Garantía oficial de 12 meses</span>
               </div>
@@ -369,7 +363,7 @@ export default function ProductDetailsModal({
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="specs">Especificaciones</TabsTrigger>
             <TabsTrigger value="description">Descripción</TabsTrigger>
-            <TabsTrigger value="shipping">Envío y Devoluciones</TabsTrigger>
+            <TabsTrigger value="shipping">Devoluciones</TabsTrigger>
           </TabsList>
 
           <TabsContent value="specs" className="space-y-4">
@@ -416,16 +410,8 @@ export default function ProductDetailsModal({
           </TabsContent>
 
           <TabsContent value="shipping" className="space-y-4">
-            <h3 className="text-lg font-semibold">Información de Envío</h3>
+            <h3 className="text-lg font-semibold">Devoluciones</h3>
             <div className="space-y-4">
-              <div>
-                <h4 className="font-medium mb-2">Tiempos de Entrega</h4>
-                <ul className="text-sm space-y-1 text-gray-600">
-                  <li>• Bogotá y área metropolitana: 1-2 días hábiles</li>
-                  <li>• Principales ciudades: 2-3 días hábiles</li>
-                  <li>• Resto del país: 3-5 días hábiles</li>
-                </ul>
-              </div>
               <div>
                 <h4 className="font-medium mb-2">Devoluciones</h4>
                 <ul className="text-sm space-y-1 text-gray-600">

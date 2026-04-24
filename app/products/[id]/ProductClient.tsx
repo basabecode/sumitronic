@@ -19,7 +19,6 @@ import {
   MessageCircle,
   ShoppingCart,
   Sparkles,
-  Star,
   Store,
   Truck,
   Zap,
@@ -204,15 +203,6 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
       : null
   const stockTone = getStockTone(product.stock_quantity)
   const dimensionsLabel = formatDimensions(product.dimensions)
-  const deliveryTone = isOutOfStock
-    ? 'Consulta disponibilidad para nueva entrada'
-    : product.price >= 100000
-      ? 'Envío gratis disponible'
-      : 'Envío calculado al finalizar'
-  const deliveryMessage = isOutOfStock
-    ? 'Podemos ayudarte a encontrar alternativa o avisarte cuando vuelva.'
-    : 'Recíbelo con coordinación local y seguimiento comercial.'
-
   const specCards = [
     {
       title: 'Disponibilidad',
@@ -515,11 +505,6 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                 </h1>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2.5 text-sm text-[hsl(var(--text-muted))]">
-                  <div className="flex items-center gap-1 text-amber-500">
-                    {[...Array(5)].map((_, index) => (
-                      <Star key={index} className={`h-4 w-4 ${index < 4 ? 'fill-current' : ''}`} />
-                    ))}
-                  </div>
                   <span>Compra protegida</span>
                   <span className="hidden h-1 w-1 rounded-full bg-[hsl(var(--text-soft))] sm:inline-block" />
                   <span>Envíos disponibles en Colombia</span>
@@ -556,9 +541,11 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                       {isOutOfStock ? 'Pendiente de reposición' : 'Disponible para compra'}
                     </p>
                     <p className="mt-1 text-sm leading-6 text-[hsl(var(--text-muted))]">
-                      {discountPercent
-                        ? `${discountPercent}% de descuento disponible.`
-                        : 'Producto listo para agregar al carrito.'}
+                      {isOutOfStock
+                        ? 'Podemos ayudarte a encontrar una alternativa o avisarte cuando vuelva.'
+                        : discountPercent
+                          ? `${discountPercent}% de descuento disponible.`
+                          : 'Producto listo para agregar al carrito.'}
                     </p>
                   </div>
                 </div>
@@ -648,10 +635,14 @@ export default function ProductClient({ product, relatedProducts }: ProductClien
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-[hsl(var(--foreground))]">
-                        En stock real (No somos intermediarios)
+                        {isOutOfStock
+                          ? 'Disponibilidad pendiente de reposición'
+                          : 'En stock real (No somos intermediarios)'}
                       </p>
                       <p className="text-xs text-[hsl(var(--text-muted))]">
-                        Disponible para despacho hoy mismo a todo Colombia.
+                        {isOutOfStock
+                          ? 'Te orientamos por WhatsApp con alternativas disponibles.'
+                          : 'Disponible para despacho hoy mismo a todo Colombia.'}
                       </p>
                     </div>
                   </div>

@@ -84,14 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const {
-      items: clientItems,
-      shipping_address,
-      payment_method,
-      shipping,
-      customer_info,
-      notes,
-    } = body
+    const { items: clientItems, shipping_address, payment_method, customer_info, notes } = body
 
     // Validar que vengan items con product_id
     if (!clientItems || !Array.isArray(clientItems) || clientItems.length === 0) {
@@ -160,9 +153,9 @@ export async function POST(request: NextRequest) {
 
     // Calcular totales 100% en el servidor
     const subtotal = validatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    const shippingCost = typeof shipping === 'number' && shipping >= 0 ? shipping : 0
+    const shippingCost = 0
     const tax = 0
-    const total = subtotal + shippingCost + tax
+    const total = subtotal + tax
 
     // customer_info: si no se provee usar datos del usuario autenticado
     const resolvedCustomerInfo = customer_info || {

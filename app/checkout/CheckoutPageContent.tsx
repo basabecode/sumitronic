@@ -208,7 +208,6 @@ export default function CheckoutPageContent() {
             country: form.country,
           },
           subtotal: state.subtotal,
-          shipping: state.shipping,
           total: state.total,
           payment_method: form.paymentMethod,
           notes: form.paymentReference
@@ -690,22 +689,6 @@ export default function CheckoutPageContent() {
                       <span>Subtotal:</span>
                       <span>{formatCurrency(state.subtotal)}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Envío:</span>
-                      <span>
-                        {state.shipping === 0 ? (
-                          <span className="text-green-600">Calculado en checkout</span>
-                        ) : (
-                          formatCurrency(state.shipping)
-                        )}
-                      </span>
-                    </div>
-                    {state.shipping === 0 && (
-                      <p className="text-xs text-amber-600 mt-1">
-                        Envío calculado por el equipo tras confirmar el pedido
-                      </p>
-                    )}
-
                     <Separator />
 
                     <div className="flex justify-between text-lg font-semibold">
