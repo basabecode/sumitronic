@@ -13,6 +13,10 @@ const siteUrl = isProduction
   ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://sumitronic.com').trim()
   : 'http://localhost:3003'
 
+// Dominios de Vercel para Toolbar, Feedback, Speed Insights y Analytics
+const vercelDomains =
+  'https://vercel.live https://vitals.vercel-insights.com https://va.vercel-scripts.com'
+
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -24,9 +28,10 @@ const securityHeaders = [
     // 'unsafe-eval' en script-src: requerido por Next.js en dev (hot reload); en producción
     //   podría removerse pero requiere pruebas. TODO: migrar a nonces con next@14.1+.
     // 'unsafe-inline' en style-src: requerido por Radix UI / shadcn que inyectan estilos dinámicos.
-    // connect-src: permite llamadas fetch/XHR a Supabase (local en dev, cloud en prod).
+    // connect-src: permite llamadas fetch/XHR a Supabase (local en dev, cloud en prod) y Vercel.
+    // frame-src: permite el widget de feedback de Vercel.
     // frame-ancestors: refuerza X-Frame-Options en navegadores modernos.
-    value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src ${isProduction ? connectSrcProd : connectSrcDev}; frame-ancestors 'none';`,
+    value: `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' ${vercelDomains}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src ${isProduction ? connectSrcProd : connectSrcDev} ${vercelDomains}; frame-src ${vercelDomains}; frame-ancestors 'none';`,
   },
   // HSTS solo en produccion para no interferir con desarrollo local HTTP
   ...(isProduction
