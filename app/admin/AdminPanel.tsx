@@ -12,10 +12,20 @@ import {
   RefreshCw,
   CheckCircle2,
   AlertCircle,
+  LogOut,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { useAuth } from '@/contexts/AuthContext'
+import { useRouter } from 'next/navigation'
 
 import { useAdminProducts } from './hooks/useAdminProducts'
 import { useProductForm } from './hooks/useProductForm'
@@ -48,7 +58,8 @@ function escapeCSV(value: unknown): string {
 }
 
 export default function AdminDashboard() {
-  const { user, loading, profile } = useAuth()
+  const { user, loading, profile, signOut } = useAuth()
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState<Tab>('dashboard')
   const [syncStatus, setSyncStatus] = useState<SyncStatus>({ state: 'idle' })
   const [exportingCSV, setExportingCSV] = useState(false)
@@ -109,6 +120,11 @@ export default function AdminDashboard() {
     } finally {
       setExportingCSV(false)
     }
+  }
+
+  const handleLogout = async () => {
+    await signOut()
+    router.push('/')
   }
 
   const handleSyncSheets = async () => {
@@ -216,6 +232,25 @@ export default function AdminDashboard() {
 
   return (
     <div className="container mx-auto px-3 py-5 sm:px-4 sm:py-8">
+      {/* Breadcrumbs */}
+      <div className="mb-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Inicio</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="font-medium text-[hsl(var(--brand-strong))]">
+                Panel de Administración
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
         <div>
@@ -250,6 +285,14 @@ export default function AdminDashboard() {
               <ExternalLink className="w-4 h-4 mr-2" />
               Ver Tienda
             </Link>
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto min-h-[44px] gap-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
+            onClick={handleLogout}
+          >
+            <LogOut className="w-4 h-4" />
+            Cerrar Sesión
           </Button>
         </div>
       </div>

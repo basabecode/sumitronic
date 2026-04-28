@@ -23,9 +23,9 @@ export function useAdminProducts() {
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
-  const [priceOp, setPriceOp] = useState<'gt' | 'lt'>('lt')
+  const [priceOp, setPriceOp] = useState<'gt' | 'lt' | 'eq'>('lt')
   const [priceValue, setPriceValue] = useState<string>('')
-  const [stockOp, setStockOp] = useState<'gt' | 'lt'>('gt')
+  const [stockOp, setStockOp] = useState<'gt' | 'lt' | 'eq'>('gt')
   const [stockValue, setStockValue] = useState<string>('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all')
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'az' | 'za'>('newest')
@@ -101,16 +101,17 @@ export function useAdminProducts() {
       // Price filter
       const parsedPrice = parseFloat(priceValue)
       if (priceValue !== '' && !isNaN(parsedPrice)) {
-        query = priceOp === 'gt' ? query.gt('price', parsedPrice) : query.lt('price', parsedPrice)
+        if (priceOp === 'gt') query = query.gt('price', parsedPrice)
+        else if (priceOp === 'lt') query = query.lt('price', parsedPrice)
+        else query = query.eq('price', parsedPrice)
       }
 
       // Stock filter
       const parsedStock = parseInt(stockValue, 10)
       if (stockValue !== '' && !isNaN(parsedStock)) {
-        query =
-          stockOp === 'gt'
-            ? query.gt('stock_quantity', parsedStock)
-            : query.lt('stock_quantity', parsedStock)
+        if (stockOp === 'gt') query = query.gt('stock_quantity', parsedStock)
+        else if (stockOp === 'lt') query = query.lt('stock_quantity', parsedStock)
+        else query = query.eq('stock_quantity', parsedStock)
       }
 
       // Status filter

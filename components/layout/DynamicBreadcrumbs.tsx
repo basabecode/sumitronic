@@ -15,12 +15,16 @@ import {
 export function DynamicBreadcrumbs() {
   const pathname = usePathname()
 
-  // Ocultar migas de pan en home, admin, login, y detalle de producto (tiene breadcrumb propio con nombre real)
+  // Ocultar en páginas que renderizan su propio breadcrumb contextual
   if (
     pathname === '/' ||
     pathname.startsWith('/admin') ||
     pathname.startsWith('/auth') ||
-    /^\/products\/[0-9a-f-]{36}$/i.test(pathname)
+    /^\/products\/[0-9a-f-]{36}$/i.test(pathname) ||
+    /^\/blog\/.+/.test(pathname) ||
+    /^\/help\/.+/.test(pathname) ||
+    /^\/marcas\/.+/.test(pathname) ||
+    /^\/categorias\/.+/.test(pathname)
   ) {
     return null
   }

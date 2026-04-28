@@ -59,9 +59,9 @@ interface InventoryTabProps {
   searchQuery: string
   categoryFilter: string
   categories: string[]
-  priceOp: 'gt' | 'lt'
+  priceOp: 'gt' | 'lt' | 'eq'
   priceValue: string
-  stockOp: 'gt' | 'lt'
+  stockOp: 'gt' | 'lt' | 'eq'
   stockValue: string
   statusFilter: 'all' | 'active' | 'inactive'
   sortOrder: 'newest' | 'oldest' | 'az' | 'za'
@@ -69,9 +69,9 @@ interface InventoryTabProps {
   onPageChange: (page: number) => void
   onSearchChange: (query: string) => void
   onCategoryChange: (category: string) => void
-  onPriceOpChange: (op: 'gt' | 'lt') => void
+  onPriceOpChange: (op: 'gt' | 'lt' | 'eq') => void
   onPriceValueChange: (val: string) => void
-  onStockOpChange: (op: 'gt' | 'lt') => void
+  onStockOpChange: (op: 'gt' | 'lt' | 'eq') => void
   onStockValueChange: (val: string) => void
   onStatusFilterChange: (s: 'all' | 'active' | 'inactive') => void
   onSortOrderChange: (s: 'newest' | 'oldest' | 'az' | 'za') => void
@@ -278,18 +278,19 @@ export default function InventoryTab({
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+                {/* Fila de filtros — compacta y responsive */}
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                   {/* Categoría */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--text-muted))]">
                       Categoría
                     </label>
                     <Select value={categoryFilter} onValueChange={onCategoryChange}>
-                      <SelectTrigger className="h-9 bg-white">
+                      <SelectTrigger className="h-8 bg-white text-xs">
                         <SelectValue placeholder="Todas" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todas las categorías</SelectItem>
+                        <SelectItem value="all">Todas</SelectItem>
                         {categories.map(cat => (
                           <SelectItem key={cat} value={cat}>
                             {cat}
@@ -300,74 +301,76 @@ export default function InventoryTab({
                   </div>
 
                   {/* Precio */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
-                      Precio
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--text-muted))]">
+                      Precio (COP)
                     </label>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-1">
                       <Select
                         value={priceOp}
-                        onValueChange={v => onPriceOpChange(v as 'gt' | 'lt')}
+                        onValueChange={v => onPriceOpChange(v as 'gt' | 'lt' | 'eq')}
                       >
-                        <SelectTrigger className="h-9 w-[120px] shrink-0 bg-white">
+                        <SelectTrigger className="h-8 w-[64px] shrink-0 bg-white px-2 text-xs">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="lt">Menor que</SelectItem>
-                          <SelectItem value="gt">Mayor que</SelectItem>
+                          <SelectItem value="lt">&lt; Menor</SelectItem>
+                          <SelectItem value="gt">&gt; Mayor</SelectItem>
+                          <SelectItem value="eq">= Igual</SelectItem>
                         </SelectContent>
                       </Select>
                       <Input
                         type="number"
-                        placeholder="0"
+                        placeholder="Valor"
                         value={priceValue}
                         onChange={e => onPriceValueChange(e.target.value)}
-                        className="h-9 bg-white"
+                        className="h-8 min-w-0 bg-white text-xs"
                         min={0}
                       />
                     </div>
                   </div>
 
                   {/* Stock */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
-                      Stock
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--text-muted))]">
+                      Stock (uds)
                     </label>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-1">
                       <Select
                         value={stockOp}
-                        onValueChange={v => onStockOpChange(v as 'gt' | 'lt')}
+                        onValueChange={v => onStockOpChange(v as 'gt' | 'lt' | 'eq')}
                       >
-                        <SelectTrigger className="h-9 w-[120px] shrink-0 bg-white">
+                        <SelectTrigger className="h-8 w-[64px] shrink-0 bg-white px-2 text-xs">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="gt">Mayor que</SelectItem>
-                          <SelectItem value="lt">Menor que</SelectItem>
+                          <SelectItem value="gt">&gt; Mayor</SelectItem>
+                          <SelectItem value="lt">&lt; Menor</SelectItem>
+                          <SelectItem value="eq">= Igual</SelectItem>
                         </SelectContent>
                       </Select>
                       <Input
                         type="number"
-                        placeholder="0"
+                        placeholder="Valor"
                         value={stockValue}
                         onChange={e => onStockValueChange(e.target.value)}
-                        className="h-9 bg-white"
+                        className="h-8 min-w-0 bg-white text-xs"
                         min={0}
                       />
                     </div>
                   </div>
 
                   {/* Estado */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--text-muted))]">
                       Estado
                     </label>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-1">
                       {(['all', 'active', 'inactive'] as const).map(s => (
                         <button
                           key={s}
                           onClick={() => onStatusFilterChange(s)}
-                          className={`flex-1 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors ${
+                          className={`flex-1 rounded border py-1 text-[10px] font-semibold transition-colors ${
                             statusFilter === s
                               ? s === 'active'
                                 ? 'border-emerald-400 bg-emerald-100 text-emerald-700'
@@ -380,14 +383,14 @@ export default function InventoryTab({
                           {s === 'all' ? (
                             'Todos'
                           ) : s === 'active' ? (
-                            <span className="flex items-center justify-center gap-1">
-                              <Play className="h-3 w-3 fill-emerald-600 text-emerald-600" />
-                              Publicado
+                            <span className="flex items-center justify-center gap-0.5">
+                              <Play className="h-2.5 w-2.5 fill-emerald-600 text-emerald-600" />
+                              Pub.
                             </span>
                           ) : (
-                            <span className="flex items-center justify-center gap-1">
-                              <Pause className="h-3 w-3 fill-amber-600 text-amber-600" />
-                              Pausado
+                            <span className="flex items-center justify-center gap-0.5">
+                              <Pause className="h-2.5 w-2.5 fill-amber-600 text-amber-600" />
+                              Pau.
                             </span>
                           )}
                         </button>
@@ -396,16 +399,16 @@ export default function InventoryTab({
                   </div>
 
                   {/* Orden */}
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide flex items-center gap-1">
-                      <ArrowDownAZ className="h-3.5 w-3.5" />
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[hsl(var(--text-muted))] flex items-center gap-1">
+                      <ArrowDownAZ className="h-3 w-3" />
                       Orden
                     </label>
                     <Select
                       value={sortOrder}
                       onValueChange={v => onSortOrderChange(v as 'newest' | 'oldest' | 'az' | 'za')}
                     >
-                      <SelectTrigger className="h-9 bg-white">
+                      <SelectTrigger className="h-8 bg-white text-xs">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
