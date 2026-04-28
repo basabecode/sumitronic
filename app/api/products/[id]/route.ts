@@ -38,7 +38,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       )
       .eq('id', id)
       .eq('active', true)
-      .single()
+      .maybeSingle()
 
     if (error || !product) {
       return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 })
@@ -108,7 +108,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Verificar si es admin
-    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -173,7 +177,11 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     // Verificar si es admin
-    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })

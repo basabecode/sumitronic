@@ -205,14 +205,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Android Meta Tags */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#00ABE4" />
-
-        {/* Structured Data */}
+      </head>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
+        {/* Structured Data — fuera de <head> para evitar hydration mismatch en App Router */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans`}>
         <ErrorBoundary>
           <SharedDataProvider>
             <AuthProvider>

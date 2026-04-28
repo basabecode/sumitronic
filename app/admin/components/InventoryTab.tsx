@@ -18,6 +18,7 @@ import {
   Pause,
   X,
   ChevronDown,
+  ArrowDownAZ,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -63,6 +64,7 @@ interface InventoryTabProps {
   stockOp: 'gt' | 'lt'
   stockValue: string
   statusFilter: 'all' | 'active' | 'inactive'
+  sortOrder: 'newest' | 'oldest' | 'az' | 'za'
   deleteDialog: { open: boolean; product: Product | null }
   onPageChange: (page: number) => void
   onSearchChange: (query: string) => void
@@ -72,6 +74,7 @@ interface InventoryTabProps {
   onStockOpChange: (op: 'gt' | 'lt') => void
   onStockValueChange: (val: string) => void
   onStatusFilterChange: (s: 'all' | 'active' | 'inactive') => void
+  onSortOrderChange: (s: 'newest' | 'oldest' | 'az' | 'za') => void
   onEdit: (product: Product) => void
   onAdd: () => void
   onDeleteRequest: (product: Product) => void
@@ -97,6 +100,7 @@ export default function InventoryTab({
   stockOp,
   stockValue,
   statusFilter,
+  sortOrder,
   deleteDialog,
   onPageChange,
   onSearchChange,
@@ -106,6 +110,7 @@ export default function InventoryTab({
   onStockOpChange,
   onStockValueChange,
   onStatusFilterChange,
+  onSortOrderChange,
   onEdit,
   onAdd,
   onDeleteRequest,
@@ -122,13 +127,15 @@ export default function InventoryTab({
     (categoryFilter !== 'all' ? 1 : 0) +
     (priceValue !== '' ? 1 : 0) +
     (stockValue !== '' ? 1 : 0) +
-    (statusFilter !== 'all' ? 1 : 0)
+    (statusFilter !== 'all' ? 1 : 0) +
+    (sortOrder !== 'newest' ? 1 : 0)
 
   const clearAllFilters = () => {
     onCategoryChange('all')
     onPriceValueChange('')
     onStockValueChange('')
     onStatusFilterChange('all')
+    onSortOrderChange('newest')
   }
 
   return (
@@ -271,7 +278,7 @@ export default function InventoryTab({
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
                   {/* Categoría */}
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide">
@@ -386,6 +393,28 @@ export default function InventoryTab({
                         </button>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Orden */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium text-[hsl(var(--text-muted))] uppercase tracking-wide flex items-center gap-1">
+                      <ArrowDownAZ className="h-3.5 w-3.5" />
+                      Orden
+                    </label>
+                    <Select
+                      value={sortOrder}
+                      onValueChange={v => onSortOrderChange(v as 'newest' | 'oldest' | 'az' | 'za')}
+                    >
+                      <SelectTrigger className="h-9 bg-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest">Más reciente</SelectItem>
+                        <SelectItem value="oldest">Más antiguo</SelectItem>
+                        <SelectItem value="az">Nombre A → Z</SelectItem>
+                        <SelectItem value="za">Nombre Z → A</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>

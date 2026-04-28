@@ -44,7 +44,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       `
       )
       .eq('id', params.id)
-      .single()
+      .maybeSingle()
 
     if (error || !order) {
       return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 })
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         .from('users')
         .select('role')
         .eq('id', user.id)
-        .single()
+        .maybeSingle()
 
       if (profile?.role !== 'admin') {
         return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -84,7 +84,11 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     // Solo admins pueden actualizar el estado de una orden
-    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -183,7 +187,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     }
 
     // Solo admins pueden eliminar pedidos
-    const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
 
     if (profile?.role !== 'admin') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
@@ -196,7 +204,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       .from('orders')
       .select('id, payment_status, status')
       .eq('id', params.id)
-      .single()
+      .maybeSingle()
 
     if (fetchError || !existing) {
       return NextResponse.json({ error: 'Pedido no encontrado' }, { status: 404 })

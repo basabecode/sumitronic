@@ -146,6 +146,9 @@ export default function AdminDashboard() {
     if (activeTab === 'inventory' || activeTab === 'dashboard') {
       products.fetchProducts()
     }
+    if (activeTab === 'inventory') {
+      products.fetchInventoryCategories()
+    }
     if (activeTab === 'add-product') {
       form.fetchCategories()
     }
@@ -160,6 +163,7 @@ export default function AdminDashboard() {
     products.stockOp,
     products.stockValue,
     products.statusFilter,
+    products.sortOrder,
   ])
 
   const handleEditProduct = (product: Parameters<typeof form.loadProductForEdit>[0]) => {
@@ -172,7 +176,9 @@ export default function AdminDashboard() {
     setActiveTab('add-product')
   }
 
-  if (loading) {
+  // Mostrar spinner mientras carga la sesión O mientras hay sesión pero el
+  // perfil todavía no se resolvió desde la DB (evita "Acceso Denegado" falso).
+  if (loading || (user && !profile)) {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -183,6 +189,8 @@ export default function AdminDashboard() {
     )
   }
 
+  // En este punto: loading=false y (profile existe o no hay sesión).
+  // Si no hay usuario, o el perfil existe pero el rol no es admin, denegar.
   if (!user || !profile || profile.role !== 'admin') {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -292,7 +300,7 @@ export default function AdminDashboard() {
               currentPage={products.currentPage}
               searchQuery={products.searchQuery}
               categoryFilter={products.categoryFilter}
-              categories={form.categories}
+              categories={products.inventoryCategories}
               priceOp={products.priceOp}
               priceValue={products.priceValue}
               stockOp={products.stockOp}
@@ -307,6 +315,8 @@ export default function AdminDashboard() {
               onStockOpChange={products.setStockOp}
               onStockValueChange={products.setStockValue}
               onStatusFilterChange={products.setStatusFilter}
+              sortOrder={products.sortOrder}
+              onSortOrderChange={products.setSortOrder}
               onEdit={handleEditProduct}
               onAdd={handleAddProduct}
               onDeleteRequest={p => products.setDeleteDialog({ open: true, product: p })}

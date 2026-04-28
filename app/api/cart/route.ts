@@ -44,9 +44,9 @@ export async function GET(request: NextRequest) {
       .from('carts')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
-    if (cartError && cartError.code !== 'PGRST116') {
+    if (cartError) {
       // PGRST116 es "no rows returned"
       console.error('Error fetching cart:', cartError)
       return NextResponse.json({ error: 'Error al obtener carrito' }, { status: 500 })
@@ -155,11 +155,11 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. Obtener o crear carrito
-    let { data: cart, error: cartError } = await supabase
+    let { data: cart } = await supabase
       .from('carts')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (!cart) {
       const { data: newCart, error: createError } = await supabase

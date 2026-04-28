@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
       .from('products')
       .select('id')
       .eq('id', product_id)
-      .single()
+      .maybeSingle()
 
     if (!product) {
       return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 })

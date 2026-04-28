@@ -58,59 +58,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Inicializar autenticación
   useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        const {
-          data: { session: initialSession },
-        } = await supabase.auth.getSession()
+    // Flag para evitar que actualizaciones de un efecto desmontado
+    // alteren el estado (limpieza estricta de React).
+    let cancelled = false
 
-        setSession(initialSession)
-        setUser(initialSession?.user ?? null)
-
-        if (initialSession?.user) {
-          const profileData = await loadProfile(initialSession.user.id)
-          setProfile(profileData)
-        }
-      } catch (error) {
-        // Si Supabase local no está disponible (ECONNREFUSED / fetch failed),
-        // terminamos el loading para no bloquear la UI en un bucle infinito.
-        const msg = error instanceof Error ? error.message : String(error)
-        if (
-          msg.includes('fetch failed') ||
-          msg.includes('ECONNREFUSED') ||
-          msg.includes('Failed to fetch')
-        ) {
-          console.warn(
-            '[Auth] Supabase no disponible en este momento. La app continuará sin sesión.'
-          )
-        } else {
-          console.error('Error initializing auth:', error)
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    initializeAuth()
-
-    // Escuchar cambios de autenticación
+    // Registrar el listener ANTES del fetch inicial para no perder
+    // eventos que lleguen mientras resolvemos la sesión.
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (cancelled) return
+
+      // Durante INITIAL_SESSION el listener ya nos da la sesión inicial;
+      // no corremos initializeAuth en paralelo — evitamos la race condition.
       setSession(session)
       setUser(session?.user ?? null)
 
       if (session?.user) {
         const profileData = await loadProfile(session.user.id)
-        setProfile(profileData)
+        if (!cancelled) setProfile(profileData)
       } else {
-        setProfile(null)
+        if (!cancelled) setProfile(null)
       }
 
-      setLoading(false)
+      if (!cancelled) setLoading(false)
     })
 
-    return () => subscription.unsubscribe()
+    // Fallback: si onAuthStateChange no dispara INITIAL_SESSION en ≤3 s
+    // (p. ej. Supabase no disponible), terminamos el loading igual.
+    const fallbackTimer = setTimeout(() => {
+      if (!cancelled) {
+        console.warn('[Auth] Supabase no respondió en 3 s. La app continuará sin sesión.')
+        setLoading(false)
+      }
+    }, 3000)
+
+    return () => {
+      cancelled = true
+      clearTimeout(fallbackTimer)
+      subscription.unsubscribe()
+    }
   }, [])
 
   // Registro

@@ -43,7 +43,7 @@ async function isAdminSession(): Promise<boolean> {
       .from('users')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     return profile?.role === 'admin'
   } catch {

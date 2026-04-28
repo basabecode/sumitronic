@@ -28,6 +28,7 @@ export function useAdminProducts() {
   const [stockOp, setStockOp] = useState<'gt' | 'lt'>('gt')
   const [stockValue, setStockValue] = useState<string>('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all')
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'az' | 'za'>('newest')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalProducts, setTotalProducts] = useState(0)
   const [totalPages, setTotalPages] = useState(1)
@@ -37,6 +38,7 @@ export function useAdminProducts() {
     outOfStock: 0,
     featured: 0,
   })
+  const [inventoryCategories, setInventoryCategories] = useState<string[]>([])
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean
     product: Product | null
@@ -55,7 +57,16 @@ export function useAdminProducts() {
   // Reset page on any filter change
   useEffect(() => {
     if (currentPage !== 1) setCurrentPage(1)
-  }, [debouncedSearchQuery, categoryFilter, priceOp, priceValue, stockOp, stockValue, statusFilter])
+  }, [
+    debouncedSearchQuery,
+    categoryFilter,
+    priceOp,
+    priceValue,
+    stockOp,
+    stockValue,
+    statusFilter,
+    sortOrder,
+  ])
 
   const fetchProducts = async () => {
     setLoadingProducts(true)
@@ -110,9 +121,16 @@ export function useAdminProducts() {
       }
 
       const from = (currentPage - 1) * ITEMS_PER_PAGE
-      const { data, error, count } = await query
-        .order('created_at', { ascending: false })
-        .range(from, from + ITEMS_PER_PAGE - 1)
+      if (sortOrder === 'az') {
+        query = query.order('name', { ascending: true })
+      } else if (sortOrder === 'za') {
+        query = query.order('name', { ascending: false })
+      } else if (sortOrder === 'oldest') {
+        query = query.order('created_at', { ascending: true })
+      } else {
+        query = query.order('created_at', { ascending: false })
+      }
+      const { data, error, count } = await query.range(from, from + ITEMS_PER_PAGE - 1)
 
       if (error) {
         console.error('Error fetching products:', error)
@@ -128,6 +146,21 @@ export function useAdminProducts() {
       toast.error('Error al cargar los productos')
     } finally {
       setLoadingProducts(false)
+    }
+  }
+
+  const fetchInventoryCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('name, products!inner(id)')
+        .order('name')
+
+      if (!error && data) {
+        setInventoryCategories(data.map((c: { name: string }) => c.name))
+      }
+    } catch (error) {
+      console.error('Error fetching inventory categories:', error)
     }
   }
 
@@ -234,9 +267,13 @@ export function useAdminProducts() {
     totalProducts,
     totalPages,
     dashboardStats,
+    sortOrder,
+    setSortOrder,
+    inventoryCategories,
     deleteDialog,
     setDeleteDialog,
     fetchProducts,
+    fetchInventoryCategories,
     fetchDashboardStats,
     handleDeleteProduct,
     handleToggleActive,

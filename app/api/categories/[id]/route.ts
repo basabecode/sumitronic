@@ -15,7 +15,11 @@ async function requireAdmin(supabase: ReturnType<typeof createClient>) {
     return { user: null, profile: null, error: 'No autorizado', status: 401 }
   }
 
-  const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single()
+  const { data: profile } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
 
   if (profile?.role !== 'admin') {
     return { user, profile, error: 'Acceso denegado', status: 403 }
@@ -38,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       .from('categories')
       .select('id')
       .eq('id', params.id)
-      .single()
+      .maybeSingle()
 
     if (fetchError || !existing) {
       return NextResponse.json({ error: 'Categoría no encontrada' }, { status: 404 })
