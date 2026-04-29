@@ -18,13 +18,13 @@ const DEFAULT_CATEGORIES = [
 
 const DEFAULT_BRANDS = [
   'IMOU',
-  'TP-Link',
-  'Dahua',
-  'Hikvision',
-  'Logitech',
-  'Mercusys',
-  'Tapo',
-  'Forza',
+  'TP-LINK',
+  'DAHUA',
+  'HIKVISION',
+  'LOGITECH',
+  'MERCUSYS',
+  'TAPO',
+  'FORZA',
 ]
 
 const BRANDS_STORAGE_KEY = 'sumitronic_admin_brands'
@@ -165,12 +165,12 @@ export function useProductForm(callbacks: { onSaveSuccess: () => void }) {
   }
 
   const handleAddBrand = () => {
-    if (!newBrand.trim()) return
-    if (brands.includes(newBrand.trim())) {
+    const brandUpper = newBrand.trim().toUpperCase()
+    if (brands.includes(brandUpper)) {
       toast.error('Esta marca ya existe')
       return
     }
-    const updated = [...brands, newBrand.trim()].sort()
+    const updated = [...brands, brandUpper].sort()
     setBrands(updated)
 
     // Persistir en clave nueva; ignorar clave legacy (se migra en lectura)
@@ -180,7 +180,7 @@ export function useProductForm(callbacks: { onSaveSuccess: () => void }) {
       // localStorage not available — silent fail
     }
 
-    setFormData(prev => ({ ...prev, brand: newBrand.trim() }))
+    setFormData(prev => ({ ...prev, brand: brandUpper }))
     setNewBrand('')
     setShowAddBrand(false)
     toast.success('Marca agregada')
@@ -239,7 +239,7 @@ export function useProductForm(callbacks: { onSaveSuccess: () => void }) {
         price: formData.price,
         compare_price: formData.compare_price,
         category_id: categoryData.id,
-        brand: formData.brand,
+        brand: formData.brand.toUpperCase(),
         image_url: formData.images[0],
         images: formData.images,
         stock_quantity: formData.stock,

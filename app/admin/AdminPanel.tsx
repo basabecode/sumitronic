@@ -231,7 +231,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-3 py-5 sm:px-4 sm:py-8">
+    <div className="container mx-auto px-3 py-5 sm:px-4 sm:py-8 glass bg-white/70 border-white/30 rounded-3xl shadow-xl min-h-[80vh] my-4">
       {/* Breadcrumbs */}
       <div className="mb-6">
         <Breadcrumb>

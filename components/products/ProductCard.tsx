@@ -228,7 +228,7 @@ export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   }
 
   return (
-    <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:shadow-md">
+    <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/40 bg-white/70 glass shadow-sm transition-[transform,box-shadow] duration-[220ms] [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-1.5 hover:shadow-xl">
       {/* Imagen — siempre cuadrada, fondo blanco uniforme */}
       <div className="relative aspect-square w-full flex-shrink-0 overflow-hidden bg-white">
         <div className="absolute inset-5">

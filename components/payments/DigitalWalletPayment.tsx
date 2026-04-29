@@ -25,12 +25,14 @@ import {
 interface DigitalWalletPaymentProps {
   totalAmount: number
   orderId?: string
+  hideAccounts?: boolean
   onPaymentReferenceChange?: (reference: PaymentReference | undefined) => void
 }
 
 export default function DigitalWalletPayment({
   totalAmount,
   orderId = 'TEMP',
+  hideAccounts = false,
   onPaymentReferenceChange,
 }: DigitalWalletPaymentProps) {
   const [selectedProvider, setSelectedProvider] = useState<DigitalWalletProvider | null>(null)
@@ -84,23 +86,31 @@ export default function DigitalWalletPayment({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Instructions */}
-        <Alert className="border-[hsl(var(--border-strong))] bg-white">
-          <AlertDescription className="text-sm">
-            <strong className="text-[hsl(var(--foreground))]">Instrucciones:</strong>
-            <ol className="list-decimal pl-5 mt-2 space-y-1 text-gray-700">
-              <li>
-                Transfiere{' '}
-                <strong className="text-[hsl(var(--foreground))]">
-                  {formatCurrency(totalAmount)}
-                </strong>{' '}
-                a una de las cuentas
-              </li>
-              <li>Copia el número de cuenta haciendo clic en el botón</li>
-              <li>Completa el pago desde tu app bancaria</li>
-              <li>Envía el comprobante por WhatsApp o ingresa la referencia</li>
-            </ol>
-          </AlertDescription>
-        </Alert>
+        {!hideAccounts ? (
+          <Alert className="border-[hsl(var(--border-strong))] bg-white">
+            <AlertDescription className="text-sm">
+              <strong className="text-[hsl(var(--foreground))]">Instrucciones:</strong>
+              <ol className="list-decimal pl-5 mt-2 space-y-1 text-gray-700">
+                <li>
+                  Transfiere{' '}
+                  <strong className="text-[hsl(var(--foreground))]">
+                    {formatCurrency(totalAmount)}
+                  </strong>{' '}
+                  a una de las cuentas
+                </li>
+                <li>Copia el número de cuenta haciendo clic en el botón</li>
+                <li>Completa el pago desde tu app bancaria</li>
+                <li>Envía el comprobante por WhatsApp o ingresa la referencia</li>
+              </ol>
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <div className="p-4 border border-dashed rounded-lg bg-slate-50 text-center">
+            <p className="text-sm text-slate-500 italic">
+              Los datos de transferencia se mostrarán una vez completes tus datos de envío.
+            </p>
+          </div>
+        )}
 
         {/* Account Options */}
         <div className="space-y-3">
@@ -137,7 +147,7 @@ export default function DigitalWalletPayment({
                       <p className="font-semibold text-gray-900">{account.displayName}</p>
                       <p className="text-sm text-gray-600">
                         {account.accountType === 'WALLET' ? 'Celular' : 'Cuenta'}:{' '}
-                        {account.accountNumber}
+                        {hideAccounts ? '•••• •••• ••••' : account.accountNumber}
                       </p>
                       {account.instructions && (
                         <p className="text-xs text-gray-500 mt-1">{account.instructions}</p>
@@ -145,28 +155,30 @@ export default function DigitalWalletPayment({
                     </div>
                   </div>
 
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={e => {
-                      e.stopPropagation()
-                      handleCopyAccount(account.accountNumber)
-                    }}
-                    className="flex items-center space-x-1 hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))]"
-                  >
-                    {copiedAccount === account.accountNumber ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
-                        <span className="text-green-600">Copiado</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        <span>Copiar</span>
-                      </>
-                    )}
-                  </Button>
+                  {!hideAccounts && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={e => {
+                        e.stopPropagation()
+                        handleCopyAccount(account.accountNumber)
+                      }}
+                      className="flex items-center space-x-1 hover:border-[hsl(var(--border-strong))] hover:bg-[hsl(var(--surface-highlight))] hover:text-[hsl(var(--brand-strong))]"
+                    >
+                      {copiedAccount === account.accountNumber ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-green-600" />
+                          <span className="text-green-600">Copiado</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span>Copiar</span>
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

@@ -479,15 +479,17 @@ export function ProductsSection({
               </Badge>
             )}
           </div>
-          {/* Stock badge top-right */}
-          <span
-            className={cn(
-              'absolute right-3 top-3 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
-              stockBadge.className
-            )}
-          >
-            {stockBadge.label}
-          </span>
+          {/* Stock badge top-right - hidden in catalog, visible in offers */}
+          {onOffer && (
+            <span
+              className={cn(
+                'absolute right-3 top-3 rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
+                stockBadge.className
+              )}
+            >
+              {stockBadge.label}
+            </span>
+          )}
           {/* Acciones rápidas hover */}
           <div className="absolute bottom-3 right-3 flex flex-col gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <Button
@@ -598,14 +600,16 @@ export function ProductsSection({
             <span className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--brand-strong))]">
               {product.brand || 'Marca'}
             </span>
-            <span
-              className={cn(
-                'rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
-                stockBadge.className
-              )}
-            >
-              {stockBadge.label}
-            </span>
+            {onOffer && (
+              <span
+                className={cn(
+                  'rounded-full px-2.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide',
+                  stockBadge.className
+                )}
+              >
+                {stockBadge.label}
+              </span>
+            )}
             {product.category && (
               <span className="text-[0.7rem] text-slate-400">{product.category}</span>
             )}

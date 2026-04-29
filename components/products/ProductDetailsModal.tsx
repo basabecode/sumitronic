@@ -164,7 +164,7 @@ export default function ProductDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto glass bg-white/70 border-white/40 shadow-2xl">
         <DialogHeader>
           <DialogTitle className="sr-only">Detalles del producto</DialogTitle>
         </DialogHeader>
@@ -339,7 +339,7 @@ export default function ProductDetailsModal({
             </div>
 
             {/* Beneficios */}
-            <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+            <div className="space-y-3 p-4 bg-white/40 glass border-white/20 rounded-xl">
               <div className="flex items-center space-x-2">
                 <Shield className="w-4 h-4 text-[hsl(var(--brand-strong))]" />
                 <span className="text-sm font-medium">Garantía oficial de 12 meses</span>

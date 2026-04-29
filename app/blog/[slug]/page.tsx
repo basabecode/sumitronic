@@ -114,8 +114,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </nav>
 
         <article className="section-shell overflow-hidden">
-          <div className="relative h-72 bg-[hsl(var(--surface-muted))] md:h-96">
-            <Image src={post.image} alt={post.title} fill className="object-cover" />
+          <div className="relative aspect-video w-full bg-[hsl(var(--surface-muted))]">
+            <Image src={post.image} alt={post.title} fill className="object-cover" priority />
           </div>
           <div className="space-y-8 p-6 md:p-8">
             <header className="space-y-4">

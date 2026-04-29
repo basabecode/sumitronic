@@ -21,6 +21,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useAuth } from '@/contexts/AuthContext'
 import { useCart } from '@/contexts/CartContext'
+import { toast } from 'sonner'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { PaymentMethodSelector, DigitalWalletPayment } from '@/components/payments'
@@ -55,7 +56,13 @@ interface CheckoutForm {
   saveInfo: boolean
   acceptTerms: boolean
   newsletter: boolean
+
+  // Fraude / Registro
+  documentId: string
+  neighborhood: string
 }
+
+type CheckoutType = 'REGISTERED' | 'GUEST'
 
 export default function CheckoutPageContent() {
   const { state, formatCurrency, clearCart } = useCart()
@@ -81,7 +88,12 @@ export default function CheckoutPageContent() {
     saveInfo: false,
     acceptTerms: false,
     newsletter: false,
+    documentId: '',
+    neighborhood: '',
   })
+
+  const [checkoutType, setCheckoutType] = useState<CheckoutType>(user ? 'REGISTERED' : 'GUEST')
+  const [showPaymentDetails, setShowPaymentDetails] = useState(false)
 
   const clearFieldError = (field: string) => setFormErrors(p => ({ ...p, [field]: '' }))
 
@@ -145,6 +157,14 @@ export default function CheckoutPageContent() {
     }
   }, [user, profile])
 
+  useEffect(() => {
+    if (user) {
+      setCheckoutType('REGISTERED')
+    } else {
+      setCheckoutType('GUEST')
+    }
+  }, [user, handleAddressSelect])
+
   const handleInputChange = (
     field: keyof CheckoutForm,
     value: string | boolean | PaymentMethod | PaymentReference | undefined
@@ -167,6 +187,14 @@ export default function CheckoutPageContent() {
     if (!form.address.trim()) errors.address = 'La dirección de entrega es obligatoria'
     if (!form.city.trim()) errors.city = 'La ciudad es obligatoria'
     if (!form.state) errors.state = 'Selecciona el departamento'
+
+    // Validación extra para invitados (prevención de estafas)
+    if (checkoutType === 'GUEST') {
+      if (!form.documentId.trim())
+        errors.documentId = 'La cédula o NIT es obligatorio para facturación'
+      if (!form.neighborhood.trim()) errors.neighborhood = 'El barrio es obligatorio'
+    }
+
     if (!form.acceptTerms) errors.acceptTerms = 'Debes aceptar los términos para continuar'
 
     if (Object.keys(errors).length > 0) {
@@ -292,15 +320,37 @@ export default function CheckoutPageContent() {
           <span className="font-medium text-[hsl(var(--foreground))]">Checkout</span>
         </nav>
 
-        {/* Título */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="font-display text-2xl font-semibold text-[hsl(var(--foreground))] sm:text-3xl">
-            Finalizar compra
-          </h1>
-          <div className="flex items-center text-sm text-[hsl(var(--text-muted))]">
-            <Lock className="w-4 h-4 mr-2" />
-            Compra Segura
+        {/* Selección de Tipo de Cliente */}
+        <div className="mb-8">
+          <div className="flex p-1 bg-slate-100 rounded-xl max-w-md mx-auto sm:mx-0">
+            <button
+              type="button"
+              onClick={() => setCheckoutType('REGISTERED')}
+              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
+                checkoutType === 'REGISTERED'
+                  ? 'bg-white text-[hsl(var(--brand-strong))] shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Cliente Registrado
+            </button>
+            <button
+              type="button"
+              onClick={() => setCheckoutType('GUEST')}
+              className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
+                checkoutType === 'GUEST'
+                  ? 'bg-white text-[hsl(var(--brand-strong))] shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Comprar como Invitado
+            </button>
           </div>
+          {checkoutType === 'REGISTERED' && !user && (
+            <p className="mt-2 text-sm text-amber-600">
+              Inicia sesión para usar tus datos guardados o selecciona &quot;Invitado&quot;.
+            </p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -326,7 +376,7 @@ export default function CheckoutPageContent() {
                           handleInputChange('firstName', e.target.value)
                           if (formErrors.firstName) clearFieldError('firstName')
                         }}
-                        placeholder="Ej: Carlos"
+                        placeholder="Ejemplo: Juan"
                         className={formErrors.firstName ? 'border-red-500' : ''}
                         required
                       />
@@ -345,7 +395,7 @@ export default function CheckoutPageContent() {
                           handleInputChange('lastName', e.target.value)
                           if (formErrors.lastName) clearFieldError('lastName')
                         }}
-                        placeholder="Ej: García"
+                        placeholder="Ejemplo: Pérez"
                         className={formErrors.lastName ? 'border-red-500' : ''}
                         required
                       />
@@ -356,6 +406,33 @@ export default function CheckoutPageContent() {
                       )}
                     </div>
                   </div>
+
+                  {checkoutType === 'GUEST' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="documentId">Cédula o NIT *</Label>
+                        <Input
+                          id="documentId"
+                          value={form.documentId}
+                          onChange={e => {
+                            handleInputChange('documentId', e.target.value)
+                            if (formErrors.documentId) clearFieldError('documentId')
+                          }}
+                          placeholder="Ejemplo: 1234567890"
+                          className={formErrors.documentId ? 'border-red-500' : ''}
+                          required
+                        />
+                        {formErrors.documentId && (
+                          <p className="text-sm text-red-600 mt-1" data-field-error>
+                            {formErrors.documentId}
+                          </p>
+                        )}
+                        <p className="text-[10px] text-slate-500 mt-1">
+                          Requerido para facturación legal.
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -368,7 +445,7 @@ export default function CheckoutPageContent() {
                           handleInputChange('email', e.target.value)
                           if (formErrors.email) clearFieldError('email')
                         }}
-                        placeholder="correo@ejemplo.com"
+                        placeholder="ejemplo@correo.com"
                         className={formErrors.email ? 'border-red-500' : ''}
                         required
                       />
@@ -388,7 +465,7 @@ export default function CheckoutPageContent() {
                           handleInputChange('phone', e.target.value)
                           if (formErrors.phone) clearFieldError('phone')
                         }}
-                        placeholder="300 000 0000"
+                        placeholder="Ejemplo: 3101234567"
                         className={formErrors.phone ? 'border-red-500' : ''}
                         required
                       />
@@ -484,7 +561,7 @@ export default function CheckoutPageContent() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="city">Ciudad *</Label>
                       <Input
@@ -494,7 +571,7 @@ export default function CheckoutPageContent() {
                           handleInputChange('city', e.target.value)
                           if (formErrors.city) clearFieldError('city')
                         }}
-                        placeholder="Ej: Bogotá"
+                        placeholder="Ejemplo: Bogotá"
                         className={formErrors.city ? 'border-red-500' : ''}
                         required
                       />
@@ -504,6 +581,30 @@ export default function CheckoutPageContent() {
                         </p>
                       )}
                     </div>
+                    <div>
+                      <Label htmlFor="neighborhood">
+                        Barrio {checkoutType === 'GUEST' ? '*' : ''}
+                      </Label>
+                      <Input
+                        id="neighborhood"
+                        value={form.neighborhood}
+                        onChange={e => {
+                          handleInputChange('neighborhood', e.target.value)
+                          if (formErrors.neighborhood) clearFieldError('neighborhood')
+                        }}
+                        placeholder="Ejemplo: Chapinero"
+                        className={formErrors.neighborhood ? 'border-red-500' : ''}
+                        required={checkoutType === 'GUEST'}
+                      />
+                      {formErrors.neighborhood && (
+                        <p className="text-sm text-red-600 mt-1" data-field-error>
+                          {formErrors.neighborhood}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="state">Departamento *</Label>
                       <Select
@@ -581,10 +682,39 @@ export default function CheckoutPageContent() {
                 <DigitalWalletPayment
                   totalAmount={state.total}
                   orderId="PREVIEW"
+                  hideAccounts={!showPaymentDetails}
                   onPaymentReferenceChange={reference =>
                     handleInputChange('paymentReference', reference)
                   }
                 />
+              )}
+
+              {!showPaymentDetails && form.paymentMethod === 'DIGITAL_WALLET' && (
+                <div className="text-center p-6 border-2 border-dashed rounded-xl bg-slate-50">
+                  <p className="text-slate-600 mb-4">
+                    Completa tu información personal y de envío para ver los datos de transferencia.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      // Validar mínimamente antes de mostrar
+                      if (
+                        form.firstName &&
+                        form.lastName &&
+                        form.email &&
+                        form.address &&
+                        form.city
+                      ) {
+                        setShowPaymentDetails(true)
+                      } else {
+                        toast.error('Por favor completa los campos obligatorios primero')
+                      }
+                    }}
+                  >
+                    Ver Datos de Pago
+                  </Button>
+                </div>
               )}
 
               {/* Opciones adicionales */}

@@ -1,10 +1,18 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Calendar, User } from 'lucide-react'
+import { ArrowRight, Calendar, User, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { blogPosts } from '@/lib/content'
 
 export default function BlogSection() {
+  const [showAll, setShowAll] = useState(false)
+
+  // Show only first 3 posts initially (one full row on desktop)
+  const displayedPosts = showAll ? blogPosts : blogPosts.slice(0, 3)
+
   return (
     <section id="blog" className="py-16">
       <div className="container">
@@ -19,13 +27,13 @@ export default function BlogSection() {
               mejores decisiones de compra en Colombia.
             </p>
           </div>
-          <Button asChild variant="outline" className="rounded-full px-6">
-            <Link href="/blog">Ver todos los artículos</Link>
+          <Button asChild variant="outline" className="hidden rounded-full px-6 md:inline-flex">
+            <Link href="/blog">Explorar todo el Blog</Link>
           </Button>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {blogPosts.map(post => (
+          {displayedPosts.map(post => (
             <article key={post.slug} className="section-shell flex h-full flex-col overflow-hidden">
               <Link href={`/blog/${post.slug}`} className="block shrink-0">
                 <div className="relative aspect-[16/10] overflow-hidden bg-[hsl(var(--surface-muted))]">
@@ -74,6 +82,29 @@ export default function BlogSection() {
             </article>
           ))}
         </div>
+
+        {/* Ver más button to expand the module */}
+        {!showAll && blogPosts.length > 3 && (
+          <div className="mt-12 flex justify-center">
+            <Button
+              variant="outline"
+              size="lg"
+              className="group gap-2 rounded-full border-2 border-[hsl(var(--brand))] px-8 text-[hsl(var(--brand-strong))] hover:bg-[hsl(var(--brand))] hover:text-white"
+              onClick={() => setShowAll(true)}
+            >
+              Ver más guías de compra
+              <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-1" />
+            </Button>
+          </div>
+        )}
+
+        {showAll && (
+          <div className="mt-12 flex justify-center">
+            <Button asChild variant="ghost" className="rounded-full text-[hsl(var(--text-muted))]">
+              <Link href="/blog">Visitar el Blog completo</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   )

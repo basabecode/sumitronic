@@ -48,6 +48,88 @@ export type HelpArticle = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'ia-analiticas-camaras-seguridad-2026',
+    title: 'Inteligencia Artificial y Analíticas: El futuro de las cámaras IP en 2026',
+    excerpt:
+      'Detección de humanos, vehículos, conteo de personas y cruce de línea. Descubre cómo las nuevas analíticas de Dahua, Hikvision e Imou están eliminando las falsas alarmas.',
+    image: '/blogs/camara_ia_analiticas.png',
+    author: `Equipo ${brand.name}`,
+    date: '28 Abr 2026',
+    publishedAt: '2026-04-28',
+    category: 'Seguridad',
+    pillar: 'Conocimiento experto',
+    readTime: '7 min',
+    keywords: [
+      'analiticas de video',
+      'deteccion de humanos y vehiculos',
+      'hikvision acusense',
+      'dahua wizsense',
+      'conteo de personas camaras',
+    ],
+    content: [
+      'La seguridad electrónica ha dejado de ser simplemente "grabar video" para convertirse en un sistema de datos inteligente. En 2026, las marcas líderes como Hikvision (con su tecnología AcuSense) y Dahua (con WizSense) han perfeccionado algoritmos de Deep Learning que permiten a las cámaras entender qué están viendo.',
+      '## Detección Humana y Vehicular: Adiós a las falsas alarmas',
+      'El mayor problema de las cámaras antiguas era el "ruido": el movimiento de un árbol, una mascota o la lluvia activaban una notificación en el celular. Con la IA actual, la cámara filtra el 99% de estos eventos. Solo recibirás una alerta si un humano cruza una zona prohibida o si un vehículo se parquea donde no debe.',
+      '## Analíticas avanzadas: Conteo y Mapa de calor',
+      'Para los negocios, estas cámaras son ahora herramientas de marketing. El **Conteo de Personas** permite saber cuántos clientes entraron al local por hora. El **Mapa de Calor** indica qué pasillos son los más visitados. Marcas como Hanwha y Vivotek han llevado esto a un nivel profesional que antes solo estaba disponible para grandes superficies.',
+      '## Protección Perimetral y Cruce de Línea',
+      'Ya no dependes de ver la grabación después del robo. El **Cruce de Línea** permite dibujar una frontera virtual. Si alguien la pisa, la cámara puede activar una sirena local, luces estroboscópicas y mandarte un video de 10 segundos al celular en tiempo real.',
+    ],
+    faq: [
+      {
+        question: '¿Necesito un grabador especial para usar analíticas?',
+        answer:
+          'Muchas cámaras IP modernas procesan la analítica internamente (Edge Analytics). Sin embargo, para sacar el máximo provecho y tener un historial organizado, se recomienda un NVR compatible con la misma tecnología (ej: NVR AcuSense para cámaras AcuSense).',
+      },
+      {
+        question: '¿Estas cámaras pueden diferenciar entre un gato y una persona?',
+        answer:
+          'Sí, gracias a los algoritmos de Deep Learning que identifican patrones de movimiento y siluetas específicas de humanos y vehículos.',
+      },
+    ],
+  },
+  {
+    slug: 'visuales-camaras-wifi-color-nocturno',
+    title: 'Cámaras WiFi 2026: Visión Nocturna a Color y Estabilidad WiFi 6',
+    excerpt:
+      'La oscuridad ya no es un obstáculo. Analizamos las mejoras visuales de Imou, Tapo y EZVIZ, y cómo el WiFi 6 está transformando la estabilidad de la vigilancia hogareña.',
+    image: '/blogs/camara_color_nocturno.png',
+    author: 'Mesa Técnica',
+    date: '28 Abr 2026',
+    publishedAt: '2026-04-28',
+    category: 'Smart Home',
+    pillar: 'Conocimiento experto',
+    readTime: '6 min',
+    keywords: [
+      'vision nocturna a color',
+      'full color dahua',
+      'colorvu hikvision',
+      'wifi 6 camaras seguridad',
+      'imou full color',
+    ],
+    content: [
+      'Si todavía crees que las cámaras de seguridad ven en blanco y negro de noche, te estás perdiendo de la mayor revolución visual de la década. Tecnologías como **Full Color** (Dahua) y **ColorVu** (Hikvision) permiten ver colores vibrantes incluso en oscuridad casi total.',
+      '## Full Color y Dual Light: ¿Cómo funcionan?',
+      'A diferencia del infrarrojo tradicional que se ve gris, estas cámaras usan sensores de alta sensibilidad y aperturas de lente muy grandes (f/1.0). Cuando la luz es insuficiente, activan un LED de luz cálida suave que no solo ilumina la escena para el sensor, sino que sirve como luz de cortesía o disuasión.',
+      '## El salto al WiFi 6 y WiFi 7',
+      'El mayor dolor de cabeza de las cámaras WiFi era la desconexión. Las nuevas líneas de Imou, Tapo y EZVIZ ya integran **WiFi 6**. Esto permite que si tienes 4 o 6 cámaras en casa, no saturen tu red. El WiFi 6 maneja mucho mejor la congestión de datos, asegurando que el video en vivo cargue instantáneamente en tu celular.',
+      '## Audio Bidireccional y Sirenas Integradas',
+      'La tendencia para 2026 es la interactividad. Ya no solo miras; ahora actúas. Desde la aplicación puedes hablar a través de la cámara (ideal para recibir domicilios o asustar intrusos) y activar sirenas de 110dB que alertarán a todo el vecindario en caso de emergencia.',
+    ],
+    faq: [
+      {
+        question: '¿La luz nocturna de la cámara molesta a los vecinos?',
+        answer:
+          'No necesariamente. Los modelos "Smart Dual Light" solo activan la luz blanca cuando detectan a una persona, manteniéndose en modo infrarrojo discreto el resto del tiempo.',
+      },
+      {
+        question: '¿Puedo instalar cámaras WiFi 6 con un router viejo?',
+        answer:
+          'Sí, son retrocompatibles. Sin embargo, para disfrutar de la estabilidad y velocidad mejoradas, lo ideal es tener un router que también soporte WiFi 6 (AX).',
+      },
+    ],
+  },
+  {
     slug: 'comprar-seguridad-sumitronic-vs-mercadolibre',
     title: 'Comprar cámaras en Sumitronic vs Grandes Plataformas: ¿Vale la pena ahorrar $20.000?',
     excerpt:
