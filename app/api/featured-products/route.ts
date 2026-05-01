@@ -96,6 +96,34 @@ const MOCK_PRODUCTS: FeaturedProduct[] = [
     productUrl: `${brand.siteUrl}/productos/dvr-8-canales-full-hd`,
     badge: 'Oferta',
   },
+  {
+    id: 'mock-5',
+    name: 'Cámara domo HDCVI 2MP',
+    slug: 'camara-domo-hdcvi-2mp',
+    price: 98000,
+    originalPrice: null,
+    imageUrl: `${brand.siteUrl}/images/placeholder-camara.jpg`,
+    category: 'Cámara CCTV',
+    categorySlug: 'camara-cctv',
+    brand: 'Dahua',
+    shortDescription: 'Domo para interior, instalación discreta en techo o pared',
+    productUrl: `${brand.siteUrl}/productos/camara-domo-hdcvi-2mp`,
+    badge: 'Más vendido',
+  },
+  {
+    id: 'mock-6',
+    name: 'Cerca eléctrica energizador 5J',
+    slug: 'cerca-electrica-energizador-5j',
+    price: 275000,
+    originalPrice: 310000,
+    imageUrl: `${brand.siteUrl}/images/placeholder-alarma.jpg`,
+    category: 'Cerca Eléctrica',
+    categorySlug: 'cerca-electrica',
+    brand: 'Nemesis',
+    shortDescription: 'Energizador para perímetros de hasta 2.000 metros lineales',
+    productUrl: `${brand.siteUrl}/productos/cerca-electrica-energizador-5j`,
+    badge: 'Oferta',
+  },
 ]
 
 function slugify(text: string): string {
@@ -136,23 +164,44 @@ function mapProduct(p: RawProduct, now: number): FeaturedProduct {
   }
 }
 
+// Rotación cada 6 horas: baraja el pool con un seed basado en el tiempo
+function shuffleWithSeed<T>(arr: T[], seed: number): T[] {
+  const a = [...arr]
+  let s = seed
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff
+    const j = Math.abs(s) % (i + 1)
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+function getRotationSeed(): number {
+  // Cambia cada 6 horas
+  return Math.floor(Date.now() / (6 * 60 * 60 * 1000))
+}
+
 function selectDiverse(products: RawProduct[], now: number): FeaturedProduct[] {
   const seenCategories = new Set<string>()
-  const seenBrands = new Set<string>()
   const result: FeaturedProduct[] = []
 
   for (const p of products) {
-    if (result.length >= 8) break
+    if (result.length >= 6) break
 
     const catId = p.category?.id ?? '__none__'
-    const brandKey = p.brand.toLowerCase()
-
     if (seenCategories.has(catId)) continue
-    if (seenBrands.has(brandKey)) continue
 
     seenCategories.add(catId)
-    seenBrands.add(brandKey)
     result.push(mapProduct(p, now))
+  }
+
+  // Si hay menos de 6 categorías únicas, rellena con productos ya vistos
+  if (result.length < 6) {
+    for (const p of products) {
+      if (result.length >= 6) break
+      if (result.some(r => r.id === p.id)) continue
+      result.push(mapProduct(p, now))
+    }
   }
 
   return result
@@ -191,21 +240,23 @@ export async function GET() {
 
     if (!error && data && data.length > 0) {
       const products = data as unknown as RawProduct[]
+      const seed = getRotationSeed()
 
-      // First pass: only in-stock products
-      const selected = selectDiverse(
+      // First pass: solo productos con stock, rotación cada 6 horas
+      const inStock = shuffleWithSeed(
         products.filter(p => p.stock_quantity > 0),
-        now
+        seed
       )
-      if (selected.length >= 4) {
+      const selected = selectDiverse(inStock, now)
+      if (selected.length >= 6) {
         return NextResponse.json(
           { products: selected, fetchedAt: new Date(now).toISOString() },
           { headers: CORS_HEADERS }
         )
       }
 
-      // Second pass: relax stock filter to reach minimum 4
-      const relaxed = selectDiverse(products, now)
+      // Second pass: relaja filtro de stock si no llega a 6
+      const relaxed = selectDiverse(shuffleWithSeed(products, seed), now)
       if (relaxed.length > 0) {
         return NextResponse.json(
           { products: relaxed, fetchedAt: new Date(now).toISOString() },
